@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+
+import jd.http.Browser;
+import jd.http.requests.PostRequest;
 
 import org.appwork.storage.JSonStorage;
 import org.appwork.storage.Storable;
@@ -12,6 +15,7 @@ import org.appwork.storage.TypeRef;
 import org.appwork.storage.config.JsonConfig;
 import org.appwork.utils.IO;
 import org.appwork.utils.StringUtils;
+import org.appwork.utils.Time;
 import org.appwork.utils.encoding.Base64;
 import org.appwork.utils.logging2.LogSource;
 import org.jdownloader.captcha.v2.AbstractResponse;
@@ -34,21 +38,11 @@ import org.jdownloader.images.NewTheme;
 import org.jdownloader.logging.LogController;
 import org.jdownloader.settings.staticreferences.CFG_TWO_CAPTCHA;
 
-import jd.http.Browser;
-import jd.http.requests.PostRequest;
-
 public class TwoCaptchaSolver extends CESChallengeSolver<String> {
-    private static final TwoCaptchaSolver     INSTANCE           = new TwoCaptchaSolver();
+    private static final TwoCaptchaSolver     INSTANCE                  = new TwoCaptchaSolver();
     private String                            accountStatusString;
     protected final TwoCaptchaConfigInterface config;
-    AtomicInteger                             counter            = new AtomicInteger();
-    AtomicInteger                             counterInterrupted = new AtomicInteger();
-    AtomicInteger                             counterNotOK       = new AtomicInteger();
-    AtomicInteger                             counterOK          = new AtomicInteger();
-    AtomicInteger                             counterSend        = new AtomicInteger();
-    AtomicInteger                             counterSendError   = new AtomicInteger();
-    AtomicInteger                             counterSolved      = new AtomicInteger();
-    AtomicInteger                             counterUnused      = new AtomicInteger();
+    private final AtomicLong                  timestamp_hcaptcha_failed = new AtomicLong(-1);
     protected final LogSource                 logger;
 
     public static TwoCaptchaSolver getInstance() {
@@ -94,8 +88,19 @@ public class TwoCaptchaSolver extends CESChallengeSolver<String> {
 
     @Override
     public ChallengeVetoReason getChallengeVetoReason(final Challenge<?> c) {
-        /* 2025-12-22: hCaptcha is not supported anymore */
-        if (c instanceof RecaptchaV2Challenge || c instanceof BasicCaptchaChallenge) {
+        if (c instanceof HCaptchaChallenge) {
+            /**
+             * 2025-12-22: hCaptcha is officially not supported anymore <br>
+             * 2026-02-24: It may work for some 2captcha API keys but we cannot know this in beforehand so we can only try.
+             */
+            if (timestamp_hcaptcha_failed.get() != -1) {
+                /* We've already tried hCaptcha but it did not work */
+                return ChallengeVetoReason.UNSUPPORTED_BY_SOLVER;
+            } else {
+                /* hCaptcha might work fine -> Let upper handling decide */
+                return super.getChallengeVetoReason(c);
+            }
+        } else if (c instanceof RecaptchaV2Challenge || c instanceof BasicCaptchaChallenge) {
             /* Looks good -> Let upper handling decide for VetoReason */
             return super.getChallengeVetoReason(c);
         } else if (c instanceof CutCaptchaChallenge) {
@@ -120,7 +125,7 @@ public class TwoCaptchaSolver extends CESChallengeSolver<String> {
                 final RecaptchaV2Challenge challenge = (RecaptchaV2Challenge) job.getChallenge();
                 task.put("type", "RecaptchaV2TaskProxyless");
                 task.put("websiteKey", challenge.getSiteKey());
-                task.put("websiteURL", challenge.getSiteUrl());
+                task.put("websiteURL", challenge.getSiteUrl(this));
                 final Map<String, Object> action = challenge.getV3Action();
                 if (challenge.isV3() || action != null) {
                     task.put("type", "RecaptchaV3TaskProxyless");
@@ -136,10 +141,9 @@ public class TwoCaptchaSolver extends CESChallengeSolver<String> {
                 if (minScore != null) {
                     task.put("minScore", minScore);
                 }
-                if (challenge.isEnterprise() && StringUtils.containsIgnoreCase(challenge.getSiteUrl(), "filer.net")) {
+                if (challenge.isEnterprise() && StringUtils.containsIgnoreCase(challenge.getSiteUrl(this), "filer.net")) {
                     /**
-                     * Special workaround for API bug, this should be RecaptchaV3TaskProxyless but if we use it we will get wrong results.
-                     * <br>
+                     * Special workaround for API bug, this should be RecaptchaV3TaskProxyless but if we use it we will get wrong results. <br>
                      * Is: https://2captcha.com/api-docs/recaptcha-v2-enterprise#recaptcha-v2-enterprise <br>
                      * Should be: https://2captcha.com/api-docs/recaptcha-v3
                      */
@@ -151,7 +155,7 @@ public class TwoCaptchaSolver extends CESChallengeSolver<String> {
             } else if (captchaChallenge instanceof HCaptchaChallenge) {
                 final HCaptchaChallenge challenge = (HCaptchaChallenge) job.getChallenge();
                 task.put("type", "HCaptchaTaskProxyless");
-                task.put("websiteURL", challenge.getSiteUrl());
+                task.put("websiteURL", challenge.getSiteUrl(this));
                 task.put("websiteKey", challenge.getSiteKey());
                 final AbstractHCaptcha<?> hCaptcha = challenge.getAbstractCaptchaHelperHCaptcha();
                 if (hCaptcha != null && AbstractHCaptcha.TYPE.INVISIBLE.equals(hCaptcha.getType())) {
@@ -164,13 +168,13 @@ public class TwoCaptchaSolver extends CESChallengeSolver<String> {
                 task.put("type", "CutCaptchaTaskProxyless");
                 task.put("miseryKey", challenge.getSiteKey());
                 task.put("apiKey", challenge.getApiKey());
-                task.put("websiteURL", challenge.getSiteUrl());
+                task.put("websiteURL", challenge.getSiteUrl(this));
             } else if (captchaChallenge instanceof CloudflareTurnstileChallenge) {
                 /* Cloudflare turnstile: https://2captcha.com/api-docs/cloudflare-turnstile */
                 final CloudflareTurnstileChallenge challenge = (CloudflareTurnstileChallenge) job.getChallenge();
                 challenge.sendStatsSolving(this);
                 task.put("type", "TurnstileTaskProxyless");
-                task.put("websiteURL", challenge.getSiteUrl());
+                task.put("websiteURL", challenge.getSiteUrl(this));
                 task.put("websiteKey", challenge.getSiteKey());
             } else {
                 /* Image captcha: https://2captcha.com/api-docs/normal-captcha */
@@ -192,6 +196,12 @@ public class TwoCaptchaSolver extends CESChallengeSolver<String> {
             final BalanceResponse resp_createTask = JSonStorage.restoreFromString(br.getRequest().getHtmlCode(), new TypeRef<BalanceResponse>() {
             });
             if (resp_createTask.getErrorId() != 0) {
+                if (captchaChallenge instanceof HCaptchaChallenge && resp_createTask.getErrorId() == 5 && "ERROR_METHOD_CALL".equalsIgnoreCase(resp_createTask.getErrorCode())) {
+                    /* Special hCaptcha handling */
+                    /* Example response: {"errorId":5,"errorCode":"ERROR_METHOD_CALL","errorDescription":"Error"} */
+                    logger.info("hCaptcha is not supported by this 2captcha API key");
+                    this.timestamp_hcaptcha_failed.set(Time.systemIndependentCurrentJVMTimeMillis());
+                }
                 throw new IOException("Captcha image upload failure, status: " + resp_createTask.getStatus());
             }
             final String id = resp_createTask.getTaskId();

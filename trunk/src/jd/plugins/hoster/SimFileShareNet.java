@@ -18,7 +18,7 @@ import jd.plugins.PluginForHost;
 
 import org.appwork.utils.formatter.SizeFormatter;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49607 $", interfaceVersion = 3, names = {}, urls = {})
 public class SimFileShareNet extends PluginForHost {
     public SimFileShareNet(PluginWrapper wrapper) {
         super(wrapper);

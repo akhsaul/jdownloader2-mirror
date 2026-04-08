@@ -29,7 +29,7 @@ import jd.plugins.FilePackage;
 import org.jdownloader.plugins.components.antiDDoSForDecrypt;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "porn4k.to" }, urls = { "https?://(?:www\\.)?(?:xxx-blog|porn4k)\\.to/(?!wp-content)[a-z0-9\\-]+" })
+@DecrypterPlugin(revision = "$Revision: 52202 $", interfaceVersion = 2, names = { "porn4k.to" }, urls = { "https?://(?:www\\.)?(?:xxx-blog|porn4k)\\.to/(?!wp-content)[a-z0-9\\-]+" })
 public class Porn4kTo extends antiDDoSForDecrypt {
     public Porn4kTo(PluginWrapper wrapper) {
         super(wrapper);

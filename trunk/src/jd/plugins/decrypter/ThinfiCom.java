@@ -29,7 +29,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "thinfi.com" }, urls = { "https?://(?:www\\.)?thinfi\\.com/[a-z0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 46183 $", interfaceVersion = 3, names = { "thinfi.com" }, urls = { "https?://(?:www\\.)?thinfi\\.com/[a-z0-9]+" })
 public class ThinfiCom extends PluginForDecrypt {
     public ThinfiCom(PluginWrapper wrapper) {
         super(wrapper);

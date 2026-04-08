@@ -33,7 +33,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.ImDbCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "imdb.com" }, urls = { "https?://(?:www\\.)?imdb\\.com/((?:name|title)/(?:nm|tt)\\d+((?:/mediaindex|videogallery)|/media/index/rg\\d+)?)" })
+@DecrypterPlugin(revision = "$Revision: 50275 $", interfaceVersion = 2, names = { "imdb.com" }, urls = { "https?://(?:www\\.)?imdb\\.com/((?:name|title)/(?:nm|tt)\\d+((?:/mediaindex|videogallery)|/media/index/rg\\d+)?)" })
 public class ImdbComCrawler extends PluginForDecrypt {
     public ImdbComCrawler(PluginWrapper wrapper) {
         super(wrapper);

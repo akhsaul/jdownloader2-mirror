@@ -43,7 +43,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "downl.ink" }, urls = { "https?://(?:www\\.)?downl\\.ink/(?-i)[a-f0-9]{6,}" })
+@DecrypterPlugin(revision = "$Revision: 51695 $", interfaceVersion = 3, names = { "downl.ink" }, urls = { "https?://(?:www\\.)?downl\\.ink/(?-i)[a-f0-9]{6,}" })
 @SuppressWarnings("deprecation")
 public class DownlInk extends antiDDoSForDecrypt {
     public DownlInk(PluginWrapper wrapper) {

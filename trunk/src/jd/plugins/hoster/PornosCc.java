@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50624 $", interfaceVersion = 3, names = {}, urls = {})
 public class PornosCc extends PluginForHost {
     public PornosCc(PluginWrapper wrapper) {
         super(wrapper);

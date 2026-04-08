@@ -35,6 +35,7 @@
 package org.appwork.utils.net.httpconnection.trust.ccadb;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
@@ -48,6 +49,11 @@ import org.appwork.utils.net.httpconnection.trust.TrustUtils;
  */
 public final class CCADBTrustProvider extends CustomTrustProvider {
     /**
+     *
+     */
+    public static final String APPWORK_MERGED_PEM = "appwork-merged-cadb.3-no-rejected.pem";
+
+    /**
      * https://www.ccadb.org/resources *
      */
     public CCADBTrustProvider() throws IOException, CertificateException {
@@ -55,7 +61,15 @@ public final class CCADBTrustProvider extends CustomTrustProvider {
     }
 
     private static X509Certificate[] loadCCADB() throws CertificateException, IOException {
-        return TrustUtils.loadCertificatesFromPEM(CCADBTrustProvider.class.getResourceAsStream("common-ca-database.pem"));
+        InputStream pemStream = null;
+        try {
+            pemStream = CCADBTrustProvider.class.getResourceAsStream(APPWORK_MERGED_PEM);
+            return TrustUtils.loadCertificatesFromPEM(pemStream);
+        } finally {
+            if (pemStream != null) {
+                pemStream.close();
+            }
+        }
     }
 
     @Override

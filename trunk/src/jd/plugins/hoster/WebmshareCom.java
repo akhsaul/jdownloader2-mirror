@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 47473 $", interfaceVersion = 3, names = {}, urls = {})
 public class WebmshareCom extends PluginForHost {
     public WebmshareCom(PluginWrapper wrapper) {
         super(wrapper);

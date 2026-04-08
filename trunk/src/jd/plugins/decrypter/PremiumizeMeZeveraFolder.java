@@ -29,7 +29,7 @@ import jd.plugins.components.PremiumizeBrowseNode;
 import jd.plugins.hoster.PremiumizeMe;
 import jd.plugins.hoster.ZeveraCore;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52242 $", interfaceVersion = 2, names = {}, urls = {})
 public class PremiumizeMeZeveraFolder extends PluginForDecrypt {
     public PremiumizeMeZeveraFolder(PluginWrapper wrapper) {
         super(wrapper);

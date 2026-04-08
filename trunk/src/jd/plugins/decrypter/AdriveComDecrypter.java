@@ -37,7 +37,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "adrive.com" }, urls = { "https?://(?:www(?:\\d+)?\\.)?adrive\\.com/public/([0-9a-zA-Z]+)(\\?path=[^\\&]+)?" })
+@DecrypterPlugin(revision = "$Revision: 49212 $", interfaceVersion = 2, names = { "adrive.com" }, urls = { "https?://(?:www(?:\\d+)?\\.)?adrive\\.com/public/([0-9a-zA-Z]+)(\\?path=[^\\&]+)?" })
 public class AdriveComDecrypter extends PluginForDecrypt {
     public AdriveComDecrypter(PluginWrapper wrapper) {
         super(wrapper);

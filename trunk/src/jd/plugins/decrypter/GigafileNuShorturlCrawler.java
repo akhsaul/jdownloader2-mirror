@@ -26,7 +26,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "xgf.nu" }, urls = { "https?://(?:www\\.)?xgf\\.nu/([A-Za-z0-9]+)" })
+@DecrypterPlugin(revision = "$Revision: 50342 $", interfaceVersion = 3, names = { "xgf.nu" }, urls = { "https?://(?:www\\.)?xgf\\.nu/([A-Za-z0-9]+)" })
 public class GigafileNuShorturlCrawler extends PluginForDecrypt {
     public GigafileNuShorturlCrawler(PluginWrapper wrapper) {
         super(wrapper);

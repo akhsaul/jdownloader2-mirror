@@ -32,7 +32,7 @@ import jd.plugins.components.PluginJSonUtils;
 /**
  * @author raztoki
  */
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "icerbox.com" }, urls = { "https?://(?:www\\.)?icerbox\\.com/folder/([A-Za-z0-9]{8})" })
+@DecrypterPlugin(revision = "$Revision: 36558 $", interfaceVersion = 2, names = { "icerbox.com" }, urls = { "https?://(?:www\\.)?icerbox\\.com/folder/([A-Za-z0-9]{8})" })
 public class IcerBoxCom extends antiDDoSForDecrypt {
 
     public IcerBoxCom(PluginWrapper wrapper) {

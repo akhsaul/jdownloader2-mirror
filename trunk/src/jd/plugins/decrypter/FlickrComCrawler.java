@@ -58,7 +58,7 @@ import jd.plugins.components.PluginJSonUtils;
 import jd.plugins.components.UserAgents;
 import jd.plugins.hoster.FlickrCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "flickr.com" }, urls = { "https?://(?:secure\\.|www\\.)?flickr\\.com/(?:photos|groups)/.+" })
+@DecrypterPlugin(revision = "$Revision: 50396 $", interfaceVersion = 3, names = { "flickr.com" }, urls = { "https?://(?:secure\\.|www\\.)?flickr\\.com/(?:photos|groups)/.+" })
 public class FlickrComCrawler extends PluginForDecrypt {
     public FlickrComCrawler(PluginWrapper wrapper) {
         super(wrapper);

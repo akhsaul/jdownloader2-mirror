@@ -37,7 +37,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50615 $", interfaceVersion = 3, names = {}, urls = {})
 public class FexNetCrawler extends PluginForDecrypt {
     public FexNetCrawler(PluginWrapper wrapper) {
         super(wrapper);

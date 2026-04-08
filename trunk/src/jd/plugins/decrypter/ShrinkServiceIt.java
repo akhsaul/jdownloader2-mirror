@@ -40,7 +40,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.PluginJSonUtils;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49602 $", interfaceVersion = 3, names = {}, urls = {})
 public class ShrinkServiceIt extends PluginForDecrypt {
     public ShrinkServiceIt(PluginWrapper wrapper) {
         super(wrapper);

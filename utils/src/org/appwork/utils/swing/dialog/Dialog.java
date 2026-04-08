@@ -4,7 +4,7 @@
  *         "AppWork Utilities" License
  *         The "AppWork Utilities" will be called [The Product] from now on.
  * ====================================================================================================================================================
- *         Copyright (c) 2009-2025, AppWork GmbH <e-mail@appwork.org>
+ *         Copyright (c) 2009-2026, AppWork GmbH <e-mail@appwork.org>
  *         Spalter Strasse 58
  *         91183 Abenberg
  *         Germany
@@ -50,6 +50,7 @@ import org.appwork.resources.AWUTheme;
 import org.appwork.uio.UIOManager;
 import org.appwork.utils.BinaryLogic;
 import org.appwork.utils.DebugMode;
+import org.appwork.utils.Exceptions;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.interfaces.ValueConverter;
 import org.appwork.utils.locale._AWU;
@@ -477,6 +478,7 @@ public class Dialog {
      * @throws DialogCanceledException
      */
     public <T> T showDialog(final AbstractDialog<T> dialog) throws DialogClosedException, DialogCanceledException {
+        LogV3.info("[Dialog] at " + Exceptions.stacktraceElementToThrownAtString(new Exception().getStackTrace()[1], true));
         final DialogHandler lhandler = handler;
         if (lhandler != null) {
             //

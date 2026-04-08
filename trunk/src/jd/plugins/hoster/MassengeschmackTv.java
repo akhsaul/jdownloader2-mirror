@@ -53,7 +53,7 @@ import jd.plugins.components.PluginJSonUtils;
 import jd.plugins.components.VariantInfoMassengeschmackTv;
 import jd.utils.JDUtilities;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "massengeschmack.tv" }, urls = { "https?://massengeschmack\\.tv/dl.+|https?://[^/]+\\.massengeschmack\\.tv/deliver.+" })
+@HostPlugin(revision = "$Revision: 50772 $", interfaceVersion = 3, names = { "massengeschmack.tv" }, urls = { "https?://massengeschmack\\.tv/dl.+|https?://[^/]+\\.massengeschmack\\.tv/deliver.+" })
 public class MassengeschmackTv extends PluginForHost {
     public static final long trust_cookie_age = 300000l;
 

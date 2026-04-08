@@ -51,7 +51,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.BatoTo;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48957 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { BatoTo.class })
 /** This crawler is for bato.to website version v2. */
 public class BatoToCrawlerV2 extends PluginForDecrypt {

@@ -31,7 +31,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48286 $", interfaceVersion = 3, names = {}, urls = {})
 public class ClicksflyCom extends MightyScriptAdLinkFly {
     public ClicksflyCom(PluginWrapper wrapper) {
         super(wrapper);

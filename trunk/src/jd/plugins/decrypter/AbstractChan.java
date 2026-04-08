@@ -19,7 +19,7 @@ import org.appwork.utils.Regex;
 import org.appwork.utils.formatter.SizeFormatter;
 import org.jdownloader.plugins.components.antiDDoSForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 45872 $", interfaceVersion = 2, names = {}, urls = {})
 public abstract class AbstractChan extends antiDDoSForDecrypt {
     public AbstractChan(PluginWrapper wrapper) {
         super(wrapper);

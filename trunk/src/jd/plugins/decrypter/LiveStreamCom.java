@@ -19,7 +19,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "livestream.com" }, urls = { "https?://(www\\.)?livestream\\.com/[^<>\"]+/events/\\d+/?$" })
+@DecrypterPlugin(revision = "$Revision: 50866 $", interfaceVersion = 2, names = { "livestream.com" }, urls = { "https?://(www\\.)?livestream\\.com/[^<>\"]+/events/\\d+/?$" })
 public class LiveStreamCom extends PluginForDecrypt {
     public LiveStreamCom(PluginWrapper wrapper) {
         super(wrapper);

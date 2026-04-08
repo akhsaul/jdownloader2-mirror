@@ -31,13 +31,14 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
+import jd.plugins.hoster.GenericM3u8;
 
 /**
  *
  * @author butkovip
  *
  */
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, urls = {}, names = {})
+@DecrypterPlugin(revision = "$Revision: 52396 $", interfaceVersion = 2, urls = {}, names = {})
 public class TopkySk extends PluginForDecrypt {
     public TopkySk(PluginWrapper wrapper) {
         super(wrapper);
@@ -46,7 +47,7 @@ public class TopkySk extends PluginForDecrypt {
     public static List<String[]> getPluginDomains() {
         final List<String[]> ret = new ArrayList<String[]>();
         // each entry in List<String[]> will result in one PluginForDecrypt, Plugin.getHost() will return String[0]->main domain
-        ret.add(new String[] { "topky.sk" });
+        ret.add(new String[] { "topky.sk", "zoznam.sk" });
         return ret;
     }
 
@@ -66,7 +67,7 @@ public class TopkySk extends PluginForDecrypt {
     public static String[] buildAnnotationUrls(final List<String[]> pluginDomains) {
         final List<String> ret = new ArrayList<String>();
         for (final String[] domains : pluginDomains) {
-            ret.add("https?://(?:www\\.)?" + buildHostsPatternPart(domains) + "/cl?/(\\d+)/(\\d+)/([a-zA-Z0-9\\-]+)");
+            ret.add("https?://(?:[\\w\\-]+\\.)?" + buildHostsPatternPart(domains) + "/cl?/(\\d+)/((\\d+)/)?([a-zA-Z0-9-]+)");
         }
         return ret.toArray(new String[0]);
     }
@@ -81,7 +82,13 @@ public class TopkySk extends PluginForDecrypt {
         if (br.getHttpConnection().getResponseCode() == 404) {
             throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
         }
-        final String contentID = new Regex(contenturl, this.getSupportedLinks()).getMatch(1);
+        final String urlSlug = br.getURL().substring(br.getURL().lastIndexOf("/") + 1);
+        final String title = urlSlug.replace("-", " ").trim();
+        final Regex urlinfo = new Regex(contenturl, this.getSupportedLinks());
+        String contentID = urlinfo.getMatch(2);
+        if (contentID == null) {
+            contentID = urlinfo.getMatch(0);
+        }
         // extract img.zoznam.sk like vids
         String[][] links = br.getRegex("fo\\.addVariable[(]\"file\", \"(.*?)\"[)]").getMatches();
         if (null != links && 0 < links.length) {
@@ -91,8 +98,8 @@ public class TopkySk extends PluginForDecrypt {
                 }
             }
         }
-        // extract youtube links
-        links = br.getRegex("<PARAM NAME=\"movie\" VALUE=\"http://www.youtube.com/v/(.*?)&").getMatches();
+        // extract youtube video-ids
+        links = br.getRegex("\"https?://www\\.youtube\\.com/(?:v|embed)/([\\w\\-]+)").getMatches();
         if (null != links && 0 < links.length) {
             for (String[] link : links) {
                 if (null != link && 1 == link.length && null != link[0] && 0 < link[0].length()) {
@@ -107,7 +114,14 @@ public class TopkySk extends PluginForDecrypt {
                 ret.add(createDownloadlink(instagramlink));
             }
         }
-        // extract topky.sk http vids
+        // extract selfhosted images
+        final String[] imgs = br.getRegex("\"(https?://img\\.[^/]+/spuntik/big/[^\"]+)\"").getColumn(0);
+        if (imgs != null && imgs.length > 0) {
+            for (final String img : imgs) {
+                ret.add(createDownloadlink(DirectHTTP.createURLForThisPlugin(img)));
+            }
+        }
+        // extract selfhosted progressive video streams
         final String finallink = br.getRegex("<source src=\"(http[^<>\"]*?)\"").getMatch(0);
         if (finallink != null) {
             ret.add(createDownloadlink(DirectHTTP.createURLForThisPlugin(finallink)));
@@ -115,10 +129,10 @@ public class TopkySk extends PluginForDecrypt {
         /* 2022-06-14: Selfhosted hls */
         final String[] hlsplaylists = br.getRegex("(https?://img\\.topky\\.sk/video/\\d+/master\\.m3u8)").getColumn(0);
         for (final String hlsplaylist : hlsplaylists) {
-            ret.add(createDownloadlink(hlsplaylist));
+            final DownloadLink hls = createDownloadlink(hlsplaylist);
+            hls.setProperty(GenericM3u8.PRESET_NAME_PROPERTY, title);
+            ret.add(hls);
         }
-        final String urlSlug = br.getURL().substring(br.getURL().lastIndexOf("/") + 1);
-        final String title = urlSlug.replace("-", " ").trim();
         if (br.containsHTML("class=\"box-audio-content\"")) {
             /*
              * Article read out as audio file. This is not availabble for all articles but the website also just tries it and hides the

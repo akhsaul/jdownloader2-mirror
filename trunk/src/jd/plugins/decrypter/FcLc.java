@@ -21,6 +21,8 @@ import java.util.regex.Pattern;
 
 import org.appwork.storage.TypeRef;
 import org.appwork.utils.StringUtils;
+import org.appwork.utils.Time;
+import org.jdownloader.captcha.v2.challenge.cloudflareturnstile.CaptchaHelperCrawlerPluginCloudflareTurnstile;
 import org.jdownloader.captcha.v2.challenge.hcaptcha.CaptchaHelperCrawlerPluginHCaptcha;
 import org.jdownloader.captcha.v2.challenge.recaptcha.v2.CaptchaHelperCrawlerPluginRecaptchaV2;
 
@@ -41,7 +43,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.PluginJSonUtils;
 import jd.plugins.components.SiteType.SiteTemplate;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52554 $", interfaceVersion = 2, names = {}, urls = {})
 public class FcLc extends PluginForDecrypt {
     private static final String[] domains = { "fc.lc", "fcc.lc", "short.fc-lc.com", "short.articlix.com", "fc-lc.com", "fc-lc.xyz" };
 
@@ -255,6 +257,24 @@ public class FcLc extends PluginForDecrypt {
                 logger.info("Failed to find locationReplace");
             }
         }
+        /* 2026-03-23: New: another form */
+        final Form verify0 = br.getFormbyProperty("id", "verificationForm");
+        if (verify0 != null) {
+            logger.info("Found verify0 form");
+            final String cfSiteKey = br.getRegex("sitekey: '([^']+)").getMatch(0);
+            if (cfSiteKey != null) {
+                logger.info("Cloudflare Turnstile captcha #1 required");
+                /* We know that the last captcha, ione had been requested this run, has been successful. */
+                final String cfTurnstileResponse = new CaptchaHelperCrawlerPluginCloudflareTurnstile(this, br, cfSiteKey).getToken();
+                verify0.put("cf-turnstile-response", Encoding.urlEncode(cfTurnstileResponse));
+                verify0.put("token", Encoding.urlEncode(cfTurnstileResponse));
+            } else {
+                logger.info("Cloudflare Turnstile captcha #1 NOT required");
+            }
+            br.submitForm(verify0);
+        } else {
+            logger.info("Failed to find verify0 form");
+        }
         int counter = -1;
         handle_verify_steps: do {
             /* 2025-11-05: In between sending these forms there might be a wait time of about 10 seconds which is skippable. */
@@ -308,17 +328,36 @@ public class FcLc extends PluginForDecrypt {
                     finalform.setAction("/links/go");
                 }
             }
+            long passedTimeMillis = 0;
+            final String cfSiteKey = br.getRegex("class=\"cf-turnstile\" data-sitekey=\"([^\"]+)\" data-callback=\"onTurnstileSuccess\"").getMatch(0);
+            if (cfSiteKey != null) {
+                logger.info("Cloudflare Turnstile captcha #2 required");
+                /* We know that the last captcha, ione had been requested this run, has been successful. */
+                this.validateLastChallengeResponse();
+                final long timeBefore = Time.systemIndependentCurrentJVMTimeMillis();
+                final String cfTurnstileResponse = new CaptchaHelperCrawlerPluginCloudflareTurnstile(this, br, cfSiteKey).getToken();
+                finalform.put("token", Encoding.urlEncode(cfTurnstileResponse));
+                passedTimeMillis = Time.systemIndependentCurrentJVMTimeMillis() - timeBefore;
+            } else {
+                logger.info("Cloudflare Turnstile captcha #2 NOT required");
+            }
             br.getHeaders().put("Accept", "application/json, text/javascript, */*; q=0.01");
             br.getHeaders().put("X-Requested-With", "XMLHttpRequest");
             br.getHeaders().put("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
             br.getHeaders().put("Origin", "https://" + br.getHost());
             String waitStr = this.getAppVarsResult("counter_value");
             if (!skipWait) {
-                int wait = 15;
+                int waitSeconds = 15;
                 if (waitStr != null && waitStr.matches("\\d+")) {
                     logger.info("Found waittime in html, waiting (seconds): " + waitStr);
-                    wait = Integer.parseInt(waitStr) * +1;
-                    this.sleep(wait * 1000, param);
+                    waitSeconds = Integer.parseInt(waitStr) * +1;
+                    long waitMillis = waitSeconds * 1000;
+                    waitMillis = waitMillis - passedTimeMillis;
+                    if (waitMillis > 0) {
+                        this.sleep(waitMillis, param);
+                    } else {
+                        logger.info("Skip wait as captcha solving took long enough to do so");
+                    }
                 } else {
                     logger.info("Failed to find waittime in html");
                 }

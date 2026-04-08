@@ -30,15 +30,23 @@ import org.jdownloader.gui.translate._GUI;
 import org.jdownloader.gui.views.SelectionInfo;
 import org.jdownloader.gui.views.components.packagetable.LinkTreeUtils;
 import org.jdownloader.gui.views.components.packagetable.columns.CommentColumn;
+import org.jdownloader.gui.views.downloads.action.CopyGenericContextAction;
 import org.jdownloader.gui.views.downloads.columns.AvailabilityColumn;
 import org.jdownloader.gui.views.downloads.columns.FileColumn;
 import org.jdownloader.gui.views.downloads.columns.FileSizeColumn;
+import org.jdownloader.gui.views.downloads.columns.HosterColumn;
 import org.jdownloader.gui.views.linkgrabber.columns.UrlColumn;
 import org.jdownloader.images.AbstractIcon;
 
 public class LinkURLEditor<PackageType extends AbstractPackageNode<ChildrenType, PackageType>, ChildrenType extends AbstractPackageChildrenNode<PackageType>> extends MigPanel {
 
     private final SelectionInfo<PackageType, ChildrenType> si;
+    private UrlColumn                                      urlColumn;
+    private FileColumn                                     fileColumn;
+    private FileSizeColumn                                 fileSizeColumn;
+    private HosterColumn                                   hosterColumn;
+    private AvailabilityColumn                             availabilityColumn;
+    private CommentColumn                                  commentColumn;
 
     public LinkURLEditor(SelectionInfo<PackageType, ChildrenType> selectionInfo) {
         super("ins 2,wrap 2", "[grow,fill][]", "[][grow,fill]");
@@ -48,13 +56,14 @@ public class LinkURLEditor<PackageType extends AbstractPackageNode<ChildrenType,
         JLabel lbl = getLbl(_GUI.T.LinkURLEditor(), new AbstractIcon(IconKey.ICON_URL, 18));
         add(SwingUtils.toBold(lbl), "spanx");
         final ExtTableModel<AbstractNode> model = new ExtTableModel<AbstractNode>("linkurleditor") {
+
             {
                 getTableData().addAll(si.getChildren());
             }
 
             @Override
             protected void initColumns() {
-                addColumn(new FileColumn() {
+                addColumn(fileColumn = new FileColumn() {
                     {
                         this.leftGapBorder = normalBorder;
                     }
@@ -83,7 +92,30 @@ public class LinkURLEditor<PackageType extends AbstractPackageNode<ChildrenType,
                         return false;
                     }
                 });
-                addColumn(new UrlColumn() {
+                addColumn(fileSizeColumn = new FileSizeColumn() {
+                    @Override
+                    public boolean isEnabled(AbstractNode obj) {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean isDefaultVisible() {
+                        return false;
+                    }
+                });
+                addColumn(hosterColumn = new HosterColumn() {
+                    @Override
+                    public boolean isEnabled(AbstractNode obj) {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean isDefaultVisible() {
+                        return false;
+                    }
+
+                });
+                addColumn(urlColumn = new UrlColumn() {
                     @Override
                     public int getDefaultWidth() {
                         return 350;
@@ -105,7 +137,8 @@ public class LinkURLEditor<PackageType extends AbstractPackageNode<ChildrenType,
                     }
 
                 });
-                addColumn(new FileSizeColumn() {
+
+                addColumn(availabilityColumn = new AvailabilityColumn() {
                     @Override
                     public boolean isEnabled(AbstractNode obj) {
                         return true;
@@ -116,18 +149,7 @@ public class LinkURLEditor<PackageType extends AbstractPackageNode<ChildrenType,
                         return false;
                     }
                 });
-                addColumn(new AvailabilityColumn() {
-                    @Override
-                    public boolean isEnabled(AbstractNode obj) {
-                        return true;
-                    }
-
-                    @Override
-                    public boolean isDefaultVisible() {
-                        return false;
-                    }
-                });
-                addColumn(new CommentColumn() {
+                addColumn(commentColumn = new CommentColumn() {
                     @Override
                     public boolean isEnabled(AbstractNode obj) {
                         return true;
@@ -149,8 +171,21 @@ public class LinkURLEditor<PackageType extends AbstractPackageNode<ChildrenType,
         BasicJDTable table = new BasicJDTable<AbstractNode>(model) {
 
             @Override
-            protected JPopupMenu onContextMenu(JPopupMenu popup, AbstractNode contextObject, java.util.List<AbstractNode> selection, ExtColumn<AbstractNode> column, MouseEvent mouseEvent) {
+            protected JPopupMenu onContextMenu(JPopupMenu popup, AbstractNode contextObject, java.util.List<AbstractNode> selection, final ExtColumn<AbstractNode> column, MouseEvent mouseEvent) {
 
+                if (column != urlColumn) {
+                    popup.add(new AppAction() {
+                        {
+                            setName(_GUI.T.CopyGenericContextAction_tt(column.getName()));
+                            setSmallIcon(new AbstractIcon(IconKey.ICON_COPY, 20));
+                        }
+
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            onShortcutCopy(model.getSelectedObjects(), null, column);
+                        }
+                    });
+                }
                 popup.add(new AppAction() {
                     {
                         setName(_GUI.T.LinkURLEditor_onContextMenu_copy_());
@@ -184,6 +219,34 @@ public class LinkURLEditor<PackageType extends AbstractPackageNode<ChildrenType,
                             sb.append(url);
                         }
                         ClipboardMonitoring.getINSTANCE().setCurrentContent(sb.toString());
+                        return null;
+                    }
+                });
+                return true;
+            }
+
+            protected boolean onShortcutCopy(final List<AbstractNode> selectedObjects, final KeyEvent evt, final ExtColumn<AbstractNode> column) {
+                TaskQueue.getQueue().add(new QueueAction<Void, RuntimeException>() {
+
+                    @Override
+                    protected Void run() throws RuntimeException {
+                        final CopyGenericContextAction copy = new CopyGenericContextAction();
+                        copy.setSmartSelection(false);
+                        if (column == urlColumn) {
+                            copy.setPatternLinks("{url}");
+                        } else if (column == fileColumn) {
+                            copy.setPatternLinks("{name}");
+                        } else if (column == fileSizeColumn) {
+                            copy.setPatternLinks("{filesize}");
+                        } else if (column == hosterColumn) {
+                            copy.setPatternLinks("{host}");
+                        } else if (column == commentColumn) {
+                            copy.setPatternLinks("{comment}");
+                        } else if (column == availabilityColumn) {
+                            copy.setPatternLinks("{availability}");
+                        }
+                        final String text = copy.fromSelectionInfo(new SelectionInfo<PackageType, ChildrenType>(null, selectedObjects));
+                        ClipboardMonitoring.getINSTANCE().setCurrentContent(text);
                         return null;
                     }
                 });

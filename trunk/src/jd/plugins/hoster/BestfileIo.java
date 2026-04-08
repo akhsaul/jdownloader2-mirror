@@ -36,7 +36,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51893 $", interfaceVersion = 3, names = {}, urls = {})
 public class BestfileIo extends PluginForHost {
     public BestfileIo(PluginWrapper wrapper) {
         super(wrapper);

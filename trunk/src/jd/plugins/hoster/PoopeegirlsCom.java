@@ -30,7 +30,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "poopeegirls.com" }, urls = { "https?://(?:www\\.)?poopeegirls\\.com/v\\-\\d+\\-[a-z0-9\\-]+\\.html" })
+@HostPlugin(revision = "$Revision: 48057 $", interfaceVersion = 3, names = { "poopeegirls.com" }, urls = { "https?://(?:www\\.)?poopeegirls\\.com/v\\-\\d+\\-[a-z0-9\\-]+\\.html" })
 public class PoopeegirlsCom extends PluginForHost {
     public PoopeegirlsCom(PluginWrapper wrapper) {
         super(wrapper);

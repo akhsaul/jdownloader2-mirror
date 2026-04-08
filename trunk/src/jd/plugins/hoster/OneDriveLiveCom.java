@@ -35,7 +35,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "onedrive.live.com" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51625 $", interfaceVersion = 3, names = { "onedrive.live.com" }, urls = { "" })
 public class OneDriveLiveCom extends PluginForHost {
     public OneDriveLiveCom(PluginWrapper wrapper) {
         super(wrapper);

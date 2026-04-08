@@ -23,7 +23,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.Plugin;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52107 $", interfaceVersion = 2, names = {}, urls = {})
 public class MangadexOrg extends antiDDoSForDecrypt {
     public MangadexOrg(PluginWrapper wrapper) {
         super(wrapper);

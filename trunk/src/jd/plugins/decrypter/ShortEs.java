@@ -27,7 +27,7 @@ import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "short.es" }, urls = { "https?://(?:www\\.)?short\\.es/[A-Za-z0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 48281 $", interfaceVersion = 3, names = { "short.es" }, urls = { "https?://(?:www\\.)?short\\.es/[A-Za-z0-9]+" })
 public class ShortEs extends MightyScriptAdLinkFly {
     public ShortEs(PluginWrapper wrapper) {
         super(wrapper);

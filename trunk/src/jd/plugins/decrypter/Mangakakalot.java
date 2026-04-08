@@ -38,7 +38,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52107 $", interfaceVersion = 2, names = {}, urls = {})
 public class Mangakakalot extends PluginForDecrypt {
     public Mangakakalot(PluginWrapper wrapper) {
         super(wrapper);

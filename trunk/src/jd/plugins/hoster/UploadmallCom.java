@@ -27,7 +27,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51403 $", interfaceVersion = 3, names = {}, urls = {})
 public class UploadmallCom extends XFileSharingProBasic {
     public UploadmallCom(final PluginWrapper wrapper) {
         super(wrapper);

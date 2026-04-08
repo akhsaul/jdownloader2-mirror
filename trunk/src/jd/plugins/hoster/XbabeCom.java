@@ -30,7 +30,7 @@ import jd.plugins.PluginException;
 import org.appwork.utils.Regex;
 import org.appwork.utils.StringUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50436 $", interfaceVersion = 3, names = {}, urls = {})
 public class XbabeCom extends KernelVideoSharingComV2 {
     public XbabeCom(final PluginWrapper wrapper) {
         super(wrapper);

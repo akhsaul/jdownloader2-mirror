@@ -27,7 +27,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "hitbdsm.com" }, urls = { "https?://(?:www\\.)?hitbdsm\\.com/([\\w\\-]+)/?" })
+@DecrypterPlugin(revision = "$Revision: 44455 $", interfaceVersion = 3, names = { "hitbdsm.com" }, urls = { "https?://(?:www\\.)?hitbdsm\\.com/([\\w\\-]+)/?" })
 public class HitbdsmCom extends PluginForDecrypt {
     public HitbdsmCom(PluginWrapper wrapper) {
         super(wrapper);

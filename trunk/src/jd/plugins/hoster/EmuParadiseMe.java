@@ -53,7 +53,7 @@ import org.appwork.utils.formatter.SizeFormatter;
 import org.jdownloader.gui.InputChangedCallbackInterface;
 import org.jdownloader.plugins.accounts.AccountBuilderInterface;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51817 $", interfaceVersion = 2, names = {}, urls = {})
 public class EmuParadiseMe extends PluginForHost {
     public EmuParadiseMe(PluginWrapper wrapper) {
         super(wrapper);

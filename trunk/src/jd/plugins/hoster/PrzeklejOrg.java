@@ -27,7 +27,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "easypaste.org" }, urls = { "https?" + "://(www\\.)?(?:przeklej\\.org|easypaste\\.org)/file/[A-Za-z0-9]+" })
+@HostPlugin(revision = "$Revision: 48078 $", interfaceVersion = 2, names = { "easypaste.org" }, urls = { "https?" + "://(www\\.)?(?:przeklej\\.org|easypaste\\.org)/file/[A-Za-z0-9]+" })
 public class PrzeklejOrg extends PluginForHost {
     public PrzeklejOrg(PluginWrapper wrapper) {
         super(wrapper);

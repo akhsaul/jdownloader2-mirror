@@ -37,7 +37,7 @@ import jd.plugins.Plugin;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49696 $", interfaceVersion = 3, names = {}, urls = {})
 public class ImageVenueCom extends PluginForHost {
     public ImageVenueCom(PluginWrapper wrapper) {
         super(wrapper);

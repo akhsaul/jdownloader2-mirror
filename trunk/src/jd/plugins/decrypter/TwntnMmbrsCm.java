@@ -37,7 +37,7 @@ import jd.plugins.components.PluginJSonUtils;
 import jd.plugins.components.TwentyOneMembersVariantInfo;
 import jd.plugins.hoster.TwentyOneMembersCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "21members.com" }, urls = { "https://members.21members.com/[a-z]{2}/video/.+\\d+$" })
+@DecrypterPlugin(revision = "$Revision: 47780 $", interfaceVersion = 2, names = { "21members.com" }, urls = { "https://members.21members.com/[a-z]{2}/video/.+\\d+$" })
 public class TwntnMmbrsCm extends PluginForDecrypt {
     public TwntnMmbrsCm(PluginWrapper wrapper) {
         super(wrapper);

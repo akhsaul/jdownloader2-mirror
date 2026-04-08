@@ -29,7 +29,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.hoster.UploaderJp;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "uploader.jp" }, urls = { "https?://u[a-z0-9]\\.getuploader\\.com/.+" })
+@DecrypterPlugin(revision = "$Revision: 47794 $", interfaceVersion = 3, names = { "uploader.jp" }, urls = { "https?://u[a-z0-9]\\.getuploader\\.com/.+" })
 public class UploaderJpFolder extends antiDDoSForDecrypt {
     public UploaderJpFolder(PluginWrapper wrapper) {
         super(wrapper);

@@ -49,7 +49,7 @@ import org.jdownloader.downloader.hls.HLSDownloader;
 import org.jdownloader.plugins.components.hls.HlsContainer;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "brightcove.com" }, urls = { "" })
+@DecrypterPlugin(revision = "$Revision: 52210 $", interfaceVersion = 2, names = { "brightcove.com" }, urls = { "" })
 public class BrightcoveDecrypter extends PluginForDecrypt {
     public BrightcoveDecrypter(PluginWrapper wrapper) {
         super(wrapper);

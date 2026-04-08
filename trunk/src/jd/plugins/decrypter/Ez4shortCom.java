@@ -37,7 +37,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50769 $", interfaceVersion = 3, names = {}, urls = {})
 public class Ez4shortCom extends PluginForDecrypt {
     public Ez4shortCom(PluginWrapper wrapper) {
         super(wrapper);

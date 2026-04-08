@@ -45,7 +45,7 @@ import jd.plugins.hoster.KhinsiderCom;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.formatter.SizeFormatter;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51820 $", interfaceVersion = 3, names = {}, urls = {})
 public class KhinsiderComCrawler extends PluginForDecrypt {
     public KhinsiderComCrawler(PluginWrapper wrapper) {
         super(wrapper);

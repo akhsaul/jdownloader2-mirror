@@ -105,9 +105,11 @@ import org.jdownloader.gui.notify.gui.AbstractNotifyWindow;
 import org.jdownloader.images.AbstractIcon;
 import org.jdownloader.logging.LogController;
 import org.jdownloader.plugins.UserIOProgress;
+import org.jdownloader.plugins.components.captchasolver.abstractPluginForCaptchaSolver;
 import org.jdownloader.plugins.config.AccountConfigInterface;
 import org.jdownloader.plugins.config.PluginConfigInterface;
 import org.jdownloader.plugins.config.PluginHost;
+import org.jdownloader.plugins.config.PluginJsonConfig;
 import org.jdownloader.plugins.controller.LazyPlugin;
 import org.jdownloader.plugins.controller.PluginClassLoader;
 import org.jdownloader.plugins.controller.PluginClassLoader.PluginClassLoaderChild;
@@ -154,6 +156,20 @@ public abstract class Plugin implements ActionListener {
         }
         pattern.append(")");
         return pattern.toString();
+    }
+
+    public final LazyPlugin<?> getLazy() {
+        if (this instanceof PluginForHost) {
+            return ((PluginForHost) this).getLazyP();
+        } else if (this instanceof PluginForDecrypt) {
+            return ((PluginForDecrypt) this).getLazyC();
+        } else {
+            return null;
+        }
+    }
+
+    public <T extends PluginConfigInterface> T get(Class<T> configInterface) {
+        return PluginJsonConfig.get(getLazy(), configInterface);
     }
 
     public Browser createNewBrowserInstance() {
@@ -911,6 +927,21 @@ public abstract class Plugin implements ActionListener {
                 return PluginEnvironment.UNKNOWN;
             }
         }
+
+        public Plugin getCurrentPlugin() {
+            final Thread thread = Thread.currentThread();
+            if (thread instanceof SingleDownloadController) {
+                return ((SingleDownloadController) thread).getProcessingPlugin();
+            } else if (thread instanceof LinkCrawlerThread) {
+                return ((LinkCrawlerThread) thread).getCurrentPlugin();
+            } else if (thread instanceof LinkCheckerThread) {
+                return ((LinkCheckerThread) thread).getPlugin();
+            } else if (thread instanceof AccountCheckerThread) {
+                return ((AccountCheckerThread) thread).getPlugin();
+            } else {
+                return null;
+            }
+        }
     }
 
     protected final PluginEnvironment getPluginEnvironment() {
@@ -1178,7 +1209,9 @@ public abstract class Plugin implements ActionListener {
             final PluginHost anno = cls.getAnnotation(PluginHost.class);
             if (anno != null && DebugMode.TRUE_IN_IDE_ELSE_FALSE) {
                 final org.jdownloader.plugins.config.Type pluginType;
-                if (Plugin.this instanceof PluginForDecrypt) {
+                if (Plugin.this instanceof abstractPluginForCaptchaSolver) {
+                    pluginType = org.jdownloader.plugins.config.Type.CAPTCHA;
+                } else if (Plugin.this instanceof PluginForDecrypt) {
                     pluginType = org.jdownloader.plugins.config.Type.CRAWLER;
                 } else if (Plugin.this instanceof PluginForHost) {
                     pluginType = org.jdownloader.plugins.config.Type.HOSTER;

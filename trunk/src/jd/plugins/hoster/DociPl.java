@@ -45,7 +45,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "doci.pl" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 49212 $", interfaceVersion = 3, names = { "doci.pl" }, urls = { "" })
 public class DociPl extends PluginForHost {
     public DociPl(PluginWrapper wrapper) {
         super(wrapper);

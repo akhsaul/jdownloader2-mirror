@@ -36,7 +36,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 import jd.plugins.hoster.XChinaCo;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48554 $", interfaceVersion = 3, names = {}, urls = {})
 public class XChinaCoCrawler extends PluginForDecrypt {
     public XChinaCoCrawler(PluginWrapper wrapper) {
         super(wrapper);

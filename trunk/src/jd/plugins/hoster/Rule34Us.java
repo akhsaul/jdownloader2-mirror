@@ -35,7 +35,7 @@ import jd.plugins.components.SiteType.SiteTemplate;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = {}, urls = {})
 public class Rule34Us extends PluginForHost {
     public Rule34Us(PluginWrapper wrapper) {
         super(wrapper);

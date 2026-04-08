@@ -37,7 +37,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
 /** 2020-06-08: Current main domain is: isrbx.net */
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "isrbx.me" }, urls = { "https?://[\\w\\.]*(?:isra?bo?x(?:-music)?\\.(?:[a-zA-Z]+)|isbox\\.net|isrbx\\.me)/[0-9]+-.*?\\.html|https?://(?:www\\.)?(?:biq\\.to|(?:isra?bo?x(?:-music)?\\.(?:[a-zA-Z]+)|isbox\\.net|isrbx\\.me))/go/[a-f0-9]{100,}" })
+@DecrypterPlugin(revision = "$Revision: 49049 $", interfaceVersion = 2, names = { "isrbx.me" }, urls = { "https?://[\\w\\.]*(?:isra?bo?x(?:-music)?\\.(?:[a-zA-Z]+)|isbox\\.net|isrbx\\.me)/[0-9]+-.*?\\.html|https?://(?:www\\.)?(?:biq\\.to|(?:isra?bo?x(?:-music)?\\.(?:[a-zA-Z]+)|isbox\\.net|isrbx\\.me))/go/[a-f0-9]{100,}" })
 public class SrBox extends antiDDoSForDecrypt {
     public SrBox(PluginWrapper wrapper) {
         super(wrapper);

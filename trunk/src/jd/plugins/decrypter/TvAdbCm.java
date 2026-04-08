@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "tv.adobe.com" }, urls = { "https?://(www\\.|video\\.)?tv\\.adobe\\.com/((?:watch|embed)/[a-z0-9\\-]+/[a-z0-9\\-]+/?|v/[a-z0-9\\-]+)" })
+@DecrypterPlugin(revision = "$Revision: 46274 $", interfaceVersion = 2, names = { "tv.adobe.com" }, urls = { "https?://(www\\.|video\\.)?tv\\.adobe\\.com/((?:watch|embed)/[a-z0-9\\-]+/[a-z0-9\\-]+/?|v/[a-z0-9\\-]+)" })
 public class TvAdbCm extends PluginForDecrypt {
     // dev notes
     // final links seem to not have any session info bound, nor restricted to IP and are hotlinkable, hoster plugin not required.

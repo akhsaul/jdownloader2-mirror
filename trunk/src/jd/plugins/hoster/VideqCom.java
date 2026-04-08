@@ -35,7 +35,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51308 $", interfaceVersion = 3, names = {}, urls = {})
 public class VideqCom extends PluginForHost {
     public VideqCom(PluginWrapper wrapper) {
         super(wrapper);

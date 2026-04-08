@@ -36,7 +36,7 @@ import jd.plugins.PluginForDecrypt;
 import org.appwork.storage.TypeRef;
 import org.appwork.utils.StringUtils;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51215 $", interfaceVersion = 3, names = {}, urls = {})
 public class SubsourceNetCrawler extends PluginForDecrypt {
     public SubsourceNetCrawler(PluginWrapper wrapper) {
         super(wrapper);

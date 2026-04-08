@@ -37,7 +37,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "yadi.sk" }, urls = { "https://yadi\\.sk/a/[A-Za-z0-9\\-_]+/([a-f0-9]{24})" })
+@HostPlugin(revision = "$Revision: 49595 $", interfaceVersion = 3, names = { "yadi.sk" }, urls = { "https://yadi\\.sk/a/[A-Za-z0-9\\-_]+/([a-f0-9]{24})" })
 public class YandexAlbum extends PluginForHost {
     public YandexAlbum(PluginWrapper wrapper) {
         super(wrapper);

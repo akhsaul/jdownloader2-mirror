@@ -33,7 +33,7 @@ import jd.plugins.PluginForHost;
 import jd.utils.locale.JDL;
 
 //Links come from a decrypter plugin
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "moddb.com" }, urls = { "https?://(www\\.)?moddbdecrypted\\.com/(games|mods|engines|groups)/.*?/(addons|downloads)/[0-9a-z-]+" })
+@HostPlugin(revision = "$Revision: 51145 $", interfaceVersion = 2, names = { "moddb.com" }, urls = { "https?://(www\\.)?moddbdecrypted\\.com/(games|mods|engines|groups)/.*?/(addons|downloads)/[0-9a-z-]+" })
 public class ModDbCom extends PluginForHost {
     public void correctDownloadLink(DownloadLink link) {
         link.setUrlDownload(link.getDownloadURL().replace("moddbdecrypted.com/", "moddb.com/"));

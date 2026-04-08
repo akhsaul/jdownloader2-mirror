@@ -27,7 +27,7 @@ import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 import jd.plugins.hoster.CrazypornXxx;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50069 $", interfaceVersion = 2, names = {}, urls = {})
 public class CrazypornXxxCrawler extends PornEmbedParser {
     public CrazypornXxxCrawler(PluginWrapper wrapper) {
         super(wrapper);

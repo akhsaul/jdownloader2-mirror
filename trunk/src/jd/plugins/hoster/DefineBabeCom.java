@@ -46,7 +46,7 @@ import org.appwork.utils.formatter.HexFormatter;
 import org.jdownloader.plugins.controller.LazyPlugin;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49498 $", interfaceVersion = 2, names = {}, urls = {})
 public class DefineBabeCom extends PluginForHost {
     public DefineBabeCom(PluginWrapper wrapper) {
         super(wrapper);

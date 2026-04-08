@@ -19,7 +19,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.components.SiteType.SiteTemplate;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "pornroleplay.org" }, urls = { "https?://(\\w+\\.)?pornroleplay.org/\\d+-[a-zA-Z0-9\\-_]+\\.html" })
+@DecrypterPlugin(revision = "$Revision: 45822 $", interfaceVersion = 3, names = { "pornroleplay.org" }, urls = { "https?://(\\w+\\.)?pornroleplay.org/\\d+-[a-zA-Z0-9\\-_]+\\.html" })
 public class PornRoleplayOrg extends antiDDoSForDecrypt {
     // finallink will usually be an hotlink.cc URL
     public PornRoleplayOrg(PluginWrapper wrapper) {

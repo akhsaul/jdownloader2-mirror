@@ -50,7 +50,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.MultiHosterManagement;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "linkgen.vip" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51679 $", interfaceVersion = 3, names = { "linkgen.vip" }, urls = { "" })
 public class LinkgenVip extends PluginForHost {
     /* Connection limits */
     private static MultiHosterManagement mhm = new MultiHosterManagement("linkgen.vip");

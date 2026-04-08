@@ -6,7 +6,7 @@ import java.util.List;
 import jd.PluginWrapper;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51007 $", interfaceVersion = 3, names = {}, urls = {})
 public class CamVideosOrg extends KernelVideoSharingComV2 {
     public CamVideosOrg(final PluginWrapper wrapper) {
         super(wrapper);

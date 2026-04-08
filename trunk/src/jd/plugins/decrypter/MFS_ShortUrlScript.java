@@ -39,7 +39,7 @@ import jd.plugins.components.SiteType.SiteTemplate;
  *
  * @author raztoki
  */
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "gourl.us" }, urls = { "https?://(?:www\\.)?gourl\\.us/([a-zA-Z0-9_\\-]+)$" })
+@DecrypterPlugin(revision = "$Revision: 50040 $", interfaceVersion = 3, names = { "gourl.us" }, urls = { "https?://(?:www\\.)?gourl\\.us/([a-zA-Z0-9_\\-]+)$" })
 public class MFS_ShortUrlScript extends PluginForDecrypt {
     public MFS_ShortUrlScript(PluginWrapper wrapper) {
         super(wrapper);

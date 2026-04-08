@@ -30,7 +30,7 @@ import org.appwork.utils.Regex;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "al4a.com" }, urls = { "https?://(?:www\\.)?al4a\\.com/(?:video/[a-z0-9\\-]+-\\d+\\.html|embed/\\d+)" })
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = { "al4a.com" }, urls = { "https?://(?:www\\.)?al4a\\.com/(?:video/[a-z0-9\\-]+-\\d+\\.html|embed/\\d+)" })
 public class Al4aCom extends PluginForHost {
     public Al4aCom(PluginWrapper wrapper) {
         super(wrapper);

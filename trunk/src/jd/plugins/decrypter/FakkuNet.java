@@ -40,7 +40,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "fakku.net" }, urls = { "https?://(?:www\\.)?fakku\\.net/[a-z0-9\\-_]+/[a-z0-9\\-_]+/read" })
+@DecrypterPlugin(revision = "$Revision: 48305 $", interfaceVersion = 3, names = { "fakku.net" }, urls = { "https?://(?:www\\.)?fakku\\.net/[a-z0-9\\-_]+/[a-z0-9\\-_]+/read" })
 public class FakkuNet extends antiDDoSForDecrypt {
     public FakkuNet(PluginWrapper wrapper) {
         super(wrapper);

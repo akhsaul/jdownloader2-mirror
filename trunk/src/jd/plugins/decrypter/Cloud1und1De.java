@@ -25,7 +25,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "cloud.1und1.de" }, urls = { "https?://cloud\\.1und1\\.de/ngcloud/external\\?.+" })
+@DecrypterPlugin(revision = "$Revision: 49534 $", interfaceVersion = 3, names = { "cloud.1und1.de" }, urls = { "https?://cloud\\.1und1\\.de/ngcloud/external\\?.+" })
 public class Cloud1und1De extends PluginForDecrypt {
     public Cloud1und1De(final PluginWrapper wrapper) {
         super(wrapper);

@@ -21,7 +21,7 @@ import java.util.List;
 import jd.PluginWrapper;
 import jd.plugins.DecrypterPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51560 $", interfaceVersion = 3, names = {}, urls = {})
 public class ShortpayOrg extends MightyScriptAdLinkFly {
     public ShortpayOrg(PluginWrapper wrapper) {
         super(wrapper);

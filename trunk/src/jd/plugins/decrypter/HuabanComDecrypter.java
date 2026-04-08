@@ -36,7 +36,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "huaban.com" }, urls = { "https?://(?:www\\.)?huaban\\.com/boards/\\d+" })
+@DecrypterPlugin(revision = "$Revision: 48990 $", interfaceVersion = 3, names = { "huaban.com" }, urls = { "https?://(?:www\\.)?huaban\\.com/boards/\\d+" })
 public class HuabanComDecrypter extends PluginForDecrypt {
     public HuabanComDecrypter(PluginWrapper wrapper) {
         super(wrapper);

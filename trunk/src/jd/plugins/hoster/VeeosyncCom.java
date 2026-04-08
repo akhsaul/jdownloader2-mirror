@@ -26,7 +26,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 47638 $", interfaceVersion = 2, names = {}, urls = {})
 public class VeeosyncCom extends YetiShareCore {
     public VeeosyncCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -23,7 +23,7 @@ import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "bestcash2020.com" }, urls = { "https?://(?:www\\.)?bestcash2020\\.com/([A-Za-z0-9]+)" })
+@DecrypterPlugin(revision = "$Revision: 48281 $", interfaceVersion = 3, names = { "bestcash2020.com" }, urls = { "https?://(?:www\\.)?bestcash2020\\.com/([A-Za-z0-9]+)" })
 public class Bestcash2020Com extends MightyScriptAdLinkFly {
     public Bestcash2020Com(PluginWrapper wrapper) {
         super(wrapper);

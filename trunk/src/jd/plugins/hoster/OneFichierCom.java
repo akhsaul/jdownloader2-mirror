@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import javax.swing.JComboBox;
@@ -35,6 +36,36 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
+
+import org.appwork.net.protocol.http.HTTPConstants;
+import org.appwork.storage.JSonStorage;
+import org.appwork.storage.TypeRef;
+import org.appwork.swing.MigPanel;
+import org.appwork.swing.components.ExtPasswordField;
+import org.appwork.swing.components.ExtTextField;
+import org.appwork.swing.components.ExtTextHighlighter;
+import org.appwork.uio.ConfirmDialogInterface;
+import org.appwork.uio.UIOManager;
+import org.appwork.utils.DebugMode;
+import org.appwork.utils.Exceptions;
+import org.appwork.utils.StringUtils;
+import org.appwork.utils.formatter.TimeFormatter;
+import org.appwork.utils.net.httpconnection.HTTPConnectionUtils;
+import org.appwork.utils.parser.UrlQuery;
+import org.appwork.utils.swing.dialog.ConfirmDialog;
+import org.appwork.utils.swing.dialog.Dialog;
+import org.jdownloader.gui.InputChangedCallbackInterface;
+import org.jdownloader.gui.translate._GUI;
+import org.jdownloader.plugins.accounts.AccountBuilderInterface;
+import org.jdownloader.plugins.components.config.OneFichierConfigInterface;
+import org.jdownloader.plugins.components.config.OneFichierConfigInterface.FreeDownloadNoFreeSlotsMode;
+import org.jdownloader.plugins.components.config.OneFichierConfigInterface.FreeDownloadWaitBetweenDownloadsLimitMode;
+import org.jdownloader.plugins.components.config.OneFichierConfigInterface.LinkcheckMode;
+import org.jdownloader.plugins.components.config.OneFichierConfigInterface.SSLMode;
+import org.jdownloader.plugins.config.PluginJsonConfig;
+import org.jdownloader.scripting.JavaScriptEngineFactory;
+import org.jdownloader.settings.GraphicalUserInterfaceSettings.SIZEUNIT;
+import org.jdownloader.settings.staticreferences.CFG_GUI;
 
 import jd.PluginWrapper;
 import jd.controlling.AccountController;
@@ -69,35 +100,7 @@ import jd.plugins.download.HashInfo;
 import jd.plugins.download.HashInfo.TYPE;
 import net.miginfocom.swing.MigLayout;
 
-import org.appwork.net.protocol.http.HTTPConstants;
-import org.appwork.storage.JSonStorage;
-import org.appwork.storage.TypeRef;
-import org.appwork.swing.MigPanel;
-import org.appwork.swing.components.ExtPasswordField;
-import org.appwork.swing.components.ExtTextField;
-import org.appwork.swing.components.ExtTextHighlighter;
-import org.appwork.uio.ConfirmDialogInterface;
-import org.appwork.uio.UIOManager;
-import org.appwork.utils.DebugMode;
-import org.appwork.utils.Exceptions;
-import org.appwork.utils.StringUtils;
-import org.appwork.utils.formatter.TimeFormatter;
-import org.appwork.utils.net.httpconnection.HTTPConnectionUtils;
-import org.appwork.utils.parser.UrlQuery;
-import org.appwork.utils.swing.dialog.ConfirmDialog;
-import org.appwork.utils.swing.dialog.Dialog;
-import org.jdownloader.gui.InputChangedCallbackInterface;
-import org.jdownloader.gui.translate._GUI;
-import org.jdownloader.plugins.accounts.AccountBuilderInterface;
-import org.jdownloader.plugins.components.config.OneFichierConfigInterface;
-import org.jdownloader.plugins.components.config.OneFichierConfigInterface.LinkcheckMode;
-import org.jdownloader.plugins.components.config.OneFichierConfigInterface.SSLMode;
-import org.jdownloader.plugins.config.PluginJsonConfig;
-import org.jdownloader.scripting.JavaScriptEngineFactory;
-import org.jdownloader.settings.GraphicalUserInterfaceSettings.SIZEUNIT;
-import org.jdownloader.settings.staticreferences.CFG_GUI;
-
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52598 $", interfaceVersion = 3, names = {}, urls = {})
 public class OneFichierCom extends PluginForHost {
     /* Account properties */
     private final String        PROPERTY_ACCOUNT_USE_CDN_CREDITS                                  = "use_cdn_credits";
@@ -129,7 +132,7 @@ public class OneFichierCom extends PluginForHost {
     public static List<String[]> getPluginDomains() {
         final List<String[]> ret = new ArrayList<String[]>();
         // each entry in List<String[]> will result in one PluginForHost, Plugin.getHost() will return String[0]->main domain
-        ret.add(new String[] { "1fichier.com", "alterupload.com", "cjoint.net", "desfichiers.net", "dfichiers.com", "megadl.fr", "mesfichiers.org", "piecejointe.net", "pjointe.com", "tenvoi.com", "dl4free.com" });
+        ret.add(new String[] { "1fichier.com", "alterupload.com", "cjoint.net", "desfichiers.net", "desfichiers.com", "dfichiers.com", "megadl.fr", "mesfichiers.org", "piecejointe.net", "pjointe.com", "tenvoi.com", "dl4free.com" });
         return ret;
     }
 
@@ -201,7 +204,6 @@ public class OneFichierCom extends PluginForHost {
         }
         setPremiumAPIHeaders(br, apiKey);
     }
-
     /* 2024-04-26: Removed this as user can switch between API-key and website login. E-Mail is not given in API-Key login */
     // @Override
     // public LazyPlugin.FEATURE[] getFeatures() {
@@ -231,7 +233,7 @@ public class OneFichierCom extends PluginForHost {
              * Max total connections for premium = 30 (RE: admin, updated 07.03.2019) --> See also their FAQ:
              * https://1fichier.com/hlp.html#dllent
              */
-            int maxChunks = PluginJsonConfig.get(OneFichierConfigInterface.class).getMaxPremiumChunks();
+            int maxChunks = PluginJsonConfig.get(this.getConfigInterface()).getMaxPremiumChunks();
             if (maxChunks == 1) {
                 maxChunks = 1;
             } else if (maxChunks < 1 || maxChunks >= 20) {
@@ -248,7 +250,7 @@ public class OneFichierCom extends PluginForHost {
     }
 
     private String getURLWithPreferredProtocol(String url) {
-        final OneFichierConfigInterface cfg = PluginJsonConfig.get(OneFichierConfigInterface.class);
+        final OneFichierConfigInterface cfg = PluginJsonConfig.get(this.getConfigInterface());
         final SSLMode sslmode = cfg.getSSLMode();
         if (sslmode == SSLMode.AUTO) {
             /* Do not modify URL */
@@ -370,8 +372,9 @@ public class OneFichierCom extends PluginForHost {
                 // remove last "&"
                 sb.deleteCharAt(sb.length() - 1);
                 /**
-                 * This method is server side deprecated but we're still using it because: </br> 1. It is still working. </br> 2. It is the
-                 * only method that can be used to check multiple items with one request.
+                 * This method is server side deprecated but we're still using it because: </br>
+                 * 1. It is still working. </br>
+                 * 2. It is the only method that can be used to check multiple items with one request.
                  */
                 br.postPageRaw("https://" + this.getHost() + "/check_links.pl", sb.toString());
                 for (final DownloadLink link : links) {
@@ -629,7 +632,7 @@ public class OneFichierCom extends PluginForHost {
         /* Remove form fields we don't want. */
         form.remove("save");
         form.put("did", "1");
-        if (PluginJsonConfig.get(OneFichierConfigInterface.class).getSSLMode() == SSLMode.FORCE_HTTP) {
+        if (PluginJsonConfig.get(this.getConfigInterface()).getSSLMode() == SSLMode.FORCE_HTTP) {
             form.put("dl_no_ssl", "on");
         }
         dl = new jd.plugins.BrowserAdapter().openDownload(br, link, form, this.isResumeable(link, account), this.getMaxChunks(link, account));
@@ -674,6 +677,7 @@ public class OneFichierCom extends PluginForHost {
     }
 
     private void errorHandlingWebsite(final DownloadLink link, final Account account, final Browser br) throws Exception {
+        final OneFichierConfigInterface cfg = PluginJsonConfig.get(this.getConfigInterface());
         final int responsecode = br.getHttpConnection().getResponseCode();
         if (br.containsHTML(">\\s*File not found")) {
             throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
@@ -727,6 +731,42 @@ public class OneFichierCom extends PluginForHost {
             errorVPNUsed(account);
             /* This code should never be reached */
             throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
+        } else if (br.containsHTML(">?\\s*The free offer is intended to") && (br.containsHTML(">?\\s*You already downloaded for free more than") || (br.containsHTML(">\\s*It is not designed for intensive or continuous use") || br.containsHTML(">\\s*These limitations are necessary to")))) {
+            final String msg = "Unusual usage detected - downloading blocked";
+            final long waitMillis = TimeUnit.HOURS.toMillis(1);
+            if (account != null) {
+                if (AccountType.FREE != account.getType()) {
+                    logger.warning("This error should only happen for free accounts");
+                }
+                throw new AccountUnavailableException(msg, waitMillis);
+            } else {
+                throw new PluginException(LinkStatus.ERROR_IP_BLOCKED, msg, waitMillis);
+            }
+        } else if (br.containsHTML(">\\s*Free download is temporarily limited due to high demand")) {
+            // Free download is temporarily limited due to high demand<br/>
+            // You can wait for a slot to become available,<br/>
+            // or <a href="/register.pl">👉<strong>Sign in for free to access more slots immediately</strong></a><br/>
+            // You will also be able to save this file to your account and download it later.
+            final long waitMillis = cfg.getNoFreeSlotsWaitMinutes() * 60 * 1000;
+            if (account != null) {
+                if (AccountType.FREE != account.getType()) {
+                    logger.warning("This error should only happen for free accounts");
+                }
+                throw new AccountUnavailableException("Free account download is temporarily limited. Buy premium or try again later.", waitMillis);
+            } else {
+                final String msg = "Free download is temporarily limited. Buy premium, try a free account or try again later.";
+                final FreeDownloadNoFreeSlotsMode mode = cfg.getNoFreeSlotsMode();
+                if (mode == FreeDownloadNoFreeSlotsMode.PER_FILE) {
+                    throw new PluginException(LinkStatus.ERROR_TEMPORARILY_UNAVAILABLE, msg, waitMillis);
+                } else if (mode == FreeDownloadNoFreeSlotsMode.GLOBAL_RECONNECT) {
+                    throw new PluginException(LinkStatus.ERROR_IP_BLOCKED, msg, waitMillis);
+                } else {
+                    /*
+                     * AUTO and NoFreeSlotsMode.GLOBAL_WAIT * /
+                     */
+                    throw new PluginException(LinkStatus.ERROR_HOSTER_TEMPORARILY_UNAVAILABLE, msg, waitMillis);
+                }
+            }
         }
         /* Check for blocked IP */
         String waittimeMinutesStr = br.getRegex("you must wait (at least|up to)\\s*(\\d+)\\s*minutes between each downloads").getMatch(1);
@@ -740,49 +780,45 @@ public class OneFichierCom extends PluginForHost {
             waittimeMinutesStr = "60";
         }
         final int defaultWaitMinutes = 5;
-        boolean isBlocked = waittimeMinutesStr != null;
-        isBlocked |= br.containsHTML("/>\\s*Téléchargements en cours");
-        isBlocked |= br.containsHTML("En téléchargement standard, vous ne pouvez télécharger qu\\'un seul fichier");
-        isBlocked |= br.containsHTML(">\\s*veuillez patienter avant de télécharger un autre fichier");
-        isBlocked |= br.containsHTML(">\\s*You already downloading (some|a) file");
-        isBlocked |= br.containsHTML(">\\s*You can download only one file at a time");
-        isBlocked |= br.containsHTML(">\\s*Please wait a few seconds before downloading new ones");
-        isBlocked |= br.containsHTML(">\\s*You must wait for another download");
-        isBlocked |= br.containsHTML("Without premium status, you can download only one file at a time");
-        isBlocked |= br.containsHTML("Without Premium, you can only download one file at a time");
-        isBlocked |= br.containsHTML("Without Premium, you must wait between downloads");
-        isBlocked |= br.containsHTML("Warning ! Without subscription, you can only download one file at|<span style=\"color:red\">Warning\\s*!\\s*</span>\\s*<br/>Without subscription, you can only download one file at a time\\.\\.\\.");
-        isBlocked |= br.containsHTML(">\\s*Votre adresse IP ouvre trop de connexions vers le serveur");
-        if (isBlocked) {
+        boolean is_ip_blocked = waittimeMinutesStr != null;
+        is_ip_blocked |= br.containsHTML("/>\\s*Téléchargements en cours");
+        is_ip_blocked |= br.containsHTML("En téléchargement standard, vous ne pouvez télécharger qu\\'un seul fichier");
+        is_ip_blocked |= br.containsHTML(">\\s*veuillez patienter avant de télécharger un autre fichier");
+        is_ip_blocked |= br.containsHTML(">\\s*You already downloading (some|a) file");
+        is_ip_blocked |= br.containsHTML(">\\s*You can download only one file at a time");
+        is_ip_blocked |= br.containsHTML(">\\s*Please wait a few seconds before downloading new ones");
+        is_ip_blocked |= br.containsHTML(">\\s*You must wait for another download");
+        is_ip_blocked |= br.containsHTML("Without premium status, you can download only one file at a time");
+        is_ip_blocked |= br.containsHTML("Without Premium, you can only download one file at a time");
+        is_ip_blocked |= br.containsHTML("Without Premium, you must wait between downloads");
+        is_ip_blocked |= br.containsHTML("Warning ! Without subscription, you can only download one file at|<span style=\"color:red\">Warning\\s*!\\s*</span>\\s*<br/>Without subscription, you can only download one file at a time\\.\\.\\.");
+        is_ip_blocked |= br.containsHTML(">\\s*Votre adresse IP ouvre trop de connexions vers le serveur");
+        if (is_ip_blocked) {
+            final String msg = "Your must wait between downloads";
+            long waitMillis = defaultWaitMinutes * 60 * 1000l;
+            if (waittimeMinutesStr != null) {
+                waitMillis = Long.parseLong(waittimeMinutesStr) * 60 * 1000l;
+            }
             if (account != null) {
-                final long waitMilliseconds;
-                if (waittimeMinutesStr != null) {
-                    waitMilliseconds = Integer.parseInt(waittimeMinutesStr) * 60 * 1001l;
-                } else {
-                    waitMilliseconds = defaultWaitMinutes * 60 * 1000l;
-                }
-                throw new AccountUnavailableException("Wait between downloads", waitMilliseconds);
+                throw new AccountUnavailableException(msg, waitMillis);
             } else {
-                final boolean preferReconnect = PluginJsonConfig.get(OneFichierConfigInterface.class).isPreferReconnectEnabled();
-                long waitMillis = defaultWaitMinutes * 60 * 1000l;
-                if (waittimeMinutesStr != null) {
-                    waitMillis = Long.parseLong(waittimeMinutesStr) * 60 * 1000l;
-                }
-                if (preferReconnect) {
-                    throw new PluginException(LinkStatus.ERROR_IP_BLOCKED, waitMillis);
+                final FreeDownloadWaitBetweenDownloadsLimitMode mode = cfg.getFreeDownloadWaitBetweenDownloadsLimitMode();
+                if (mode == FreeDownloadWaitBetweenDownloadsLimitMode.GLOBAL_RECONNECT) {
+                    throw new PluginException(LinkStatus.ERROR_IP_BLOCKED, msg, waitMillis);
                 } else if (waitMillis >= 10 * 60 * 1000) {
-                    /* High waittime --> Reconnect */
-                    throw new PluginException(LinkStatus.ERROR_IP_BLOCKED, waitMillis);
+                    /* High wait time --> Reconnect required */
+                    throw new PluginException(LinkStatus.ERROR_IP_BLOCKED, msg, waitMillis);
                 } else {
-                    throw new PluginException(LinkStatus.ERROR_HOSTER_TEMPORARILY_UNAVAILABLE, "Wait between downloads. Reconnect is disabled in plugin settings!", waitMillis);
+                    /* FreeDownloadWaitBetweenDownloadsLimitMode.AUTO or FreeDownloadWaitBetweenDownloadsLimitMode.GLOBAL_WAIT */
+                    throw new PluginException(LinkStatus.ERROR_HOSTER_TEMPORARILY_UNAVAILABLE, msg, waitMillis);
                 }
             }
         }
     }
 
     /**
-     * Access restricted by IP / only registered users / only premium users / only owner. </br> See here for all possible reasons (login
-     * required): https://1fichier.com/console/acl.pl
+     * Access restricted by IP / only registered users / only premium users / only owner. </br>
+     * See here for all possible reasons (login required): https://1fichier.com/console/acl.pl
      *
      * @throws PluginException
      */
@@ -1442,8 +1478,8 @@ public class OneFichierCom extends PluginForHost {
 
     private String getDllinkPremiumAPI(final DownloadLink link, final Account account) throws Exception {
         /**
-         * 2019-04-05: At the moment there are no benefits for us when using this. </br> 2021-01-29: Removed this because if login/API is
-         * blocked because of "flood control" this won't work either!
+         * 2019-04-05: At the moment there are no benefits for us when using this. </br>
+         * 2021-01-29: Removed this because if login/API is blocked because of "flood control" this won't work either!
          */
         boolean checkFileInfoBeforeDownloadAttempt = false;
         if (checkFileInfoBeforeDownloadAttempt) {
@@ -1835,8 +1871,8 @@ public class OneFichierCom extends PluginForHost {
         private static Map<String, String> getEnglishTranslations() {
             Map<String, String> translations = new HashMap<String, String>();
             translations.put(ACCOUNT_TYPE, "Account Type:");
-            translations.put(PREMIUM_API, "Premium Account | API Login");
-            translations.put(PREMIUM_GOLD_API, "Premium GOLD Account | API Login");
+            translations.put(PREMIUM_API, "Premium Account | API Login [Recommended]");
+            translations.put(PREMIUM_GOLD_API, "Premium GOLD Account | API Login [Recommended]");
             translations.put(PREMIUM_WEB, "Premium Account | Website Login");
             translations.put(PREMIUM_GOLD_WEB, "Premium GOLD Account | Website Login");
             translations.put(FREE_CDN, "Free Account with paid CDN credits");
@@ -1851,10 +1887,10 @@ public class OneFichierCom extends PluginForHost {
         private static Map<String, String> getGermanTranslations() {
             Map<String, String> translations = new HashMap<String, String>();
             translations.put(ACCOUNT_TYPE, "Kontotyp:");
-            translations.put(PREMIUM_API, "Premium-Konto | API-Anmeldung");
-            translations.put(PREMIUM_GOLD_API, "Premium GOLD-Konto | API-Anmeldung");
-            translations.put(PREMIUM_WEB, "Premium-Konto | Website-Anmeldung");
-            translations.put(PREMIUM_GOLD_WEB, "Premium GOLD-Konto | Website-Anmeldung");
+            translations.put(PREMIUM_API, "Premium-Konto | Login über API [Empfohlen]");
+            translations.put(PREMIUM_GOLD_API, "Premium GOLD-Konto | Login über API [Empfohlen]");
+            translations.put(PREMIUM_WEB, "Premium-Konto | Login über Webseite");
+            translations.put(PREMIUM_GOLD_WEB, "Premium GOLD-Konto | Login über Webseite");
             translations.put(FREE_CDN, "Kostenloses Konto mit bezahlten CDN-Credits");
             translations.put(FREE, "Kostenloses Konto");
             translations.put(PREMIUM_USERS, "Premium-Kontonutzer:");
@@ -1867,8 +1903,8 @@ public class OneFichierCom extends PluginForHost {
         private static Map<String, String> getSpanishTranslations() {
             Map<String, String> translations = new HashMap<String, String>();
             translations.put(ACCOUNT_TYPE, "Tipo de cuenta:");
-            translations.put(PREMIUM_API, "Cuenta Premium | Inicio de sesión API");
-            translations.put(PREMIUM_GOLD_API, "Cuenta Premium GOLD | Inicio de sesión API");
+            translations.put(PREMIUM_API, "Cuenta Premium | Inicio de sesión API [Recomendado]");
+            translations.put(PREMIUM_GOLD_API, "Cuenta Premium GOLD | Inicio de sesión API [Recomendado]");
             translations.put(PREMIUM_WEB, "Cuenta Premium | Inicio de sesión web");
             translations.put(PREMIUM_GOLD_WEB, "Cuenta Premium GOLD | Inicio de sesión web");
             translations.put(FREE_CDN, "Cuenta gratuita con créditos CDN pagados");
@@ -1883,8 +1919,8 @@ public class OneFichierCom extends PluginForHost {
         private static Map<String, String> getFrenchTranslations() {
             Map<String, String> translations = new HashMap<String, String>();
             translations.put(ACCOUNT_TYPE, "Type de compte :");
-            translations.put(PREMIUM_API, "Compte Premium | Connexion API");
-            translations.put(PREMIUM_GOLD_API, "Compte Premium GOLD | Connexion API");
+            translations.put(PREMIUM_API, "Compte Premium | Connexion API [Recommandé]");
+            translations.put(PREMIUM_GOLD_API, "Compte Premium GOLD | Connexion API [Recommandé]");
             translations.put(PREMIUM_WEB, "Compte Premium | Connexion site web");
             translations.put(PREMIUM_GOLD_WEB, "Compte Premium GOLD | Connexion site web");
             translations.put(FREE_CDN, "Compte gratuit avec crédits CDN payants");

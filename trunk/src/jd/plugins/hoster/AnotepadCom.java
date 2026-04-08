@@ -20,7 +20,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.PluginDependencies;
 import jd.plugins.decrypter.AnotepadComCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 46885 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { AnotepadComCrawler.class })
 public class AnotepadCom extends AbstractPastebinHoster {
     public AnotepadCom(PluginWrapper wrapper) {

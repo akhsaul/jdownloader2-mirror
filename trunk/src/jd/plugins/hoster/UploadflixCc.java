@@ -26,7 +26,7 @@ import jd.plugins.HostPlugin;
 
 import org.jdownloader.plugins.components.XFileSharingProBasic;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51880 $", interfaceVersion = 3, names = {}, urls = {})
 public class UploadflixCc extends XFileSharingProBasic {
     public UploadflixCc(final PluginWrapper wrapper) {
         super(wrapper);

@@ -37,8 +37,10 @@ import org.jdownloader.gui.components.ColumnButton;
 import org.jdownloader.gui.translate._GUI;
 import org.jdownloader.images.AbstractIcon;
 import org.jdownloader.images.NewTheme;
+import org.jdownloader.plugins.controller.LazyPlugin.FEATURE;
 import org.jdownloader.settings.GraphicalUserInterfaceSettings;
 import org.jdownloader.settings.GraphicalUserInterfaceSettings.SIZEUNIT;
+import org.jdownloader.settings.staticreferences.CFG_GUI;
 import org.jdownloader.updatev2.gui.LAFOptions;
 
 import jd.controlling.AccountController;
@@ -46,11 +48,11 @@ import jd.controlling.AccountControllerEvent;
 import jd.controlling.AccountControllerListener;
 import jd.controlling.accountchecker.AccountChecker;
 import jd.controlling.accountchecker.AccountCheckerEventListener;
-import jd.gui.swing.jdgui.GUIUtils;
 import jd.gui.swing.jdgui.views.settings.panels.accountmanager.AccountEntry;
 import jd.plugins.Account;
 import jd.plugins.AccountInfo;
 import jd.plugins.AccountTrafficView;
+import jd.plugins.PluginForHost;
 
 public class AccountListTableModel extends ExtTableModel<AccountEntry> implements AccountCheckerEventListener, AccountControllerListener {
     private static final long        serialVersionUID = 3120481189794897020L;
@@ -327,7 +329,10 @@ public class AccountListTableModel extends ExtTableModel<AccountEntry> implement
 
             @Override
             public String getStringValue(AccountEntry value) {
-                return GUIUtils.getAccountName(value.getAccount().getUser());
+                if (CFG_GUI.CFG.isPresentationModeEnabled()) {
+                    return CFG_GUI.CFG.getPresentationModeText();
+                }
+                return value.getAccount().getUser();
             }
         });
         this.addColumn(new ExtDateColumn<AccountEntry>(_GUI.T.premiumaccounttablemodel_column_expiredate()) {
@@ -442,70 +447,77 @@ public class AccountListTableModel extends ExtTableModel<AccountEntry> implement
 
             @Override
             protected String getString(AccountEntry ac, long current, long total) {
-                if (!ac.getAccount().isValid()) {
+                final Account acc = ac.getAccount();
+                final PluginForHost plg = acc.getPlugin();
+                if (!acc.isValid()) {
                     return "";
-                } else {
-                    long timeout = -1;
-                    if (ac.getAccount().isEnabled() && ac.getAccount().isTempDisabled() && ((timeout = ac.getAccount().getTmpDisabledTimeout() - System.currentTimeMillis()) > 0)) {
-                        return _GUI.T.premiumaccounttablemodel_column_trafficleft_tempdisabled(TimeFormatter.formatMilliSeconds(timeout, 0));
-                    } else {
-                        final AccountTrafficView accountTrafficView = ac.getAccount().getAccountTrafficView();
-                        if (accountTrafficView == null) {
-                            return "";
-                        } else {
-                            // COL_PROGRESS = COL_PROGRESS_NORMAL;
-                            if (accountTrafficView.isUnlimitedTraffic()) {
-                                return _GUI.T.premiumaccounttablemodel_column_trafficleft_unlimited();
-                            } else {
-                                return getSizeString(accountTrafficView.getTrafficLeft()) + "/" + getSizeString(accountTrafficView.getTrafficMax());
-                            }
-                        }
-                    }
                 }
-            }
-
-            private final String getSizeString(final long fileSize) {
-                if (fileSize < 0) {
-                    return _GUI.T.SizeColumn_getSizeString_zero();
-                } else {
-                    return SIZEUNIT.formatValue(maxSizeUnit, formatter, fileSize);
+                final long tmpDisabledTimeout = acc.getTmpDisabledTimeout();
+                final long timeout = tmpDisabledTimeout - System.currentTimeMillis();
+                if (acc.isEnabled() && acc.isTempDisabled() && timeout > 0) {
+                    return _GUI.T.premiumaccounttablemodel_column_trafficleft_tempdisabled(TimeFormatter.formatMilliSeconds(timeout, 0));
+                }
+                if (plg != null && plg.hasFeature(FEATURE.CAPTCHA_SOLVER)) {
+                    /* Captcha solver accounts have no download traffic */
+                    String balanceStr = "0";
+                    final AccountInfo ai = acc.getAccountInfo();
+                    if (ai != null) {
+                        balanceStr = ai.getAccountBalanceFormatted();
+                    }
+                    return "Balance: " + balanceStr;
+                }
+                final AccountTrafficView accountTrafficView = acc.getAccountTrafficView();
+                if (accountTrafficView == null) {
+                    return "";
+                }
+                if (accountTrafficView.isUnlimitedTraffic()) {
+                    return _GUI.T.premiumaccounttablemodel_column_trafficleft_unlimited();
+                }
+                synchronized (formatter) {
+                    return _GUI.T.premiumaccounttablemodel_column_trafficleft_left_(SIZEUNIT.formatValue(maxSizeUnit, formatter, accountTrafficView.getTrafficLeft()), SIZEUNIT.formatValue(maxSizeUnit, formatter, accountTrafficView.getTrafficMax()));
                 }
             }
 
             @Override
             protected long getMax(AccountEntry ac) {
-                if (!ac.getAccount().isValid()) {
+                final Account acc = ac.getAccount();
+                final PluginForHost plg = acc.getPlugin();
+                if (!acc.isValid()) {
                     return 0;
-                } else {
-                    final AccountTrafficView accountTrafficView = ac.getAccount().getAccountTrafficView();
-                    if (accountTrafficView == null) {
-                        return 0;
-                    } else {
-                        if (accountTrafficView.isUnlimitedTraffic()) {
-                            return Long.MAX_VALUE;
-                        } else {
-                            return accountTrafficView.getTrafficMax();
-                        }
-                    }
                 }
+                if (plg != null && plg.hasFeature(FEATURE.CAPTCHA_SOLVER)) {
+                    /* Captcha solver accounts have no download traffic */
+                    return Long.MAX_VALUE;
+                }
+                final AccountTrafficView accountTrafficView = acc.getAccountTrafficView();
+                if (accountTrafficView == null) {
+                    return 0;
+                }
+                if (accountTrafficView.isUnlimitedTraffic()) {
+                    return Long.MAX_VALUE;
+                }
+                return accountTrafficView.getTrafficMax();
             }
 
             @Override
             protected long getValue(AccountEntry ac) {
-                if (!ac.getAccount().isValid()) {
+                final Account acc = ac.getAccount();
+                final PluginForHost plg = acc.getPlugin();
+                if (!acc.isValid()) {
                     return 0;
-                } else {
-                    final AccountTrafficView accountTrafficView = ac.getAccount().getAccountTrafficView();
-                    if (accountTrafficView == null) {
-                        return 0;
-                    } else {
-                        if (accountTrafficView.isUnlimitedTraffic()) {
-                            return Long.MAX_VALUE;
-                        } else {
-                            return accountTrafficView.getTrafficLeft();
-                        }
-                    }
                 }
+                if (plg != null && plg.hasFeature(FEATURE.CAPTCHA_SOLVER)) {
+                    /* Captcha solver accounts have no download traffic */
+                    return Long.MAX_VALUE;
+                }
+                final AccountTrafficView accountTrafficView = acc.getAccountTrafficView();
+                if (accountTrafficView == null) {
+                    return 0;
+                }
+                if (accountTrafficView.isUnlimitedTraffic()) {
+                    return Long.MAX_VALUE;
+                }
+                return accountTrafficView.getTrafficLeft();
             }
         });
         if (owner != null && owner instanceof ServicePanel) {

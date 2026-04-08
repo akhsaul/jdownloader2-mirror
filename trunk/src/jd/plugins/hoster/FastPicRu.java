@@ -36,7 +36,7 @@ import jd.plugins.PluginForHost;
 
 import org.appwork.utils.StringUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 2, names = {}, urls = {})
 public class FastPicRu extends PluginForHost {
     public FastPicRu(PluginWrapper wrapper) {
         super(wrapper);

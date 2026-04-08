@@ -44,11 +44,13 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52434 $", interfaceVersion = 3, names = {}, urls = {})
 public class XtremestreamCo extends PluginForHost {
     public XtremestreamCo(PluginWrapper wrapper) {
         super(wrapper);
     }
+
+    public static final String PROPERTY_TITLE = "title";
 
     @Override
     public LazyPlugin.FEATURE[] getFeatures() {
@@ -77,7 +79,7 @@ public class XtremestreamCo extends PluginForHost {
     public static String[] getAnnotationUrls() {
         final List<String> ret = new ArrayList<String>();
         for (final String[] domains : getPluginDomains()) {
-            ret.add("https?://\\w+\\." + buildHostsPatternPart(domains) + "/player/index\\.php\\?data=([a-f0-9]{32})");
+            ret.add("https?://(\\w+)\\." + buildHostsPatternPart(domains) + "/player/index\\.php\\?data=([a-f0-9]{32})");
         }
         return ret.toArray(new String[0]);
     }
@@ -89,23 +91,28 @@ public class XtremestreamCo extends PluginForHost {
 
     @Override
     public String getLinkID(final DownloadLink link) {
-        final String linkid = getFID(link);
-        if (linkid != null) {
-            return this.getHost() + "://" + linkid;
+        final String file_id = getFID(link);
+        if (file_id != null) {
+            return this.getHost() + "://" + file_id;
         } else {
             return super.getLinkID(link);
         }
     }
 
     private String getFID(final DownloadLink link) {
-        return new Regex(link.getPluginPatternMatcher(), this.getSupportedLinks()).getMatch(0);
+        return new Regex(link.getPluginPatternMatcher(), this.getSupportedLinks()).getMatch(1);
     }
 
     @Override
     public AvailableStatus requestFileInformation(final DownloadLink link) throws Exception {
         final String ext = ".mp4";
+        final String pre_set_title = link.getStringProperty(PROPERTY_TITLE);
         if (!link.isNameSet()) {
-            link.setName(this.getFID(link) + ext);
+            if (pre_set_title != null) {
+                link.setName(pre_set_title + ext);
+            } else {
+                link.setName(this.getFID(link) + ext);
+            }
         }
         this.setBrowserExclusive();
         br.setFollowRedirects(true);
@@ -121,12 +128,16 @@ public class XtremestreamCo extends PluginForHost {
             /* Empty page */
             throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
         }
-        String filename = br.getRegex("var video_title = .([^\"]*?)`;").getMatch(0);
-        if (filename != null) {
-            filename = Encoding.htmlDecode(filename);
-            filename = filename.trim();
-            filename = this.correctOrApplyFileNameExtension(filename, ext, null);
-            link.setFinalFileName(filename);
+        String title = br.getRegex("var video_title = .([^\"]*?)`;").getMatch(0);
+        if (title != null) {
+            title = Encoding.htmlDecode(title).trim();
+        } else {
+            /* Use pre-set title if available */
+            title = pre_set_title;
+        }
+        if (title != null) {
+            title = this.correctOrApplyFileNameExtension(title, ext, null);
+            link.setFinalFileName(title);
         }
         return AvailableStatus.TRUE;
     }
@@ -138,9 +149,9 @@ public class XtremestreamCo extends PluginForHost {
         final String referer = link.getReferrerUrl();
         final Browser br2 = br.cloneBrowser();
         final String fid = getFID(link);
-        String data_folderid = null;
-        String data_xtremestream = null;
-        String dltoken = null;
+        final String data_folderid;
+        String data_xtremestream;
+        String dltoken;
         if (referer != null) {
             br2.getPage(referer);
             data_folderid = br2.getRegex("data-folderid=\"([^\"]+)").getMatch(0);
@@ -160,6 +171,7 @@ public class XtremestreamCo extends PluginForHost {
             final DownloadMode mode = cfg.getDownloadMode();
             if (mode == DownloadMode.STREAM_DOWNLOAD) {
                 /* User prefers stream download */
+                logger.info("User prefers stream download");
                 break officialVideoDownload;
             }
             boolean allowAutoFallbackToStreamDownload = mode == DownloadMode.AUTO;
@@ -199,14 +211,24 @@ public class XtremestreamCo extends PluginForHost {
                 logger.info("Official download failed -> Fallback to stream download");
             }
         }
-        logger.info("Official download is not possible");
-        String hlsMaster = br.getRegex("var m3u8_loader_url = `(https://[^<>\"']+data=)`;").getMatch(0);
-        if (hlsMaster == null) {
+        logger.info("Attempting stream download");
+        String query = br.getRegex("const\\s*query\\s*=\\s*\"(.*?)\"").getMatch(0);
+        if (query == null && fid != null) {
+            query = "data=" + fid;
+        }
+        final String subdomain_from_added_url = new Regex(link.getPluginPatternMatcher(), this.getSupportedLinks()).getMatch(0);
+        String subdomain = data_xtremestream;
+        if (subdomain == null && subdomain_from_added_url != null && !subdomain_from_added_url.equalsIgnoreCase("www")) {
+            subdomain = subdomain_from_added_url;
+        }
+        if (subdomain == null) {
+            logger.warning("Failed to find cdn subdomain -> Fallback to default which could mean that we will only get one (= the lowest) resolution");
+            subdomain = "xporn";
+        }
+        if (query == null) {
             throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
         }
-        if (!hlsMaster.endsWith(fid)) {
-            hlsMaster += fid;
-        }
+        final String hlsMaster = "https://" + subdomain + ".xtremestream.xyz/player/xs1.php?" + query;
         br.getPage(hlsMaster);
         final List<HlsContainer> qualities = HlsContainer.getHlsQualities(this.br);
         final HlsContainer bestQuality = HlsContainer.findBestVideoByBandwidth(qualities);

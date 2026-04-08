@@ -29,7 +29,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "newsgroupdirect.com" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51945 $", interfaceVersion = 3, names = { "newsgroupdirect.com" }, urls = { "" })
 public class NewsGroupDirectCom extends UseNet {
     public NewsGroupDirectCom(PluginWrapper wrapper) {
         super(wrapper);

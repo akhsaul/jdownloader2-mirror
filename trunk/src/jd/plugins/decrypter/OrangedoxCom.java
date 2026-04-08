@@ -34,7 +34,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "orangedox.com" }, urls = { "https?://(?:www\\.)?dl\\.orangedox\\.com/([A-Za-z0-9]+)(/([^\\?#]+))?" })
+@DecrypterPlugin(revision = "$Revision: 49212 $", interfaceVersion = 3, names = { "orangedox.com" }, urls = { "https?://(?:www\\.)?dl\\.orangedox\\.com/([A-Za-z0-9]+)(/([^\\?#]+))?" })
 public class OrangedoxCom extends PluginForDecrypt {
     public OrangedoxCom(PluginWrapper wrapper) {
         super(wrapper);

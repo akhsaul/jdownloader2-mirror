@@ -17,6 +17,7 @@ package jd.plugins.decrypter;
 
 import java.awt.Dialog.ModalityType;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,9 +25,14 @@ import java.util.Map;
 
 import org.appwork.storage.JSonStorage;
 import org.appwork.storage.TypeRef;
+import org.appwork.storage.protobuf.Decoder;
+import org.appwork.storage.protobuf.Decoder.Record;
 import org.appwork.uio.ConfirmDialogInterface;
 import org.appwork.uio.UIOManager;
 import org.appwork.utils.StringUtils;
+import org.appwork.utils.net.Base64InputStream;
+import org.appwork.utils.net.CharSequenceInputStream;
+import org.appwork.utils.net.URLHelper;
 import org.appwork.utils.parser.UrlQuery;
 import org.appwork.utils.swing.dialog.ConfirmDialog;
 import org.appwork.utils.swing.dialog.DialogCanceledException;
@@ -59,7 +65,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.PluginJSonUtils;
 import jd.plugins.hoster.DropboxCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "dropbox.com" }, urls = { "https?://(?:www\\.)?dropbox\\.com/(?:(?:sh|s|sc|scl)/[^<>\"]+|l/[A-Za-z0-9]+).*|https?://(www\\.)?db\\.tt/[A-Za-z0-9]+|https?://dl\\.dropboxusercontent\\.com/s/.+" })
+@DecrypterPlugin(revision = "$Revision: 52441 $", interfaceVersion = 2, names = { "dropbox.com" }, urls = { "https?://(?:www\\.)?dropbox\\.com/(?:(?:sh|s|sc|scl)/[^<>\"]+|l/[A-Za-z0-9]+).*|https?://(www\\.)?db\\.tt/[A-Za-z0-9]+|https?://dl\\.dropboxusercontent\\.com/s/.+" })
 public class DropBoxComCrawler extends PluginForDecrypt {
     public DropBoxComCrawler(PluginWrapper wrapper) {
         super(wrapper);
@@ -104,7 +110,7 @@ public class DropBoxComCrawler extends PluginForDecrypt {
          */
         final Browser dummy_login_browser = createNewBrowserInstance();
         final boolean canLoginViaAPI = DropboxCom.setAPILoginHeaders(dummy_login_browser, account);
-        final boolean urlCanBeCrawledViaAPI = !param.toString().contains("disallow_crawl_via_api=true") && !param.toString().matches(DropboxCom.TYPE_SC_GALLERY);
+        final boolean urlCanBeCrawledViaAPI = !param.getCryptedUrl().contains("disallow_crawl_via_api=true") && !param.getCryptedUrl().matches(DropboxCom.TYPE_SC_GALLERY);
         final boolean canUseAPI = canLoginViaAPI && urlCanBeCrawledViaAPI;
         if (canUseAPI && DropboxCom.useAPI()) {
             br = dummy_login_browser;
@@ -120,21 +126,41 @@ public class DropBoxComCrawler extends PluginForDecrypt {
         }
     }
 
+    private Object[] decodeEdisonFileDetails(String edison_prefetch_item) throws Exception {
+        edison_prefetch_item = edison_prefetch_item.replace(" ", "");
+        edison_prefetch_item = edison_prefetch_item.replace(",false", "");
+        edison_prefetch_item = edison_prefetch_item.replace(",true", "");
+        edison_prefetch_item = edison_prefetch_item.replace("\"", "");
+        final String[] b64_strings = edison_prefetch_item.split(",");
+        for (final String b64_string : b64_strings) {
+            final Decoder dec = new Decoder();
+            final List<Record> records = dec.decode(new Base64InputStream(new CharSequenceInputStream(b64_string, Charset.forName("UTF-8"))));
+            final Map<Integer, Object> map = dec.toMap(records, true);
+            final Object fileSize = JavaScriptEngineFactory.walkJson(map, "1/2/2");
+            final Object fileName = JavaScriptEngineFactory.walkJson(map, "1/2/3");
+            final Object url = JavaScriptEngineFactory.walkJson(map, "1/2/6");
+            if (fileSize instanceof Number && fileName instanceof String && url instanceof String && StringUtils.contains((String) url, "rlkey=")) {
+                return new Object[] { fileName, fileSize };
+            }
+        }
+        return null;
+    }
+
     private ArrayList<DownloadLink> crawlViaWebsite(final CryptedLink param) throws Exception {
         DropboxCom.prepBrWebsite(br);
         /* Website may return huge amounts of json/html */
         br.setLoadLimit(br.getLoadLimit() * 4);
         final ArrayList<DownloadLink> ret = new ArrayList<DownloadLink>();
-        String contentURL = param.getCryptedUrl();
+        String contenturl = param.getCryptedUrl();
         final DropBoxConfig cfg = PluginJsonConfig.get(DropBoxConfig.class);
-        if (contentURL.matches(DropboxCom.TYPE_SC_GALLERY)) {
+        if (contenturl.matches(DropboxCom.TYPE_SC_GALLERY)) {
             /* Gallery */
             /*
              * 2019-09-25: Galleries are rarely used by Dropbox Users. Basically these are folders but we cannot access them like folders
              * and they cannot be accessed via API(?). Also downloading single objects from galleries works a bit different than files from
              * folders.
              */
-            br.getPage(contentURL);
+            br.getPage(contenturl);
             if (br.getHttpConnection().getResponseCode() == 404) {
                 throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
             }
@@ -158,21 +184,32 @@ public class DropBoxComCrawler extends PluginForDecrypt {
                 }
             } catch (final Exception e) {
                 /* Fallback - add .zip containing all elements of that gallery! This should never happen! */
-                final DownloadLink dl = this.createSingleFileDownloadLink(contentURL);
+                final DownloadLink dl = this.createSingleFileDownloadLink(contenturl);
                 if (currentGalleryName != null) {
                     dl.setFinalFileName("Gallery - " + currentGalleryName + ".zip");
                 } else {
-                    dl.setFinalFileName("Gallery - " + new Regex(contentURL, "https?://[^/]+/(.+)").getMatch(0) + ".zip");
+                    dl.setFinalFileName("Gallery - " + new Regex(contenturl, "https?://[^/]+/(.+)").getMatch(0) + ".zip");
                 }
                 ret.add(dl);
             }
             return ret;
         }
         /* File/folder */
-        /* Correct added URL. */
-        contentURL = contentURL.replaceFirst("(?i)dl\\.dropboxusercontent\\.com/", this.getHost() + "/");
-        /* Avoid immediate redirect to file content (we want to have the html page). */
-        contentURL = contentURL.replaceAll("(?i)dl=1", "dl=0");
+        /* Correct added URL before accessing it. */
+        contenturl = contenturl.replaceFirst("(?i)dl\\.dropboxusercontent\\.com/", this.getHost() + "/");
+        final UrlQuery added_url_query = UrlQuery.parse(contenturl);
+        if (added_url_query != null && added_url_query.list().size() > 0) {
+            /* Avoid immediate redirect to file content (we want to have the html page). */
+            added_url_query.remove("dl");
+            added_url_query.remove("raw");
+            if (added_url_query.list().size() == 0) {
+                /* No params left */
+                contenturl = URLHelper.getUrlWithoutParams(contenturl);
+            } else {
+                /* Some params left -> re-build url */
+                contenturl = URLHelper.getUrlWithoutParams(contenturl) + "?" + added_url_query.toString();
+            }
+        }
         /*
          * 2019-09-24: isSingleFile may sometimes be wrong but if our URL contains 'crawl_subfolders=' we know it has been added via crawler
          * and it is definitely a folder and not a file!
@@ -192,7 +229,7 @@ public class DropBoxComCrawler extends PluginForDecrypt {
             DropBoxComCrawler.setPasswordCookie(br, storedPasswordCookieValue);
             passwordCookieValue = storedPasswordCookieValue;
         }
-        br.getPage(contentURL);
+        br.getPage(contenturl);
         if (br.getHttpConnection().getResponseCode() == 404) {
             throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
         } else if (br.containsHTML("sharing/error_shmodel|class=\"not-found\">")) {
@@ -200,8 +237,7 @@ public class DropBoxComCrawler extends PluginForDecrypt {
         } else if (br.getHttpConnection().getResponseCode() == 429) {
             throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
         } else if (br.getHttpConnection().getResponseCode() == 460) {
-            logger.info("Restricted Content: This file is no longer available. For additional information contact Dropbox Support.");
-            throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
+            throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND, "Restricted Content: This file is no longer available. For additional information contact Dropbox Support.");
         } else if (br.getHttpConnection().getResponseCode() == 509) {
             /**
              * Temporarily unavailable link --> Rare case </br>
@@ -235,7 +271,7 @@ public class DropBoxComCrawler extends PluginForDecrypt {
                 }
                 query.add("content_id", Encoding.urlEncode(content_id));
                 query.add("password", Encoding.urlEncode(passCode));
-                query.add("url", Encoding.urlEncode(new URL(contentURL).getPath()));
+                query.add("url", Encoding.urlEncode(new URL(contenturl).getPath()));
                 brc.postPage("/sm/auth", query);
                 final String status = PluginJSonUtils.getJson(brc, "status");
                 if (!"error".equalsIgnoreCase(status)) {
@@ -256,39 +292,65 @@ public class DropBoxComCrawler extends PluginForDecrypt {
             final int waitSeconds = 5;
             logger.info("User entered correct password \"" + passCode + "\" | Waiting seconds before continuing: " + waitSeconds);
             this.sleep(waitSeconds * 1000, param);
-            br.getPage(contentURL);
+            br.getPage(contenturl);
         }
-        final String edison_page_name = br.getRegex("edison_page_name(?:=|:)([\\w\\-]+)").getMatch(0);
-        final String dws_page_name = br.getRegex("dws_page_name=([\\w\\-]+)").getMatch(0);
-        /**
-         * Other possible values: <br>
-         * scl_oboe_file -> Single file <br>
-         * scl_oboe_folder -> Folder
-         */
-        if (StringUtils.equals(edison_page_name, "shared_link_deleted")) {
+        if (isOfflineWebsite(br)) {
             /* Item was deleted */
             throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
-        } else if (StringUtils.equals(edison_page_name, "shared_link_generic_error")) {
-            /* Item was abused. */
-            throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
-        } else if (StringUtils.equals(edison_page_name, "shared_link_disabled")) {
-            /* 2025-11-18: This link has been deleted */
-            throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
-        } else if (StringUtils.equals(dws_page_name, "files_shared_content_link_login_page")) {
-            /* Login required to access item. */
-            throw new AccountRequiredException();
-        } else if (br.containsHTML("invitation-claimed-access-request-container")) {
+        }
+        if (br.containsHTML("invitation-claimed-access-request-container")) {
             /* User is logged in but has no access to this folder item */
             throw new AccountRequiredException();
         }
+        /**
+         * Known possible values: <br>
+         * scl_oboe_file -> Single file <br>
+         * scl_oboe_folder -> Folder
+         */
+        final String dws_page_name = br.getRegex("dws_page_name=([\\w\\-]+)").getMatch(0);
+        if (StringUtils.equals(dws_page_name, "files_shared_content_link_login_page")) {
+            /* Login required to access item. */
+            throw new AccountRequiredException();
+        }
+        final String edison_page_name = regex_edison_page_name(br);
         if (StringUtils.equals(edison_page_name, "scl_oboe_file")) {
-            /* Nothing has been found before -> Assume that we got a single file. */
-            final DownloadLink singleFile = createSingleFileDownloadLink(br.getURL());
-            setDownloadPasswordProperties(singleFile, passCode, passwordCookieValue);
+            /* Looks like we got a single file */
+            final DownloadLink file = createSingleFileDownloadLink(br.getURL());
+            setDownloadPasswordProperties(file, passCode, passwordCookieValue);
             if (cfg.isEnableFastLinkcheckForSingleFiles()) {
-                singleFile.setAvailable(true);
+                file.setAvailable(true);
+                /* Set file_id as temporary filename if it looks like the link itself doesn't contain a filename. */
+                final Regex urlinfo = new Regex(URLHelper.getUrlWithoutParams(br.getURL()), "scl/fi/(\\w+)(/(.+))?");
+                final String file_id = urlinfo.getMatch(0);
+                final String filenameFromURL = urlinfo.getMatch(2);
+                Object[] fileDetails = null;
+                final String[] edison_prefetch_items = br.getRegex("Edison\\.registerStreamedPrefetch\\(([^\\)]+)\\)").getColumn(0);
+                find_filename: if (edison_prefetch_items != null && edison_prefetch_items.length > 0) {
+                    try {
+                        for (String edison_prefetch_item : edison_prefetch_items) {
+                            fileDetails = decodeEdisonFileDetails(edison_prefetch_item);
+                            if (fileDetails != null) {
+                                break find_filename;
+                            }
+                        }
+                    } catch (final Exception e) {
+                        logger.log(e);
+                        logger.warning("Exception happend in find_filename handling");
+                    }
+                }
+                if (fileDetails != null) {
+                    file.setFinalFileName(fileDetails[0].toString());
+                    file.setVerifiedFileSize(((Number) fileDetails[1]).longValue());
+                } else if (filenameFromURL != null) {
+                    file.setName(Encoding.htmlDecode(filenameFromURL));
+                } else if (file_id != null) {
+                    logger.info("Setting file_id as weak/temporary filename: " + file_id);
+                    file.setName(file_id);
+                } else {
+                    logger.warning("Failed to find anything to set as weak/temporary filename");
+                }
             }
-            ret.add(singleFile);
+            ret.add(file);
             return ret;
         }
         /**
@@ -296,9 +358,9 @@ public class DropBoxComCrawler extends PluginForDecrypt {
          * https://www.dropbox.com/s/5h5bnwzklsev6ch </br>
          * --> Redirects to: https://www.dropbox.com/s/5h5bnwzklsev6ch/1mb.test
          */
-        contentURL = br.getURL();
+        contenturl = br.getURL();
         if (!br.getURL().matches(TYPES_NORMAL)) {
-            logger.warning("Possible redirect to unsupported URL: " + br.getURL());
+            logger.warning("Detected redirect to possibly unsupported URL: " + br.getURL());
         }
         /* Decrypt file- and folderlinks */
         String subFolderPath = getAdoptedCloudFolderStructure();
@@ -342,7 +404,7 @@ public class DropBoxComCrawler extends PluginForDecrypt {
         if (StringUtils.isEmpty(rlkey)) {
             rlkey = UrlQuery.parse(param.getCryptedUrl()).get("rlkey");
         }
-        final Regex urlinfoTypeC = new Regex(contentURL, "(?i)https://[^/]+/scl/([^/]+)/([^/]+)/([^/\\?]+).*");
+        final Regex urlinfoTypeC = new Regex(contenturl, "(?i)https://[^/]+/scl/([^/]+)/([^/]+)/([^/\\?]+).*");
         if (urlinfoTypeC.patternFind()) {
             if (StringUtils.isEmpty(link_type)) {
                 link_type = "c";
@@ -356,7 +418,7 @@ public class DropBoxComCrawler extends PluginForDecrypt {
         } else {
             /* Typically dropbox.com/sh/bla/bla(?params...)? */
             link_type = "s";
-            final Regex urlinfo = new Regex(contentURL, "(?i)https?://[^/]+/([^/]+)/([^/]+)/([\\w\\-]+).*");
+            final Regex urlinfo = new Regex(contenturl, "(?i)https?://[^/]+/([^/]+)/([^/]+)/([\\w\\-]+).*");
             if (StringUtils.isEmpty(link_key)) {
                 link_key = urlinfo.getMatch(1);
             }
@@ -370,7 +432,7 @@ public class DropBoxComCrawler extends PluginForDecrypt {
         brc.setAllowedResponseCodes(400);
         int numberofItemsWalkedThroughSoFar = 0;
         if (sub_path == null) {
-            sub_path = getFilepathFromURL(contentURL);
+            sub_path = getFilepathFromURL(contenturl);
         }
         if (sub_path == null) {
             /* We're crawling a root directory. */
@@ -420,6 +482,8 @@ public class DropBoxComCrawler extends PluginForDecrypt {
                      * DMCA deleted item -> We're not yet parsing HTML of previous age correctly thus we'll run into error 400 here.
                      */
                     throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
+                } else if (brc.getHttpConnection().getResponseCode() == 403) {
+                    throw new AccountRequiredException();
                 } else if (brc.getHttpConnection().getResponseCode() == 404) {
                     /* Deleted item. */
                     throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
@@ -579,6 +643,52 @@ public class DropBoxComCrawler extends PluginForDecrypt {
             throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
         }
         return ret;
+    }
+
+    public static boolean isOfflineWebsite(final Browser br) {
+        if (br.getHttpConnection().getResponseCode() == 403) {
+            /* Error 403 -> File is offline. */
+            return true;
+        } else if (br.getHttpConnection().getResponseCode() == 404) {
+            return true;
+        }
+        final String edison_page_name = regex_edison_page_name(br);
+        /**
+         * Other possible values: <br>
+         * scl_oboe_file -> Single file <br>
+         * scl_oboe_folder -> Folder
+         */
+        if (StringUtils.equals(edison_page_name, "shared_link_deleted")) {
+            /* Item was deleted */
+            return true;
+        } else if (StringUtils.equals(edison_page_name, "shared_link_generic_error")) {
+            /* Item was abused. */
+            return true;
+        } else if (StringUtils.equals(edison_page_name, "shared_link_disabled")) {
+            /* 2025-11-18: This link has been deleted */
+            return true;
+        }
+        final String[] edison_prefetch_items = br.getRegex("Edison\\.registerStreamedPrefetch\\(([^\\)]+)\\)").getColumn(0);
+        if (edison_prefetch_items != null && edison_prefetch_items.length > 0) {
+            for (String edison_prefetch_item : edison_prefetch_items) {
+                edison_prefetch_item = edison_prefetch_item.replace(" ", "");
+                edison_prefetch_item = edison_prefetch_item.replace(",false", "");
+                edison_prefetch_item = edison_prefetch_item.replace(",true", "");
+                edison_prefetch_item = edison_prefetch_item.replace("\"", "");
+                final String[] b64_strings = edison_prefetch_item.split(",");
+                for (final String b64_string : b64_strings) {
+                    final String str = Encoding.Base64Decode(b64_string);
+                    if (StringUtils.containsIgnoreCase(str, "shared_link_deleted")) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public static String regex_edison_page_name(final Browser br) {
+        return br.getRegex("edison_page_name(?:=|:)([\\w\\-]+)").getMatch(0);
     }
 
     private ArrayList<DownloadLink> crawlViaAPI(final CryptedLink param) throws Exception {

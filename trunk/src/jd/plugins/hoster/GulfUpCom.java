@@ -26,7 +26,7 @@ import jd.plugins.HostPlugin;
 
 import org.jdownloader.plugins.components.XFileSharingProBasic;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 45173 $", interfaceVersion = 3, names = {}, urls = {})
 public class GulfUpCom extends XFileSharingProBasic {
     public GulfUpCom(final PluginWrapper wrapper) {
         super(wrapper);

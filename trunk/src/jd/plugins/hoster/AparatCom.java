@@ -32,7 +32,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.AparatComCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49267 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { AparatComCrawler.class })
 public class AparatCom extends PluginForHost {
     public AparatCom(PluginWrapper wrapper) {

@@ -31,7 +31,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51403 $", interfaceVersion = 3, names = {}, urls = {})
 public class UploadrarCom extends XFileSharingProBasic {
     public UploadrarCom(final PluginWrapper wrapper) {
         super(wrapper);

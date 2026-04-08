@@ -27,7 +27,7 @@ import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "caminspector.net" }, urls = { "https?://(?:www\\.)?caminspector\\.net/videos/\\d+/([a-z0-9\\-]+)/" })
+@DecrypterPlugin(revision = "$Revision: 50364 $", interfaceVersion = 3, names = { "caminspector.net" }, urls = { "https?://(?:www\\.)?caminspector\\.net/videos/\\d+/([a-z0-9\\-]+)/" })
 public class CaminspectorNet extends PornEmbedParser {
     public CaminspectorNet(PluginWrapper wrapper) {
         super(wrapper);

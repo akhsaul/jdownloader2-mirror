@@ -30,7 +30,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.utils.RazStringBuilder;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 39447 $", interfaceVersion = 2, names = {}, urls = {})
 public class RLCsh extends PluginForDecrypt {
     /**
      * Returns the annotations names array

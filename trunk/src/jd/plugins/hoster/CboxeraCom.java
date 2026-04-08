@@ -47,7 +47,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.MultiHosterManagement;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "cboxera.com" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51773 $", interfaceVersion = 3, names = { "cboxera.com" }, urls = { "" })
 public class CboxeraCom extends PluginForHost {
     private static final String          API_BASE            = "https://api.cboxera.com";
     /* 2020-03-24: Static implementation as key is nowhere to be found via API request. */

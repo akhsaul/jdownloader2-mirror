@@ -33,7 +33,7 @@ import jd.plugins.FilePackage;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 47519 $", interfaceVersion = 3, names = {}, urls = {})
 public class MirroraceCom extends antiDDoSForDecrypt {
     public MirroraceCom(PluginWrapper wrapper) {
         super(wrapper);

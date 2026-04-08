@@ -39,7 +39,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.TorboxApp;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51030 $", interfaceVersion = 3, names = {}, urls = {})
 public class TorboxAppCrawler extends PluginForDecrypt {
     public TorboxAppCrawler(PluginWrapper wrapper) {
         super(wrapper);

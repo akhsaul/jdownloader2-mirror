@@ -32,7 +32,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.PostimagesOrg;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 46483 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { PostimagesOrg.class })
 public class PostimagesOrgGallery extends PluginForDecrypt {
     public PostimagesOrgGallery(PluginWrapper wrapper) {

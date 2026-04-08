@@ -47,7 +47,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.XArtCom;
 import jd.plugins.hoster.XArtCom.XArtConfigInterface;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "x-art.com" }, urls = { "^https?://(www\\.)?x-art\\.com/(members/)?.+" })
+@DecrypterPlugin(revision = "$Revision: 49470 $", interfaceVersion = 3, names = { "x-art.com" }, urls = { "^https?://(www\\.)?x-art\\.com/(members/)?.+" })
 public class XArt extends PluginForDecrypt {
     public XArt(PluginWrapper wrapper) {
         super(wrapper);

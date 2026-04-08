@@ -31,7 +31,7 @@ import jd.plugins.PluginForDecrypt;
 
 import org.appwork.utils.Regex;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 46230 $", interfaceVersion = 3, names = {}, urls = {})
 public class ThisvidComAlbums extends PluginForDecrypt {
     public ThisvidComAlbums(PluginWrapper wrapper) {
         super(wrapper);

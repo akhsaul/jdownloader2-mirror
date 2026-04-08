@@ -31,7 +31,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "hulkshare.com" }, urls = { "https?://(?:www\\.)?(?:hulkshare\\.com|hu\\.lk)/[A-Za-z0-9_\\-]+(?:/[^<>\"/]+)?" })
+@DecrypterPlugin(revision = "$Revision: 48342 $", interfaceVersion = 2, names = { "hulkshare.com" }, urls = { "https?://(?:www\\.)?(?:hulkshare\\.com|hu\\.lk)/[A-Za-z0-9_\\-]+(?:/[^<>\"/]+)?" })
 public class HulkShareComFolder extends PluginForDecrypt {
     public HulkShareComFolder(PluginWrapper wrapper) {
         super(wrapper);

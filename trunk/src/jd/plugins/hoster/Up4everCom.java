@@ -28,7 +28,7 @@ import jd.plugins.HostPlugin;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.components.XFileSharingProBasic;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50268 $", interfaceVersion = 3, names = {}, urls = {})
 public class Up4everCom extends XFileSharingProBasic {
     public Up4everCom(final PluginWrapper wrapper) {
         super(wrapper);

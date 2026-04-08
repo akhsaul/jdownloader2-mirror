@@ -34,7 +34,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49208 $", interfaceVersion = 2, names = {}, urls = {})
 public class PostimagesOrg extends PluginForHost {
     public PostimagesOrg(PluginWrapper wrapper) {
         super(wrapper);

@@ -30,7 +30,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "rufox.ru" }, urls = { "https?://(?:www\\.)?files\\.rufox\\.ru/\\?(?:Act=byCategory&)?k=[a-z0-9]+|https?://video\\.rufox\\.ru/play/\\d+" })
+@HostPlugin(revision = "$Revision: 49175 $", interfaceVersion = 2, names = { "rufox.ru" }, urls = { "https?://(?:www\\.)?files\\.rufox\\.ru/\\?(?:Act=byCategory&)?k=[a-z0-9]+|https?://video\\.rufox\\.ru/play/\\d+" })
 public class RufoxRu extends PluginForHost {
     public RufoxRu(PluginWrapper wrapper) {
         super(wrapper);

@@ -24,7 +24,7 @@ import org.jdownloader.plugins.components.config.AppFrameIoConfig;
 import org.jdownloader.plugins.components.config.AppFrameIoConfig.MODE;
 import org.jdownloader.plugins.config.PluginJsonConfig;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "app.frame.io" }, urls = { "https://app\\.frame\\.io/reviews/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/?([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})?" })
+@DecrypterPlugin(revision = "$Revision: 50249 $", interfaceVersion = 3, names = { "app.frame.io" }, urls = { "https://app\\.frame\\.io/reviews/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/?([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})?" })
 public class AppFrameIo extends PluginForDecrypt {
     @Override
     public ArrayList<DownloadLink> decryptIt(CryptedLink parameter, ProgressController progress) throws Exception {

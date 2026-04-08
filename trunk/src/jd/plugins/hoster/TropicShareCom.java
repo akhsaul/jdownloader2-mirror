@@ -44,7 +44,7 @@ import org.appwork.utils.Time;
 import org.appwork.utils.formatter.SizeFormatter;
 import org.appwork.utils.parser.UrlQuery;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "tropicshare.com" }, urls = { "https?://(?:www\\.)?tropicshare\\.com/files/(\\d+)" })
+@HostPlugin(revision = "$Revision: 51606 $", interfaceVersion = 2, names = { "tropicshare.com" }, urls = { "https?://(?:www\\.)?tropicshare\\.com/files/(\\d+)" })
 public class TropicShareCom extends PluginForHost {
     public TropicShareCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -32,7 +32,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.storage.TypeRef;
 import org.appwork.utils.StringUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = {}, urls = {})
 public class GiphyCom extends PluginForHost {
     public GiphyCom(PluginWrapper wrapper) {
         super(wrapper);

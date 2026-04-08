@@ -23,6 +23,7 @@ import java.util.Map.Entry;
 import jd.PluginWrapper;
 import jd.config.ConfigContainer;
 import jd.config.ConfigEntry;
+import jd.http.Browser;
 import jd.http.URLConnectionAdapter;
 import jd.plugins.DownloadLink;
 import jd.plugins.DownloadLink.AvailableStatus;
@@ -32,7 +33,9 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.utils.locale.JDL;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "ted.com" }, urls = { "decrypted://decryptedtedcom\\.com/\\d+" })
+import org.appwork.net.protocol.http.HTTPConstants;
+
+@HostPlugin(revision = "$Revision: 52402 $", interfaceVersion = 2, names = { "ted.com" }, urls = { "decrypted://decryptedtedcom\\.com/\\d+" })
 public class TedCom extends PluginForHost {
     private static final String                   CHECKFAST_VIDEOS                   = "CHECKFAST_VIDEOS";
     private static final String                   CHECKFAST_MP3                      = "CHECKFAST_MP3";
@@ -86,10 +89,10 @@ public class TedCom extends PluginForHost {
     private static final String                   GRAB_SUBTITLE_VIETNAMESE           = "GRAB_SUBTITLE_VIETNAMESE";
     public static LinkedHashMap<String, String[]> formats                            = new LinkedHashMap<String, String[]>(new LinkedHashMap<String, String[]>() {
         {
-                                                                                             /*
-                                                                                              * Format - name : videoCodec, videoBitrate,
-                                                                                              * videoResolution, audioCodec, audioBitrate
-                                                                                              */
+            /*
+             * Format - name : videoCodec, videoBitrate,
+             * videoResolution, audioCodec, audioBitrate
+             */
             put("64k", new String[] { "AVC", "40", "320x180", "AAC LC", "24" });
             // put("podcast-light", new String[] { "AVC",
             // "40", "320x180", "AAC LC", "24" });
@@ -143,11 +146,17 @@ public class TedCom extends PluginForHost {
         }
         URLConnectionAdapter con = null;
         try {
-            con = br.openGetConnection(DLLINK);
+            final String ref = link.getReferrerUrl();
+            if (ref != null) {
+                br.getHeaders().put(HTTPConstants.HEADER_REQUEST_REFERER, ref);
+            }
+            final Browser brc = br.cloneBrowser();
+            con = brc.openGetConnection(DLLINK);
             if (this.looksLikeDownloadableContent(con)) {
                 link.setVerifiedFileSize(con.getCompleteContentLength());
                 link.setFinalFileName(link.getStringProperty("finalfilename", null));
             } else {
+                brc.followConnection(true);
                 throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
             }
             return AvailableStatus.TRUE;
@@ -171,16 +180,16 @@ public class TedCom extends PluginForHost {
     }
 
     @Override
-    public void reset() {
-    }
-
-    @Override
     public int getMaxSimultanFreeDownloadNum() {
-        return -1;
+        return Integer.MAX_VALUE;
     }
 
     @Override
-    public void resetDownloadlink(DownloadLink link) {
+    public Browser createNewBrowserInstance() {
+        final Browser ret = super.createNewBrowserInstance();
+        /* 2026-02-24: Out default User-Agent is blocked, forum 89295 */
+        ret.getHeaders().put(HTTPConstants.HEADER_REQUEST_USER_AGENT, "Mozilla/5.0 (X11; Linux x86_64; rv:147.0) Gecko/20100101 Firefox/146.0");
+        return ret;
     }
 
     @Override

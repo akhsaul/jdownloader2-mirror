@@ -28,7 +28,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.XiaoshenkeNet;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 46055 $", interfaceVersion = 3, names = {}, urls = {})
 public class FullpornerCom extends PornEmbedParser {
     public FullpornerCom(PluginWrapper wrapper) {
         super(wrapper);

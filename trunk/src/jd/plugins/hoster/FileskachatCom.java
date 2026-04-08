@@ -33,7 +33,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "fileskachat.com" }, urls = { "https?://(?:www\\.)?fileskachat\\.com/file/\\d+_[A-Fa-f0-9]{32}\\.html" })
+@HostPlugin(revision = "$Revision: 51564 $", interfaceVersion = 3, names = { "fileskachat.com" }, urls = { "https?://(?:www\\.)?fileskachat\\.com/file/\\d+_[A-Fa-f0-9]{32}\\.html" })
 public class FileskachatCom extends PluginForHost {
     public FileskachatCom(PluginWrapper wrapper) {
         super(wrapper);

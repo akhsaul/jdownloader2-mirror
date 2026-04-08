@@ -29,7 +29,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.components.SiteType.SiteTemplate;
 
 //Similar to SafeUrlMe (safeurl.me)
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 45273 $", interfaceVersion = 3, names = {}, urls = {})
 public class SflnkgNt extends abstractSafeLinking {
     /**
      * Returns the annotations names array

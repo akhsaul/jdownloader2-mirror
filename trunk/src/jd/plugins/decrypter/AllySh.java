@@ -29,7 +29,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "ally.sh" }, urls = { "https?://(?:www\\.)?(?:al\\.ly|ally\\.sh|dausel\\.co)/[A-Za-z0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 45697 $", interfaceVersion = 3, names = { "ally.sh" }, urls = { "https?://(?:www\\.)?(?:al\\.ly|ally\\.sh|dausel\\.co)/[A-Za-z0-9]+" })
 public class AllySh extends PluginForDecrypt {
     public AllySh(PluginWrapper wrapper) {
         super(wrapper);

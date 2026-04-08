@@ -28,7 +28,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 import jd.plugins.FilePackage;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "hdporn92.com" }, urls = { "https?://(?:www\\.)?hdporn92\\.com/[A-Za-z0-9\\-]+/?" })
+@DecrypterPlugin(revision = "$Revision: 50250 $", interfaceVersion = 2, names = { "hdporn92.com" }, urls = { "https?://(?:www\\.)?hdporn92\\.com/[A-Za-z0-9\\-]+/?" })
 public class HdPorn92Com extends antiDDoSForDecrypt {
     public HdPorn92Com(PluginWrapper wrapper) {
         super(wrapper);

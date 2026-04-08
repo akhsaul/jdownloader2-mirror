@@ -39,7 +39,7 @@ import jd.plugins.PluginDependencies;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.CopyCaseCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 47399 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { CopyCaseCom.class })
 public class CopyCaseComFolder extends PluginForDecrypt {
     public CopyCaseComFolder(PluginWrapper wrapper) {

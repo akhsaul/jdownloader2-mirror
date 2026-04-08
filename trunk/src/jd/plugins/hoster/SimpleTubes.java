@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "eyny.com" }, urls = { "https?://(?:\\w+\\.)?eyny\\.com/watch\\?v=([a-zA-Z0-9_-]+)" })
+@HostPlugin(revision = "$Revision: 51273 $", interfaceVersion = 2, names = { "eyny.com" }, urls = { "https?://(?:\\w+\\.)?eyny\\.com/watch\\?v=([a-zA-Z0-9_-]+)" })
 public class SimpleTubes extends PluginForHost {
     private String dllink = null;
 

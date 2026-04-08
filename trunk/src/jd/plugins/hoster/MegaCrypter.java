@@ -39,7 +39,7 @@ import jd.plugins.PluginProgress;
 import jd.plugins.components.PluginJSonUtils;
 import jd.utils.locale.JDL;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "megacrypter.noestasinvitado.com" }, urls = { "https?://(?:www\\.)?(megacrypter\\.noestasinvitado\\.com)/(!|%21)[A-Za-z0-9\\-_\\!%]+" })
+@HostPlugin(revision = "$Revision: 47665 $", interfaceVersion = 3, names = { "megacrypter.noestasinvitado.com" }, urls = { "https?://(?:www\\.)?(megacrypter\\.noestasinvitado\\.com)/(!|%21)[A-Za-z0-9\\-_\\!%]+" })
 public class MegaCrypter extends antiDDoSForHost {
     @Override
     public String[] siteSupportedNames() {

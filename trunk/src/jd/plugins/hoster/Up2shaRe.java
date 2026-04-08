@@ -31,7 +31,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "up2sha.re" }, urls = { "https?://(?:www\\.)?up2sha\\.re/file\\?f=([A-Za-z0-9]+)(\\&token=[A-Za-z0-9]+)?" })
+@HostPlugin(revision = "$Revision: 49262 $", interfaceVersion = 3, names = { "up2sha.re" }, urls = { "https?://(?:www\\.)?up2sha\\.re/file\\?f=([A-Za-z0-9]+)(\\&token=[A-Za-z0-9]+)?" })
 public class Up2shaRe extends PluginForHost {
     public Up2shaRe(PluginWrapper wrapper) {
         super(wrapper);

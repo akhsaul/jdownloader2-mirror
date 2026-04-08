@@ -22,7 +22,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "iload-usenet.com" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51944 $", interfaceVersion = 3, names = { "iload-usenet.com" }, urls = { "" })
 public class ILoadUsenet extends UseNet {
     public ILoadUsenet(PluginWrapper wrapper) {
         super(wrapper);

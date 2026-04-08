@@ -35,7 +35,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 48056 $", interfaceVersion = 3, names = {}, urls = {})
 public class SexuCom extends PluginForHost {
     public SexuCom(PluginWrapper wrapper) {
         super(wrapper);

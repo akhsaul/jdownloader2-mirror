@@ -37,7 +37,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.PixhostTo;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50745 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { PixhostTo.class })
 public class PixhostToGallery extends PluginForDecrypt {
     public PixhostToGallery(PluginWrapper wrapper) {

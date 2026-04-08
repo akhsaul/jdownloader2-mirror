@@ -38,6 +38,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.appwork.utils.net.httpconnection.TrustResult;
+import org.appwork.utils.net.httpserver.TimingContext;
 import org.appwork.utils.net.httpserver.HttpServerConnection.ConnectionHook;
 import org.appwork.utils.net.httpserver.requests.HttpRequest;
 
@@ -76,5 +77,12 @@ public interface RawHttpConnectionInterface {
      * @return true if this connection is over SSL/TLS
      */
     boolean isSSL();
+
+    /**
+     * Returns the timing context at socket/connection accept (wall-clock ms and monotonic nanos), if available.
+     *
+     * @return the timing context, or null if not available (e.g. connection type does not track it)
+     */
+    TimingContext getTimingContext();
 
 }

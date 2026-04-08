@@ -35,7 +35,7 @@ import jd.plugins.decrypter.LiteapksComCrawler;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.formatter.SizeFormatter;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { LiteapksComCrawler.class })
 public class LiteapksCom extends PluginForHost {
     public LiteapksCom(PluginWrapper wrapper) {

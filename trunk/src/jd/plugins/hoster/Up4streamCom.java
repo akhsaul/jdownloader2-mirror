@@ -27,7 +27,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52216 $", interfaceVersion = 3, names = {}, urls = {})
 public class Up4streamCom extends XFileSharingProBasic {
     public Up4streamCom(final PluginWrapper wrapper) {
         super(wrapper);

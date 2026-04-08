@@ -52,7 +52,7 @@ import jd.plugins.components.PluginJSonUtils;
 import jd.plugins.decrypter.PCloudComFolder;
 import jd.utils.locale.JDL;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51789 $", interfaceVersion = 2, names = {}, urls = {})
 @PluginDependencies(dependencies = { PCloudComFolder.class })
 public class PCloudCom extends PluginForHost {
     @SuppressWarnings("deprecation")

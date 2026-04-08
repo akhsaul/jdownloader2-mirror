@@ -37,7 +37,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49989 $", interfaceVersion = 3, names = {}, urls = {})
 public class GettrCom extends PluginForHost {
     public GettrCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -37,7 +37,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49697 $", interfaceVersion = 3, names = {}, urls = {})
 public class OtakuAttitudeNetCrawler extends PluginForDecrypt {
     public OtakuAttitudeNetCrawler(PluginWrapper wrapper) {
         super(wrapper);

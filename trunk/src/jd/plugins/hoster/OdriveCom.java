@@ -36,7 +36,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "odrive.com" }, urls = { "http://odrivedecrypted/.+" })
+@HostPlugin(revision = "$Revision: 48387 $", interfaceVersion = 2, names = { "odrive.com" }, urls = { "http://odrivedecrypted/.+" })
 public class OdriveCom extends PluginForHost {
     public OdriveCom(PluginWrapper wrapper) {
         super(wrapper);

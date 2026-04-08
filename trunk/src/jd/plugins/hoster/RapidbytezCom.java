@@ -29,7 +29,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51777 $", interfaceVersion = 3, names = {}, urls = {})
 public class RapidbytezCom extends XFileSharingProBasic {
     public RapidbytezCom(final PluginWrapper wrapper) {
         super(wrapper);

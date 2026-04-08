@@ -52,7 +52,7 @@ import org.jdownloader.captcha.v2.challenge.recaptcha.v2.CaptchaHelperHostPlugin
 import org.jdownloader.plugins.controller.LazyPlugin;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "filebit.pl" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51606 $", interfaceVersion = 3, names = { "filebit.pl" }, urls = { "" })
 public class FileBitPl extends PluginForHost {
     private static final String          APIKEY   = "YWI3Y2E2NWM3OWQxYmQzYWJmZWU3NTRiNzY0OTM1NGQ5ODI3ZjlhNmNkZWY3OGE1MjQ0ZjU4NmM5NTNiM2JjYw==";
     private static final String          API_BASE = "https://filebit.pl/api/index.php";

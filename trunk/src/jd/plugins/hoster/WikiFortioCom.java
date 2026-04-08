@@ -29,7 +29,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "wikifortio.com" }, urls = { "https?://(?:www\\.)?wikifortio\\.com/\\d+/" })
+@HostPlugin(revision = "$Revision: 50903 $", interfaceVersion = 2, names = { "wikifortio.com" }, urls = { "https?://(?:www\\.)?wikifortio\\.com/\\d+/" })
 public class WikiFortioCom extends PluginForHost {
     public WikiFortioCom(PluginWrapper wrapper) {
         super(wrapper);

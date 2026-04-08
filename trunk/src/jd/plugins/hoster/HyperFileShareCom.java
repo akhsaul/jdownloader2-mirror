@@ -33,7 +33,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "hyperfileshare.com" }, urls = { "https?://[\\w\\.]*?hyperfileshare\\.com/(?:d/|download\\.php\\?code=)([a-fA-F0-9]+)" })
+@HostPlugin(revision = "$Revision: 48630 $", interfaceVersion = 2, names = { "hyperfileshare.com" }, urls = { "https?://[\\w\\.]*?hyperfileshare\\.com/(?:d/|download\\.php\\?code=)([a-fA-F0-9]+)" })
 public class HyperFileShareCom extends PluginForHost {
     public HyperFileShareCom(PluginWrapper wrapper) {
         super(wrapper);

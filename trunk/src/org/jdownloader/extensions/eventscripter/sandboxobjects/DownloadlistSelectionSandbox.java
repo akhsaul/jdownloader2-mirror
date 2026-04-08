@@ -1,5 +1,6 @@
 package org.jdownloader.extensions.eventscripter.sandboxobjects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jd.plugins.DownloadLink;
@@ -42,11 +43,28 @@ public class DownloadlistSelectionSandbox {
             return null;
         }
         final List<DownloadLink> childs = selectionInfo.getChildren();
-        final DownloadLinkSandBox[] ret = new DownloadLinkSandBox[childs.size()];
-        for (int i = 0; i < ret.length; i++) {
-            ret[i] = new DownloadLinkSandBox(childs.get(i));
+        return DownloadLinkSandBox.wrapSandBox(childs);
+    }
+
+    public DownloadLinkSandBox[] getSelectedLinks(final FilePackageSandBox filePackageSandbox) {
+        if (selectionInfo == null || filePackageSandbox == null || filePackageSandbox.filePackage == null) {
+            return null;
         }
-        return ret;
+        for (PackageView<FilePackage, DownloadLink> packageView : selectionInfo.getPackageViews()) {
+            if (packageView.getPackage() == filePackageSandbox.filePackage) {
+                final List<DownloadLink> children = packageView.getSelectedChildren();
+                return DownloadLinkSandBox.wrapSandBox(children);
+            }
+        }
+        return null;
+    }
+
+    public FilePackageSelectionViewSandbox[] getView() {
+        List<FilePackageSelectionViewSandbox> ret = new ArrayList<FilePackageSelectionViewSandbox>();
+        for (PackageView<FilePackage, DownloadLink> packageView : selectionInfo.getPackageViews()) {
+            ret.add(new FilePackageSelectionViewSandbox(packageView));
+        }
+        return ret.toArray(new FilePackageSelectionViewSandbox[0]);
     }
 
     @Deprecated
@@ -70,16 +88,34 @@ public class DownloadlistSelectionSandbox {
         }
     }
 
+    public boolean isPackageSelected(final FilePackageSandBox filePackageSandbox) {
+        if (selectionInfo == null || filePackageSandbox == null || filePackageSandbox.filePackage == null) {
+            return false;
+        }
+        for (PackageView<FilePackage, DownloadLink> packageView : selectionInfo.getPackageViews()) {
+            if (packageView.getPackage() == filePackageSandbox.filePackage) {
+                return packageView.isPackageSelected();
+            }
+        }
+        return false;
+    }
+
     public FilePackageSandBox[] getPackages() {
+        return getPackages(false);
+    }
+
+    public FilePackageSandBox[] getPackages(final boolean includeSelectedOnly) {
         if (selectionInfo == null) {
             return null;
         }
         final List<PackageView<FilePackage, DownloadLink>> packageViews = selectionInfo.getPackageViews();
-        final FilePackageSandBox[] ret = new FilePackageSandBox[packageViews.size()];
-        for (int i = 0; i < ret.length; i++) {
-            ret[i] = new FilePackageSandBox(packageViews.get(i).getPackage());
+        final List<FilePackageSandBox> ret = new ArrayList<FilePackageSandBox>(packageViews.size());
+        for (PackageView<FilePackage, DownloadLink> packageView : packageViews) {
+            if (!includeSelectedOnly || packageView.isPackageSelected()) {
+                ret.add(new FilePackageSandBox(packageView.getPackage()));
+            }
         }
-        return ret;
+        return ret.toArray(new FilePackageSandBox[0]);
     }
 
     public FilePackageSandBox getContextPackage() {

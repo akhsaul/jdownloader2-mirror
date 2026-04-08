@@ -35,7 +35,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.DepositFiles;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48248 $", interfaceVersion = 2, names = {}, urls = {})
 @PluginDependencies(dependencies = { DepositFiles.class })
 public class DepositfilesComFolder extends PluginForDecrypt {
     private static String MAINPAGE = null;

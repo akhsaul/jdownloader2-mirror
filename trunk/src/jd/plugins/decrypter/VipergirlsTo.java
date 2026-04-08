@@ -33,7 +33,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50469 $", interfaceVersion = 3, names = {}, urls = {})
 public class VipergirlsTo extends PluginForDecrypt {
     public VipergirlsTo(PluginWrapper wrapper) {
         super(wrapper);

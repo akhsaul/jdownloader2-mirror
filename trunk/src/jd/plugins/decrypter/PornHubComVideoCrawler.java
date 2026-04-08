@@ -27,6 +27,15 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.appwork.utils.DebugMode;
+import org.appwork.utils.Regex;
+import org.appwork.utils.StringUtils;
+import org.appwork.utils.net.URLHelper;
+import org.appwork.utils.parser.UrlQuery;
+import org.jdownloader.captcha.v2.challenge.recaptcha.v2.AbstractRecaptchaV2;
+import org.jdownloader.captcha.v2.challenge.recaptcha.v2.CaptchaHelperCrawlerPluginRecaptchaV2;
+import org.jdownloader.plugins.controller.LazyPlugin;
+
 import jd.PluginWrapper;
 import jd.config.SubConfiguration;
 import jd.controlling.AccountController;
@@ -51,16 +60,7 @@ import jd.plugins.components.PluginJSonUtils;
 import jd.plugins.hoster.DirectHTTP;
 import jd.plugins.hoster.PornHubCom;
 
-import org.appwork.utils.DebugMode;
-import org.appwork.utils.Regex;
-import org.appwork.utils.StringUtils;
-import org.appwork.utils.net.URLHelper;
-import org.appwork.utils.parser.UrlQuery;
-import org.jdownloader.captcha.v2.challenge.recaptcha.v2.AbstractRecaptchaV2;
-import org.jdownloader.captcha.v2.challenge.recaptcha.v2.CaptchaHelperCrawlerPluginRecaptchaV2;
-import org.jdownloader.plugins.controller.LazyPlugin;
-
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52352 $", interfaceVersion = 3, names = {}, urls = {})
 public class PornHubComVideoCrawler extends PluginForDecrypt {
     @SuppressWarnings("deprecation")
     public PornHubComVideoCrawler(PluginWrapper wrapper) {
@@ -98,9 +98,9 @@ public class PornHubComVideoCrawler extends PluginForDecrypt {
         return buildAnnotationUrls(getPluginDomains());
     }
 
-    public static final Pattern PATTERN_SINGLE_VIDEO           = Pattern.compile("/.*\\?viewkey=(ph[a-f0-9]+)", Pattern.CASE_INSENSITIVE);
+    public static final Pattern PATTERN_SINGLE_VIDEO           = Pattern.compile("/.*\\?viewkey=((ph)?[a-f0-9]+)", Pattern.CASE_INSENSITIVE);
     public static final Pattern PATTERN_SHORTY                 = Pattern.compile("/shorties/([a-f0-9]+)", Pattern.CASE_INSENSITIVE);
-    public static final Pattern PATTERN_EMBED                  = Pattern.compile("/embed/(ph[a-f0-9]+)", Pattern.CASE_INSENSITIVE);
+    public static final Pattern PATTERN_EMBED                  = Pattern.compile("/embed/((ph)?[a-f0-9]+)", Pattern.CASE_INSENSITIVE);
     public static final Pattern PATTERN_EMBED_PLAYER           = Pattern.compile("/embed_player\\.php\\?id=(\\d+)", Pattern.CASE_INSENSITIVE);
     public static final Pattern PATTERN_PORNSTAR_VIDEOS_UPLOAD = Pattern.compile("/(pornstar)/([^/]+)/videos/upload", Pattern.CASE_INSENSITIVE);
     public static final Pattern PATTERN_PORNSTAR_VIDEOS        = Pattern.compile("/(pornstar)/([^/]+)/videos/?$", Pattern.CASE_INSENSITIVE);
@@ -475,8 +475,8 @@ public class PornHubComVideoCrawler extends PluginForDecrypt {
         final String seeAllURL = br.getRegex("(" + Pattern.quote(br._getURL().getPath()) + "/[^\"]+)\" class=\"seeAllButton greyButton float-right\">").getMatch(0);
         if (seeAllURL != null) {
             /**
-             * E.g. users/bla/videos --> /users/bla/videos/favorites </br> Without this we might only see some of all items and no
-             * pagination which is needed to be able to find all items.
+             * E.g. users/bla/videos --> /users/bla/videos/favorites </br>
+             * Without this we might only see some of all items and no pagination which is needed to be able to find all items.
              */
             logger.info("Found seeAllURL: " + seeAllURL);
             PornHubCom.getPage(br, seeAllURL);
@@ -866,7 +866,7 @@ public class PornHubComVideoCrawler extends PluginForDecrypt {
         final boolean prefer_server_filename = cfg.getBooleanProperty("USE_ORIGINAL_SERVER_FILENAME", false);
         /* Convert embed links to normal links */
         if (new Regex(contenturl, PATTERN_EMBED).patternFind()) {
-            final String viewkey = PornHubCom.getViewkeyFromURL(contenturl);
+            final String viewkey = PornHubCom.getContentIDFromURL(contenturl);
             final String newLink = br.getRegex("(https?://(?:www\\.|[a-z]{2}\\.)?pornhub(?:premium)?\\.(?:com|org)/view_video\\.php\\?viewkey=" + Pattern.quote(viewkey) + ")").getMatch(0);
             if (newLink == null) {
                 this.hostplugin.checkErrors(br, source, account);
@@ -886,7 +886,7 @@ public class PornHubComVideoCrawler extends PluginForDecrypt {
             PornHubCom.getPage(br, contenturl);
         }
         final String username = PornHubCom.getUserName(this, br);
-        final String viewkey = PornHubCom.getViewkeyFromURL(contenturl);
+        final String viewkey = PornHubCom.getContentIDFromURL(contenturl);
         // PornHubCom.getPage(br, PornHubCom.createPornhubVideolink(viewkey, aa));
         final String siteTitle = PornHubCom.getSiteTitle(this, br);
         final Map<String, Map<String, String>> qualities = PornHubCom.getVideoLinks(this, br);

@@ -19,7 +19,7 @@ import jd.plugins.PluginException;
 /**
  * category not designed to do spanning page support!
  */
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "dancehallarena.com" }, urls = { "https?://(?:\\w*\\.)?dancehallarena\\.com/(?:[a-zA-Z0-9\\-/]+|category/(?:(?:dancehall|reggae)/(?:singles/|dancehall-albums/|instrumental-dancehall/)?|soca/|mixtapes/(?:dancehall-mixtapes/|reggae-mixtapes/|hiphoprb/)?|videos/(?:music-videos/|viral-videos/)?|efx/)(?:page/\\d+)?)" })
+@DecrypterPlugin(revision = "$Revision: 49049 $", interfaceVersion = 2, names = { "dancehallarena.com" }, urls = { "https?://(?:\\w*\\.)?dancehallarena\\.com/(?:[a-zA-Z0-9\\-/]+|category/(?:(?:dancehall|reggae)/(?:singles/|dancehall-albums/|instrumental-dancehall/)?|soca/|mixtapes/(?:dancehall-mixtapes/|reggae-mixtapes/|hiphoprb/)?|videos/(?:music-videos/|viral-videos/)?|efx/)(?:page/\\d+)?)" })
 public class DncHllArCom extends antiDDoSForDecrypt {
     public DncHllArCom(PluginWrapper wrapper) {
         super(wrapper);

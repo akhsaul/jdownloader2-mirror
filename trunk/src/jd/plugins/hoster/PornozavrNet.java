@@ -33,7 +33,7 @@ import jd.plugins.decrypter.PornozavrNetCrawler;
 
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 47484 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { PornozavrNetCrawler.class })
 public class PornozavrNet extends PluginForHost {
     public PornozavrNet(PluginWrapper wrapper) {

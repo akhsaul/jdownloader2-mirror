@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 47744 $", interfaceVersion = 3, names = {}, urls = {})
 public class In91vipWin extends PluginForDecrypt {
     public In91vipWin(PluginWrapper wrapper) {
         super(wrapper);

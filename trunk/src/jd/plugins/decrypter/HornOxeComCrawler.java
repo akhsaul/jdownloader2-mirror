@@ -28,7 +28,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "hornoxe.com" }, urls = { "https?://(www\\.)?hornoxe\\.com/(?!category)[a-z0-9\\-]+/" })
+@DecrypterPlugin(revision = "$Revision: 47571 $", interfaceVersion = 2, names = { "hornoxe.com" }, urls = { "https?://(www\\.)?hornoxe\\.com/(?!category)[a-z0-9\\-]+/" })
 public class HornOxeComCrawler extends PluginForDecrypt {
     public HornOxeComCrawler(PluginWrapper wrapper) {
         super(wrapper);

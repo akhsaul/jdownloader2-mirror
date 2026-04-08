@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "imgbox.com" }, urls = { "https?://(www\\.)?imgbox\\.com/(g/)?[A-Za-z0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 49989 $", interfaceVersion = 2, names = { "imgbox.com" }, urls = { "https?://(www\\.)?imgbox\\.com/(g/)?[A-Za-z0-9]+" })
 public class ImgBoxComGallery extends PluginForDecrypt {
     public ImgBoxComGallery(PluginWrapper wrapper) {
         super(wrapper);

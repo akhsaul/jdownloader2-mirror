@@ -34,7 +34,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "vipissy.com" }, urls = { "https?://(?:www\\.)?members\\.vipissy\\.com/(?:updates/)video\\-[^/]+/" })
+@HostPlugin(revision = "$Revision: 47818 $", interfaceVersion = 3, names = { "vipissy.com" }, urls = { "https?://(?:www\\.)?members\\.vipissy\\.com/(?:updates/)video\\-[^/]+/" })
 public class VipissyCom extends PluginForHost {
     public VipissyCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -29,7 +29,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "camhub.cc" }, urls = { "https?://(?:www\\.)?camhub\\.cc/videos/\\d+/([a-z0-9\\-]+)/" })
+@DecrypterPlugin(revision = "$Revision: 49519 $", interfaceVersion = 2, names = { "camhub.cc" }, urls = { "https?://(?:www\\.)?camhub\\.cc/videos/\\d+/([a-z0-9\\-]+)/" })
 public class CamhubCc extends PluginForDecrypt {
     public CamhubCc(PluginWrapper wrapper) {
         super(wrapper);

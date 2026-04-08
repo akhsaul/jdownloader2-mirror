@@ -26,7 +26,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48444 $", interfaceVersion = 3, names = {}, urls = {})
 public class OiiIo extends MightyScriptAdLinkFly {
     public OiiIo(PluginWrapper wrapper) {
         super(wrapper);

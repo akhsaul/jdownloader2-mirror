@@ -18,6 +18,7 @@ package jd.plugins.hoster;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.appwork.utils.Regex;
 import org.jdownloader.plugins.components.XFileSharingProBasic;
@@ -28,7 +29,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52455 $", interfaceVersion = 3, names = {}, urls = {})
 public class FappicCom extends XFileSharingProBasic {
     public FappicCom(final PluginWrapper wrapper) {
         super(wrapper);
@@ -62,7 +63,7 @@ public class FappicCom extends XFileSharingProBasic {
         return buildAnnotationUrls(getPluginDomains());
     }
 
-    private final String PATTERN_THUMBNAIL = "(https?://img\\d+\\.[^/]+)?/i/\\d+/([a-z0-9]{12})_t\\.jpg";
+    private final Pattern PATTERN_THUMBNAIL = Pattern.compile("(https?://img\\d+\\.[^/]+)?/i/\\d+/([a-z0-9]{12})_t\\.jpg");
 
     public static String[] buildAnnotationUrls(final List<String[]> pluginDomains) {
         final List<String> ret = new ArrayList<String>();
@@ -124,6 +125,12 @@ public class FappicCom extends XFileSharingProBasic {
     }
 
     @Override
+    public String getLoginURL() {
+        /* 2024-07-22 */
+        return getMainPage() + "/?op=login";
+    }
+
+    @Override
     protected String getFUID(final String url, URL_TYPE type) {
         if (url != null && type == null) {
             try {
@@ -134,12 +141,6 @@ public class FappicCom extends XFileSharingProBasic {
         } else {
             return super.getFUID(url, type);
         }
-    }
-
-    @Override
-    public String getLoginURL() {
-        // 2024-07-22
-        return getMainPage() + "/?op=login";
     }
 
     @Override

@@ -50,7 +50,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51463 $", interfaceVersion = 3, names = {}, urls = {})
 public class PornboxCom extends PluginForHost {
     public PornboxCom(PluginWrapper wrapper) {
         super(wrapper);

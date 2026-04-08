@@ -59,7 +59,7 @@ import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 import jd.plugins.decrypter.PixivNetGallery;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51117 $", interfaceVersion = 3, names = {}, urls = {})
 public class PixivNet extends PluginForHost {
     public PixivNet(PluginWrapper wrapper) {
         super(wrapper);

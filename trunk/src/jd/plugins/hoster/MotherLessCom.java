@@ -49,7 +49,7 @@ import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.components.config.MotherlessComConfig;
 import org.jdownloader.plugins.config.PluginJsonConfig;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51442 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { MotherLessComCrawler.class })
 public class MotherLessCom extends PluginForHost {
     public static final String  text_subscribeFailed        = "Failed to subscribe to the owner of the video";

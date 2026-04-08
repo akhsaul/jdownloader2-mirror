@@ -28,7 +28,7 @@ import jd.plugins.PluginException;
 import org.jdownloader.plugins.components.config.KVSConfig;
 import org.jdownloader.plugins.components.config.KVSConfigXfreehdCom;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51059 $", interfaceVersion = 3, names = {}, urls = {})
 public class XfreehdCom extends KernelVideoSharingComV2 {
     public XfreehdCom(final PluginWrapper wrapper) {
         super(wrapper);

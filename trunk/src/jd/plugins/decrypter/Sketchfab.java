@@ -31,7 +31,7 @@ import jd.plugins.FilePackage;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "sketchfab.com" }, urls = { "https?://(?:www\\.)?sketchfab\\.com/(3d-models/[a-z0-9\\-]+\\-[a-f0-9]{32}|models/[a-f0-9]{32}/embed)" })
+@DecrypterPlugin(revision = "$Revision: 47321 $", interfaceVersion = 2, names = { "sketchfab.com" }, urls = { "https?://(?:www\\.)?sketchfab\\.com/(3d-models/[a-z0-9\\-]+\\-[a-f0-9]{32}|models/[a-f0-9]{32}/embed)" })
 public class Sketchfab extends PluginForDecrypt {
     public Sketchfab(PluginWrapper wrapper) {
         super(wrapper);

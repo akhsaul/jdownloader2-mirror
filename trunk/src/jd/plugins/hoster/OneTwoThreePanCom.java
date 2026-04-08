@@ -43,7 +43,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.OneTwoThreePanComFolder;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49099 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { OneTwoThreePanComFolder.class })
 public class OneTwoThreePanCom extends PluginForHost {
     public OneTwoThreePanCom(PluginWrapper wrapper) {

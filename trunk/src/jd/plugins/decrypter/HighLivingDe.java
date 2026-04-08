@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "hi-living.de" }, urls = { "https?://(?:www\\.)?hi\\-living\\.de/.+" })
+@DecrypterPlugin(revision = "$Revision: 48324 $", interfaceVersion = 2, names = { "hi-living.de" }, urls = { "https?://(?:www\\.)?hi\\-living\\.de/.+" })
 public class HighLivingDe extends PluginForDecrypt {
     public HighLivingDe(PluginWrapper wrapper) {
         super(wrapper);

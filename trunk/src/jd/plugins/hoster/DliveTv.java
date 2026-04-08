@@ -38,7 +38,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 48989 $", interfaceVersion = 3, names = {}, urls = {})
 public class DliveTv extends PluginForHost {
     public DliveTv(PluginWrapper wrapper) {
         super(wrapper);

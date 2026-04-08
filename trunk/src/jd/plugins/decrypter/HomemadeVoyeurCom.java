@@ -32,7 +32,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "homemade-voyeur.com" }, urls = { "https?://(?:www\\.)?(homemade\\-voyeur|yourvoyeurvideos)\\.com/(?:(?:tube/)?video/|tube/gallery/|\\d+/)[^/]+\\.html" })
+@DecrypterPlugin(revision = "$Revision: 49602 $", interfaceVersion = 2, names = { "homemade-voyeur.com" }, urls = { "https?://(?:www\\.)?(homemade\\-voyeur|yourvoyeurvideos)\\.com/(?:(?:tube/)?video/|tube/gallery/|\\d+/)[^/]+\\.html" })
 public class HomemadeVoyeurCom extends PluginForDecrypt {
     public HomemadeVoyeurCom(PluginWrapper wrapper) {
         super(wrapper);

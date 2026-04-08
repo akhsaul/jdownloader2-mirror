@@ -37,7 +37,7 @@ import org.appwork.storage.TypeRef;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51818 $", interfaceVersion = 2, names = {}, urls = {})
 public class RappersIn extends PluginForDecrypt {
     public RappersIn(PluginWrapper wrapper) {
         super(wrapper);

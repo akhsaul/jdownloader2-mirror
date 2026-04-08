@@ -50,7 +50,7 @@ import jd.plugins.PluginForHost;
 import jd.plugins.hoster.ArtstationCom;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "artstation.com" }, urls = { "https?://(?:www\\.)?artstation\\.com/((?:artist|artwork|marketplace/p/[^^/\\s]+)/[^/\\s]+|(?!about|jobs|contests|blogs|users)[^/\\s]+(/likes)?)" })
+@DecrypterPlugin(revision = "$Revision: 48896 $", interfaceVersion = 3, names = { "artstation.com" }, urls = { "https?://(?:www\\.)?artstation\\.com/((?:artist|artwork|marketplace/p/[^^/\\s]+)/[^/\\s]+|(?!about|jobs|contests|blogs|users)[^/\\s]+(/likes)?)" })
 public class ArtstationComCrawler extends PluginForDecrypt {
     public ArtstationComCrawler(PluginWrapper wrapper) {
         super(wrapper);

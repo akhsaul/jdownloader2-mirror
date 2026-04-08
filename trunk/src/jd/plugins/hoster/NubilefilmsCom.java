@@ -32,7 +32,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "nubilefilms.com" }, urls = { "https?://(?:www\\.)?nubilefilms\\.com/tube/watch/(\\d+)" })
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = { "nubilefilms.com" }, urls = { "https?://(?:www\\.)?nubilefilms\\.com/tube/watch/(\\d+)" })
 public class NubilefilmsCom extends PluginForHost {
     public NubilefilmsCom(PluginWrapper wrapper) {
         super(wrapper);

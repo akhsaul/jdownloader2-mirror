@@ -50,7 +50,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50542 $", interfaceVersion = 3, names = {}, urls = {})
 public class KsharedCom extends PluginForHost {
     public KsharedCom(PluginWrapper wrapper) {
         super(wrapper);

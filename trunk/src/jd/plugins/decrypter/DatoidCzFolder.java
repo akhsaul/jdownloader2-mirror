@@ -37,7 +37,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DatoidCz;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48567 $", interfaceVersion = 2, names = {}, urls = {})
 @PluginDependencies(dependencies = { DatoidCz.class })
 public class DatoidCzFolder extends PluginForDecrypt {
     public DatoidCzFolder(PluginWrapper wrapper) {

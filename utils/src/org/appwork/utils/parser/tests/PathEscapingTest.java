@@ -6,8 +6,11 @@ import java.util.Arrays;
 
 import org.appwork.exceptions.WTFException;
 import org.appwork.testframework.AWTest;
+import org.appwork.testframework.JREExecuter;
+import org.appwork.testframework.JREExecuter.JreOptions;
 import org.appwork.utils.Application;
 import org.appwork.utils.JVMVersion;
+import org.appwork.utils.JavaVersion;
 import org.appwork.utils.ReflectionUtils;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.os.CrossSystem;
@@ -109,6 +112,21 @@ public class PathEscapingTest extends AWTest {
 
     @Override
     public void runTest() throws Exception {
+        if (!CrossSystem.isWindows()) {
+            logInfoAnyway("SKIPPED: WINDOWS Only");
+            return;
+        }
+        JREExecuter.runInJRE(JreOptions.version(JavaVersion.JVM_1_8).detailedVersion("1.8.0_312"), PathEscapingTest.class, "runPathEscapingTestsInThisJRE");
+        for (JavaVersion v : new JavaVersion[] { JavaVersion.JVM_1_8, JavaVersion.JVM_11_0 }) {
+            JREExecuter.runInJRE(JreOptions.version(v), PathEscapingTest.class, "runPathEscapingTestsInThisJRE");
+        }
+    }
+
+    /**
+     * Runs path escaping comparison tests in the current JRE. Requires at least JVM 1.8u312 (ProcessImpl API). Invoked via JREExecuter
+     * so tests run with the correct JRE version.
+     */
+    public void runPathEscapingTestsInThisJRE() throws Exception {
         // "java.exe" -version "c:\Pa th\\"
         // Maybe Crosscheck with
         // https://github.com/JetBrains/intellij-community/blob/44c3dddac8e82091b2241d85c2303fc938ce1cd5/platform/util/src/com/intellij/execution/CommandLineUtil.java#L19

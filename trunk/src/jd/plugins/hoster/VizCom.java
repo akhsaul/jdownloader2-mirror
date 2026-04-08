@@ -38,7 +38,7 @@ import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 import jd.plugins.decrypter.VizComCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "viz.com" }, urls = { "http://vizdecrypted/\\d+_\\d+_\\d+" })
+@HostPlugin(revision = "$Revision: 48054 $", interfaceVersion = 3, names = { "viz.com" }, urls = { "http://vizdecrypted/\\d+_\\d+_\\d+" })
 public class VizCom extends PluginForHost {
     public VizCom(PluginWrapper wrapper) {
         super(wrapper);

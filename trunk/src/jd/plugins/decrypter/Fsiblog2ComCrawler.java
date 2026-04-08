@@ -30,7 +30,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49584 $", interfaceVersion = 3, names = {}, urls = {})
 public class Fsiblog2ComCrawler extends PluginForDecrypt {
     public Fsiblog2ComCrawler(PluginWrapper wrapper) {
         super(wrapper);

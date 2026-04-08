@@ -38,7 +38,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.WesenditComCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 48622 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { WesenditComCrawler.class })
 public class WesenditCom extends PluginForHost {
     public WesenditCom(PluginWrapper wrapper) {

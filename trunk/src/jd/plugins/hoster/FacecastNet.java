@@ -37,7 +37,7 @@ import org.jdownloader.plugins.components.hls.HlsContainer;
 import org.jdownloader.plugins.controller.LazyPlugin;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "facecast.net" }, urls = { "https?://(?:www\\.)?facecast\\.net/(?:v|w)/([A-Za-z0-9]+)" })
+@HostPlugin(revision = "$Revision: 48641 $", interfaceVersion = 3, names = { "facecast.net" }, urls = { "https?://(?:www\\.)?facecast\\.net/(?:v|w)/([A-Za-z0-9]+)" })
 public class FacecastNet extends PluginForHost {
     public FacecastNet(PluginWrapper wrapper) {
         super(wrapper);

@@ -140,7 +140,7 @@ public class SSLHttpServer extends HttpServer {
         final KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmf.init(serverKeystore, serverKeystorePassword);
         final TrustCallback callback = new TrustCallback() {
-            public void onTrustResult(final TrustProviderInterface provider, final X509Certificate[] chain, final String authType, final TrustResult result) {
+            public void onTrustResult(final TrustProviderInterface provider, final String authType, final TrustResult result) {
                 if (holder != null && result != null) {
                     holder.set(result);
                 }
@@ -161,7 +161,9 @@ public class SSLHttpServer extends HttpServer {
         return sc;
     }
 
-    /** ALPN protocol "http/1.1" (used only on Java 9+ via reflection to avoid compile dependency on {@code javax.net.ssl.SSLParameters}). */
+    /**
+     * ALPN protocol "http/1.1" (used only on Java 9+ via reflection to avoid compile dependency on {@code javax.net.ssl.SSLParameters}).
+     */
     private static final String[] ALPN_HTTP_1_1 = new String[] { "http/1.1" };
 
     /**
@@ -202,7 +204,7 @@ public class SSLHttpServer extends HttpServer {
     }
 
     @Override
-    protected HttpConnectionRunnable createHttpConnection(final Socket clientSocket) throws IOException {
+    protected HttpConnectionRunnable createHttpConnection(final Socket clientSocket, final TimingContext timingContext) throws IOException {
         if (clientSocket == null) {
             throw new IOException("ClientSocket is null");
         }
@@ -231,7 +233,7 @@ public class SSLHttpServer extends HttpServer {
             if (trustResult == null && clientCertChain != null && clientCertChain.length > 0) {
                 trustResult = new TrustResult(null, clientCertChain, null, TrustResult.TrustType.CLIENT);
             }
-            return new HttpServerConnection(this, sslSocket, sslSocket.getInputStream(), sslSocket.getOutputStream(), true, trustResult);
+            return createSSLHttpServerConnection(sslSocket, trustResult, timingContext);
         } catch (final SocketException e) {
             // Client closed/aborted (e.g. browser cancelled connection, TLS abort, recv failed)
             closeQuietly(sslSocket);
@@ -247,10 +249,22 @@ public class SSLHttpServer extends HttpServer {
         }
     }
 
+    /**
+     * @param sslSocket
+     * @param trustResult
+     * @param timingContext
+     *            timing at socket accept, or null if unknown
+     * @return
+     * @throws IOException
+     */
+    protected HttpConnectionRunnable createSSLHttpServerConnection(final SSLSocket sslSocket, TrustResult trustResult, final TimingContext timingContext) throws IOException {
+        return new HttpServerConnection(this, sslSocket, sslSocket.getInputStream(), sslSocket.getOutputStream(), true, trustResult, timingContext);
+    }
+
     private static void closeQuietly(final SSLSocket sslSocket) {
-        LogV3.fine("SSL connection closed by client or handshake abort");
         try {
-            if (sslSocket != null) {
+            if (sslSocket != null && !sslSocket.isClosed()) {
+                LogV3.fine("SSL connection closed by client or handshake abort");
                 sslSocket.close();
             }
         } catch (final Throwable ignored) {

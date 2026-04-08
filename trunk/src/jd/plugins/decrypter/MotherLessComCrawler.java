@@ -40,7 +40,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.MotherLessCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51692 $", interfaceVersion = 3, names = {}, urls = {})
 public class MotherLessComCrawler extends PluginForDecrypt {
     public MotherLessComCrawler(PluginWrapper wrapper) {
         super(wrapper);

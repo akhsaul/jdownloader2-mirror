@@ -38,7 +38,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.AventertainmentsCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "aventertainments.com" }, urls = { "https?://(?:www\\.)?aventertainments\\.com/.+" })
+@DecrypterPlugin(revision = "$Revision: 48711 $", interfaceVersion = 3, names = { "aventertainments.com" }, urls = { "https?://(?:www\\.)?aventertainments\\.com/.+" })
 public class AventertainmentsComCrawler extends PluginForDecrypt {
     public AventertainmentsComCrawler(PluginWrapper wrapper) {
         super(wrapper);

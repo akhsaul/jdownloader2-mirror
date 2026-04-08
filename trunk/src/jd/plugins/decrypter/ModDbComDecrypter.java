@@ -34,7 +34,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.ModDbCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51145 $", interfaceVersion = 2, names = {}, urls = {})
 public class ModDbComDecrypter extends PluginForDecrypt {
     public ModDbComDecrypter(PluginWrapper wrapper) {
         super(wrapper);

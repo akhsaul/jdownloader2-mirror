@@ -20,7 +20,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "oracle.com" }, urls = { "(https?://updates\\.oracle\\.com/Orion/Services/download/.*?\\?aru=\\d+&patch_file=(.+)|https?://.*?oracle\\.com/.*?download\\?fileName=.*?&token=.+)" })
+@HostPlugin(revision = "$Revision: 51945 $", interfaceVersion = 3, names = { "oracle.com" }, urls = { "(https?://updates\\.oracle\\.com/Orion/Services/download/.*?\\?aru=\\d+&patch_file=(.+)|https?://.*?oracle\\.com/.*?download\\?fileName=.*?&token=.+)" })
 public class OracleCom extends PluginForHost {
     public OracleCom(PluginWrapper wrapper) {
         super(wrapper);

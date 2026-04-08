@@ -4,7 +4,7 @@
  *         "AppWork Utilities" License
  *         The "AppWork Utilities" will be called [The Product] from now on.
  * ====================================================================================================================================================
- *         Copyright (c) 2009-2025, AppWork GmbH <e-mail@appwork.org>
+ *         Copyright (c) 2009-2026, AppWork GmbH <e-mail@appwork.org>
  *         Spalter Strasse 58
  *         91183 Abenberg
  *         e-mail@appwork.org
@@ -37,6 +37,7 @@ package org.appwork.processes;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import org.appwork.utils.duration.TimeSpan;
 import org.appwork.utils.os.NotSupportedException;
@@ -124,5 +125,15 @@ public class NotSupportedProcessHandler implements ProcessHandler {
     @Override
     public List<ProcessInfo> getLockingProcesses(File file) throws IOException, NotSupportedException, InterruptedException {
         throw new NotSupportedException("No Supported");
+    }
+
+    /**
+     * Not supported; returns false (cannot determine process state).
+     *
+     * @see org.appwork.processes.ProcessHandler#isProcessesAlive(org.appwork.processes.ProcessInfo[])
+     */
+    @Override
+    public boolean isProcessesAlive(ProcessInfo... infos) {
+        return false;
     }
 }

@@ -27,7 +27,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "primemusic.ru" }, urls = { "https?://(?:www\\.)?(primemusic\\.ru|prime-music\\.net|primemusic\\.cc|primemusic\\.me|freshmusic\\.club|newhit\\.me|(?:[a-z0-9]+\\.)?new-hits\\.ru)/Media\\-page\\-\\d+\\.html" })
+@HostPlugin(revision = "$Revision: 49171 $", interfaceVersion = 2, names = { "primemusic.ru" }, urls = { "https?://(?:www\\.)?(primemusic\\.ru|prime-music\\.net|primemusic\\.cc|primemusic\\.me|freshmusic\\.club|newhit\\.me|(?:[a-z0-9]+\\.)?new-hits\\.ru)/Media\\-page\\-\\d+\\.html" })
 public class PrimeMusicRu extends PluginForHost {
     @Override
     public String[] siteSupportedNames() {

@@ -37,7 +37,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "sdilej.cz" }, urls = { "https?://(?:www\\.)?sdilej\\.cz/([A-Fa-f0-9]+)(/([a-z0-9-\\.]+))?" })
+@HostPlugin(revision = "$Revision: 50530 $", interfaceVersion = 3, names = { "sdilej.cz" }, urls = { "https?://(?:www\\.)?sdilej\\.cz/([A-Fa-f0-9]+)(/([a-z0-9-\\.]+))?" })
 public class SdilejCz extends PluginForHost {
     /** Former czshare.com */
     private static AtomicInteger SIMULTANEOUS_PREMIUM                        = new AtomicInteger(-1);

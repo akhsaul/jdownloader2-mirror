@@ -34,7 +34,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.RomHustler;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 47764 $", interfaceVersion = 3, names = {}, urls = {})
 public class RomHustlerCrawler extends PluginForDecrypt {
     public RomHustlerCrawler(PluginWrapper wrapper) {
         super(wrapper);

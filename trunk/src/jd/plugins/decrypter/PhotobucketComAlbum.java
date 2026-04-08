@@ -37,7 +37,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.PluginJSonUtils;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 46955 $", interfaceVersion = 3, names = {}, urls = {})
 public class PhotobucketComAlbum extends PluginForDecrypt {
     public PhotobucketComAlbum(PluginWrapper wrapper) {
         super(wrapper);

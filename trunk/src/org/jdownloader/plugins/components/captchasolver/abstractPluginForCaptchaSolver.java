@@ -13,13 +13,12 @@ import org.jdownloader.captcha.v2.ChallengeSolver.FeedbackType;
 import org.jdownloader.captcha.v2.PluginChallengeSolver;
 import org.jdownloader.captcha.v2.solver.CESSolverJob;
 import org.jdownloader.plugins.components.config.CaptchaSolverPluginConfig;
-import org.jdownloader.plugins.config.PluginJsonConfig;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
 import jd.PluginWrapper;
 import jd.plugins.Account;
 import jd.plugins.AccountInfo;
-import jd.plugins.CaptchaType;
+import jd.plugins.CaptchaSolverAccountSettingsPanelBuilder.AccountCaptchaTypeAccessor;
 import jd.plugins.CaptchaType.CAPTCHA_TYPE;
 import jd.plugins.DownloadLink;
 import jd.plugins.DownloadLink.AvailableStatus;
@@ -44,6 +43,7 @@ public abstract class abstractPluginForCaptchaSolver extends PluginForHost {
     public abstractPluginForCaptchaSolver(PluginWrapper wrapper) {
         super(wrapper);
         if (DebugMode.TRUE_IN_IDE_ELSE_FALSE) {
+            /* All captcha solver plugins have account support. */
             this.enablePremium(getBuyPremiumUrl());
         }
     }
@@ -58,11 +58,38 @@ public abstract class abstractPluginForCaptchaSolver extends PluginForHost {
         return new LazyPlugin.FEATURE[] { LazyPlugin.FEATURE.CAPTCHA_SOLVER, LazyPlugin.FEATURE.BUBBLE_NOTIFICATION };
     }
 
+    /**
+     * Returns the list of captcha types supported by this solver. <br>
+     * Important: If a solver supports all reCaptcha captcha types, return RECAPTCHA_V2, RECAPTCHA_V2_ENTERPRISE AND RECAPTCHA_V2_INVISIBLE
+     * !
+     *
+     *
+     *
+     * @return List of supported captcha types
+     */
+    public abstract List<CAPTCHA_TYPE> getSupportedCaptchaTypes();
+
+    /** Returns list of captcha types supported by this account. */
+    public List<CAPTCHA_TYPE> getSupportedCaptchaTypes(final Account account) {
+        return getSupportedCaptchaTypes();
+    }
+
     public List<FeedbackType> getSupportedFeedbackTypes() {
         return null;
     }
 
     public abstract String getBuyPremiumUrl();
+
+    /** Returns captcha challenge that this plugin is currently processing. */
+    private Challenge<?> c = null;
+
+    public Challenge<?> getCurrentCaptchaChallenge() {
+        return this.c;
+    }
+
+    public void setCurrentCaptchaChallenge(Challenge<?> c) {
+        this.c = c;
+    }
 
     /**
      * Reports a captcha as invalid.
@@ -88,27 +115,15 @@ public abstract class abstractPluginForCaptchaSolver extends PluginForHost {
         return false;
     }
 
-    /**
-     * Returns the list of captcha types supported by this solver. <br>
-     * Important: If a solver supports all reCaptcha captcha types, return RECAPTCHA_V2, RECAPTCHA_V2_ENTERPRISE AND RECAPTCHA_V2_INVISIBLE
-     * !
-     *
-     *
-     *
-     * @return List of supported captcha types
-     */
-    public abstract List<CAPTCHA_TYPE> getSupportedCaptchaTypes();
-
     public List<CAPTCHA_TYPE> getUserDisabledCaptchaTypes(final Account account) {
         final AccountInfo ai = account.getAccountInfo();
         if (ai == null) {
             return null;
         }
         final List<CAPTCHA_TYPE> disabled_captcha_types = new ArrayList<CAPTCHA_TYPE>();
+        final AccountCaptchaTypeAccessor ata = new AccountCaptchaTypeAccessor(account);
         for (final CAPTCHA_TYPE ctype : CAPTCHA_TYPE.values()) {
-            final CaptchaType captchaType = new CaptchaType(ctype);
-            captchaType.setAccountInfo(ai);
-            if (!captchaType.isEnabled()) {
+            if (!ata.isEnabled(ctype)) {
                 disabled_captcha_types.add(ctype);
             }
         }
@@ -218,35 +233,18 @@ public abstract class abstractPluginForCaptchaSolver extends PluginForHost {
      *            The challenge to check
      * @return null if this solver can handle the challenge, ChallengeVetoReason otherwise
      */
-    public final ChallengeVetoReason getVetoReason(final Challenge<?> c, final Account account) {
-        if (!account.isEnabled()) {
-            return ChallengeVetoReason.ACCOUNT_DISABLED;
-        }
-        if (!account.isValid()) {
-            return ChallengeVetoReason.ACCOUNT_IN_ERROR_STATE;
-        }
-        if (!this.enoughBalanceFor(c, account)) {
-            return ChallengeVetoReason.ACCOUNT_NOT_ENOUGH_CREDITS;
-        }
+    public ChallengeVetoReason getVetoReason(final Challenge<?> c, final Account account) {
         return null;
     }
 
+    @Override
+    public Class<? extends CaptchaSolverPluginConfig> getConfigInterface() {
+        return CaptchaSolverPluginConfig.class;
+    }
+
     private CaptchaSolverPluginConfig getDefaultConfig() {
-        /*
-         * TODO: Maybe ensure that every captcha solver plugin has a config or throw exception <br> Every captcha solver plugin should have
-         * a config.
-         */
-        final Object cfgO = this.getConfigInterface();
-        if (cfgO == null) {
-            // TODO: Remove this fallback
-            logger.warning("Solver has no config");
-            return PluginJsonConfig.get(CaptchaSolverPluginConfig.class);
-        }
-        if (!(cfgO instanceof CaptchaSolverPluginConfig)) {
-            logger.warning("Unexpected solver config type");
-            throw new IllegalArgumentException("");
-        }
-        final CaptchaSolverPluginConfig cfg = (CaptchaSolverPluginConfig) cfgO;
+        final Class<? extends CaptchaSolverPluginConfig> configInterfaceClass = this.getConfigInterface();
+        final CaptchaSolverPluginConfig cfg = get(configInterfaceClass);
         return cfg;
     }
 

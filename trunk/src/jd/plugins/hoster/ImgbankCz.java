@@ -35,7 +35,7 @@ import jd.plugins.Plugin;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50899 $", interfaceVersion = 3, names = {}, urls = {})
 public class ImgbankCz extends PluginForHost {
     public ImgbankCz(PluginWrapper wrapper) {
         super(wrapper);

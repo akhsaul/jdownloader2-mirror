@@ -28,7 +28,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "mixotic.net" }, urls = { "https?://(?:www\\.)?mixotic\\.net/dj\\-(sets|mixes)/.*" })
+@DecrypterPlugin(revision = "$Revision: 45953 $", interfaceVersion = 2, names = { "mixotic.net" }, urls = { "https?://(?:www\\.)?mixotic\\.net/dj\\-(sets|mixes)/.*" })
 public class MixoticNet extends PluginForDecrypt {
     public MixoticNet(PluginWrapper wrapper) {
         super(wrapper);

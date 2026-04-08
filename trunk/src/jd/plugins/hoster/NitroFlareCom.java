@@ -61,7 +61,7 @@ import org.jdownloader.plugins.components.config.NitroflareConfig;
 import org.jdownloader.plugins.config.PluginJsonConfig;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52202 $", interfaceVersion = 3, names = {}, urls = {})
 public class NitroFlareCom extends PluginForHost {
     private final String         staticBaseURL             = "https://nitroflare.com";
     /* Documentation | docs: https://nitroflare.com/member?s=api */

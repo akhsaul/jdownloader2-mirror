@@ -31,7 +31,7 @@ import org.appwork.storage.TypeRef;
 import org.jdownloader.downloader.hls.HLSDownloader;
 import org.jdownloader.plugins.components.hls.HlsContainer;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "doublej.net.au" }, urls = { "https?://(?:www\\.)?doublej\\.net\\.au/programs/[a-z0-9\\-]+/.+|https://(?:www\\.)?abc\\.net\\.au/doublej/programs/[a-z0-9\\-]+/[a-z0-9\\-]+/\\d+" })
+@HostPlugin(revision = "$Revision: 52202 $", interfaceVersion = 3, names = { "doublej.net.au" }, urls = { "https?://(?:www\\.)?doublej\\.net\\.au/programs/[a-z0-9\\-]+/.+|https://(?:www\\.)?abc\\.net\\.au/doublej/programs/[a-z0-9\\-]+/[a-z0-9\\-]+/\\d+" })
 public class DoubleJNetAu extends PluginForHost {
     // raztoki embed video player template.
     private Browser ajax = null;

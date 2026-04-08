@@ -39,7 +39,7 @@ import jd.plugins.PluginException;
  *
  * @author raztoki
  */
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48644 $", interfaceVersion = 3, names = {}, urls = {})
 public class ScnlogEu extends antiDDoSForDecrypt {
     public ScnlogEu(PluginWrapper wrapper) {
         super(wrapper);

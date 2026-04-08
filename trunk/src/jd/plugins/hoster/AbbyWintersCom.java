@@ -51,7 +51,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.AbbyWintersComGallery;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 48194 $", interfaceVersion = 2, names = {}, urls = {})
 public class AbbyWintersCom extends PluginForHost {
     public AbbyWintersCom(PluginWrapper wrapper) {
         super(wrapper);

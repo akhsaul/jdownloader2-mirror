@@ -43,7 +43,7 @@ import jd.plugins.PluginForDecrypt;
  * @author raztoki
  *
  */
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "abc.net.au" }, urls = { "https?://(?:www\\.)?abc\\.net\\.au/.+" })
+@DecrypterPlugin(revision = "$Revision: 51022 $", interfaceVersion = 2, names = { "abc.net.au" }, urls = { "https?://(?:www\\.)?abc\\.net\\.au/.+" })
 public class AbcNtAu extends PluginForDecrypt {
     public AbcNtAu(PluginWrapper wrapper) {
         super(wrapper);

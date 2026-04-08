@@ -46,7 +46,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50772 $", interfaceVersion = 3, names = {}, urls = {})
 public class FlashfilesCom extends PluginForHost {
     public FlashfilesCom(PluginWrapper wrapper) {
         super(wrapper);

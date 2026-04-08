@@ -26,7 +26,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51281 $", interfaceVersion = 3, names = {}, urls = {})
 public class UpzurCom extends XFileSharingProBasic {
     public UpzurCom(final PluginWrapper wrapper) {
         super(wrapper);

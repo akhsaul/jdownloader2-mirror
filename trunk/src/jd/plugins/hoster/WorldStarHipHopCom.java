@@ -35,7 +35,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.WorldStarHipHopComDecrypter;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 48043 $", interfaceVersion = 2, names = {}, urls = {})
 @PluginDependencies(dependencies = { WorldStarHipHopComDecrypter.class })
 public class WorldStarHipHopCom extends PluginForHost {
     private String dllink = null;

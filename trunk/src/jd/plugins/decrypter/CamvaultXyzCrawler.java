@@ -41,7 +41,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.PluginJSonUtils;
 import jd.plugins.hoster.CamvaultXyz;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49086 $", interfaceVersion = 3, names = {}, urls = {})
 public class CamvaultXyzCrawler extends PluginForDecrypt {
     public CamvaultXyzCrawler(PluginWrapper wrapper) {
         super(wrapper);

@@ -33,7 +33,7 @@ import jd.plugins.PluginException;
 import org.jdownloader.captcha.v2.challenge.recaptcha.v2.CaptchaHelperCrawlerPluginRecaptchaV2;
 import org.jdownloader.plugins.components.antiDDoSForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "ffetish.photos", "ffetish.video" }, urls = { "https?://(?:[a-z0-9\\-]+\\.)?ffetish\\.photos/\\d+[a-z0-9\\-]+\\.html", "https?://(?:[a-z0-9\\-]+\\.)?ffetish\\.video/\\d+[a-z0-9\\-]+\\.html" })
+@DecrypterPlugin(revision = "$Revision: 46930 $", interfaceVersion = 3, names = { "ffetish.photos", "ffetish.video" }, urls = { "https?://(?:[a-z0-9\\-]+\\.)?ffetish\\.photos/\\d+[a-z0-9\\-]+\\.html", "https?://(?:[a-z0-9\\-]+\\.)?ffetish\\.video/\\d+[a-z0-9\\-]+\\.html" })
 public class FfetishPhotos extends antiDDoSForDecrypt {
     public FfetishPhotos(PluginWrapper wrapper) {
         super(wrapper);

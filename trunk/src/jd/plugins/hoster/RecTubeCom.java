@@ -30,7 +30,7 @@ import jd.plugins.PluginException;
 
 import org.jdownloader.plugins.components.antiDDoSForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "rec-tube.com" }, urls = { "https?://(?:www\\.)?rec\\-tube\\.com/watch/(\\d+)/" })
+@HostPlugin(revision = "$Revision: 47484 $", interfaceVersion = 3, names = { "rec-tube.com" }, urls = { "https?://(?:www\\.)?rec\\-tube\\.com/watch/(\\d+)/" })
 public class RecTubeCom extends antiDDoSForHost {
     public RecTubeCom(PluginWrapper wrapper) {
         super(wrapper);

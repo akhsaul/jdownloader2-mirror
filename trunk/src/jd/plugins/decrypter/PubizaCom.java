@@ -31,7 +31,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48424 $", interfaceVersion = 2, names = {}, urls = {})
 public class PubizaCom extends antiDDoSForDecrypt {
     public PubizaCom(PluginWrapper wrapper) {
         super(wrapper);

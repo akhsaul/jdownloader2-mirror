@@ -26,7 +26,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "nfomation.net" }, urls = { "https?://(?:www\\.)?nfomation\\.net/info/(\\d+)\\..+\\.nfo" })
+@HostPlugin(revision = "$Revision: 49087 $", interfaceVersion = 2, names = { "nfomation.net" }, urls = { "https?://(?:www\\.)?nfomation\\.net/info/(\\d+)\\..+\\.nfo" })
 public class NFormationNet extends PluginForHost {
     public NFormationNet(PluginWrapper wrapper) {
         super(wrapper);

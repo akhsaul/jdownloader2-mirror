@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "clyp.it" }, urls = { "https?://(?:www\\.)?clyp\\.it/([A-Za-z0-9]+)" })
+@HostPlugin(revision = "$Revision: 49985 $", interfaceVersion = 3, names = { "clyp.it" }, urls = { "https?://(?:www\\.)?clyp\\.it/([A-Za-z0-9]+)" })
 public class ClypIt extends PluginForHost {
     public ClypIt(PluginWrapper wrapper) {
         super(wrapper);

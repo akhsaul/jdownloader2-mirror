@@ -25,7 +25,7 @@ import jd.PluginWrapper;
 import jd.http.Browser;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 46514 $", interfaceVersion = 3, names = {}, urls = {})
 public class VideocelebsNet extends KernelVideoSharingComV2 {
     public VideocelebsNet(final PluginWrapper wrapper) {
         super(wrapper);

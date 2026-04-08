@@ -30,7 +30,7 @@ import jd.plugins.decrypter.Keep2ShareCcDecrypter;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.components.config.Keep2shareConfig;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50178 $", interfaceVersion = 2, names = {}, urls = {})
 @PluginDependencies(dependencies = { Keep2ShareCcDecrypter.class })
 public class Keep2ShareCc extends K2SApi {
     public Keep2ShareCc(PluginWrapper wrapper) {

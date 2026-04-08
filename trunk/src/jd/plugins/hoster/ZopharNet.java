@@ -29,7 +29,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "zophar.net" }, urls = { "https?://(?:www\\.)zophar\\.net/download_file/([0-9]{1,})" })
+@HostPlugin(revision = "$Revision: 49212 $", interfaceVersion = 2, names = { "zophar.net" }, urls = { "https?://(?:www\\.)zophar\\.net/download_file/([0-9]{1,})" })
 public class ZopharNet extends PluginForHost {
     public ZopharNet(PluginWrapper wrapper) {
         super(wrapper);

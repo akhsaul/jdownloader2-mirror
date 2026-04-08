@@ -30,7 +30,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
 //IMPORTANT: The name of the plugin is CORRECT!
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "f2h.io" }, urls = { "https?://(?:www\\.)?(?:f2h(?:\\.nana\\d+)?\\.co\\.il|f2h\\.io)/((he/)?[a-z0-9]+|[0-9]+)" })
+@HostPlugin(revision = "$Revision: 49988 $", interfaceVersion = 2, names = { "f2h.io" }, urls = { "https?://(?:www\\.)?(?:f2h(?:\\.nana\\d+)?\\.co\\.il|f2h\\.io)/((he/)?[a-z0-9]+|[0-9]+)" })
 public class File2HostCom extends PluginForHost {
     public File2HostCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -18,7 +18,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49016 $", interfaceVersion = 3, names = {}, urls = {})
 public class GermanTVChannelMediathek extends PluginForDecrypt {
     public GermanTVChannelMediathek(PluginWrapper wrapper) {
         super(wrapper);

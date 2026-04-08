@@ -34,7 +34,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52069 $", interfaceVersion = 2, names = {}, urls = {})
 public class PrimewireTf extends PluginForDecrypt {
     public PrimewireTf(PluginWrapper wrapper) {
         super(wrapper);

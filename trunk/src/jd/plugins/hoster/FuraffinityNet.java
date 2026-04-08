@@ -42,7 +42,7 @@ import jd.plugins.Plugin;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "furaffinity.net" }, urls = { "https?://(?:www\\.)?furaffinity\\.net/view/(\\d+)" })
+@HostPlugin(revision = "$Revision: 52065 $", interfaceVersion = 3, names = { "furaffinity.net" }, urls = { "https?://(?:www\\.)?furaffinity\\.net/view/(\\d+)" })
 public class FuraffinityNet extends PluginForHost {
     public FuraffinityNet(PluginWrapper wrapper) {
         super(wrapper);

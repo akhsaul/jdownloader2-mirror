@@ -10,7 +10,7 @@ import jd.plugins.PluginForHost;
 
 import org.appwork.utils.StringUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "soundgasm.net" }, urls = { "https?://(?:www\\.)?soundgasm\\.net/u/[^/]+/[^/]+" })
+@HostPlugin(revision = "$Revision: 47486 $", interfaceVersion = 3, names = { "soundgasm.net" }, urls = { "https?://(?:www\\.)?soundgasm\\.net/u/[^/]+/[^/]+" })
 public class SoundGasmNet extends PluginForHost {
     public SoundGasmNet(PluginWrapper wrapper) {
         super(wrapper);

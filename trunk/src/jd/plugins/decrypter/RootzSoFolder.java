@@ -38,7 +38,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.RootzSo;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52079 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { RootzSo.class })
 public class RootzSoFolder extends PluginForDecrypt {
     public RootzSoFolder(PluginWrapper wrapper) {

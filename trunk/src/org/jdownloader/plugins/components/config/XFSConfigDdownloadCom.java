@@ -11,6 +11,14 @@ import org.jdownloader.plugins.config.Type;
 
 @PluginHost(host = "ddownload.com", type = Type.HOSTER)
 public interface XFSConfigDdownloadCom extends XFSConfig {
+    public static final TRANSLATION TRANSLATION = new TRANSLATION();
+
+    public static class TRANSLATION {
+        public String getMaxSimultaneousFreeDownloads_label() {
+            return "Max. simultaneous downloads (Free & Free account)";
+        }
+    }
+
     @AboutConfig
     @DefaultIntValue(1)
     @SpinnerValidator(min = 1, max = 10, step = 1)

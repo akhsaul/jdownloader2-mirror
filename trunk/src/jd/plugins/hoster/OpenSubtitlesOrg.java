@@ -40,7 +40,7 @@ import org.jdownloader.plugins.components.config.OpenSubtitlesConfig;
 import org.jdownloader.plugins.components.config.OpenSubtitlesConfig.ActionOnCaptchaRequired;
 import org.jdownloader.plugins.config.PluginJsonConfig;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "opensubtitles.org" }, urls = { "https?://(?:www\\.)?opensubtitles\\.org/([a-z]{2})/subtitles/(\\d+)(/([\\w-]+))?" })
+@HostPlugin(revision = "$Revision: 51767 $", interfaceVersion = 2, names = { "opensubtitles.org" }, urls = { "https?://(?:www\\.)?opensubtitles\\.org/([a-z]{2})/subtitles/(\\d+)(/([\\w-]+))?" })
 public class OpenSubtitlesOrg extends PluginForHost {
     public OpenSubtitlesOrg(PluginWrapper wrapper) {
         super(wrapper);

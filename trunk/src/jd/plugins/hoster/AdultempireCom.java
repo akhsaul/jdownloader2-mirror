@@ -46,7 +46,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.AdultempireComCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51837 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { AdultempireComCrawler.class })
 public class AdultempireCom extends PluginForHost {
     public AdultempireCom(PluginWrapper wrapper) {

@@ -43,11 +43,12 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.net.ssl.KeyManager;
 
 import org.appwork.net.protocol.http.HTTPConstants;
 import org.appwork.utils.Exceptions;
@@ -55,7 +56,10 @@ import org.appwork.utils.Regex;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.Time;
 import org.appwork.utils.encoding.Base64;
+import org.appwork.utils.net.httpconnection.DNSResolver.REQUESTOR;
 import org.appwork.utils.net.httpconnection.HTTPConnectionUtils.IPVERSION;
+import org.appwork.utils.net.httpconnection.trust.TrustCallback;
+import org.appwork.utils.net.httpconnection.trust.TrustProviderInterface;
 
 public class HTTPProxyHTTPConnectionImpl extends HTTPConnectionImpl {
     private StringBuilder                    proxyRequest;
@@ -109,14 +113,6 @@ public class HTTPProxyHTTPConnectionImpl extends HTTPConnectionImpl {
         }
     }
 
-    protected InetAddress[] getRemoteIPs(HTTPProxy proxy, final boolean resolve) throws IOException {
-        if (StringUtils.isEmpty(proxy.getHost())) {
-            throw new ProxyConnectException(new UnknownHostException("Could not resolve: -empty host-"), proxy);
-        } else {
-            return getRemoteIPs(proxy.getHost(), resolve);
-        }
-    }
-
     protected volatile InetAddress customEndPointInetAddress = null;
 
     protected InetAddress getCustomEndPointInetAddress() {
@@ -157,7 +153,7 @@ public class HTTPProxyHTTPConnectionImpl extends HTTPConnectionImpl {
                     this.requestProperties.put(HTTPConstants.HEADER_REQUEST_PROXY_AUTHORIZATION, basicAuth);
                 }
                 IOException ee = null;
-                List<InetAddress> proxyIPs = new ArrayList<InetAddress>(Arrays.asList(getRemoteIPs(getProxy(), true)));
+                List<InetAddress> proxyIPs = new ArrayList<InetAddress>(Arrays.asList(getRemoteIPs(REQUESTOR.PROXY, getIPVersion(), getProxy().getHost(), true)));
                 long startTime = Time.systemIndependentCurrentJVMTimeMillis();
                 while (proxyIPs.size() > 0) {
                     final InetAddress host = proxyIPs.remove(0);
@@ -197,8 +193,26 @@ public class HTTPProxyHTTPConnectionImpl extends HTTPConnectionImpl {
                     }
                     factory = getSSLSocketStreamFactory(sslSocketStreamProxyOptions);
                     state = SSL_STATE.PROXY;
-                    this.connectionSocket = factory.create(connectionSocket, proxy.getHost(), proxy.getPort(), true, sslSocketStreamProxyOptions, getTrustProvider(), getKeyManagers());
-                    proxySocket = connectionSocket;
+                    final TrustCallback trustCallback = new TrustCallback() {
+                        private final TrustProviderInterface trustProviderInterface = HTTPProxyHTTPConnectionImpl.this.getTrustProvider();
+                        private final KeyManager[]           keyManager             = HTTPProxyHTTPConnectionImpl.this.getKeyManagers();
+
+                        @Override
+                        public void onTrustResult(TrustProviderInterface provider, String authType, TrustResult result) {
+                            HTTPProxyHTTPConnectionImpl.this.setTrustResult(result, SSL_STATE.PROXY);
+                        }
+
+                        @Override
+                        public TrustProviderInterface getTrustProvider() {
+                            return trustProviderInterface;
+                        }
+
+                        @Override
+                        public KeyManager[] getKeyManager() {
+                            return keyManager;
+                        }
+                    };
+                    proxySocket = this.connectionSocket = factory.create(connectionSocket, proxy.getHost(), proxy.getPort(), true, sslSocketStreamProxyOptions, trustCallback);
                 }
                 this.connectTime = Time.systemIndependentCurrentJVMTimeMillis() - startTime;
                 if (this.httpURL.getProtocol().startsWith("https") || this.isConnectMethodPrefered()) {
@@ -293,8 +307,26 @@ public class HTTPProxyHTTPConnectionImpl extends HTTPConnectionImpl {
                         }
                         factory = getSSLSocketStreamFactory(sslSocketStreamEndPointOptions);
                         state = SSL_STATE.ENDPOINT;
-                        this.connectionSocket = factory.create(connectionSocket, hostName, getPort(), true, sslSocketStreamEndPointOptions, getTrustProvider(), getKeyManagers());
-                        this.trustResult = ((TrustResultProvider) connectionSocket).getTrustResult();
+                        final TrustCallback trustCallback = new TrustCallback() {
+                            private final TrustProviderInterface trustProviderInterface = HTTPProxyHTTPConnectionImpl.this.getTrustProvider();
+                            private final KeyManager[]           keyManager             = HTTPProxyHTTPConnectionImpl.this.getKeyManagers();
+
+                            @Override
+                            public void onTrustResult(TrustProviderInterface provider, String authType, TrustResult result) {
+                                HTTPProxyHTTPConnectionImpl.this.setTrustResult(result, SSL_STATE.ENDPOINT);
+                            }
+
+                            @Override
+                            public TrustProviderInterface getTrustProvider() {
+                                return trustProviderInterface;
+                            }
+
+                            @Override
+                            public KeyManager[] getKeyManager() {
+                                return keyManager;
+                            }
+                        };
+                        this.connectionSocket = factory.create(connectionSocket, hostName, getPort(), true, sslSocketStreamEndPointOptions, trustCallback);
                     }
                     /*
                      * httpPath needs to be like normal http request, eg /index.html
@@ -313,7 +345,7 @@ public class HTTPProxyHTTPConnectionImpl extends HTTPConnectionImpl {
                 this.sendRequest();
                 return;
             } catch (IOException e) {
-                e = mapExceptions(e);
+                e = mapExceptions(e, state);
                 String retrySSL = null;
                 try {
                     if (SSL_STATE.ENDPOINT.equals(state) && sslSocketStreamEndPointOptions != null) {

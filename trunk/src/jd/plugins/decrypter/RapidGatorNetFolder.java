@@ -41,7 +41,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.RapidGatorNet;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51365 $", interfaceVersion = 2, names = {}, urls = {})
 @SuppressWarnings("deprecation")
 @PluginDependencies(dependencies = { RapidGatorNet.class })
 public class RapidGatorNetFolder extends PluginForDecrypt {

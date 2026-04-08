@@ -27,7 +27,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "hitnews.com" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51971 $", interfaceVersion = 3, names = { "hitnews.com" }, urls = { "" })
 public class HitNewsCom extends UseNet {
     public HitNewsCom(PluginWrapper wrapper) {
         super(wrapper);

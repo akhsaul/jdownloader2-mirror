@@ -38,7 +38,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "pscp.tv" }, urls = { "https?://(?:www\\.)?pscp\\.tv/w/(.+)" })
+@HostPlugin(revision = "$Revision: 48194 $", interfaceVersion = 2, names = { "pscp.tv" }, urls = { "https?://(?:www\\.)?pscp\\.tv/w/(.+)" })
 public class PscpTv extends PluginForHost {
     public PscpTv(PluginWrapper wrapper) {
         super(wrapper);

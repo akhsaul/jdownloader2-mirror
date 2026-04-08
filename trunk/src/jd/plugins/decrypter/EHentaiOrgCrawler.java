@@ -51,7 +51,7 @@ import org.jdownloader.plugins.components.config.EhentaiConfig.GalleryCrawlMode;
 import org.jdownloader.plugins.config.PluginJsonConfig;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "e-hentai.org" }, urls = { "https?://(?:[a-z0-9\\-]+\\.)?(?:e-hentai\\.org|exhentai\\.org)/(g|mpv)/(\\d+)/([a-z0-9]+).*" })
+@DecrypterPlugin(revision = "$Revision: 51039 $", interfaceVersion = 3, names = { "e-hentai.org" }, urls = { "https?://(?:[a-z0-9\\-]+\\.)?(?:e-hentai\\.org|exhentai\\.org)/(g|mpv)/(\\d+)/([a-z0-9]+).*" })
 public class EHentaiOrgCrawler extends PluginForDecrypt {
     public EHentaiOrgCrawler(PluginWrapper wrapper) {
         super(wrapper);

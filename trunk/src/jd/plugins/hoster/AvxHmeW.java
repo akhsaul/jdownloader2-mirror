@@ -37,7 +37,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 47268 $", interfaceVersion = 3, names = {}, urls = {})
 public class AvxHmeW extends PluginForHost {
     public AvxHmeW(PluginWrapper wrapper) {
         super(wrapper);

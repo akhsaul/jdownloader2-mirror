@@ -42,7 +42,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52239 $", interfaceVersion = 3, names = {}, urls = {})
 public class WindfilesCom extends PluginForHost {
     public WindfilesCom(PluginWrapper wrapper) {
         super(wrapper);

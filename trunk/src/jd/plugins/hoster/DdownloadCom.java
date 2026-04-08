@@ -18,20 +18,8 @@ package jd.plugins.hoster;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.appwork.net.protocol.http.HTTPConstants;
-import org.appwork.utils.DebugMode;
-import org.appwork.utils.StringUtils;
-import org.appwork.utils.formatter.SizeFormatter;
-import org.appwork.utils.net.httpconnection.HTTPConnectionUtils.IPVERSION;
-import org.jdownloader.captcha.v2.CaptchaHosterHelperInterface;
-import org.jdownloader.captcha.v2.challenge.cloudflareturnstile.CaptchaHelperHostPluginCloudflareTurnstile;
-import org.jdownloader.plugins.components.XFileSharingProBasic;
-import org.jdownloader.plugins.components.config.XFSConfigDdownloadCom;
-import org.jdownloader.plugins.config.PluginJsonConfig;
-import org.jdownloader.settings.GraphicalUserInterfaceSettings.SIZEUNIT;
-import org.jdownloader.settings.staticreferences.CFG_GUI;
-
 import jd.PluginWrapper;
+import jd.controlling.linkcrawler.CrawledLink;
 import jd.http.Browser;
 import jd.http.Cookies;
 import jd.nutils.encoding.Encoding;
@@ -42,13 +30,27 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.AccountInfo;
 import jd.plugins.AccountUnavailableException;
 import jd.plugins.DownloadLink;
+import jd.plugins.DownloadLink.AvailableStatus;
+import jd.plugins.FilePackage;
 import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+import org.appwork.net.protocol.http.HTTPConstants;
+import org.appwork.utils.DebugMode;
+import org.appwork.utils.StringUtils;
+import org.appwork.utils.formatter.SizeFormatter;
+import org.appwork.utils.net.httpconnection.HTTPConnectionUtils.IPVERSION;
+import org.jdownloader.captcha.v2.CaptchaHosterHelperInterface;
+import org.jdownloader.captcha.v2.challenge.cloudflareturnstile.CaptchaHelperHostPluginCloudflareTurnstile;
+import org.jdownloader.plugins.components.XFileSharingProBasic;
+import org.jdownloader.plugins.components.config.XFSConfigDdownloadCom;
+import org.jdownloader.settings.GraphicalUserInterfaceSettings.SIZEUNIT;
+import org.jdownloader.settings.staticreferences.CFG_GUI;
+
+@HostPlugin(revision = "$Revision: 52601 $", interfaceVersion = 3, names = {}, urls = {})
 public class DdownloadCom extends XFileSharingProBasic {
     public DdownloadCom(final PluginWrapper wrapper) {
         super(wrapper);
@@ -80,6 +82,18 @@ public class DdownloadCom extends XFileSharingProBasic {
         // re by admin
         ret.setIPVersion(IPVERSION.IPV4_IPV6);
         ret.setHeader(HTTPConstants.HEADER_REQUEST_USER_AGENT, "JDownloader2");
+        return ret;
+    }
+
+    @Override
+    public ArrayList<DownloadLink> getDownloadLinks(CrawledLink source, final String data, final FilePackage fp) {
+        final ArrayList<DownloadLink> ret = super.getDownloadLinks(source, data, fp);
+        if (ret == null || ret.size() == 0) {
+            return ret;
+        }
+        for (DownloadLink link : ret) {
+            link.setPluginPatternMatcher(getPluginPatternMatcher(link));
+        }
         return ret;
     }
 
@@ -150,10 +164,25 @@ public class DdownloadCom extends XFileSharingProBasic {
     }
 
     @Override
+    protected String getPluginPatternMatcher(DownloadLink link) {
+        String ret = super.getPluginPatternMatcher(link);
+        if (ret == null) {
+            return null;
+        }
+        if (ret.contains("killcode=")) {
+            ret = ret.replaceFirst("\\?killcode=[^&#]+", "?").replaceFirst("\\&killcode=[^&#]+", "");
+            if (ret.endsWith("?")) {
+                ret = ret.substring(0, ret.length() - 1);
+            }
+        }
+        return ret;
+    }
+
+    @Override
     public String buildExternalDownloadURL(final DownloadLink link, final PluginForHost buildForThisPlugin) {
         final String fid = getFUIDFromURL(link);
         if (fid != null) {
-            if (StringUtils.startsWithCaseInsensitive(link.getPluginPatternMatcher(), "https:")) {
+            if (StringUtils.startsWithCaseInsensitive(getPluginPatternMatcher(link), "https:")) {
                 return "https://" + getHost() + "/" + fid;
             } else if (this.useHTTPS()) {
                 return "https://" + getHost() + "/" + fid;
@@ -163,6 +192,15 @@ public class DdownloadCom extends XFileSharingProBasic {
         } else {
             return super.buildExternalDownloadURL(link, buildForThisPlugin);
         }
+    }
+
+    @Override
+    protected String getContentURL(DownloadLink link) {
+        if (link.hasProperty(CLOUDFLARE_BLOCKED_WORKAROUND_PROPERTY)) {
+            final String ret = buildExternalDownloadURL(link, this);
+            return ret;
+        }
+        return super.getContentURL(link);
     }
 
     @Override
@@ -180,7 +218,7 @@ public class DdownloadCom extends XFileSharingProBasic {
     }
 
     public int getMaxDownloadSelect() {
-        return PluginJsonConfig.get(this.getConfigInterface()).getMaxSimultaneousFreeDownloads();
+        return get(this.getConfigInterface()).getMaxSimultaneousFreeDownloads();
     }
 
     @Override
@@ -241,10 +279,23 @@ public class DdownloadCom extends XFileSharingProBasic {
         /* 2020-05-17 */
         super.scanInfo(html, fileInfo);
         String filename = new Regex(html, "<h1[^>]*class=\"file-info-name\"[^>]*>([^<]+)</h1>").getMatch(0);
-        String filesize = new Regex(html, "class=\"file-size\">([^<>\"]+)<").getMatch(0);
+        if (StringUtils.isEmpty(filename)) {
+            /* 2026-03-27 */
+            filename = new Regex(html, "class=\"[^\"]*filename\"[^>]*>([^<]+)</div>").getMatch(0);
+            if (StringUtils.isEmpty(filename)) {
+                /* 2026-04-01 */
+                filename = new Regex(html, "class=\"[^\"]*dl-file-name\"[^>]*>([^<]+)</div>").getMatch(0);
+            }
+        }
+        /* 2026-04-01 */
+        String filesize = new Regex(html, "class=\"(?:dl-)?file-size\">([^<>\"]+)<").getMatch(0);
         if (StringUtils.isEmpty(filesize)) {
             /* 2021-03-25 */
             filesize = new Regex(html, "\\[<font[^>]*>(\\d+[^<>\"]+)</font>\\]").getMatch(0);
+            if (StringUtils.isEmpty(filesize)) {
+                /* 2026-03-27 */
+                filesize = new Regex(html, "class=\"[^\"]*filesize\"[^>]*>([^<]+)</div>").getMatch(0);
+            }
         }
         if (!StringUtils.isEmpty(filename)) {
             fileInfo[0] = filename;
@@ -346,14 +397,15 @@ public class DdownloadCom extends XFileSharingProBasic {
     @Override
     protected void fetchAccountInfoWebsiteTraffic(Browser br, Account account, AccountInfo ai) throws Exception {
         super.fetchAccountInfoWebsiteTraffic(br, account, ai);
-        final String trafficLeftMB = br.getRegex("data-traffic=\"(\\d+)\"").getMatch(0);
+        /* 2026-03-02: Traffic can be negative. */
+        final String trafficLeftMB = br.getRegex("data-traffic=\"(-?\\d+)\"").getMatch(0);
         if (trafficLeftMB != null) {
             ai.setTrafficLeft(Long.parseLong(trafficLeftMB) * 1000 * 1000);
         } else {
             logger.warning("Special trafficleft regexes failed -> Website has changed?"); /* Fallback to template handling */
             final String trafficleftStr = super.regExTrafficLeft(br);
             if (trafficleftStr != null) {
-                ai.setTrafficLeft(SizeFormatter.getSize(trafficleftStr));
+                ai.setTrafficLeft(SizeFormatter.getSize(trafficleftStr, true, true));
             }
         }
         if (ai.getTrafficLeft() > 0) {
@@ -416,6 +468,7 @@ public class DdownloadCom extends XFileSharingProBasic {
         if (link == null) {
             return;
         }
+        link.removeProperty(CLOUDFLARE_BLOCKED_WORKAROUND_PROPERTY);
         if (DebugMode.TRUE_IN_IDE_ELSE_FALSE) {
             /* 2019-11-11: Reset final downloadurls in dev mode. */
             link.removeProperty("freelink");
@@ -424,14 +477,48 @@ public class DdownloadCom extends XFileSharingProBasic {
         }
     }
 
+    private final static String CLOUDFLARE_BLOCKED_WORKAROUND_PROPERTY = "cloudflare_block_workaround";
+
     @Override
     protected boolean isOffline(final DownloadLink link, final Browser br) {
+        if (br.containsHTML(">\\s*You don't have permission to access this resource.<") && br.containsHTML("<title>\\s*403 Forbidden\\s*</title>") && !link.hasProperty(CLOUDFLARE_BLOCKED_WORKAROUND_PROPERTY)) {
+            // cloudflare has blocked the full URL, retry with FUID only
+            link.setProperty(CLOUDFLARE_BLOCKED_WORKAROUND_PROPERTY, Boolean.TRUE);
+            throw new RuntimeException(CLOUDFLARE_BLOCKED_WORKAROUND_PROPERTY);
+        }
         /* 2020-01-17: Special */
         if (br.containsHTML(">\\s*This file was banned by copyright")) {
             /* "<strong>Oops!</strong> This file was banned by copyright owner's report" */
             return true;
         } else {
             return super.isOffline(link, br);
+        }
+    }
+
+    @Override
+    protected void resolveShortURL(Browser br, DownloadLink link, Account account) throws Exception {
+        try {
+            super.resolveShortURL(br, link, account);
+        } catch (RuntimeException e) {
+            if (CLOUDFLARE_BLOCKED_WORKAROUND_PROPERTY.equals(e.getMessage())) {
+                logger.log(e);
+                super.resolveShortURL(br, link, account);
+                return;
+            }
+            throw e;
+        }
+    }
+
+    @Override
+    public AvailableStatus requestFileInformationWebsite(final DownloadLink link, final Account account) throws Exception {
+        try {
+            return super.requestFileInformationWebsite(link, account);
+        } catch (RuntimeException e) {
+            if (CLOUDFLARE_BLOCKED_WORKAROUND_PROPERTY.equals(e.getMessage())) {
+                logger.log(e);
+                return super.requestFileInformationWebsite(link, account);
+            }
+            throw e;
         }
     }
 
@@ -470,15 +557,6 @@ public class DdownloadCom extends XFileSharingProBasic {
         return looksLikeValidAPIKey(this.getAPIKey());
     }
 
-    // @Override
-    // public String regexFilenameAbuse(final Browser br) {
-    // String filename = br.getRegex("label>Filename</label>\\s*<input[^>]*value=\"([^<>\"]+)\"").getMatch(0);
-    // if (StringUtils.isEmpty(filename)) {
-    // /* Fallback to template */
-    // filename = super.regexFilenameAbuse(br);
-    // }
-    // return filename;
-    // }
     @Override
     public Class<? extends XFSConfigDdownloadCom> getConfigInterface() {
         return XFSConfigDdownloadCom.class;

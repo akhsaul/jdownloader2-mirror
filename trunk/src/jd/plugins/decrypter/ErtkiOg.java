@@ -30,7 +30,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "erotelki.org" }, urls = { "http://(www\\.)?erotelki\\.org/([\\w\\-]+/([\\w\\-]+/)?\\d+\\-[\\w+\\-]+\\.html|engine/go\\.php\\?url=[^<>\"\\']+)" })
+@DecrypterPlugin(revision = "$Revision: 48342 $", interfaceVersion = 3, names = { "erotelki.org" }, urls = { "http://(www\\.)?erotelki\\.org/([\\w\\-]+/([\\w\\-]+/)?\\d+\\-[\\w+\\-]+\\.html|engine/go\\.php\\?url=[^<>\"\\']+)" })
 public class ErtkiOg extends PluginForDecrypt {
     public ErtkiOg(PluginWrapper wrapper) {
         super(wrapper);

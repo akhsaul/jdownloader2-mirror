@@ -39,7 +39,7 @@ import org.jdownloader.plugins.components.config.SrfChConfig.QualitySelectionFal
 import org.jdownloader.plugins.components.config.SrfChConfig.QualitySelectionMode;
 import org.jdownloader.plugins.config.PluginConfigInterface;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { SrfChCrawler.class })
 public class SrfCh extends PluginForHost {
     @SuppressWarnings("deprecation")

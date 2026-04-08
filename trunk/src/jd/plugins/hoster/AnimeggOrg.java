@@ -42,7 +42,7 @@ import jd.plugins.components.PluginJSonUtils;
  * @author raztoki
  *
  */
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "animegg.org" }, urls = { "https?://(?:www\\.)?animegg\\.org/(?:embed/\\d+|[\\w\\-]+episode-\\d+)" })
+@HostPlugin(revision = "$Revision: 50981 $", interfaceVersion = 2, names = { "animegg.org" }, urls = { "https?://(?:www\\.)?animegg\\.org/(?:embed/\\d+|[\\w\\-]+episode-\\d+)" })
 public class AnimeggOrg extends PluginForHost {
     private String dllink = null;
 

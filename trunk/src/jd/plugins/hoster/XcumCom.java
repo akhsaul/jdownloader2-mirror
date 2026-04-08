@@ -25,7 +25,7 @@ import jd.parser.html.HTMLSearch;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51542 $", interfaceVersion = 3, names = {}, urls = {})
 public class XcumCom extends KernelVideoSharingComV2 {
     public XcumCom(final PluginWrapper wrapper) {
         super(wrapper);

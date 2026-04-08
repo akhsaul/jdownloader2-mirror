@@ -28,7 +28,7 @@ import org.appwork.utils.StringUtils;
 import org.jdownloader.controlling.filter.CompiledFiletypeFilter;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "mangatown.com" }, urls = { "https?://(?:www\\.)?mangatown\\.com/manga/([^/]+/c\\d+/\\d+)\\.html" })
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = { "mangatown.com" }, urls = { "https?://(?:www\\.)?mangatown\\.com/manga/([^/]+/c\\d+/\\d+)\\.html" })
 public class MangatownCom extends PluginForHost {
     public MangatownCom(PluginWrapper wrapper) {
         super(wrapper);

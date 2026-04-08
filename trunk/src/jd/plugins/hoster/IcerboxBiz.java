@@ -47,7 +47,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "icerbox.biz" }, urls = { "https?://(?:www\\.)?(?:nitrobit\\.net|icerbox\\.biz)/(?:view|watch)/([A-Z0-9]+)" })
+@HostPlugin(revision = "$Revision: 51944 $", interfaceVersion = 3, names = { "icerbox.biz" }, urls = { "https?://(?:www\\.)?(?:nitrobit\\.net|icerbox\\.biz)/(?:view|watch)/([A-Z0-9]+)" })
 public class IcerboxBiz extends antiDDoSForHost {
     public IcerboxBiz(PluginWrapper wrapper) {
         super(wrapper);

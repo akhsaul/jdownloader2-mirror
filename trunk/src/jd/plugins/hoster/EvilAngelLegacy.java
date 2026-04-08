@@ -49,7 +49,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "evilangel.legacy" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 49212 $", interfaceVersion = 2, names = { "evilangel.legacy" }, urls = { "" })
 @Deprecated
 // 2021-09-01: TODO: Rewrite all plugins which still make use of this to to use EvilangelCore!
 public class EvilAngelLegacy extends antiDDoSForHost {

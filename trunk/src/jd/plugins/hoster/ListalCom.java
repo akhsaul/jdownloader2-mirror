@@ -35,7 +35,7 @@ import jd.plugins.Plugin;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51120 $", interfaceVersion = 3, names = {}, urls = {})
 public class ListalCom extends PluginForHost {
     public ListalCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -42,7 +42,7 @@ import jd.plugins.FilePackage;
 import jd.plugins.PluginForDecrypt;
 import jd.utils.JDUtilities;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "shahid.mbc.net" }, urls = { "https?://(?:www\\.)?(?:shahid\\.mbc\\.net/(?:media/video|ar/episode)/\\d+(/\\w+)?|bluefishtv\\.com/Store/[_a-zA-Z]+/\\d+/.*)" })
+@DecrypterPlugin(revision = "$Revision: 51747 $", interfaceVersion = 2, names = { "shahid.mbc.net" }, urls = { "https?://(?:www\\.)?(?:shahid\\.mbc\\.net/(?:media/video|ar/episode)/\\d+(/\\w+)?|bluefishtv\\.com/Store/[_a-zA-Z]+/\\d+/.*)" })
 public class ShaHidMbcNetDecrypter extends PluginForDecrypt {
     public static enum Quality {
         ALLOW_HD("3f3f", "720p HD"),

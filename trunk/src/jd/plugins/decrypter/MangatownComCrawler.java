@@ -32,7 +32,7 @@ import jd.plugins.PluginForDecrypt;
 
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "mangatown.com" }, urls = { "https?://(?:www\\.)?mangatown\\.com/manga/[^/]+/c\\d+/(?:\\d+\\.html)?" })
+@DecrypterPlugin(revision = "$Revision: 51818 $", interfaceVersion = 3, names = { "mangatown.com" }, urls = { "https?://(?:www\\.)?mangatown\\.com/manga/[^/]+/c\\d+/(?:\\d+\\.html)?" })
 public class MangatownComCrawler extends PluginForDecrypt {
     public MangatownComCrawler(PluginWrapper wrapper) {
         super(wrapper);

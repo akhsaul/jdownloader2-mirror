@@ -23,7 +23,7 @@ import jd.parser.Regex;
 import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "donkparty.com" }, urls = { "https?://(?:www\\.)?donkparty\\.com/videos/\\d+/([\\w\\-]+)" })
+@DecrypterPlugin(revision = "$Revision: 46907 $", interfaceVersion = 2, names = { "donkparty.com" }, urls = { "https?://(?:www\\.)?donkparty\\.com/videos/\\d+/([\\w\\-]+)" })
 public class DonkPartyComCrawler extends PornEmbedParser {
     public DonkPartyComCrawler(PluginWrapper wrapper) {
         super(wrapper);

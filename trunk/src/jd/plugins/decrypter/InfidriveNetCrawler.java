@@ -41,7 +41,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.PluginJSonUtils;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49642 $", interfaceVersion = 3, names = {}, urls = {})
 public class InfidriveNetCrawler extends PluginForDecrypt {
     public InfidriveNetCrawler(PluginWrapper wrapper) {
         super(wrapper);

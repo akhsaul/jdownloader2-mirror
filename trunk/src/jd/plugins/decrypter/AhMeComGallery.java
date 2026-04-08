@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "ah-me.com" }, urls = { "https?://(?:www\\.)?ah\\-me\\.com/pics/gallery/(\\d+)/(\\d+)/" })
+@DecrypterPlugin(revision = "$Revision: 49835 $", interfaceVersion = 2, names = { "ah-me.com" }, urls = { "https?://(?:www\\.)?ah\\-me\\.com/pics/gallery/(\\d+)/(\\d+)/" })
 public class AhMeComGallery extends PluginForDecrypt {
     public AhMeComGallery(PluginWrapper wrapper) {
         super(wrapper);

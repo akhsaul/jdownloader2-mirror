@@ -31,7 +31,7 @@ import jd.plugins.components.PluginJSonUtils;
 
 import org.appwork.utils.StringUtils;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "myspace.com" }, urls = { "https?://(?:www\\.)?myspace\\.com/([^/]+)/photos" })
+@DecrypterPlugin(revision = "$Revision: 42793 $", interfaceVersion = 3, names = { "myspace.com" }, urls = { "https?://(?:www\\.)?myspace\\.com/([^/]+)/photos" })
 public class MyspaceCom extends PluginForDecrypt {
     public MyspaceCom(PluginWrapper wrapper) {
         super(wrapper);

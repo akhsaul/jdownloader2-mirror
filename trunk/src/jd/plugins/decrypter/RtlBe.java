@@ -19,7 +19,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.GenericM3u8;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "rtl.be" }, urls = { "https?://(?:www\\.)?rtl\\.be/.*/video/(\\d+)(\\.aspx)?" })
+@DecrypterPlugin(revision = "$Revision: 48444 $", interfaceVersion = 2, names = { "rtl.be" }, urls = { "https?://(?:www\\.)?rtl\\.be/.*/video/(\\d+)(\\.aspx)?" })
 public class RtlBe extends PluginForDecrypt {
     public RtlBe(final PluginWrapper wrapper) {
         super(wrapper);

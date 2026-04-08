@@ -37,7 +37,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "gloria.tv" }, urls = { "http://gloriadecrypted\\.tv/\\d+" })
+@HostPlugin(revision = "$Revision: 47663 $", interfaceVersion = 2, names = { "gloria.tv" }, urls = { "http://gloriadecrypted\\.tv/\\d+" })
 public class GloriaTv extends PluginForHost {
     public GloriaTv(PluginWrapper wrapper) {
         super(wrapper);

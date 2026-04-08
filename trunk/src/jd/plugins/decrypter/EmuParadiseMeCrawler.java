@@ -43,7 +43,7 @@ import jd.plugins.hoster.EmuParadiseMe;
 /**
  * @author raztoki
  */
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51708 $", interfaceVersion = 2, names = {}, urls = {})
 public class EmuParadiseMeCrawler extends PluginForDecrypt {
     public EmuParadiseMeCrawler(PluginWrapper wrapper) {
         super(wrapper);

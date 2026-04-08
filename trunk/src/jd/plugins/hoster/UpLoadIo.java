@@ -26,7 +26,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 41668 $", interfaceVersion = 3, names = {}, urls = {})
 public class UpLoadIo extends XFileSharingProBasic {
     public UpLoadIo(final PluginWrapper wrapper) {
         super(wrapper);

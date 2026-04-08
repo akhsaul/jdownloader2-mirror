@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.XChinaCoCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51913 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { XChinaCoCrawler.class })
 public class XChinaCo extends PluginForHost {
     public XChinaCo(PluginWrapper wrapper) {

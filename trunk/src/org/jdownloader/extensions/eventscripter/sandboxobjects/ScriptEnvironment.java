@@ -88,6 +88,7 @@ import org.appwork.utils.processes.ProcessBuilderFactory;
 import org.appwork.utils.processes.ProcessOutput;
 import org.appwork.utils.reflection.Clazz;
 import org.appwork.utils.speedmeter.SpeedMeterInterface.Resolution;
+import org.appwork.utils.swing.EDTRunner;
 import org.appwork.utils.swing.dialog.ConfirmDialog;
 import org.appwork.utils.swing.dialog.Dialog;
 import org.appwork.utils.swing.dialog.DialogNoAnswerException;
@@ -759,23 +760,13 @@ public class ScriptEnvironment {
     @ScriptAPI(description = "Get a list of all downloadlinks")
     public static DownloadLinkSandBox[] getAllDownloadLinks() {
         final List<DownloadLink> links = DownloadController.getInstance().getAllChildren();
-        final DownloadLinkSandBox[] ret = new DownloadLinkSandBox[links.size()];
-        int i = 0;
-        for (final DownloadLink link : links) {
-            ret[i++] = new DownloadLinkSandBox(link);
-        }
-        return ret;
+        return DownloadLinkSandBox.wrapSandBox(links);
     }
 
     @ScriptAPI(description = "Get a list of all crawledlinks")
     public static CrawledLinkSandbox[] getAllCrawledLinks() {
         final List<CrawledLink> links = LinkCollector.getInstance().getAllChildren();
-        final CrawledLinkSandbox[] ret = new CrawledLinkSandbox[links.size()];
-        int i = 0;
-        for (final CrawledLink link : links) {
-            ret[i++] = new CrawledLinkSandbox(link);
-        }
-        return ret;
+        return CrawledLinkSandbox.wrapSandBox(links);
     }
 
     @ScriptAPI(description = "Get a list of all running packages")
@@ -1166,6 +1157,7 @@ public class ScriptEnvironment {
 
     @ScriptAPI(description = "Set a Property. This property will be available until JD-exit or a script overwrites it. if global is true, the property will be available for al scripts", parameters = { "\"key\"", "anyValue", "global(boolean)" }, example = "var oldValue=setProperty(\"myobject\", { \"name\": true}, false);")
     public static Object setProperty(String key, Object value, boolean global) throws EnvironmentException {
+
         try {
             if (global) {
                 return PackagizerController.putGlobalProperty(key, value);
@@ -1185,14 +1177,20 @@ public class ScriptEnvironment {
         }
     }
 
-    @ScriptAPI(description = "Show a Notification", parameters = { "Map: notification settings(title, message, iconKey, timeout)" }, example = "displayNotification({\"title\":\"Ping\",\"message\":\"Nice\",\"iconKey\":\"stop\",\"timeout\":1000})")
-    public static void displayNotification(final Map<String, Object> notification) {
+    @ScriptAPI(description = "Show a Notification", parameters = { "Map: notification settings(title, message, iconKey, timeout, autoClose)" }, example = "displayNotification({\"title\":\"Ping\",\"message\":\"Nice\",\"iconKey\":\"stop\",\"timeout\":1000,\"autoClose\":true})")
+    public static NotifyWindowSandbox displayNotification(final Map<String, Object> notification) {
         if (Application.isHeadless()) {
-            return;
+            return null;
         }
-        BubbleNotify.getInstance().show(new AbstractNotifyWindowFactory() {
+        final ScriptThread env = getScriptThread();
+        final AtomicReference<BasicNotify> ref = new AtomicReference<BasicNotify>();
+        final boolean addedFlag = BubbleNotify.getInstance().show(new AbstractNotifyWindowFactory() {
+
             @Override
             public AbstractNotifyWindow<?> buildAbstractNotifyWindow() {
+                if (env.getStateMachine().isFinal()) {
+                    return null;
+                }
                 final String title = StringUtils.valueOrEmpty(StringUtils.valueOfOrNull(notification.get("title")));
                 final String text = StringUtils.valueOrEmpty(StringUtils.valueOfOrNull(notification.get("message")));
                 final String iconKey = StringUtils.valueOfOrNull(notification.get("iconKey"));
@@ -1201,10 +1199,30 @@ public class ScriptEnvironment {
                 if (timeout != null) {
                     ret.setTimeout(timeout.intValue());
                 }
-                return ret;
+                ref.set(ret);
+                if (Boolean.TRUE.equals(notification.get("autoClose"))) {
+                    env.getStateMachine().executeOnceOnState(new Runnable() {
 
+                        @Override
+                        public void run() {
+                            new EDTRunner() {
+
+                                @Override
+                                protected void runInEDT() {
+                                    ret.setVisible(false);
+                                }
+                            };
+                        }
+                    }, ScriptThread.STOPPED_STATE);
+                }
+                return ret;
             }
         });
+        if (addedFlag) {
+            return new NotifyWindowSandbox(ref);
+        } else {
+            return new NotifyWindowSandbox(null);
+        }
     }
 
     @ScriptAPI(description = "Show a Input Dialog", parameters = { "inputDialogMap" }, example = "showInputDialog({\"message\":\"Are you a bot?\",\"multiLine\":false,\"default\":\"yes\"})")

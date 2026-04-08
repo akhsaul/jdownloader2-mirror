@@ -51,7 +51,7 @@ import org.jdownloader.plugins.PluginTaskID;
 import org.jdownloader.plugins.controller.LazyPlugin;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "rapids.pl" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51818 $", interfaceVersion = 3, names = { "rapids.pl" }, urls = { "" })
 public class RapidsPl extends PluginForHost {
     /* API documentation: https://new.rapids.pl/api */
     private static final String  API_BASE            = "https://api.rapids.pl/api";

@@ -33,6 +33,7 @@ import org.jdownloader.plugins.controller.LazyPlugin;
 import jd.PluginWrapper;
 import jd.http.Browser;
 import jd.http.Cookies;
+import jd.http.Request;
 import jd.http.URLConnectionAdapter;
 import jd.nutils.encoding.Encoding;
 import jd.parser.Regex;
@@ -51,7 +52,7 @@ import jd.plugins.Plugin;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52569 $", interfaceVersion = 3, names = {}, urls = {})
 public class EPornerCom extends PluginForHost {
     public EPornerCom(PluginWrapper wrapper) {
         super(wrapper);
@@ -241,32 +242,39 @@ public class EPornerCom extends PluginForHost {
                             filesizeSelectedH264 = tempsize;
                         }
                     }
-                    /* Determine best candidate for fallback / "global best" */
-                    // if (dllink == null || tempsize > filesize) {
-                    // filesize = tempsize;
-                    // dllink = directurl;
-                    // }
                 }
             }
-            if (dllinkSelectedAV1 != null && codec == PreferredVideoCodec.AV1) {
-                dllink = dllinkSelectedAV1;
-                filesize = filesizeSelectedAV1;
-            } else if (dllinkSelectedH264 != null && codec == PreferredVideoCodec.H264) {
-                dllink = dllinkSelectedH264;
-                filesize = filesizeSelectedH264;
-            } else if (dllinkBestH264 != null && codec == PreferredVideoCodec.H264) {
-                /* Best H264 */
-                dllink = dllinkBestH264;
-                filesize = filesizeBestH264;
-            } else if (dllinkBestAV1 != null && codec == PreferredVideoCodec.AV1) {
-                /* Fallback / best AV1 */
-                dllink = dllinkBestAV1;
-                filesize = filesizeBestAV1;
-            }
-            if (dllink == null) {
-                /* Fallback */
-                if (dllinkBestH264 != null) {
+            switch (codec.getActualPreferredVideoCodec()) {
+            case AV1:
+                if (dllinkSelectedAV1 != null) {
+                    // wished codec + wished resolution
+                    dllink = dllinkSelectedAV1;
+                    filesize = filesizeSelectedAV1;
+                } else if (dllinkSelectedH264 != null) {
+                    // still wished resolution
+                    dllink = dllinkSelectedH264;
+                    filesize = filesizeSelectedH264;
+                } else if (dllinkBestAV1 != null) {
+                    /* Fallback / best wished AV1 */
+                    dllink = dllinkBestAV1;
+                    filesize = filesizeBestAV1;
+                } else if (dllinkBestH264 != null) {
                     /* Fallback / best H264 */
+                    dllink = dllinkBestH264;
+                    filesize = filesizeBestH264;
+                }
+                break;
+            case H264:
+                if (dllinkSelectedH264 != null) {
+                    // wished codec + wished resolution
+                    dllink = dllinkSelectedH264;
+                    filesize = filesizeSelectedH264;
+                } else if (dllinkSelectedAV1 != null) {
+                    // still wished resolution
+                    dllink = dllinkSelectedAV1;
+                    filesize = filesizeSelectedAV1;
+                } else if (dllinkBestH264 != null) {
+                    /* Fallback / best wished H264 */
                     dllink = dllinkBestH264;
                     filesize = filesizeBestH264;
                 } else if (dllinkBestAV1 != null) {
@@ -274,6 +282,7 @@ public class EPornerCom extends PluginForHost {
                     dllink = dllinkBestAV1;
                     filesize = filesizeBestAV1;
                 }
+                break;
             }
             if (dllink == null && isDownload) {
                 /* Fallback to stream download */
@@ -394,9 +403,9 @@ public class EPornerCom extends PluginForHost {
             }
         }
         final EpornerComConfig cfg = PluginJsonConfig.get(this.getConfigInterface());
-        PreferredVideoCodec ret = cfg.getPreferredVideoCodec();
+        final PreferredVideoCodec ret = cfg.getPreferredVideoCodec();
         if (ret == PreferredVideoCodec.DEFAULT) {
-            ret = PreferredVideoCodec.H264;
+            return PreferredVideoCodec.H264;
         }
         return ret;
     }
@@ -535,6 +544,10 @@ public class EPornerCom extends PluginForHost {
             }
             logger.info("Performing full login");
             br.getPage("https://www." + getHost());
+            final String csrfToken = br.getRegex("EP\\.user\\.csrfToken\\s*=\\s*'([a-f0-9]+)").getMatch(0);
+            if (csrfToken == null) {
+                throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
+            }
             final Form loginform = new Form();
             loginform.setMethod(MethodType.POST);
             loginform.setAction("/xhr/login/");
@@ -544,7 +557,10 @@ public class EPornerCom extends PluginForHost {
             loginform.put("pass", Encoding.urlEncode(account.getPass()));
             loginform.put("googleToken", "");
             loginform.put("ref", "/");
-            br.submitForm(loginform);
+            final Request request = br.createFormRequest(loginform);
+            request.getHeaders().put("X-CSRF-TOKEN", csrfToken);
+            br.getPage(request);
+            // {"status":1,"url":"\/profile\/USERNAME\/","user_hash":"HASH","user_id":USERID,"user_verified":1,"user_agever":1}
             /* 2020-05-26: E.g. login failed: {"status":0,"msg_head":"Login failed.","msg_body":"Bad login\/password"} */
             br.getPage("/");
             if (!isLoggedin()) {
@@ -599,9 +615,5 @@ public class EPornerCom extends PluginForHost {
     public void resetDownloadlink(DownloadLink link) {
         link.removeProperty(PROPERTY_LAST_DIRECTURL);
         link.removeProperty(PROPERTY_DIRECTURL);
-    }
-
-    @Override
-    public void resetPluginGlobals() {
     }
 }

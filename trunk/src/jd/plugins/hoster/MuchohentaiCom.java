@@ -34,7 +34,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51145 $", interfaceVersion = 3, names = {}, urls = {})
 public class MuchohentaiCom extends PluginForHost {
     public MuchohentaiCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -26,7 +26,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "fb.watch" }, urls = { "https?://(?:www\\.)?fb\\.watch/[A-Za-z0-9\\-_]+/?" })
+@DecrypterPlugin(revision = "$Revision: 47310 $", interfaceVersion = 3, names = { "fb.watch" }, urls = { "https?://(?:www\\.)?fb\\.watch/[A-Za-z0-9\\-_]+/?" })
 public class FacebookVideoShortURLs extends PluginForDecrypt {
     public FacebookVideoShortURLs(PluginWrapper wrapper) {
         super(wrapper);

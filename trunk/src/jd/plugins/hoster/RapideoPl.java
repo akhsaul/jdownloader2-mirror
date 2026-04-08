@@ -24,7 +24,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 import jd.plugins.components.MultiHosterManagement;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "rapideo.net" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 49695 $", interfaceVersion = 3, names = { "rapideo.net" }, urls = { "" })
 public class RapideoPl extends RapideoCore {
     protected static MultiHosterManagement mhm = new MultiHosterManagement("rapideo.net");
 

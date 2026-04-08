@@ -35,7 +35,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "eltrecetv.com.ar" }, urls = { "https?://(?:www\\.)?eltrecetv\\.com\\.ar/.+\\d+/?$" })
+@HostPlugin(revision = "$Revision: 51029 $", interfaceVersion = 2, names = { "eltrecetv.com.ar" }, urls = { "https?://(?:www\\.)?eltrecetv\\.com\\.ar/.+\\d+/?$" })
 public class EltrecetvComAr extends PluginForHost {
     public EltrecetvComAr(final PluginWrapper wrapper) {
         super(wrapper);

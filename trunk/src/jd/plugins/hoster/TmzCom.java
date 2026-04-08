@@ -33,7 +33,7 @@ import jd.plugins.components.PluginJSonUtils;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.controlling.filter.CompiledFiletypeFilter;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "tmz.com" }, urls = { "https?://(?:www\\.|m\\.)?tmz\\.com/videos/([A-Za-z0-9\\-_]+)" })
+@HostPlugin(revision = "$Revision: 47487 $", interfaceVersion = 2, names = { "tmz.com" }, urls = { "https?://(?:www\\.|m\\.)?tmz\\.com/videos/([A-Za-z0-9\\-_]+)" })
 public class TmzCom extends PluginForHost {
     public TmzCom(PluginWrapper wrapper) {
         super(wrapper);

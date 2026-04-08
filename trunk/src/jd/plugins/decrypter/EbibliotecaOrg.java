@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48286 $", interfaceVersion = 3, names = {}, urls = {})
 public class EbibliotecaOrg extends PluginForDecrypt {
     public EbibliotecaOrg(PluginWrapper wrapper) {
         super(wrapper);

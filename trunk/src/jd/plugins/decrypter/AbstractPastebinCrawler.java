@@ -29,7 +29,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48400 $", interfaceVersion = 2, names = {}, urls = {})
 public abstract class AbstractPastebinCrawler extends PluginForDecrypt {
     public AbstractPastebinCrawler(PluginWrapper wrapper) {
         super(wrapper);

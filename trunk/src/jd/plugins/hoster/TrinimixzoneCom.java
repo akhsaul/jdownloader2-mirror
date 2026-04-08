@@ -37,7 +37,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "trinimixzone.com" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51945 $", interfaceVersion = 3, names = { "trinimixzone.com" }, urls = { "" })
 public class TrinimixzoneCom extends PluginForHost {
     public TrinimixzoneCom(PluginWrapper wrapper) {
         super(wrapper);

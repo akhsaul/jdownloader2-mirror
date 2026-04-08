@@ -37,7 +37,7 @@ import jd.plugins.hoster.SuicidegirlsCom;
 
 import org.appwork.utils.StringUtils;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "suicidegirls.com" }, urls = { "https?://(?:www\\.)?suicidegirls\\.com/(?:girls|members)/[A-Za-z0-9\\-_]+/(?:album/\\d+/[A-Za-z0-9\\-_]+/)?" })
+@DecrypterPlugin(revision = "$Revision: 51818 $", interfaceVersion = 3, names = { "suicidegirls.com" }, urls = { "https?://(?:www\\.)?suicidegirls\\.com/(?:girls|members)/[A-Za-z0-9\\-_]+/(?:album/\\d+/[A-Za-z0-9\\-_]+/)?" })
 public class SuicidegirlsComCrawler extends PluginForDecrypt {
     public SuicidegirlsComCrawler(PluginWrapper wrapper) {
         super(wrapper);

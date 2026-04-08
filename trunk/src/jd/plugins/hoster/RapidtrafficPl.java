@@ -20,7 +20,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 import jd.plugins.components.MultiHosterManagement;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "rapidtraffic.pl" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 47853 $", interfaceVersion = 3, names = { "rapidtraffic.pl" }, urls = { "" })
 public class RapidtrafficPl extends RapidtrafficCore {
     protected static MultiHosterManagement mhm = new MultiHosterManagement("rapidtraffic.pl");
 

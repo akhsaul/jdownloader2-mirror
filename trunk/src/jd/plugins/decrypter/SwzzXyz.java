@@ -36,7 +36,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48281 $", interfaceVersion = 3, names = {}, urls = {})
 public class SwzzXyz extends MightyScriptAdLinkFly {
     public SwzzXyz(PluginWrapper wrapper) {
         super(wrapper);

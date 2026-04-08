@@ -19,11 +19,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import org.appwork.utils.StringUtils;
 import org.appwork.utils.parser.UrlQuery;
 
 import jd.PluginWrapper;
 import jd.controlling.ProgressController;
 import jd.http.Browser;
+import jd.http.URLConnectionAdapter;
 import jd.nutils.encoding.Encoding;
 import jd.parser.Regex;
 import jd.plugins.CryptedLink;
@@ -35,7 +37,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52432 $", interfaceVersion = 3, names = {}, urls = {})
 public class TaiwebsComBr0wsersCom extends PluginForDecrypt {
     public TaiwebsComBr0wsersCom(PluginWrapper wrapper) {
         super(wrapper);
@@ -77,12 +79,12 @@ public class TaiwebsComBr0wsersCom extends PluginForDecrypt {
     }
 
     public ArrayList<DownloadLink> decryptIt(final CryptedLink param, ProgressController progress) throws Exception {
-        final ArrayList<DownloadLink> ret = new ArrayList<DownloadLink>();
-        final Regex urlinfo = new Regex(param.getCryptedUrl(), this.getSupportedLinks());
-        // final String urlSlug = urlinfo.getMatch(0);
+        final String contenturl = param.getCryptedUrl();
+        final Regex urlinfo = new Regex(contenturl, this.getSupportedLinks());
+        final String urlSlug = urlinfo.getMatch(0);
         final Browser brc = br.cloneBrowser();
         brc.getHeaders().put("Origin", "https://br0wsers.com");
-        brc.getHeaders().put("Referer", param.getCryptedUrl());
+        brc.getHeaders().put("Referer", contenturl);
         brc.getHeaders().put("X-Requested-With", "XMLHttpRequest");
         final UrlQuery query = new UrlQuery();
         query.appendEncoded("ils", urlinfo.getMatch(2));
@@ -92,52 +94,127 @@ public class TaiwebsComBr0wsersCom extends PluginForDecrypt {
         if (brc.getHttpConnection().getResponseCode() == 404) {
             throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
         }
-        final String[] links = brc.getRegex("id=\"various1\" href=\"(https?://[^\"]+)\"").getColumn(0);
-        if (links == null || links.length == 0) {
-            throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
-        }
+        String[] urls = brc.getRegex("id=\"various1\" href=\"(https?://[^\"]+)\"").getColumn(0);
         final HashSet<String> dupes = new HashSet<String>();
-        FilePackage fp = null;
+        final FilePackage fp = FilePackage.getInstance();
         final String filenameEncoded = brc.getRegex("&ref=([^&\\?\"]+)").getMatch(0);
         if (filenameEncoded != null) {
-            fp = FilePackage.getInstance();
             fp.setName(Encoding.Base64Decode(filenameEncoded).trim());
             fp.setCleanupPackageName(false);
-        }
-        // fp.setName(urlSlug);
-        final Browser brx = br.cloneBrowser();
-        brx.setFollowRedirects(false);
-        final ArrayList<String> pwlist = new ArrayList<String>();
-        pwlist.add("taiwebs.com");
-        for (final String link : links) {
-            if (!dupes.add(link)) {
-                continue;
+        } else {
+            br.getPage(contenturl);
+            if (br.getHttpConnection().getResponseCode() == 404) {
+                throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
             }
-            final String gdriveFileIDEncoded = new Regex(link, "(?i)dl/goo/[^/]+/([a-zA-Z0-9_/\\+\\=\\-%]+)").getMatch(0);
-            final String encodedURL;
-            final DownloadLink result;
-            if (gdriveFileIDEncoded != null) {
-                final String gdriveFileID = Encoding.Base64Decode(Encoding.htmlDecode(gdriveFileIDEncoded.trim()));
-                result = createDownloadlink(GoogleDriveCrawler.generateFileURL(gdriveFileID));
-            } else if ((encodedURL = new Regex(link, "(?i)dlfast/[^/]+/(aHR0[a-zA-Z0-9_/\\+\\=\\-%]+)").getMatch(0)) != null) {
-                /* Typically mediafire.com */
-                final String decodedURL = Encoding.Base64Decode(Encoding.htmlDecode(encodedURL.trim()));
-                result = createDownloadlink(decodedURL);
+            String title = br.getRegex("property=\"og:title\" content=\"([^\"]+)").getMatch(0);
+            if (title != null) {
+                title = Encoding.htmlDecode(title).trim();
+                title = title.replace(" | Br0wsers.com", "");
+            }
+            if (!StringUtils.isEmpty(title)) {
+                fp.setName(title);
             } else {
-                /* http request required to find final URL */
-                brx.getPage(link);
-                final String redirect = brx.getRedirectLocation();
-                if (redirect == null) {
-                    throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
+                /* Fallback */
+                fp.setName(urlSlug);
+            }
+        }
+        final ArrayList<DownloadLink> ret = new ArrayList<DownloadLink>();
+        if (urls != null && urls.length > 0) {
+            final Browser brx = br.cloneBrowser();
+            brx.setFollowRedirects(false);
+            final ArrayList<String> pwlist = new ArrayList<String>();
+            pwlist.add("taiwebs.com");
+            int numberofOfflineItems = 0;
+            int index = -1;
+            for (final String url : urls) {
+                index++;
+                if (!dupes.add(url)) {
+                    continue;
                 }
-                result = createDownloadlink(DirectHTTP.createURLForThisPlugin(redirect));
+                logger.info("Crawling item " + (index + 1) + "/" + urls.length);
+                final String gdriveFileIDEncoded = new Regex(url, "(?i)dl/goo/[^/]+/([a-zA-Z0-9_/\\+\\=\\-%]+)").getMatch(0);
+                final String encodedURL;
+                DownloadLink result = null;
+                if (gdriveFileIDEncoded != null) {
+                    final String gdriveFileID = Encoding.Base64Decode(Encoding.htmlDecode(gdriveFileIDEncoded.trim()));
+                    result = createDownloadlink(GoogleDriveCrawler.generateFileURL(gdriveFileID));
+                } else if ((encodedURL = new Regex(url, "(?i)dlfast/[^/]+/(aHR0[a-zA-Z0-9_/\\+\\=\\-%]+)").getMatch(0)) != null) {
+                    /* Typically mediafire.com */
+                    final String decodedURL = Encoding.Base64Decode(Encoding.htmlDecode(encodedURL.trim()));
+                    result = createDownloadlink(decodedURL);
+                } else {
+                    /* http request required to find final URL */
+                    URLConnectionAdapter con = null;
+                    try {
+                        con = brx.openGetConnection(url);
+                        /* Check if we have a single file. */
+                        if (this.looksLikeDownloadableContent(con)) {
+                            result = this.createDownloadlink(DirectHTTP.createURLForThisPlugin(con.getURL().toExternalForm()));
+                            if (con.getCompleteContentLength() > 0) {
+                                if (con.isContentDecoded()) {
+                                    result.setDownloadSize(con.getCompleteContentLength());
+                                } else {
+                                    result.setVerifiedFileSize(con.getCompleteContentLength());
+                                }
+                            }
+                            result.setFinalFileName(getFileNameFromConnection(con));
+                            result.setAvailable(true);
+                        } else {
+                            brx.followConnection();
+                        }
+                    } finally {
+                        try {
+                            con.disconnect();
+                        } catch (final Throwable e) {
+                        }
+                    }
+                    if (result == null) {
+                        if (brx.getHttpConnection().getResponseCode() == 400 || brx.getHttpConnection().getResponseCode() == 404) {
+                            numberofOfflineItems++;
+                            continue;
+                        }
+                        final String redirect = brx.getRedirectLocation();
+                        if (redirect == null) {
+                            throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
+                        }
+                        result = createDownloadlink(DirectHTTP.createURLForThisPlugin(redirect));
+                    }
+                }
+                result.setSourcePluginPasswordList(pwlist);
+                if (urls.length > 1) {
+                    result._setFilePackage(fp);
+                }
+                ret.add(result);
+                distribute(result);
+                if (this.isAbort()) {
+                    /* Aborted by user */
+                    throw new InterruptedException();
+                }
             }
-            result.setSourcePluginPasswordList(pwlist);
-            if (fp != null) {
-                result._setFilePackage(fp);
+            if (ret.isEmpty() && numberofOfflineItems > 0) {
+                /* Assume that all items are offline */
+                throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
             }
-            ret.add(result);
-            distribute(result);
+            return ret;
+        }
+        /* 2026-03-03: e.g. externally hosted applications, example: /blog/detail/malwarebytes-adwcleaner-1132-6806.html */
+        urls = brc.getRegex("<a href=\"(https?://[^\"]+)\"[^>]*onclick=\"myfunctions_").getColumn(0);
+        if (urls != null && urls.length > 0) {
+            logger.info("Number of externally hosted items: " + urls.length);
+            for (final String url : urls) {
+                if (!dupes.add(url)) {
+                    continue;
+                }
+                final DownloadLink result = this.createDownloadlink(url);
+                if (urls.length > 1) {
+                    result._setFilePackage(fp);
+                }
+                ret.add(result);
+            }
+        }
+        if (ret.isEmpty()) {
+            /* Assume that all items are offline */
+            throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
         }
         return ret;
     }

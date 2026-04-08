@@ -47,7 +47,8 @@ import java.util.regex.Pattern;
 
 import org.appwork.loggingv3.LogV3;
 import org.appwork.net.protocol.http.HTTPConstants;
-import org.appwork.net.protocol.http.HTTPConstants.ResponseCode;
+import org.appwork.remoteapi.exceptions.BasicRemoteAPIException;
+import org.appwork.remoteapi.exceptions.FileNotFound404Exception;
 import org.appwork.utils.DebugMode;
 import org.appwork.utils.Exceptions;
 import org.appwork.utils.Joiner;
@@ -131,6 +132,8 @@ public class HttpServerConnection implements HttpConnectionRunnable, RawHttpConn
     protected HttpRequest.HTTP_VERSION   requestHttpVersion;
     /** Client certificate trust result (chain + provider + exception); null if no client cert. */
     protected final TrustResult          trustResult;
+    /** Timing at socket accept (wall-clock ms + monotonic nanos); null if unknown. */
+    private final TimingContext          timingContext;
     protected boolean                    outputStreamInUse = false;
     protected HttpResponse               response          = null;
     protected InputStream                is;
@@ -152,7 +155,15 @@ public class HttpServerConnection implements HttpConnectionRunnable, RawHttpConn
     public static final Pattern          REQUESTPARAM      = Pattern.compile("^/.*?\\?(.+)");
 
     protected HttpServerConnection(final AbstractServerBasics server, final Socket clientSocket, final InputStream is, final OutputStream os) throws IOException {
-        this(server, clientSocket, is, os, false, null);
+        this(server, clientSocket, is, os, false, null, null);
+    }
+
+    /**
+     * @param timingContext
+     *            timing at socket accept (wall-clock ms + monotonic nanos), or null if unknown
+     */
+    protected HttpServerConnection(final AbstractServerBasics server, final Socket clientSocket, final InputStream is, final OutputStream os, final TimingContext timingContext) throws IOException {
+        this(server, clientSocket, is, os, false, null, timingContext);
     }
 
     /**
@@ -162,10 +173,23 @@ public class HttpServerConnection implements HttpConnectionRunnable, RawHttpConn
      *            Trust result from client cert validation (chain + provider + exception), or null if no client cert
      */
     protected HttpServerConnection(final AbstractServerBasics server, final Socket clientSocket, final InputStream is, final OutputStream os, final boolean ssl, final TrustResult clientCertTrustResult) throws IOException {
+        this(server, clientSocket, is, os, ssl, clientCertTrustResult, null);
+    }
+
+    /**
+     * @param ssl
+     *            true if this connection is over SSL/TLS
+     * @param clientCertTrustResult
+     *            Trust result from client cert validation (chain + provider + exception), or null if no client cert
+     * @param timingContext
+     *            timing at socket accept (wall-clock ms + monotonic nanos), or null if unknown
+     */
+    protected HttpServerConnection(final AbstractServerBasics server, final Socket clientSocket, final InputStream is, final OutputStream os, final boolean ssl, final TrustResult clientCertTrustResult, final TimingContext timingContext) throws IOException {
         this.server = server;
         this.clientSocket = clientSocket;
         this.ssl = ssl;
         this.trustResult = clientCertTrustResult;
+        this.timingContext = timingContext;
         if (is == null && clientSocket != null) {
             this.is = clientSocket.getInputStream();
         } else {
@@ -189,6 +213,25 @@ public class HttpServerConnection implements HttpConnectionRunnable, RawHttpConn
 
     public Socket getClientSocket() {
         return clientSocket;
+    }
+
+    /**
+     * Returns the timing context at socket accept (wall-clock ms and monotonic nanos). Use for time-sync and elapsed-time calculations.
+     *
+     * @return the timing context, or null if unknown (e.g. connection created before this was tracked)
+     */
+    public TimingContext getTimingContext() {
+        return this.timingContext;
+    }
+
+    /**
+     * Returns the nanosecond value (e.g. {@link System#nanoTime()}) when this socket was accepted. Use with
+     * {@link System#nanoTime()} to compute elapsed time since accept. 0 if unknown (e.g. connection created before this was tracked).
+     *
+     * @return socket connection accept time in nanoseconds, or 0 if unknown
+     */
+    public long getSocketConnectionNanos() {
+        return this.timingContext != null ? this.timingContext.getConnectionNanos() : 0L;
     }
 
     /**
@@ -235,6 +278,7 @@ public class HttpServerConnection implements HttpConnectionRunnable, RawHttpConn
         this.clientSocket = null;
         this.ssl = false;
         this.trustResult = null;
+        this.timingContext = null;
         this.is = null;
         this.os = null;
         this.isActive = false;
@@ -786,8 +830,8 @@ public class HttpServerConnection implements HttpConnectionRunnable, RawHttpConn
         return this.outputStreamInUse;
     }
 
-    protected void onUnhandled(final HttpRequest request, final HttpResponse response) throws IOException {
-        response.setResponseCode(ResponseCode.SERVERERROR_NOT_IMPLEMENTED);
+    protected void onUnhandled(final HttpRequest request, final HttpResponse response) throws BasicRemoteAPIException {
+        throw new FileNotFound404Exception();
     }
 
     protected RequestMethod parseConnectionType(final String requestLine) throws IOException {
@@ -956,7 +1000,7 @@ public class HttpServerConnection implements HttpConnectionRunnable, RawHttpConn
                 LogV3.fine("HttpConnection.run: Request built in " + (beforeValidateTime - requestStartTime) + "ms, calling validateRequest");
             }
             // throw exception on Cors validation error
-            server.validateRequest(request);
+            server.validateRequest(request, response);
             final long afterValidateTime = Time.systemIndependentCurrentJVMTimeMillis();
             if (isVerboseLogEnabled()) {
                 LogV3.fine("HttpConnection.run: validateRequest completed in " + (afterValidateTime - beforeValidateTime) + "ms");
@@ -968,7 +1012,12 @@ public class HttpServerConnection implements HttpConnectionRunnable, RawHttpConn
                 if (request instanceof OptionsRequest) {
                     if (server.getCorsHandler().answerOptionsRequest((OptionsRequest) request, response)) {
                         // CORS is configured and origin is allowed - OPTIONS preflight request handled
-                        // Response is already prepared by answerOptionsRequest()
+                        // Notify extended handlers so they can log/capture the request (e.g. browser dev mode)
+                        for (final HttpRequestHandler handler : this.getHandler()) {
+                            if (handler instanceof ExtendedHttpRequestHandler) {
+                                ((ExtendedHttpRequestHandler) handler).onAfterRequest(request, response, true);
+                            }
+                        }
                         response.getOutputStream(true).flush();
                         closeConnection = true;
                         return;

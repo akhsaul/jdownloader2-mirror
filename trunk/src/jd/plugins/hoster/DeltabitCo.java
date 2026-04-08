@@ -28,7 +28,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 43414 $", interfaceVersion = 3, names = {}, urls = {})
 public class DeltabitCo extends XFileSharingProBasic {
     public DeltabitCo(final PluginWrapper wrapper) {
         super(wrapper);

@@ -29,7 +29,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "zaycev.net" }, urls = { "https?://(?:www\\.)?zaycev\\.net/artist/\\d+(\\?page=\\d+)?" })
+@DecrypterPlugin(revision = "$Revision: 48886 $", interfaceVersion = 2, names = { "zaycev.net" }, urls = { "https?://(?:www\\.)?zaycev\\.net/artist/\\d+(\\?page=\\d+)?" })
 public class ZaycevNetCrawler extends PluginForDecrypt {
     public ZaycevNetCrawler(PluginWrapper wrapper) {
         super(wrapper);

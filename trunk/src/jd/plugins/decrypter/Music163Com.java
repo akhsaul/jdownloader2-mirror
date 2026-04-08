@@ -38,7 +38,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.PluginJSonUtils;
 import jd.utils.JDUtilities;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "music.163.com" }, urls = { "https?://(?:www\\.)?music\\.163\\.com/(?:#/)?(?:album\\?id=|artist/album\\?id=|playlist\\?id=)\\d+" })
+@DecrypterPlugin(revision = "$Revision: 45837 $", interfaceVersion = 3, names = { "music.163.com" }, urls = { "https?://(?:www\\.)?music\\.163\\.com/(?:#/)?(?:album\\?id=|artist/album\\?id=|playlist\\?id=)\\d+" })
 public class Music163Com extends PluginForDecrypt {
     public Music163Com(PluginWrapper wrapper) {
         super(wrapper);

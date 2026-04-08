@@ -29,7 +29,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48016 $", interfaceVersion = 3, names = {}, urls = {})
 public class AdfocUs extends PluginForDecrypt {
     public AdfocUs(PluginWrapper wrapper) {
         super(wrapper);

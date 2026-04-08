@@ -43,7 +43,7 @@ import org.appwork.utils.parser.UrlQuery;
 import org.jdownloader.plugins.components.dcm.Dcm;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "digitalcomicmuseum.com" }, urls = { "https?://(?:www\\.)?digitalcomicmuseum\\.com/.*\\?dl?id=\\d+" })
+@HostPlugin(revision = "$Revision: 47474 $", interfaceVersion = 3, names = { "digitalcomicmuseum.com" }, urls = { "https?://(?:www\\.)?digitalcomicmuseum\\.com/.*\\?dl?id=\\d+" })
 public class DigitalcomicmuseumCom extends PluginForHost {
     public DigitalcomicmuseumCom(PluginWrapper wrapper) {
         super(wrapper);

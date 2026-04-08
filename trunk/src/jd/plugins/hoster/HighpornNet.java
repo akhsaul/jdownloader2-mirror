@@ -39,7 +39,7 @@ import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.components.antiDDoSForHost;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "highporn.net" }, urls = { "highporndecrypted://(.+)" })
+@HostPlugin(revision = "$Revision: 52202 $", interfaceVersion = 3, names = { "highporn.net" }, urls = { "highporndecrypted://(.+)" })
 public class HighpornNet extends antiDDoSForHost {
     @Override
     public String[] siteSupportedNames() {

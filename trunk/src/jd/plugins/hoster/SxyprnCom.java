@@ -30,7 +30,7 @@ import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.components.antiDDoSForHost;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "sxyprn.com" }, urls = { "https?://(?:www\\.)?sxyprn\\.(?:com|net)/post/([a-fA-F0-9]{13})(?:\\.html)?" })
+@HostPlugin(revision = "$Revision: 51880 $", interfaceVersion = 2, names = { "sxyprn.com" }, urls = { "https?://(?:www\\.)?sxyprn\\.(?:com|net)/post/([a-fA-F0-9]{13})(?:\\.html)?" })
 public class SxyprnCom extends antiDDoSForHost {
     public SxyprnCom(PluginWrapper wrapper) {
         super(wrapper);

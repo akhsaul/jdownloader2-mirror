@@ -28,7 +28,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "byte.to" }, urls = { "https?://(?:www\\.)?byte\\.to/(?:category/[A-Za-z0-9\\-/]+-\\d+\\.html|\\?id=\\d+)|https?://byte\\.to/go\\.php\\?hash=.+" })
+@DecrypterPlugin(revision = "$Revision: 44914 $", interfaceVersion = 2, names = { "byte.to" }, urls = { "https?://(?:www\\.)?byte\\.to/(?:category/[A-Za-z0-9\\-/]+-\\d+\\.html|\\?id=\\d+)|https?://byte\\.to/go\\.php\\?hash=.+" })
 public class BteTo extends PluginForDecrypt {
     public BteTo(PluginWrapper wrapper) {
         super(wrapper);

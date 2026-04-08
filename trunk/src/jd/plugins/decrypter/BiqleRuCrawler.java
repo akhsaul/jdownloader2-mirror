@@ -47,7 +47,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.PluginJSonUtils;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50717 $", interfaceVersion = 3, names = {}, urls = {})
 public class BiqleRuCrawler extends PluginForDecrypt {
     public BiqleRuCrawler(PluginWrapper wrapper) {
         super(wrapper);

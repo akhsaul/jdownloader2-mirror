@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.download.HashInfo;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "apkmirror.com" }, urls = { "https?://(?:www\\.)?apkmirror\\.com/apk/(([^/]+)/([^/]+)/([^/]+)/([^/]+))\\-download/" })
+@HostPlugin(revision = "$Revision: 50987 $", interfaceVersion = 3, names = { "apkmirror.com" }, urls = { "https?://(?:www\\.)?apkmirror\\.com/apk/(([^/]+)/([^/]+)/([^/]+)/([^/]+))\\-download/" })
 public class ApkmirrorCom extends antiDDoSForHost {
     public ApkmirrorCom(PluginWrapper wrapper) {
         super(wrapper);

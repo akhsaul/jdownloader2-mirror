@@ -31,7 +31,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "katholisch.de" }, urls = { "https?://(?:www\\.)?katholisch.de/video/\\d+[a-z0-9\\-]+" })
+@DecrypterPlugin(revision = "$Revision: 49624 $", interfaceVersion = 3, names = { "katholisch.de" }, urls = { "https?://(?:www\\.)?katholisch.de/video/\\d+[a-z0-9\\-]+" })
 public class KatholischDe extends PluginForDecrypt {
     public KatholischDe(PluginWrapper wrapper) {
         super(wrapper);

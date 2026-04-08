@@ -34,7 +34,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "biqle.ru" }, urls = { "biqledecrypted://.+" })
+@HostPlugin(revision = "$Revision: 49747 $", interfaceVersion = 3, names = { "biqle.ru" }, urls = { "biqledecrypted://.+" })
 public class BiqleRu extends PluginForHost {
     public BiqleRu(PluginWrapper wrapper) {
         super(wrapper);

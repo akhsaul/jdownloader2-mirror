@@ -39,7 +39,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51070 $", interfaceVersion = 3, names = {}, urls = {})
 public class FstoreBiz extends PluginForHost {
     public FstoreBiz(PluginWrapper wrapper) {
         super(wrapper);

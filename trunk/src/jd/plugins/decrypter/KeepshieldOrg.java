@@ -17,8 +17,14 @@ package jd.plugins.decrypter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
+import org.appwork.storage.TypeRef;
 import org.appwork.utils.StringUtils;
+import org.jdownloader.captcha.v2.challenge.cloudflareturnstile.AbstractCloudflareTurnstileCaptcha;
+import org.jdownloader.captcha.v2.challenge.cloudflareturnstile.CaptchaHelperCrawlerPluginCloudflareTurnstile;
+import org.jdownloader.captcha.v2.challenge.recaptcha.v2.AbstractRecaptchaV2;
+import org.jdownloader.captcha.v2.challenge.recaptcha.v2.CaptchaHelperCrawlerPluginRecaptchaV2;
 
 import jd.PluginWrapper;
 import jd.controlling.ProgressController;
@@ -34,7 +40,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52544 $", interfaceVersion = 3, names = {}, urls = {})
 public class KeepshieldOrg extends PluginForDecrypt {
     public KeepshieldOrg(PluginWrapper wrapper) {
         super(wrapper);
@@ -67,10 +73,13 @@ public class KeepshieldOrg extends PluginForDecrypt {
         return buildAnnotationUrls(getPluginDomains());
     }
 
+    private static final Pattern TYPE_1 = Pattern.compile("/safe/([a-f0-9]{8,})");
+    private static final Pattern TYPE_2 = Pattern.compile("/katf/([a-f0-9]{8,})");
+
     public static String[] buildAnnotationUrls(final List<String[]> pluginDomains) {
         final List<String> ret = new ArrayList<String>();
         for (final String[] domains : pluginDomains) {
-            ret.add("https?://(?:www\\.)?" + buildHostsPatternPart(domains) + "/safe/([a-f0-9]{8,})");
+            ret.add("https?://(?:www\\.)?" + buildHostsPatternPart(domains) + "/(" + TYPE_1.pattern().substring(1) + "|" + TYPE_2.pattern().substring(1) + ")");
         }
         return ret.toArray(new String[0]);
     }
@@ -82,11 +91,7 @@ public class KeepshieldOrg extends PluginForDecrypt {
         if (br.getHttpConnection().getResponseCode() == 404) {
             throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
         }
-        /**
-         * TODO: Implement captcha once they've implemented it server side 2025-02-02: Captcha can be chosen when creating a link but link
-         * won't have a captcha then -> Website is buggy
-         */
-        /* Some items are password protected */
+        /* Handle pw protected items */
         final Form pwform = this.getPasswordForm(br);
         if (pwform != null) {
             final String passCode = getUserInput("Password?", param);
@@ -94,6 +99,23 @@ public class KeepshieldOrg extends PluginForDecrypt {
             br.submitForm(pwform);
             if (this.getPasswordForm(br) != null) {
                 throw new DecrypterException(DecrypterException.PASSWORD);
+            }
+        }
+        /* Handle captcha */
+        final Form captchaform = this.getCaptchaForm(br);
+        if (captchaform != null) {
+            if (AbstractCloudflareTurnstileCaptcha.containsCloudflareTurnstileClass(captchaform)) {
+                final String response = new CaptchaHelperCrawlerPluginCloudflareTurnstile(this, br).getToken();
+                captchaform.put("cf-turnstile-response", Encoding.urlEncode(response));
+            } else if (AbstractRecaptchaV2.containsRecaptchaV2Class(captchaform)) {
+                final String response = new CaptchaHelperCrawlerPluginRecaptchaV2(this, br).getToken();
+                captchaform.put("g-recaptcha-response", Encoding.urlEncode(response));
+            } else {
+                throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
+            }
+            br.submitForm(captchaform);
+            if (this.getCaptchaForm(br) != null) {
+                throw new PluginException(LinkStatus.ERROR_CAPTCHA);
             }
         }
         /* Some items need an additional step/form with a wait time in beforehand. */
@@ -113,23 +135,44 @@ public class KeepshieldOrg extends PluginForDecrypt {
             title = Encoding.htmlDecode(title).trim();
             title = title.replace("Protected Links", "");
         }
-        final String[] urls = br.getRegex("data-check-url=\"(http?://[^\"]+)").getColumn(0);
-        if (urls == null || urls.length == 0) {
-            throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
+        final String links_as_json_array = br.getRegex("var allLinks = (\\[[^\\]]+\\]);").getMatch(0);
+        if (links_as_json_array != null) {
+            /** 2026-03-18: e.g. "/katf/..." links aka {@link #TYPE_2} */
+            final List<Object> urls = restoreFromString(links_as_json_array, TypeRef.LIST);
+            if (urls.isEmpty()) {
+                throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
+            }
+            for (final Object url : urls) {
+                final DownloadLink link = createDownloadlink(url.toString());
+                ret.add(link);
+            }
+        } else {
+            final String[] urls = br.getRegex("data-check-url=\"(https?://[^\"]+)").getColumn(0);
+            if (urls == null || urls.length == 0) {
+                throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
+            }
+            for (final String url : urls) {
+                final DownloadLink link = createDownloadlink(url);
+                ret.add(link);
+            }
         }
         final FilePackage fp = FilePackage.getInstance();
         if (!StringUtils.isEmpty(title)) {
             fp.setName(title);
         }
-        for (final String url : urls) {
-            final DownloadLink link = createDownloadlink(url);
-            link._setFilePackage(fp);
-            ret.add(link);
-        }
+        fp.addLinks(ret);
         return ret;
     }
 
     private Form getPasswordForm(final Browser br) {
         return br.getFormbyKey("password_submit");
+    }
+
+    private Form getCaptchaForm(final Browser br) {
+        Form ret = br.getFormbyProperty("id", "captcha-form");
+        if (ret == null) {
+            ret = br.getFormbyKey("captcha_submit");
+        }
+        return ret;
     }
 }

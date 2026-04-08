@@ -25,7 +25,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 48667 $", interfaceVersion = 3, names = {}, urls = {})
 public class KernelVideoSharingNudogramCom extends KernelVideoSharingComV2 {
     public KernelVideoSharingNudogramCom(final PluginWrapper wrapper) {
         super(wrapper);

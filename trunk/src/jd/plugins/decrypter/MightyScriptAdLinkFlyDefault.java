@@ -25,7 +25,7 @@ import jd.PluginWrapper;
 import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51681 $", interfaceVersion = 3, names = {}, urls = {})
 public class MightyScriptAdLinkFlyDefault extends MightyScriptAdLinkFly {
     public MightyScriptAdLinkFlyDefault(PluginWrapper wrapper) {
         super(wrapper);

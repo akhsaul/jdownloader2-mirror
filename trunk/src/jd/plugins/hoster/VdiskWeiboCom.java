@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "vdisk.weibo.com" }, urls = { "http://(?:www\\.)?vdisk\\.weibo\\.com/s/([A-Za-z0-9]+)" })
+@HostPlugin(revision = "$Revision: 47476 $", interfaceVersion = 3, names = { "vdisk.weibo.com" }, urls = { "http://(?:www\\.)?vdisk\\.weibo\\.com/s/([A-Za-z0-9]+)" })
 public class VdiskWeiboCom extends PluginForHost {
     public VdiskWeiboCom(PluginWrapper wrapper) {
         super(wrapper);

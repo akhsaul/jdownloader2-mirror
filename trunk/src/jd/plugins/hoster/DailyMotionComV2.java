@@ -34,7 +34,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.components.DailyMotionVariant;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "dailymotion.com" }, urls = { "https?://dailymotion\\.com/video/\\w+" })
+@HostPlugin(revision = "$Revision: 47865 $", interfaceVersion = 3, names = { "dailymotion.com" }, urls = { "https?://dailymotion\\.com/video/\\w+" })
 public class DailyMotionComV2 extends DailyMotionCom {
     public DailyMotionComV2(PluginWrapper wrapper) {
         super(wrapper);

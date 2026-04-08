@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.SendCm;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51367 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { SendCm.class })
 public class SendCmFolder extends PluginForDecrypt {
     public SendCmFolder(PluginWrapper wrapper) {

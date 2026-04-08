@@ -27,7 +27,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "vocaroo.com" }, urls = { "https?://(?:www\\.)?vocaroo\\.com/([A-Za-z0-9]+)" })
+@HostPlugin(revision = "$Revision: 47476 $", interfaceVersion = 3, names = { "vocaroo.com" }, urls = { "https?://(?:www\\.)?vocaroo\\.com/([A-Za-z0-9]+)" })
 public class VocarooCom extends PluginForHost {
     public VocarooCom(PluginWrapper wrapper) {
         super(wrapper);

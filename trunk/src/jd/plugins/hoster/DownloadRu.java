@@ -38,7 +38,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51029 $", interfaceVersion = 3, names = {}, urls = {})
 public class DownloadRu extends PluginForHost {
     public DownloadRu(PluginWrapper wrapper) {
         super(wrapper);

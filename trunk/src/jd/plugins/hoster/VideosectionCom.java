@@ -31,7 +31,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 48606 $", interfaceVersion = 3, names = {}, urls = {})
 public class VideosectionCom extends antiDDoSForHost {
     public VideosectionCom(PluginWrapper wrapper) {
         super(wrapper);

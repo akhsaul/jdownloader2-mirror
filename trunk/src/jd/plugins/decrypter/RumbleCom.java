@@ -47,7 +47,7 @@ import org.jdownloader.plugins.components.config.RumbleComConfig.QualitySelectio
 import org.jdownloader.plugins.config.PluginJsonConfig;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51066 $", interfaceVersion = 3, names = {}, urls = {})
 public class RumbleCom extends PluginForDecrypt {
     public RumbleCom(PluginWrapper wrapper) {
         super(wrapper);

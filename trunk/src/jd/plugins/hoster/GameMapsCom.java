@@ -34,7 +34,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49212 $", interfaceVersion = 2, names = {}, urls = {})
 public class GameMapsCom extends PluginForHost {
     private String         dllink            = null;
     private final String   cacheLinkProperty = "cacheLink";

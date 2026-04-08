@@ -28,7 +28,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "zmags.com" }, urls = { "https?://(?:www\\.)?viewer\\.zmags\\.com/publication/([a-z0-9]+)" })
+@HostPlugin(revision = "$Revision: 49355 $", interfaceVersion = 2, names = { "zmags.com" }, urls = { "https?://(?:www\\.)?viewer\\.zmags\\.com/publication/([a-z0-9]+)" })
 public class ZMagsCom extends PluginForHost {
     public ZMagsCom(PluginWrapper wrapper) {
         super(wrapper);

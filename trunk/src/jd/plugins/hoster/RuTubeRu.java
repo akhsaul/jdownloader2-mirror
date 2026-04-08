@@ -37,7 +37,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.RuTubeVariant;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "rutube.ru" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 50805 $", interfaceVersion = 3, names = { "rutube.ru" }, urls = { "" })
 public class RuTubeRu extends PluginForHost {
     public RuTubeRu(final PluginWrapper wrapper) {
         super(wrapper);

@@ -18,6 +18,7 @@ package jd.plugins.hoster;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import jd.PluginWrapper;
 import jd.plugins.Account;
@@ -25,10 +26,10 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-import org.appwork.utils.StringUtils;
+import org.appwork.utils.Regex;
 import org.jdownloader.plugins.components.XFileSharingProBasic;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52486 $", interfaceVersion = 3, names = {}, urls = {})
 public class ImagetwistCom extends XFileSharingProBasic {
     public ImagetwistCom(final PluginWrapper wrapper) {
         super(wrapper);
@@ -49,29 +50,8 @@ public class ImagetwistCom extends XFileSharingProBasic {
         return ret;
     }
 
-    @Override
-    public String getLinkID(DownloadLink link) {
-        if (StringUtils.containsIgnoreCase(link.getPluginPatternMatcher(), "phun.imagetwist.com")) {
-            final String fuid = getFUIDFromURL(link);
-            if (fuid != null) {
-                return "phun.imagetwist.com://" + fuid;
-            }
-        }
-        return super.getLinkID(link);
-    }
-
     public static String[] getAnnotationNames() {
         return buildAnnotationNames(getPluginDomains());
-    }
-
-    @Override
-    protected String getPreferredHost(DownloadLink link, URL url) {
-        // plugin also supports thumbs and correctURL rewrites to normal URLs on main domain
-        String host = url.getHost();
-        if (host.matches("(?i)^(\\w+)?phun\\.imagetwist\\.com$")) {
-            return "phun.imagetwist.com";
-        }
-        return getHost();
     }
 
     @Override
@@ -80,13 +60,26 @@ public class ImagetwistCom extends XFileSharingProBasic {
     }
 
     public static String[] getAnnotationUrls() {
+        return buildAnnotationUrls(getPluginDomains());
+    }
+
+    private static final Pattern PATTERN_THUMBNAIL = Pattern.compile("/(?:i|th)/\\d+/([a-z0-9]{12}).*");
+
+    @Override
+    public String getPluginContentURL(DownloadLink link) {
+        final String url = link.getPluginPatternMatcher();
+        if (PATTERN_THUMBNAIL.matcher(url).find()) {
+            return "https://" + getHost() + "/" + getFUID(link, null);
+        }
+        return super.getPluginContentURL(link);
+    }
+
+    public static String[] buildAnnotationUrls(final List<String[]> pluginDomains) {
         final List<String> ret = new ArrayList<String>();
-        for (final String[] domains : getPluginDomains()) {
-            // todo: add optional plugin settings support for the direct images /i/ (see getFUIDFromURL) , optional because ppl might want
-            // to avoid the plugin and
-            // use directhttp
-            // instead
-            ret.add("https?://(?:\\w+\\.)?" + buildHostsPatternPart(domains) + "(" + XFileSharingProBasic.getDefaultAnnotationPatternPart() + "|/(?:th|i)/\\d+/[a-z0-9]{12})");
+        for (final String[] domains : pluginDomains) {
+            String regex = "https?://(?:www\\.)?" + buildHostsPatternPart(domains) + "/[a-z0-9]{12}(/[^/#]+)?";
+            regex += "|https?://i(?:mg)?\\d+\\." + buildHostsPatternPart(domains) + PATTERN_THUMBNAIL.pattern();
+            ret.add(regex);
         }
         return ret.toArray(new String[0]);
     }
@@ -98,7 +91,7 @@ public class ImagetwistCom extends XFileSharingProBasic {
 
     @Override
     protected boolean supports_availablecheck_alt() {
-        /* 2021-04-12 */
+        /* 2021-04-12: Their mass-linkchecker is broken -> returns no results, see: https://imagetwist.com/?op=checkfiles */
         return false;
     }
 
@@ -148,5 +141,31 @@ public class ImagetwistCom extends XFileSharingProBasic {
     @Override
     public int getMaxSimultanPremiumDownloadNum() {
         return -1;
+    }
+
+    @Override
+    protected String getFUID(final String url, URL_TYPE type) {
+        if (url != null && type == null) {
+            try {
+                return new Regex(new URL(url).getPath(), PATTERN_THUMBNAIL).getMatch(0);
+            } catch (final Throwable e) {
+            }
+            return null;
+        } else {
+            return super.getFUID(url, type);
+        }
+    }
+
+    @Override
+    protected String getContentURL(final DownloadLink link) {
+        if (link == null) {
+            return null;
+        }
+        final String fuid = this.getFUIDFromURL(link);
+        if (fuid != null) {
+            return "https://" + getHost() + "/" + fuid;
+        } else {
+            return super.getContentURL(link);
+        }
     }
 }

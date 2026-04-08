@@ -40,7 +40,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.PluginJSonUtils;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49829 $", interfaceVersion = 3, names = {}, urls = {})
 public class ZeroscansCom extends PluginForDecrypt {
     public ZeroscansCom(PluginWrapper wrapper) {
         super(wrapper);

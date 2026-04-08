@@ -34,7 +34,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "fileim.com" }, urls = { "https?://(?:www\\.)?fileim\\.com/file/([a-z0-9]+)\\.html" })
+@HostPlugin(revision = "$Revision: 49021 $", interfaceVersion = 2, names = { "fileim.com" }, urls = { "https?://(?:www\\.)?fileim\\.com/file/([a-z0-9]+)\\.html" })
 public class FileImCom extends PluginForHost {
     public FileImCom(PluginWrapper wrapper) {
         super(wrapper);

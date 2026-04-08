@@ -33,7 +33,7 @@ import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "puls4.com" }, urls = { "https?://(?:www\\.)?puls4\\.com/.+" })
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = { "puls4.com" }, urls = { "https?://(?:www\\.)?puls4\\.com/.+" })
 public class Puls4Com extends PluginForHost {
     public Puls4Com(PluginWrapper wrapper) {
         super(wrapper);

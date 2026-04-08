@@ -39,7 +39,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "worldclips.ru" }, urls = { "https?://(?:(www|dev)\\.)?worldclips\\.ru/clips/[^<>\"/]*?/[^<>\"/]+" })
+@HostPlugin(revision = "$Revision: 50050 $", interfaceVersion = 2, names = { "worldclips.ru" }, urls = { "https?://(?:(www|dev)\\.)?worldclips\\.ru/clips/[^<>\"/]*?/[^<>\"/]+" })
 public class WorldClipsRu extends PluginForHost {
     public WorldClipsRu(PluginWrapper wrapper) {
         super(wrapper);

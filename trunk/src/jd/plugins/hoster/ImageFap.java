@@ -57,7 +57,7 @@ import org.jdownloader.captcha.v2.challenge.recaptcha.v2.CaptchaHelperCrawlerPlu
 import org.jdownloader.captcha.v2.challenge.recaptcha.v2.CaptchaHelperHostPluginRecaptchaV2;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "imagefap.com" }, urls = { "https?://(?:www\\.)?imagefap.com/video\\.php\\?vid=\\d+" })
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = { "imagefap.com" }, urls = { "https?://(?:www\\.)?imagefap.com/video\\.php\\?vid=\\d+" })
 public class ImageFap extends PluginForHost {
     public ImageFap(final PluginWrapper wrapper) {
         super(wrapper);

@@ -39,7 +39,7 @@ import jd.utils.JDUtilities;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "udemy.com" }, urls = { "https?://(?:www\\.)?udemy\\.com/(?:course/[^/]+|share/.+)" })
+@DecrypterPlugin(revision = "$Revision: 46420 $", interfaceVersion = 3, names = { "udemy.com" }, urls = { "https?://(?:www\\.)?udemy\\.com/(?:course/[^/]+|share/.+)" })
 public class UdemyComDecrypter extends PluginForDecrypt {
     public UdemyComDecrypter(PluginWrapper wrapper) {
         super(wrapper);

@@ -47,7 +47,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50350 $", interfaceVersion = 3, names = {}, urls = {})
 public class UfileIo extends antiDDoSForHost {
     public UfileIo(PluginWrapper wrapper) {
         super(wrapper);

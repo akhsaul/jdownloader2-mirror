@@ -32,7 +32,7 @@ import jd.plugins.components.PluginJSonUtils;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "web.de" }, urls = { "https?://(?:www\\.)?web\\.de/magazine/.+" })
+@HostPlugin(revision = "$Revision: 49339 $", interfaceVersion = 2, names = { "web.de" }, urls = { "https?://(?:www\\.)?web\\.de/magazine/.+" })
 public class WebDe extends PluginForHost {
     public WebDe(PluginWrapper wrapper) {
         super(wrapper);

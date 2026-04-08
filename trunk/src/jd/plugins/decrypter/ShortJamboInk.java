@@ -21,7 +21,7 @@ import java.util.List;
 import jd.PluginWrapper;
 import jd.plugins.DecrypterPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49841 $", interfaceVersion = 3, names = {}, urls = {})
 public class ShortJamboInk extends MightyScriptAdLinkFly {
     public ShortJamboInk(PluginWrapper wrapper) {
         super(wrapper);

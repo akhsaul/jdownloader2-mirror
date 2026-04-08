@@ -22,7 +22,7 @@ import jd.PluginWrapper;
 import jd.plugins.Account;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 46653 $", interfaceVersion = 3, names = {}, urls = {})
 public class Porn00Org extends KernelVideoSharingComV2 {
     public Porn00Org(final PluginWrapper wrapper) {
         super(wrapper);

@@ -40,8 +40,9 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
+import jd.plugins.components.SiteType.SiteTemplate;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52602 $", interfaceVersion = 3, names = {}, urls = {})
 public class JiouploadXyz extends PluginForHost {
     public JiouploadXyz(PluginWrapper wrapper) {
         super(wrapper);
@@ -63,8 +64,21 @@ public class JiouploadXyz extends PluginForHost {
         final List<String[]> ret = new ArrayList<String[]>();
         // each entry in List<String[]> will result in one PluginForHost, Plugin.getHost() will return String[0]->main domain
         /* Similar to: SwiftuploadsCom */
-        ret.add(new String[] { "jioupload.xyz", "ajdown.space" });
+        ret.add(new String[] { "jioupload.com", "jioupload.xyz", "zoroly.lol", "ajdown.space", "domesy.lol" });
         return ret;
+    }
+
+    protected List<String> getDeadDomains() {
+        final ArrayList<String> deadDomains = new ArrayList<String>();
+        deadDomains.add("zoroly.lol");
+        return deadDomains;
+    }
+
+    @Override
+    public String rewriteHost(final String host) {
+        /* 2026-03-02: main domain changed from jioupload.xyz to zoroly.lol */
+        /* 2026-03-02: main domain changed from zoroly.lol to jioupload.com */
+        return this.rewriteHost(getPluginDomains(), host);
     }
 
     public static String[] getAnnotationNames() {
@@ -277,5 +291,10 @@ public class JiouploadXyz extends PluginForHost {
     @Override
     public int getMaxSimultanFreeDownloadNum() {
         return Integer.MAX_VALUE;
+    }
+
+    @Override
+    public SiteTemplate siteTemplateType() {
+        return SiteTemplate.UnknownNewFilehosterScript2026;
     }
 }

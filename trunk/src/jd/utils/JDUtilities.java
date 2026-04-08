@@ -178,7 +178,7 @@ public class JDUtilities {
         } catch (Throwable t) {
             t.printStackTrace();
         }
-        final long rev2 = Formatter.getRevision("$Revision$");
+        final long rev2 = Formatter.getRevision("$Revision: 48637 $");
         return (REVISIONINT = Math.max(rev2, rev));
     }
 

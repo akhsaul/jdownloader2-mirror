@@ -241,11 +241,13 @@ public abstract class AbstractServerBasics implements HttpServerInterface {
      * validation fails.
      * </p>
      *
+     * @param response
+     *            TODO
      * @param requestMethod
-     *
      * @param headerCollection
      *            The request to validate. Must implement CorsRequestInterface and provide getRequestMethod(), getRequestedURL() or
      *            getRequestURI(), and getRemoteAddress()
+     *
      * @throws ForbiddenHeaderException
      *             if header validation fails
      * @throws HttpMethodNotAllowedException
@@ -253,7 +255,7 @@ public abstract class AbstractServerBasics implements HttpServerInterface {
      * @throws ForbiddenOriginException
      *             if the origin is not allowed (CORS validation fails)
      */
-    public void validateRequest(HttpRequest request) throws IOException, ForbiddenHeaderException, ForbiddenOriginException {
+    public void validateRequest(HttpRequest request, HttpResponse response) throws IOException, ForbiddenHeaderException, ForbiddenOriginException {
         final long validateStartTime = org.appwork.utils.Time.systemIndependentCurrentJVMTimeMillis();
         if (this.isVerboseLogEnabled()) {
             LogV3.fine("validateRequest: Starting validation for " + request.getRequestMethod() + " " + request.getRequestedURL());
@@ -262,8 +264,8 @@ public abstract class AbstractServerBasics implements HttpServerInterface {
         // Header validation
         final HeaderValidationRules headerRules = this.getHeaderValidationRules();
         if (headerRules != null && headerRules.isEnabled()) {
-            if (!headerRules.isRequestAllowed(requestHeaders)) {
-                final String errorMessage = headerRules.getValidationError(requestHeaders);
+            if (!headerRules.isRequestAllowed(request)) {
+                final String errorMessage = headerRules.getValidationError(request);
                 LogV3.warning("Security: Header validation failed | Error: " + errorMessage);
                 throw new ForbiddenHeaderException(errorMessage);
             }

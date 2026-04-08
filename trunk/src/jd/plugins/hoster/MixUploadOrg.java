@@ -35,7 +35,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49083 $", interfaceVersion = 2, names = {}, urls = {})
 public class MixUploadOrg extends PluginForHost {
     public MixUploadOrg(PluginWrapper wrapper) {
         super(wrapper);

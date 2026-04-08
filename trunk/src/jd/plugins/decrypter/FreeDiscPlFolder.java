@@ -48,7 +48,7 @@ import org.jdownloader.plugins.components.config.FreeDiscPlConfig;
 import org.jdownloader.plugins.config.PluginJsonConfig;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "freedisc.pl" }, urls = { "https?://(?:(?:www|m)\\.)?freedisc\\.pl/([A-Za-z0-9_\\-]+),d-(\\d+)(,([\\w\\-]+))?" })
+@DecrypterPlugin(revision = "$Revision: 50337 $", interfaceVersion = 3, names = { "freedisc.pl" }, urls = { "https?://(?:(?:www|m)\\.)?freedisc\\.pl/([A-Za-z0-9_\\-]+),d-(\\d+)(,([\\w\\-]+))?" })
 public class FreeDiscPlFolder extends PluginForDecrypt {
     public FreeDiscPlFolder(PluginWrapper wrapper) {
         super(wrapper);

@@ -33,7 +33,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.WebShareCz;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48734 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { WebShareCz.class })
 public class WebShareCzFolder extends PluginForDecrypt {
     public WebShareCzFolder(PluginWrapper wrapper) {

@@ -31,7 +31,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 46514 $", interfaceVersion = 3, names = {}, urls = {})
 public class PornadoCo extends PornEmbedParser {
     public PornadoCo(PluginWrapper wrapper) {
         super(wrapper);

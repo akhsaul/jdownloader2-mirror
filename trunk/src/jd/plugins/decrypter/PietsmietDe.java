@@ -22,7 +22,7 @@ import org.appwork.utils.StringUtils;
 import org.appwork.utils.encoding.Base64;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "pietsmiet.de" }, urls = { "https?://(www\\.)?pietsmiet\\.de/videos/(\\d+)" })
+@DecrypterPlugin(revision = "$Revision: 47237 $", interfaceVersion = 3, names = { "pietsmiet.de" }, urls = { "https?://(www\\.)?pietsmiet\\.de/videos/(\\d+)" })
 public class PietsmietDe extends PluginForDecrypt {
     public PietsmietDe(PluginWrapper wrapper) {
         super(wrapper);

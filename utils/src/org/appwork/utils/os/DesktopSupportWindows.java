@@ -4,7 +4,7 @@
  *         "AppWork Utilities" License
  *         The "AppWork Utilities" will be called [The Product] from now on.
  * ====================================================================================================================================================
- *         Copyright (c) 2009-2025, AppWork GmbH <e-mail@appwork.org>
+ *         Copyright (c) 2009-2026, AppWork GmbH <e-mail@appwork.org>
  *         Spalter Strasse 58
  *         91183 Abenberg
  *         Germany
@@ -36,20 +36,14 @@ package org.appwork.utils.os;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Pattern;
 
-import org.appwork.exceptions.WTFException;
-import org.appwork.loggingv3.LogV3;
 import org.appwork.utils.Application;
 import org.appwork.utils.Files;
 import org.appwork.utils.IO;
-import org.appwork.utils.Regex;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.logging2.LogInterface;
 import org.appwork.utils.os.CrossSystem.OperatingSystem;
@@ -488,32 +482,6 @@ public class DesktopSupportWindows extends DesktopSupportJavaDesktop {
             org.appwork.loggingv3.LogV3.log(e);
         }
         return true;
-    }
-
-    /**
-     * @param i
-     * @return
-     * @throws InterruptedException
-     */
-    public int getPIDForRemoteAddress(SocketAddress adr) throws InterruptedException {
-        try {
-            final ProcessOutput result = ProcessBuilderFactory.runCommand("cmd", "/c", "netstat", "-o", "-n", "-a", "|", "findstr", ((InetSocketAddress) adr).getAddress().getHostAddress() + ":" + ((InetSocketAddress) adr).getPort());
-            final String str = result.getStdOutString();
-            for (String line : Regex.getLines(str)) {
-                line = line.trim();
-                final String pid = new Regex(line, "^(?:TCP|UDP)\\s+" + Pattern.quote(((InetSocketAddress) adr).getAddress().getHostAddress()) + "\\:" + ((InetSocketAddress) adr).getPort() + "\\s+.*?(\\d+)$").getMatch(0);
-                LogV3.fine("Get PID By socket(netstat): " + adr + " -> " + pid);
-                if (pid != null) {
-                    return Integer.parseInt(pid);
-                }
-            }
-        } catch (InterruptedException iEx) {
-            throw iEx;
-        } catch (Throwable e) {
-            throw new WTFException(e);
-        }
-        LogV3.fine("Get PID By socket(netstat): " + adr + " -> NONE");
-        return -1;
     }
 
     public static String getProgramFiles(LogInterface logger) {

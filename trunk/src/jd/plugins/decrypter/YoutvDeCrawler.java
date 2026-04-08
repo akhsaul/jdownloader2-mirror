@@ -39,7 +39,7 @@ import org.appwork.storage.TypeRef;
 import org.jdownloader.plugins.components.config.YoutvDeConfig;
 import org.jdownloader.plugins.config.PluginJsonConfig;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51818 $", interfaceVersion = 3, names = {}, urls = {})
 public class YoutvDeCrawler extends PluginForDecrypt {
     public YoutvDeCrawler(PluginWrapper wrapper) {
         super(wrapper);

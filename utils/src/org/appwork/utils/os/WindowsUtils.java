@@ -50,19 +50,25 @@ import static com.sun.jna.platform.win32.WinUser.SW_SHOW;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import org.appwork.exceptions.WTFException;
+import org.appwork.experimental.windowsexecuter.ExecuteOptions;
+import org.appwork.experimental.windowsexecuter.WindowsExecuter;
 import org.appwork.jna.windows.Kernel32Ext;
 import org.appwork.jna.windows.Rm;
 import org.appwork.jna.windows.RmProcessInfo;
@@ -74,15 +80,24 @@ import org.appwork.jna.windows.interfaces.ExplicitAccess;
 import org.appwork.jna.windows.interfaces.Trustee;
 import org.appwork.loggingv3.LogV3;
 import org.appwork.storage.StorableDoc;
+import org.appwork.storage.config.annotations.LabelInterface;
 import org.appwork.utils.Application;
 import org.appwork.utils.BinaryLogic;
 import org.appwork.utils.Exceptions;
 import org.appwork.utils.IO;
 import org.appwork.utils.IO.BOM;
 import org.appwork.utils.IO.SYNC;
+import org.appwork.utils.JavaVersion;
 import org.appwork.utils.Joiner;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.UniqueAlltimeID;
+import org.appwork.utils.locale._AWU;
+import org.appwork.utils.os.windows.jna.HandleScanExEntry32;
+import org.appwork.utils.os.windows.jna.HandleScanExEntry64;
+import org.appwork.utils.os.windows.jna.HandleScanLegacyEntry32;
+import org.appwork.utils.os.windows.jna.HandleScanLegacyEntry64;
+import org.appwork.utils.os.windows.jna.Kernel32VolumePath;
+import org.appwork.utils.os.windows.jna.NtDllForHandleScan;
 import org.appwork.utils.parser.ShellParser;
 import org.appwork.utils.parser.ShellParser.Style;
 import org.appwork.utils.processes.ProcessBuilderFactory;
@@ -100,6 +115,7 @@ import com.sun.jna.platform.win32.Advapi32Util.Account;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.Kernel32Util;
 import com.sun.jna.platform.win32.Shell32;
+import com.sun.jna.platform.win32.Tlhelp32;
 import com.sun.jna.platform.win32.W32Errors;
 import com.sun.jna.platform.win32.Win32Exception;
 import com.sun.jna.platform.win32.WinBase;
@@ -122,7 +138,6 @@ import com.sun.jna.platform.win32.WinNT.SECURITY_IMPERSONATION_LEVEL;
 import com.sun.jna.platform.win32.WinNT.SID_NAME_USE;
 import com.sun.jna.platform.win32.WinNT.TOKEN_ELEVATION;
 import com.sun.jna.platform.win32.WinUser;
-import com.sun.jna.platform.win32.Wtsapi32;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.LongByReference;
 import com.sun.jna.ptr.PointerByReference;
@@ -136,57 +151,177 @@ import com.sun.jna.ptr.PointerByReference;
  * @date 14.10.2018
  */
 public class WindowsUtils {
-    public static enum AccessPermission {
+    public static enum AccessPermission implements LabelInterface {
         // File/Directory specific access rights
         @StorableDoc("For a file object, the right to read the corresponding file data. For a directory object, the right to read the corresponding directory data.")
-        FILE_READ_DATA(WinNT.FILE_READ_DATA),
+        FILE_READ_DATA(WinNT.FILE_READ_DATA) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_READ_DATA();
+            }
+        },
         @StorableDoc("For a directory object, the right to list the contents of the directory.")
-        FILE_LIST_DIRECTORY(WinNT.FILE_LIST_DIRECTORY),
+        FILE_LIST_DIRECTORY(WinNT.FILE_LIST_DIRECTORY) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_LIST_DIRECTORY();
+            }
+        },
         @StorableDoc("For a file object, the right to write data to the file. For a directory object, the right to create a file in the directory.")
-        FILE_WRITE_DATA(WinNT.FILE_WRITE_DATA),
+        FILE_WRITE_DATA(WinNT.FILE_WRITE_DATA) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_WRITE_DATA();
+            }
+        },
         @StorableDoc("For a directory object, the right to create a file in the directory.")
-        FILE_ADD_FILE(WinNT.FILE_ADD_FILE),
+        FILE_ADD_FILE(WinNT.FILE_ADD_FILE) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_ADD_FILE();
+            }
+        },
         @StorableDoc("For a file object, the right to append data to the file. For a directory object, the right to create a subdirectory.")
-        FILE_APPEND_DATA(WinNT.FILE_APPEND_DATA),
+        FILE_APPEND_DATA(WinNT.FILE_APPEND_DATA) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_APPEND_DATA();
+            }
+        },
         @StorableDoc("For a directory object, the right to create a subdirectory.")
-        FILE_ADD_SUBDIRECTORY(WinNT.FILE_ADD_SUBDIRECTORY),
+        FILE_ADD_SUBDIRECTORY(WinNT.FILE_ADD_SUBDIRECTORY) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_ADD_SUBDIRECTORY();
+            }
+        },
         @StorableDoc("For a named pipe, the right to create a pipe instance.")
-        FILE_CREATE_PIPE_INSTANCE(WinNT.FILE_CREATE_PIPE_INSTANCE),
+        FILE_CREATE_PIPE_INSTANCE(WinNT.FILE_CREATE_PIPE_INSTANCE) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_CREATE_PIPE_INSTANCE();
+            }
+        },
         @StorableDoc("The right to read extended attributes.")
-        FILE_READ_EA(WinNT.FILE_READ_EA),
+        FILE_READ_EA(WinNT.FILE_READ_EA) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_READ_EA();
+            }
+        },
         @StorableDoc("The right to write extended attributes.")
-        FILE_WRITE_EA(WinNT.FILE_WRITE_EA),
+        FILE_WRITE_EA(WinNT.FILE_WRITE_EA) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_WRITE_EA();
+            }
+        },
         @StorableDoc("The right to execute a file.")
-        FILE_EXECUTE(WinNT.FILE_EXECUTE),
+        FILE_EXECUTE(WinNT.FILE_EXECUTE) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_EXECUTE();
+            }
+        },
         @StorableDoc("For a directory object, the right to traverse the directory.")
-        FILE_TRAVERSE(WinNT.FILE_TRAVERSE),
+        FILE_TRAVERSE(WinNT.FILE_TRAVERSE) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_TRAVERSE();
+            }
+        },
         @StorableDoc("For a directory object, the right to delete entries within the directory.")
-        FILE_DELETE_CHILD(WinNT.FILE_DELETE_CHILD),
+        FILE_DELETE_CHILD(WinNT.FILE_DELETE_CHILD) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_DELETE_CHILD();
+            }
+        },
         @StorableDoc("The right to delete the object.")
-        DELETE(WinNT.DELETE),
+        DELETE(WinNT.DELETE) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_DELETE();
+            }
+        },
         @StorableDoc("The right to read file attributes.")
-        FILE_READ_ATTRIBUTES(WinNT.FILE_READ_ATTRIBUTES),
+        FILE_READ_ATTRIBUTES(WinNT.FILE_READ_ATTRIBUTES) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_READ_ATTRIBUTES();
+            }
+        },
         @StorableDoc("The right to write file attributes.")
-        FILE_WRITE_ATTRIBUTES(WinNT.FILE_WRITE_ATTRIBUTES),
+        FILE_WRITE_ATTRIBUTES(WinNT.FILE_WRITE_ATTRIBUTES) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_WRITE_ATTRIBUTES();
+            }
+        },
         @StorableDoc("All possible access rights for a file.")
-        FILE_ALL_ACCESS(WinNT.FILE_ALL_ACCESS),
+        FILE_ALL_ACCESS(WinNT.FILE_ALL_ACCESS) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_ALL_ACCESS();
+            }
+        },
         @StorableDoc("Generic read access.")
-        FILE_GENERIC_READ(WinNT.FILE_GENERIC_READ),
+        FILE_GENERIC_READ(WinNT.FILE_GENERIC_READ) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_GENERIC_READ();
+            }
+        },
         @StorableDoc("Generic write access.")
-        FILE_GENERIC_WRITE(WinNT.FILE_GENERIC_WRITE),
+        FILE_GENERIC_WRITE(WinNT.FILE_GENERIC_WRITE) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_GENERIC_WRITE();
+            }
+        },
         @StorableDoc("Generic execute access.")
-        FILE_GENERIC_EXECUTE(WinNT.FILE_GENERIC_EXECUTE),
+        FILE_GENERIC_EXECUTE(WinNT.FILE_GENERIC_EXECUTE) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_FILE_GENERIC_EXECUTE();
+            }
+        },
         // Security descriptor access rights - not for CreateFile usage
         @StorableDoc("The right to read the security descriptor and ownership.")
-        READ_CONTROL(WinNT.READ_CONTROL),
+        READ_CONTROL(WinNT.READ_CONTROL) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_READ_CONTROL();
+            }
+        },
         @StorableDoc("The right to modify the discretionary access control list (DACL) in the object's security descriptor.")
-        WRITE_DAC(WinNT.WRITE_DAC),
+        WRITE_DAC(WinNT.WRITE_DAC) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_WRITE_DAC();
+            }
+        },
         @StorableDoc("The right to change the owner in the object's security descriptor.")
-        WRITE_OWNER(WinNT.WRITE_OWNER),
+        WRITE_OWNER(WinNT.WRITE_OWNER) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_WRITE_OWNER();
+            }
+        },
         @StorableDoc("The right to use the object for synchronization.")
-        SYNCHRONIZE(WinNT.SYNCHRONIZE),
+        SYNCHRONIZE(WinNT.SYNCHRONIZE) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_SYNCHRONIZE();
+            }
+        },
         @StorableDoc("Access system security.")
-        ACCESS_SYSTEM_SECURITY(WinNT.ACCESS_SYSTEM_SECURITY);
+        ACCESS_SYSTEM_SECURITY(WinNT.ACCESS_SYSTEM_SECURITY) {
+            @Override
+            public String getLabel() {
+                return _AWU.T.AccessPermission_ACCESS_SYSTEM_SECURITY();
+            }
+        };
 
         public final int mask;
 
@@ -195,89 +330,499 @@ public class WindowsUtils {
         }
     }
 
-    public static enum SID {
-        SID_NULL("S-1-0-0"),
-        SID_EVERYONE("S-1-1-0"),
-        SID_LOCAL("S-1-2-0"),
-        SID_CONSOLE_LOGON("S-1-2-1"),
-        SID_CREATOR_OWNER("S-1-3-0"),
-        SID_CREATOR_GROUP("S-1-3-1"),
-        SID_OWNER_SERVER("S-1-3-2"),
-        SID_GROUP_SERVER("S-1-3-3"),
-        SID_OWNER_RIGHTS("S-1-3-4"),
-        SID_NT_AUTHORITY("S-1-5"),
-        SID_DIALUP("S-1-5-1"),
-        SID_NETWORK("S-1-5-2"),
-        SID_BATCH("S-1-5-3"),
-        SID_INTERACTIVE("S-1-5-4"),
-        SID_SERVICE("S-1-5-6"),
-        SID_ANONYMOUS("S-1-5-7"),
-        SID_PROXY("S-1-5-8"),
-        SID_ENTERPRISE_DOMAIN_CONTROLLERS("S-1-5-9"),
-        SID_PRINCIPAL_SELF("S-1-5-10"),
-        SID_AUTHENTICATED_USERS("S-1-5-11"),
-        SID_RESTRICTED_CODE("S-1-5-12"),
-        SID_TERMINAL_SERVER_USER("S-1-5-13"),
-        SID_REMOTE_INTERACTIVE_LOGON("S-1-5-14"),
-        SID_THIS_ORGANIZATION("S-1-5-15"),
-        SID_IUSR("S-1-5-17"),
-        SID_LOCAL_SYSTEM("S-1-5-18"),
-        SID_LOCAL_SERVICE("S-1-5-19"),
-        SID_NETWORK_SERVICE("S-1-5-20"),
-        SID_COMPOUNDED_AUTHENTICATION("S-1-5-21-0-0-0-496"),
-        SID_CLAIMS_VALID("S-1-5-21-0-0-0-497"),
-        SID_BUILTIN_ADMINISTRATORS("S-1-5-32-544"),
-        SID_BUILTIN_USERS("S-1-5-32-545"),
-        SID_BUILTIN_GUESTS("S-1-5-32-546"),
-        SID_POWER_USERS("S-1-5-32-547"),
-        SID_ACCOUNT_OPERATORS("S-1-5-32-548"),
-        SID_SERVER_OPERATORS("S-1-5-32-549"),
-        SID_PRINTER_OPERATORS("S-1-5-32-550"),
-        SID_BACKUP_OPERATORS("S-1-5-32-551"),
-        SID_REPLICATOR("S-1-5-32-552"),
-        SID_ALIAS_PREW2KCOMPACC("S-1-5-32-554"),
-        SID_REMOTE_DESKTOP("S-1-5-32-555"),
-        SID_NETWORK_CONFIGURATION_OPS("S-1-5-32-556"),
-        SID_INCOMING_FOREST_TRUST_BUILDERS("S-1-5-32-557"),
-        SID_PERFMON_USERS("S-1-5-32-558"),
-        SID_PERFLOG_USERS("S-1-5-32-559"),
-        SID_WINDOWS_AUTHORIZATION_ACCESS_GROUP("S-1-5-32-560"),
-        SID_TERMINAL_SERVER_LICENSE_SERVERS("S-1-5-32-561"),
-        SID_DISTRIBUTED_COM_USERS("S-1-5-32-562"),
-        SID_IIS_IUSRS("S-1-5-32-568"),
-        SID_CRYPTOGRAPHIC_OPERATORS("S-1-5-32-569"),
-        SID_EVENT_LOG_READERS("S-1-5-32-573"),
-        SID_CERTIFICATE_SERVICE_DCOM_ACCESS("S-1-5-32-574"),
-        SID_RDS_REMOTE_ACCESS_SERVERS("S-1-5-32-575"),
-        SID_RDS_ENDPOINT_SERVERS("S-1-5-32-576"),
-        SID_RDS_MANAGEMENT_SERVERS("S-1-5-32-577"),
-        SID_HYPER_V_ADMINS("S-1-5-32-578"),
-        SID_ACCESS_CONTROL_ASSISTANCE_OPS("S-1-5-32-579"),
-        SID_REMOTE_MANAGEMENT_USERS("S-1-5-32-580"),
-        SID_WRITE_RESTRICTED_CODE("S-1-5-33"),
-        SID_NTLM_AUTHENTICATION("S-1-5-64-10"),
-        SID_SCHANNEL_AUTHENTICATION("S-1-5-64-14"),
-        SID_DIGEST_AUTHENTICATION("S-1-5-64-21"),
-        SID_THIS_ORGANIZATION_CERTIFICATE("S-1-5-65-1"),
-        SID_NT_SERVICE("S-1-5-80"),
-        SID_USER_MODE_DRIVERS("S-1-5-84-0-0-0-0-0"),
-        SID_LOCAL_ACCOUNT("S-1-5-113"),
-        SID_LOCAL_ACCOUNT_AND_MEMBER_OF_ADMINISTRATORS_GROUP("S-1-5-114"),
-        SID_OTHER_ORGANIZATION("S-1-5-1000"),
-        SID_ALL_APP_PACKAGES("S-1-15-2-1"),
-        SID_ML_UNTRUSTED("S-1-16-0"),
-        SID_ML_LOW("S-1-16-4096"),
-        SID_ML_MEDIUM("S-1-16-8192"),
-        SID_ML_MEDIUM_PLUS("S-1-16-8448"),
-        SID_ML_HIGH("S-1-16-12288"),
-        SID_ML_SYSTEM("S-1-16-16384"),
-        SID_ML_PROTECTED_PROCESS("S-1-16-20480"),
-        SID_AUTHENTICATION_AUTHORITY_ASSERTED_IDENTITY("S-1-18-1"),
-        SID_SERVICE_ASSERTED_IDENTITY("S-1-18-2"),
-        SID_FRESH_PUBLIC_KEY_IDENTITY("S-1-18-3"),
-        SID_KEY_TRUST_IDENTITY("S-1-18-4"),
-        SID_KEY_PROPERTY_MFA("S-1-18-5"),
-        SID_KEY_PROPERTY_ATTESTATION("S-1-18-6");
+    public static enum SID implements LabelInterface {
+        SID_NULL("S-1-0-0") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_NULL();
+            }
+        },
+        SID_EVERYONE("S-1-1-0") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_EVERYONE();
+            }
+        },
+        SID_LOCAL("S-1-2-0") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_LOCAL();
+            }
+        },
+        SID_CONSOLE_LOGON("S-1-2-1") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_CONSOLE_LOGON();
+            }
+        },
+        SID_CREATOR_OWNER("S-1-3-0") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_CREATOR_OWNER();
+            }
+        },
+        SID_CREATOR_GROUP("S-1-3-1") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_CREATOR_GROUP();
+            }
+        },
+        SID_OWNER_SERVER("S-1-3-2") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_OWNER_SERVER();
+            }
+        },
+        SID_GROUP_SERVER("S-1-3-3") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_GROUP_SERVER();
+            }
+        },
+        SID_OWNER_RIGHTS("S-1-3-4") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_OWNER_RIGHTS();
+            }
+        },
+        SID_NT_AUTHORITY("S-1-5") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_NT_AUTHORITY();
+            }
+        },
+        SID_DIALUP("S-1-5-1") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_DIALUP();
+            }
+        },
+        SID_NETWORK("S-1-5-2") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_NETWORK();
+            }
+        },
+        SID_BATCH("S-1-5-3") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_BATCH();
+            }
+        },
+        SID_INTERACTIVE("S-1-5-4") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_INTERACTIVE();
+            }
+        },
+        SID_SERVICE("S-1-5-6") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_SERVICE();
+            }
+        },
+        SID_ANONYMOUS("S-1-5-7") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_ANONYMOUS();
+            }
+        },
+        SID_PROXY("S-1-5-8") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_PROXY();
+            }
+        },
+        SID_ENTERPRISE_DOMAIN_CONTROLLERS("S-1-5-9") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_ENTERPRISE_DOMAIN_CONTROLLERS();
+            }
+        },
+        SID_PRINCIPAL_SELF("S-1-5-10") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_PRINCIPAL_SELF();
+            }
+        },
+        SID_AUTHENTICATED_USERS("S-1-5-11") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_AUTHENTICATED_USERS();
+            }
+        },
+        SID_RESTRICTED_CODE("S-1-5-12") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_RESTRICTED_CODE();
+            }
+        },
+        SID_TERMINAL_SERVER_USER("S-1-5-13") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_TERMINAL_SERVER_USER();
+            }
+        },
+        SID_REMOTE_INTERACTIVE_LOGON("S-1-5-14") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_REMOTE_INTERACTIVE_LOGON();
+            }
+        },
+        SID_THIS_ORGANIZATION("S-1-5-15") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_THIS_ORGANIZATION();
+            }
+        },
+        SID_IUSR("S-1-5-17") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_IUSR();
+            }
+        },
+        SID_LOCAL_SYSTEM("S-1-5-18") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_LOCAL_SYSTEM();
+            }
+        },
+        SID_LOCAL_SERVICE("S-1-5-19") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_LOCAL_SERVICE();
+            }
+        },
+        SID_NETWORK_SERVICE("S-1-5-20") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_NETWORK_SERVICE();
+            }
+        },
+        SID_COMPOUNDED_AUTHENTICATION("S-1-5-21-0-0-0-496") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_COMPOUNDED_AUTHENTICATION();
+            }
+        },
+        SID_CLAIMS_VALID("S-1-5-21-0-0-0-497") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_CLAIMS_VALID();
+            }
+        },
+        SID_BUILTIN_ADMINISTRATORS("S-1-5-32-544") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_BUILTIN_ADMINISTRATORS();
+            }
+        },
+        SID_BUILTIN_USERS("S-1-5-32-545") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_BUILTIN_USERS();
+            }
+        },
+        SID_BUILTIN_GUESTS("S-1-5-32-546") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_BUILTIN_GUESTS();
+            }
+        },
+        SID_POWER_USERS("S-1-5-32-547") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_POWER_USERS();
+            }
+        },
+        SID_ACCOUNT_OPERATORS("S-1-5-32-548") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_ACCOUNT_OPERATORS();
+            }
+        },
+        SID_SERVER_OPERATORS("S-1-5-32-549") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_SERVER_OPERATORS();
+            }
+        },
+        SID_PRINTER_OPERATORS("S-1-5-32-550") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_PRINTER_OPERATORS();
+            }
+        },
+        SID_BACKUP_OPERATORS("S-1-5-32-551") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_BACKUP_OPERATORS();
+            }
+        },
+        SID_REPLICATOR("S-1-5-32-552") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_REPLICATOR();
+            }
+        },
+        SID_ALIAS_PREW2KCOMPACC("S-1-5-32-554") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_ALIAS_PREW2KCOMPACC();
+            }
+        },
+        SID_REMOTE_DESKTOP("S-1-5-32-555") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_REMOTE_DESKTOP();
+            }
+        },
+        SID_NETWORK_CONFIGURATION_OPS("S-1-5-32-556") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_NETWORK_CONFIGURATION_OPS();
+            }
+        },
+        SID_INCOMING_FOREST_TRUST_BUILDERS("S-1-5-32-557") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_INCOMING_FOREST_TRUST_BUILDERS();
+            }
+        },
+        SID_PERFMON_USERS("S-1-5-32-558") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_PERFMON_USERS();
+            }
+        },
+        SID_PERFLOG_USERS("S-1-5-32-559") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_PERFLOG_USERS();
+            }
+        },
+        SID_WINDOWS_AUTHORIZATION_ACCESS_GROUP("S-1-5-32-560") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_WINDOWS_AUTHORIZATION_ACCESS_GROUP();
+            }
+        },
+        SID_TERMINAL_SERVER_LICENSE_SERVERS("S-1-5-32-561") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_TERMINAL_SERVER_LICENSE_SERVERS();
+            }
+        },
+        SID_DISTRIBUTED_COM_USERS("S-1-5-32-562") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_DISTRIBUTED_COM_USERS();
+            }
+        },
+        SID_IIS_IUSRS("S-1-5-32-568") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_IIS_IUSRS();
+            }
+        },
+        SID_CRYPTOGRAPHIC_OPERATORS("S-1-5-32-569") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_CRYPTOGRAPHIC_OPERATORS();
+            }
+        },
+        SID_EVENT_LOG_READERS("S-1-5-32-573") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_EVENT_LOG_READERS();
+            }
+        },
+        SID_CERTIFICATE_SERVICE_DCOM_ACCESS("S-1-5-32-574") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_CERTIFICATE_SERVICE_DCOM_ACCESS();
+            }
+        },
+        SID_RDS_REMOTE_ACCESS_SERVERS("S-1-5-32-575") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_RDS_REMOTE_ACCESS_SERVERS();
+            }
+        },
+        SID_RDS_ENDPOINT_SERVERS("S-1-5-32-576") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_RDS_ENDPOINT_SERVERS();
+            }
+        },
+        SID_RDS_MANAGEMENT_SERVERS("S-1-5-32-577") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_RDS_MANAGEMENT_SERVERS();
+            }
+        },
+        SID_HYPER_V_ADMINS("S-1-5-32-578") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_HYPER_V_ADMINS();
+            }
+        },
+        SID_ACCESS_CONTROL_ASSISTANCE_OPS("S-1-5-32-579") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_ACCESS_CONTROL_ASSISTANCE_OPS();
+            }
+        },
+        SID_REMOTE_MANAGEMENT_USERS("S-1-5-32-580") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_REMOTE_MANAGEMENT_USERS();
+            }
+        },
+        SID_WRITE_RESTRICTED_CODE("S-1-5-33") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_WRITE_RESTRICTED_CODE();
+            }
+        },
+        SID_NTLM_AUTHENTICATION("S-1-5-64-10") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_NTLM_AUTHENTICATION();
+            }
+        },
+        SID_SCHANNEL_AUTHENTICATION("S-1-5-64-14") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_SCHANNEL_AUTHENTICATION();
+            }
+        },
+        SID_DIGEST_AUTHENTICATION("S-1-5-64-21") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_DIGEST_AUTHENTICATION();
+            }
+        },
+        SID_THIS_ORGANIZATION_CERTIFICATE("S-1-5-65-1") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_THIS_ORGANIZATION_CERTIFICATE();
+            }
+        },
+        SID_NT_SERVICE("S-1-5-80") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_NT_SERVICE();
+            }
+        },
+        SID_USER_MODE_DRIVERS("S-1-5-84-0-0-0-0-0") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_USER_MODE_DRIVERS();
+            }
+        },
+        SID_LOCAL_ACCOUNT("S-1-5-113") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_LOCAL_ACCOUNT();
+            }
+        },
+        SID_LOCAL_ACCOUNT_AND_MEMBER_OF_ADMINISTRATORS_GROUP("S-1-5-114") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_LOCAL_ACCOUNT_AND_MEMBER_OF_ADMINISTRATORS_GROUP();
+            }
+        },
+        SID_OTHER_ORGANIZATION("S-1-5-1000") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_OTHER_ORGANIZATION();
+            }
+        },
+        SID_ALL_APP_PACKAGES("S-1-15-2-1") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_ALL_APP_PACKAGES();
+            }
+        },
+        SID_ML_UNTRUSTED("S-1-16-0") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_ML_UNTRUSTED();
+            }
+        },
+        SID_ML_LOW("S-1-16-4096") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_ML_LOW();
+            }
+        },
+        SID_ML_MEDIUM("S-1-16-8192") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_ML_MEDIUM();
+            }
+        },
+        SID_ML_MEDIUM_PLUS("S-1-16-8448") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_ML_MEDIUM_PLUS();
+            }
+        },
+        SID_ML_HIGH("S-1-16-12288") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_ML_HIGH();
+            }
+        },
+        SID_ML_SYSTEM("S-1-16-16384") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_ML_SYSTEM();
+            }
+        },
+        SID_ML_PROTECTED_PROCESS("S-1-16-20480") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_ML_PROTECTED_PROCESS();
+            }
+        },
+        SID_AUTHENTICATION_AUTHORITY_ASSERTED_IDENTITY("S-1-18-1") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_AUTHENTICATION_AUTHORITY_ASSERTED_IDENTITY();
+            }
+        },
+        SID_SERVICE_ASSERTED_IDENTITY("S-1-18-2") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_SERVICE_ASSERTED_IDENTITY();
+            }
+        },
+        SID_FRESH_PUBLIC_KEY_IDENTITY("S-1-18-3") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_FRESH_PUBLIC_KEY_IDENTITY();
+            }
+        },
+        SID_KEY_TRUST_IDENTITY("S-1-18-4") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_KEY_TRUST_IDENTITY();
+            }
+        },
+        SID_KEY_PROPERTY_MFA("S-1-18-5") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_KEY_PROPERTY_MFA();
+            }
+        },
+        SID_KEY_PROPERTY_ATTESTATION("S-1-18-6") {
+            @Override
+            public String getLabel() {
+                return _AWU.T.SID_SID_KEY_PROPERTY_ATTESTATION();
+            }
+        };
 
         public final String sid;
 
@@ -563,6 +1108,24 @@ public class WindowsUtils {
     }
 
     /**
+     * Returns true if the current process is running as NT AUTHORITY\SYSTEM (LocalSystem). Use this to skip delegating to the admin helper
+     * when already in the correct context (e.g. when runAsLocalSystem is called from inside a task that already runs as SYSTEM).
+     *
+     * @return true if current user SID is S-1-5-18 (LocalSystem), false otherwise or on error
+     */
+    public static boolean isRunningAsLocalSystem() {
+        if (!CrossSystem.isWindows()) {
+            return false;
+        }
+        try {
+            String sid = getCurrentUserSID();
+            return sid != null && sid.equals(SID_LOCAL_SYSTEM);
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
+    /**
      * Checks if a specific process is running with elevated privileges.
      *
      * @param pid
@@ -609,6 +1172,66 @@ public class WindowsUtils {
     }
 
     /**
+     * Returns the user SID (Security Identifier) of the process with the given PID, or null if the SID cannot be determined (e.g. process
+     * not found, access denied, or not running on Windows). Used for IPC trust checks so that only the same user can access this process's
+     * sockets.
+     *
+     * @param pid
+     *            The process ID to query
+     * @return The user SID string of the process, or null on failure
+     */
+    public static String getUserSIDForProcess(final int pid) {
+        if (!CrossSystem.isWindows() || pid <= 0) {
+            return null;
+        }
+        HANDLEByReference phToken = new HANDLEByReference();
+        try {
+            HANDLE processHandle = Kernel32.INSTANCE.OpenProcess(WinNT.PROCESS_QUERY_LIMITED_INFORMATION, false, pid);
+            if (processHandle == null) {
+                return null;
+            }
+            try {
+                if (!Advapi32.INSTANCE.OpenProcessToken(processHandle, WinNT.TOKEN_QUERY, phToken)) {
+                    return null;
+                }
+                Advapi32Util.Account account = Advapi32Util.getTokenAccount(phToken.getValue());
+                return account != null ? account.sidString : null;
+            } finally {
+                if (processHandle != null) {
+                    Kernel32Util.closeHandle(processHandle);
+                }
+            }
+        } catch (Throwable e) {
+            Exceptions.resetInterruptFlag(e);
+            LogV3.fine("getUserSIDForProcess(pid=" + pid + "): " + e.getMessage());
+            return null;
+        } finally {
+            if (phToken.getValue() != null) {
+                try {
+                    Kernel32Util.closeHandle(phToken.getValue());
+                } catch (Win32Exception e) {
+                    // ignore on cleanup
+                }
+            }
+        }
+    }
+
+    /**
+     * True if the given executable path refers to cmd.exe (used for /c parameter escaping).
+     */
+    private static boolean isCmdExe(String binary) {
+        if (binary == null) {
+            return false;
+        }
+        String name = binary;
+        int last = binary.lastIndexOf('\\');
+        if (last >= 0 && last + 1 < binary.length()) {
+            name = binary.substring(last + 1);
+        }
+        return "cmd.exe".equalsIgnoreCase(name) || "cmd".equalsIgnoreCase(name);
+    }
+
+    /**
      * Starts a process with elevated privileges (UAC prompt will be shown).
      *
      * @param command
@@ -617,7 +1240,8 @@ public class WindowsUtils {
      *            The working directory (can be null)
      * @param showWindow
      *            Whether to show the window (true) or hide it (false)
-     * @return The process handle if successful
+     * @return JNAProcessInfo with PID, handle, commandLine and workingDirectory; use ProcessHandler or {@link JNAProcessInfo#close()} when
+     *         done
      * @throws Win32Exception
      *             if the process cannot be started
      * @throws IllegalArgumentException
@@ -625,7 +1249,7 @@ public class WindowsUtils {
      * @throws UnsupportedOperationException
      *             if not running on Windows
      */
-    public static INT_PTR startElevatedProcess(String[] command, String workingDir, boolean showWindow) throws Win32Exception {
+    public static JNAProcessInfo startElevatedProcess(String[] command, String workingDir, boolean showWindow) throws Win32Exception {
         if (!CrossSystem.isWindows()) {
             throw new UnsupportedOperationException("This operation is only supported on Windows");
         }
@@ -638,8 +1262,21 @@ public class WindowsUtils {
         String[] params = new String[command.length - 1];
         System.arraycopy(command, 1, params, 0, params.length);
         String finalCommand = ShellParser.createCommandLine(Style.WINDOWS, binary);
-        String args = ShellParser.createCommandLine(Style.WINDOWS, params);
-        System.out.println(finalCommand);
+        String args;
+        /*
+         * Special case for ShellExecuteEx only: cmd.exe /c <command> ShellParser.createCommandLine uses \" for embedded quotes
+         * (CreateProcess rule: https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw ).
+         * When we use ShellExecuteEx with lpFile+lpParameters and "runas", the command line is not necessarily parsed the same way as by
+         * CreateProcess; using \" can lead to wrong parsing for the elevated cmd.exe. We escape inner double quotes as
+         * ^" (caret + quote): the elevated cmd receives ^" and interprets it as one literal " (cmd caret escape). The ""-only form can be
+         * mis-parsed (e.g. "C:\Program" when the path contains spaces). Do not move this into ShellParser.
+         */
+        if (isCmdExe(binary) && params.length == 2 && "/c".equals(params[0])) {
+            String cmdString = params[1];
+            args = "/c \"" + cmdString.replace("\"", "^\"") + "\"";
+        } else {
+            args = ShellParser.createCommandLine(Style.WINDOWS, params);
+        }
         // Set up ShellExecuteEx parameters
         Shell32.SHELLEXECUTEINFO sei = new Shell32.SHELLEXECUTEINFO();
         sei.cbSize = sei.size();
@@ -653,38 +1290,80 @@ public class WindowsUtils {
         if (!Shell32.INSTANCE.ShellExecuteEx(sei)) {
             throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
-        return new INT_PTR(Pointer.nativeValue(sei.hProcess.getPointer()));
+        JNAProcessInfo info = new JNAProcessInfo(sei.hProcess);
+        info.setCommandLine(args.length() > 0 ? finalCommand + " " + args : finalCommand);
+        info.setWorkingDirectory(workingDir);
+        return info;
     }
 
     /**
-     * Terminates a process using its handle.
+     * Builds Task Scheduler 1.2 XML that runs the given command as NT AUTHORITY\SYSTEM (LocalSystem). Use with schtasks /create /xml.
+     * Principal: UserId S-1-5-18, LogonType Password (no password needed for SYSTEM).
      *
-     * @param processHandle
-     *            The handle of the process to terminate
-     * @param exitCode
-     *            The exit code to set (typically 0 for normal termination)
-     * @return true if the process was terminated successfully
-     * @throws Win32Exception
-     *             if the termination fails
-     * @throws UnsupportedOperationException
-     *             if not running on Windows
+     * @param command
+     *            executable (e.g. "cmd.exe")
+     * @param arguments
+     *            arguments string (e.g. "/c \"...\"")
+     * @param workingDir
+     *            working directory (null = omit)
+     * @return XML string (UTF-16) for schtasks /create /xml
      */
-    public static boolean terminateProcess(INT_PTR processHandle, int exitCode) throws Win32Exception {
-        if (!CrossSystem.isWindows()) {
-            throw new UnsupportedOperationException("This operation is only supported on Windows");
+    public static String buildTaskXmlAsLocalSystem(String command, String arguments, String workingDir) {
+        String startTime;
+        String endTime;
+        if (JavaVersion.getVersion().isMinimum(JavaVersion.JVM_1_8)) {
+            String[] times = formatTaskSchedulerBoundaryTimesJava8();
+            startTime = times[0];
+            endTime = times[1];
+        } else {
+            String[] times = formatTaskSchedulerBoundaryTimesLegacy();
+            startTime = times[0];
+            endTime = times[1];
         }
-        if (processHandle == null) {
-            throw new IllegalArgumentException("Process handle cannot be null");
-        }
-        HANDLE handle = new HANDLE(Pointer.createConstant(processHandle.longValue()));
-        // First try to get the process ID to verify the handle is valid
-        int pid = getProcessId(processHandle);
-        System.out.println("Terminating process with PID: " + pid);
-        boolean result = Kernel32.INSTANCE.TerminateProcess(handle, exitCode);
-        if (!result) {
-            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
-        }
-        return result;
+        String argumentsXMLNode = (arguments != null && arguments.length() > 0) ? "<Arguments>" + escapeXml(arguments) + "</Arguments>\n" : "";
+    // @formatter:off
+    // LogonType: ServiceAccount is not in Task Scheduler 1.2 schema (InteractiveToken|Password|S4U). Use Password for SYSTEM (S-1-5-18).
+    String xml =
+            "<?xml version=\"1.0\" encoding=\"UTF-16\"?>\n" +
+            "<Task version=\"1.2\" xmlns=\"http://schemas.microsoft.com/windows/2004/02/mit/task\">\n" +
+            "  <RegistrationInfo>\n" +
+            "    <Author>AppWork</Author>\n" +
+            "  </RegistrationInfo>\n" +
+            "  <Triggers>\n" +
+            "    <TimeTrigger>\n" +
+            "      <StartBoundary>" + escapeXml(startTime) + "</StartBoundary>\n" +
+            "      <EndBoundary>" + escapeXml(endTime) + "</EndBoundary>\n" +
+            "      <ExecutionTimeLimit>PT0S</ExecutionTimeLimit>\n" +
+            "      <Enabled>true</Enabled>\n" +
+            "    </TimeTrigger>\n" +
+            "  </Triggers>\n" +
+            "  <Principals>\n" +
+            "    <Principal id=\"Author\">\n" +
+            "      <UserId>S-1-5-18</UserId>\n" +
+            "      <LogonType>Password</LogonType>\n" +
+            "      <RunLevel>HighestAvailable</RunLevel>\n" +
+            "    </Principal>\n" +
+            "  </Principals>\n" +
+            "  <Settings>\n" +
+            "    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>\n" +
+            "    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>\n" +
+            "    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>\n" +
+            "    <AllowHardTerminate>true</AllowHardTerminate>\n" +
+            "    <StartWhenAvailable>true</StartWhenAvailable>\n" +
+            "    <AllowStartOnDemand>true</AllowStartOnDemand>\n" +
+            "    <Enabled>true</Enabled>\n" +
+            "    <Hidden>true</Hidden>\n" +
+            "    <DeleteExpiredTaskAfter>PT1M</DeleteExpiredTaskAfter>\n" +
+            "  </Settings>\n" +
+            "  <Actions Context=\"Author\">\n" +
+            "    <Exec>\n" +
+            "      <Command>" + escapeXml(command) + "</Command>\n" + argumentsXMLNode +
+            (workingDir != null && workingDir.length() > 0 ? "      <WorkingDirectory>" + escapeXml(workingDir) + "</WorkingDirectory>\n" : "") +
+            "    </Exec>\n" +
+            "  </Actions>\n" +
+            "</Task>";
+    // @formatter:on
+        return xml;
     }
 
     /**
@@ -1552,6 +2231,128 @@ public class WindowsUtils {
         }
     }
 
+    /** File access: read data (files) or list directory (directories). */
+    public static final int FILE_READ_DATA        = 0x0001;
+    /** File access: write data (files) or add file (directories). */
+    public static final int FILE_WRITE_DATA       = 0x0002;
+    /** File access: append data (files) or add subdirectory (directories). */
+    public static final int FILE_APPEND_DATA      = 0x0004;
+    /** File access: read extended attributes. */
+    public static final int FILE_READ_EA          = 0x0008;
+    /** File access: write extended attributes. */
+    public static final int FILE_WRITE_EA         = 0x0010;
+    /** File access: execute (files) or traverse (directories). */
+    public static final int FILE_EXECUTE          = 0x0020;
+    /** File access: delete child (directories only). */
+    public static final int FILE_DELETE_CHILD     = 0x0040;
+    /** File access: read attributes. */
+    public static final int FILE_READ_ATTRIBUTES  = 0x0080;
+    /** File access: write attributes. */
+    public static final int FILE_WRITE_ATTRIBUTES = 0x0100;
+    /** Standard access: delete object. */
+    public static final int ACCESS_DELETE         = 0x00010000;
+    /** Standard access: read security descriptor. */
+    public static final int READ_CONTROL          = 0x00020000;
+    /** Standard access: write DACL. */
+    public static final int WRITE_DAC             = 0x00040000;
+    /** Standard access: write owner. */
+    public static final int WRITE_OWNER           = 0x00080000;
+    /** Standard access: synchronize. */
+    public static final int ACCESS_SYNCHRONIZE    = 0x00100000;
+
+    /**
+     * Information about a single handle of a process (from NtQuerySystemInformation handle scan). For file handles, {@link #getPath()} may
+     * contain the resolved path.
+     */
+    public static class HandleInfo {
+        private final int    handleValue;
+        private final int    objectTypeNumber;
+        private final int    grantedAccess;
+        private final String path;
+
+        public HandleInfo(int handleValue, int objectTypeNumber, int grantedAccess, String path) {
+            this.handleValue = handleValue;
+            this.objectTypeNumber = objectTypeNumber;
+            this.grantedAccess = grantedAccess;
+            this.path = path;
+        }
+
+        public int getHandleValue() {
+            return handleValue;
+        }
+
+        public int getObjectTypeNumber() {
+            return objectTypeNumber;
+        }
+
+        /**
+         * Returns the granted access mask for this handle. For file handles, check flags like {@link WindowsUtils#FILE_READ_DATA},
+         * {@link WindowsUtils#FILE_WRITE_DATA}, etc.
+         */
+        public int getGrantedAccess() {
+            return grantedAccess;
+        }
+
+        /** Resolved path for file handles; null for other types or if resolution failed. */
+        public String getPath() {
+            return path;
+        }
+
+        /** Returns true if the handle has read access (FILE_READ_DATA). */
+        public boolean canRead() {
+            return (grantedAccess & FILE_READ_DATA) != 0;
+        }
+
+        /** Returns true if the handle has write access (FILE_WRITE_DATA). */
+        public boolean canWrite() {
+            return (grantedAccess & FILE_WRITE_DATA) != 0;
+        }
+
+        /** Returns true if the handle has append access (FILE_APPEND_DATA). */
+        public boolean canAppend() {
+            return (grantedAccess & FILE_APPEND_DATA) != 0;
+        }
+
+        /** Returns true if the handle has execute access (FILE_EXECUTE). */
+        public boolean canExecute() {
+            return (grantedAccess & FILE_EXECUTE) != 0;
+        }
+
+        /** Returns true if the handle has delete access. */
+        public boolean canDelete() {
+            return (grantedAccess & ACCESS_DELETE) != 0;
+        }
+
+        /** Returns a human-readable string of the access flags. */
+        public String getAccessString() {
+            StringBuilder sb = new StringBuilder();
+            if (canRead()) {
+                sb.append("R");
+            }
+            if (canWrite()) {
+                sb.append("W");
+            }
+            if (canAppend()) {
+                sb.append("A");
+            }
+            if (canExecute()) {
+                sb.append("X");
+            }
+            if (canDelete()) {
+                sb.append("D");
+            }
+            if ((grantedAccess & ACCESS_SYNCHRONIZE) != 0) {
+                sb.append("S");
+            }
+            return sb.length() > 0 ? sb.toString() : "-";
+        }
+
+        @Override
+        public String toString() {
+            return String.format(Locale.ROOT, "HandleInfo{handle=0x%X, type=%d, access=0x%X (%s), path=%s}", handleValue, objectTypeNumber, grantedAccess, getAccessString(), path != null ? "'" + path + "'" : "null");
+        }
+    }
+
     private static final int                  CCH_RM_SESSION_KEY    = 32;
     /** All possible permissions */
     public static final Set<AccessPermission> PERMISSIONSET_FULL    = EnumSet.allOf(AccessPermission.class);
@@ -1573,7 +2374,7 @@ public class WindowsUtils {
         PERMISSIONSET_MODIFY = EnumSet.copyOf(temp);
     }
 
-    public static List<LockInfo> getLocksOnPath(File filePath) {
+    public static List<LockInfo> getLocksOnPath(File filePath) throws Win32Exception {
         IntByReference session = new IntByReference();
         char[] sessionKey = new char[CCH_RM_SESSION_KEY + 1];
         List<LockInfo> result = new ArrayList<LockInfo>();
@@ -1655,6 +2456,688 @@ public class WindowsUtils {
             }
             throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
+        return result;
+    }
+
+    /** Object type number for File handles (NtQuerySystemInformation); may vary by Windows version. */
+    /** Windows kernel object type: File (0x28 = 40 decimal). */
+    private static final int OBJECT_TYPE_FILE        = 40;
+    /** PROCESS_DUP_HANDLE for DuplicateHandle (no admin required for own process). */
+    private static final int PROCESS_DUP_HANDLE      = 0x0040;
+    /** Max path length for GetFinalPathNameByHandleW buffer. */
+    private static final int MAX_PATH_CHARS          = 32768;
+    /** Handle array offset in SystemHandleInformation buffer (after count). From {@link NtDllForHandleScan}. */
+    private static final int HANDLES_ARRAY_OFFSET    = com.sun.jna.Native.POINTER_SIZE == 8 ? 8 : 4;
+    /** Handle array offset in SystemExtendedHandleInformation buffer (after count + reserved). */
+    private static final int HANDLES_EX_ARRAY_OFFSET = com.sun.jna.Native.POINTER_SIZE == 8 ? 16 : 8;
+
+    /**
+     * Finds processes that have open handles on the given path by scanning all process handles via NtQuerySystemInformation (no
+     * RestartManager). Use when {@link #getLocksOnPath(File)} is insufficient or RestartManager is not desired.
+     * <p>
+     * <b>Performance and memory:</b> Windows does not provide an API to enumerate handles of a single process only. The only supported
+     * approach is NtQuerySystemInformation(SystemHandleInformation/SystemExtendedHandleInformation), which returns the entire system handle
+     * table (one large buffer, typically several MB). For a more lightweight "who has this file?" check, use {@link #getLocksOnPath(File)}
+     * (Restart Manager) first; only fall back to this handle scan when Restart Manager is unavailable or insufficient. Use
+     * {@link #getLocksOnPathViaHandleScan(File, int) getLocksOnPathViaHandleScan(filePath, maxHandles)} to stop after finding enough
+     * processes and avoid unnecessary path resolution.
+     * <p>
+     * Requires sufficient privileges to open other processes with PROCESS_DUP_HANDLE and to call NtQuerySystemInformation. May miss
+     * processes that cannot be opened (e.g. protected/system). Uses the same {@link LockInfo} result type; appName is derived from process
+     * image path where possible, applicationType is always RmUnknownApp.
+     *
+     * @param filePath
+     *            file or directory path to check (absolute path used)
+     * @return list of LockInfo for processes that have a handle on this path (may be empty)
+     */
+    public static List<LockInfo> getLocksOnPathViaHandleScan(File filePath) {
+        return getLocksOnPathViaHandleScan(filePath, -1);
+    }
+
+    /**
+     * Like {@link #getLocksOnPathViaHandleScan(File)} but stops once at least {@code maxHandles} processes have been found.
+     *
+     * @param filePath
+     *            file or directory path to check (absolute path used)
+     * @param maxHandles
+     *            maximum number of processes to return; 0 or negative means no limit
+     * @return list of LockInfo for processes that have a handle on this path (size at most maxHandles if maxHandles &gt; 0)
+     */
+    /**
+     * LRU cache for process handles during handle scanning. Avoids repeated OpenProcess/CloseProcess calls when handles from the same
+     * process appear non-consecutively in the system handle table. Limited size to avoid holding too many process handles open.
+     */
+    private static final int PROCESS_HANDLE_CACHE_SIZE = 16;
+
+    public static List<LockInfo> getLocksOnPathViaHandleScan(File filePath, final int maxHandles) {
+        final String targetPath = normalizePathForCompare(filePath.getAbsolutePath());
+        final List<LockInfo> result = new ArrayList<LockInfo>();
+        final Set<Integer> foundPids = new HashSet<Integer>();
+        final Set<Integer> failedPids = new HashSet<Integer>();
+        // LRU cache: pid -> process handle (insertion order, oldest first)
+        // for me, handles come sorted by pids - but this is not guaranteeed
+        final LinkedHashMap<Integer, HANDLE> processCache = new LinkedHashMap<Integer, HANDLE>(PROCESS_HANDLE_CACHE_SIZE, 0.75f, true) {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            protected boolean removeEldestEntry(Map.Entry<Integer, HANDLE> eldest) {
+                if (size() > PROCESS_HANDLE_CACHE_SIZE) {
+                    closeHandleSafe(eldest.getValue());
+                    return true;
+                }
+                return false;
+            }
+        };
+        try {
+            scanAllSystemHandles(new HandleEntryConsumer() {
+                @Override
+                public boolean accept(int pid, int handleVal, int objectType, int grantedAccess) {
+                    if (maxHandles > 0 && result.size() >= maxHandles) {
+                        return false;
+                    }
+                    if (objectType != OBJECT_TYPE_FILE) {
+                        return true;
+                    }
+                    Integer pidKey = Integer.valueOf(pid);
+                    if (foundPids.contains(pidKey) || failedPids.contains(pidKey)) {
+                        return true;
+                    }
+                    // Get or open process handle from cache
+                    HANDLE hProcess = processCache.get(pidKey);
+                    if (hProcess == null) {
+                        hProcess = openProcessForHandleDup(pid);
+                        if (hProcess == null) {
+                            failedPids.add(pidKey);
+                            return true;
+                        }
+                        processCache.put(pidKey, hProcess);
+                    }
+                    String path = resolvePathWithProcessHandle(hProcess, handleVal);
+                    if (path != null && pathMatches(targetPath, path)) {
+                        foundPids.add(pidKey);
+                        try {
+                            String appName = getProcessImageName(hProcess);
+                            int sessionId = getProcessSessionId(pid);
+                            result.add(new LockInfo(pid, appName != null ? appName : "", "", LockInfo.ApplicationType.RmUnknownApp.getValue(), sessionId));
+                        } catch (Exception e) {
+                            LogV3.exception(WindowsUtils.class, e);
+                        }
+                    }
+                    if (maxHandles <= 0) {
+                        return true;
+                    }
+                    return result.size() < maxHandles;
+                }
+            });
+        } finally {
+            // Close all cached process handles
+            for (HANDLE h : processCache.values()) {
+                closeHandleSafe(h);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * If path starts with a volume GUID (e.g. "\\?\Volume{guid}\" or "Volume{guid}\"), resolves it to a drive letter (e.g. "C:\") via
+     * GetVolumePathNamesForVolumeNameW and returns the path with that prefix. Otherwise returns path unchanged. The "\\?\" prefix is the
+     * Windows long-path form returned by GetFinalPathNameByHandleW.
+     */
+    private static String resolveVolumeGuidToDriveLetter(String path) {
+        if (path == null) {
+            return path;
+        }
+        int volumeStart = path.startsWith("\\\\?\\") ? 4 : (path.startsWith("Volume{") ? 0 : -1);
+        if (volumeStart < 0 || path.indexOf("Volume{", volumeStart) != volumeStart) {
+            return path;
+        }
+        int endPrefix = path.indexOf("}\\");
+        if (endPrefix < 0) {
+            return path;
+        }
+        String volumePrefix = path.substring(0, endPrefix + 2);
+        String volumeNameForApi = volumePrefix.startsWith("\\\\?\\") ? volumePrefix : "\\\\?\\" + volumePrefix;
+        char[] volumeNameChars = (volumeNameForApi + "\0").toCharArray();
+        IntByReference returnLength = new IntByReference();
+        char[] pathNamesBuf = new char[512];
+        if (!Kernel32VolumePath.INSTANCE.GetVolumePathNamesForVolumeNameW(volumeNameChars, pathNamesBuf, pathNamesBuf.length, returnLength)) {
+            int err = Kernel32.INSTANCE.GetLastError();
+            if (err == 122 /* ERROR_MORE_DATA */ && returnLength.getValue() > 0 && returnLength.getValue() <= 4096) {
+                pathNamesBuf = new char[returnLength.getValue()];
+                if (!Kernel32VolumePath.INSTANCE.GetVolumePathNamesForVolumeNameW(volumeNameChars, pathNamesBuf, pathNamesBuf.length, returnLength)) {
+                    return path;
+                }
+            } else {
+                return path;
+            }
+        }
+        int n = 0;
+        while (n < pathNamesBuf.length && pathNamesBuf[n] != 0) {
+            n++;
+        }
+        if (n == 0) {
+            return path;
+        }
+        String mountPoint = new String(pathNamesBuf, 0, n).replace('/', '\\').trim();
+        if (mountPoint.isEmpty()) {
+            return path;
+        }
+        if (!mountPoint.endsWith("\\")) {
+            mountPoint = mountPoint + "\\";
+        }
+        return mountPoint + path.substring(volumePrefix.length());
+    }
+
+    private static String normalizePathForCompare(String path) {
+        if (path == null) {
+            return null;
+        }
+        String s = path.replace('/', '\\').trim();
+        if (s.startsWith("\\\\?\\")) {
+            s = s.substring(4);
+        }
+        if (s.startsWith("\\??\\")) {
+            s = s.substring(4);
+        }
+        return s;
+    }
+
+    private static boolean pathMatches(String targetNormalized, String handlePathNormalized) {
+        if (targetNormalized == null || handlePathNormalized == null) {
+            return false;
+        }
+        if (targetNormalized.equalsIgnoreCase(handlePathNormalized)) {
+            return true;
+        }
+        if (handlePathNormalized.toLowerCase(Locale.ROOT).startsWith(targetNormalized.toLowerCase(Locale.ROOT))) {
+            String rest = handlePathNormalized.substring(targetNormalized.length());
+            if (rest.startsWith("\\") || rest.isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static String getProcessImageName(int pid) {
+        HANDLE h = null;
+        try {
+            h = Kernel32.INSTANCE.OpenProcess(WinNT.PROCESS_QUERY_LIMITED_INFORMATION, false, pid);
+            if (h == null || Pointer.nativeValue(h.getPointer()) == 0) {
+                return null;
+            }
+            return getProcessImageName(h);
+        } finally {
+            if (h != null && Pointer.nativeValue(h.getPointer()) != 0) {
+                Kernel32.INSTANCE.CloseHandle(h);
+            }
+        }
+    }
+
+    /**
+     * Gets the process image name using an already-opened process handle. Requires PROCESS_QUERY_LIMITED_INFORMATION access.
+     */
+    private static String getProcessImageName(HANDLE hProcess) {
+        if (hProcess == null || Pointer.nativeValue(hProcess.getPointer()) == 0) {
+            return null;
+        }
+        char[] buf = new char[WinBase.MAX_PATH];
+        IntByReference size = new IntByReference(buf.length);
+        if (!WindowsUtilsKernel32.INSTANCE.QueryFullProcessImageNameW(hProcess, 0, buf, size)) {
+            return null;
+        }
+        String path = new String(buf, 0, size.getValue()).trim();
+        int last = path.replace('/', '\\').lastIndexOf('\\');
+        return last >= 0 ? path.substring(last + 1) : path;
+    }
+
+    /**
+     * Full executable path for the given process handle (Vista+). Returns null on failure.
+     */
+    private static String getProcessExecutableFullPath(HANDLE hProcess) {
+        if (hProcess == null || Pointer.nativeValue(hProcess.getPointer()) == 0) {
+            return null;
+        }
+        char[] buf = new char[WinBase.MAX_PATH];
+        IntByReference size = new IntByReference(buf.length);
+        if (!WindowsUtilsKernel32.INSTANCE.QueryFullProcessImageNameW(hProcess, 0, buf, size)) {
+            return null;
+        }
+        return new String(buf, 0, size.getValue()).trim();
+    }
+
+    /**
+     * Full executable path for the given PID (Vista+). Returns null on failure.
+     */
+    private static String getProcessExecutableFullPath(int pid) {
+        HANDLE h = Kernel32.INSTANCE.OpenProcess(WinNT.PROCESS_QUERY_LIMITED_INFORMATION, false, pid);
+        if (h == null || WinBase.INVALID_HANDLE_VALUE.equals(h)) {
+            return null;
+        }
+        try {
+            return getProcessExecutableFullPath(h);
+        } finally {
+            Kernel32.INSTANCE.CloseHandle(h);
+        }
+    }
+
+    /**
+     * Normalize executable path for comparison (backslash, lowercase). Use the same normalization when building sets for "path in use?"
+     * checks or when comparing with paths from {@link org.appwork.processes.ProcessHandler#listByPath(String)}.
+     *
+     * @param path
+     *            absolute executable path (may be null)
+     * @return normalized path, or empty string if null
+     */
+    public static String normalizeExecutablePathForCompare(String path) {
+        if (path == null) {
+            return "";
+        }
+        return path.replace('/', '\\').toLowerCase(Locale.ROOT).trim();
+    }
+
+    /**
+     * Returns the set of absolute executable paths for which at least one process is currently running. Uses Toolhelp32 +
+     * QueryFullProcessImageNameW (no WMI). For use in fast "is path in use?" checks.
+     *
+     * @return set of normalized paths (never null)
+     */
+    public static Set<String> getRunningExecutablePaths() {
+        Set<String> paths = new HashSet<String>();
+        HANDLE snapshot = Kernel32.INSTANCE.CreateToolhelp32Snapshot(Tlhelp32.TH32CS_SNAPPROCESS, new DWORD(0));
+        if (snapshot == null || WinBase.INVALID_HANDLE_VALUE.equals(snapshot)) {
+            return paths;
+        }
+        try {
+            Tlhelp32.PROCESSENTRY32.ByReference pe = new Tlhelp32.PROCESSENTRY32.ByReference();
+            pe.dwSize = new DWORD(pe.size());
+            if (!Kernel32.INSTANCE.Process32First(snapshot, pe)) {
+                return paths;
+            }
+            do {
+                int pid = pe.th32ProcessID.intValue();
+                String path = getProcessExecutableFullPath(pid);
+                if (path != null && path.length() > 0) {
+                    paths.add(normalizeExecutablePathForCompare(path));
+                }
+            } while (Kernel32.INSTANCE.Process32Next(snapshot, pe));
+        } finally {
+            Kernel32.INSTANCE.CloseHandle(snapshot);
+        }
+        return paths;
+    }
+
+    private static int getProcessSessionId(int pid) {
+        IntByReference ref = new IntByReference();
+        if (Kernel32Ext.INSTANCE.ProcessIdToSessionId(pid, ref)) {
+            return ref.getValue();
+        }
+        return 0;
+    }
+
+    /**
+     * Resolves the path for a file handle using an already-opened process handle. This is the efficient variant that avoids repeated
+     * OpenProcess/CloseProcess calls when processing multiple handles from the same process.
+     *
+     * @param hProcess
+     *            already-opened process handle with PROCESS_DUP_HANDLE access
+     * @param handleVal
+     *            handle value to resolve
+     * @return normalized path or null if resolution fails (non-file handle, pipe, device, etc.)
+     */
+    private static String resolvePathWithProcessHandle(HANDLE hProcess, int handleVal) {
+        HANDLE hDup = null;
+        try {
+            HANDLE hSource = new HANDLE(Pointer.createConstant(handleVal));
+            HANDLEByReference phDup = new HANDLEByReference();
+            if (!Kernel32.INSTANCE.DuplicateHandle(hProcess, hSource, Kernel32.INSTANCE.GetCurrentProcess(), phDup, FILE_READ_ATTRIBUTES, false, 0)) {
+                if (!Kernel32.INSTANCE.DuplicateHandle(hProcess, hSource, Kernel32.INSTANCE.GetCurrentProcess(), phDup, 0, false,
+                        0x00000002 /* DUPLICATE_SAME_ACCESS */)) {
+                    int ntStatus = NtDllForHandleScan.INSTANCE.NtDuplicateObject(hProcess, hSource, Kernel32.INSTANCE.GetCurrentProcess(), phDup, FILE_READ_ATTRIBUTES, 0, 0);
+                    if (ntStatus != NtDllForHandleScan.STATUS_SUCCESS) {
+                        ntStatus = NtDllForHandleScan.INSTANCE.NtDuplicateObject(hProcess, hSource, Kernel32.INSTANCE.GetCurrentProcess(), phDup, 0, 0, NtDllForHandleScan.DUPLICATE_SAME_ACCESS);
+                    }
+                    if (ntStatus != NtDllForHandleScan.STATUS_SUCCESS) {
+                        return null;
+                    }
+                }
+                hDup = phDup.getValue();
+            } else {
+                hDup = phDup.getValue();
+            }
+            if (hDup == null || Pointer.nativeValue(hDup.getPointer()) == 0) {
+                return null;
+            }
+            int fileType = Kernel32Ext.INSTANCE.GetFileType(hDup);
+            if (fileType != Kernel32Ext.FILE_TYPE_DISK) {
+                return null;
+            }
+            char[] pathBuf = new char[MAX_PATH_CHARS];
+            int len = WindowsUtilsKernel32.INSTANCE.GetFinalPathNameByHandleW(hDup, pathBuf, pathBuf.length, WindowsUtilsKernel32.VOLUME_NAME_DOS);
+            if (len <= 0 || len >= pathBuf.length) {
+                return null;
+            }
+            String rawPath = new String(pathBuf, 0, len).trim();
+            String withDrive = rawPath.indexOf("Volume{") >= 0 ? resolveVolumeGuidToDriveLetter(rawPath) : rawPath;
+            return normalizePathForCompare(withDrive);
+        } catch (Exception e) {
+            return null;
+        } finally {
+            if (hDup != null && Pointer.nativeValue(hDup.getPointer()) != 0) {
+                Kernel32.INSTANCE.CloseHandle(hDup);
+            }
+        }
+    }
+
+    /**
+     * Opens a process for handle duplication and querying process info.
+     *
+     * @return process handle or null if failed
+     */
+    private static HANDLE openProcessForHandleDup(int pid) {
+        HANDLE h = Kernel32.INSTANCE.OpenProcess(PROCESS_DUP_HANDLE | WinNT.PROCESS_QUERY_LIMITED_INFORMATION, false, pid);
+        if (h == null || Pointer.nativeValue(h.getPointer()) == 0) {
+            return null;
+        }
+        return h;
+    }
+
+    /**
+     * Closes a handle if non-null and valid.
+     */
+    private static void closeHandleSafe(HANDLE h) {
+        if (h != null && Pointer.nativeValue(h.getPointer()) != 0) {
+            Kernel32.INSTANCE.CloseHandle(h);
+        }
+    }
+
+    /**
+     * Lists all handles of the given process by scanning system handles via NtQuerySystemInformation. Path resolution is attempted for
+     * every handle (GetFinalPathNameByHandle); success indicates a file/directory handle, so file handles are found even if ObjectTypeIndex
+     * differs. Handles with resolved path are reported as type 28 (File); others keep the reported type with path null.
+     * <p>
+     * No admin required for the current process (own PID): NtQuerySystemInformation and OpenProcess(PROCESS_DUP_HANDLE) on the calling
+     * process work without elevation. For other user processes the same applies on current Windows; if NtQuerySystemInformation returns
+     * ACCESS_DENIED (0xC0000003), the caller may need to run elevated.
+     * <p>
+     * If the process cannot be opened (e.g. pid=4 System, GetLastError=ACCESS_DENIED), an empty list is returned immediately without
+     * scanning; enable fine logging to see which pid/handle is being resolved if GetFinalPathNameByHandleW appears to hang.
+     *
+     * @param pid
+     *            process ID (current process is supported)
+     * @return list of HandleInfo; empty if not Windows or on error
+     */
+    /** Minimum buffer size for NtQuerySystemInformation (handle list). */
+    private static final int LIST_HANDLES_MIN_BUFFER = 64 * 1024;
+    /**
+     * Maximum buffer size for NtQuerySystemInformation (handle list). Kept low to avoid OutOfMemoryError in test/small-heap environments.
+     */
+    private static final int LIST_HANDLES_MAX_BUFFER = 128 * 1024 * 1024;
+
+    /**
+     * Consumer for handle entries during system-wide handle scan. Return true to continue iteration, false to stop.
+     */
+    private static interface HandleEntryConsumer {
+        boolean accept(int pid, int handleVal, int objectType, int grantedAccess);
+    }
+
+    /**
+     * Closes native memory and always returns {@code null} so callers can compactly write
+     * {@code buffer = closeMemoryQuietly(buffer)}.
+     */
+    private static Memory closeMemoryQuietly(Memory buffer) {
+        if (buffer != null) {
+            try {
+                buffer.close();
+            } catch (Throwable t) {
+                /* ignore */
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Query helper for {@link NtDllForHandleScan#NtQuerySystemInformation(int, com.sun.jna.Pointer, int, IntByReference)} with growing
+     * buffer strategy.
+     * <p>
+     * Why this exists:
+     * <ul>
+     * <li>Avoid duplicated "allocate -> query -> resize/retry" loops for extended and legacy modes.</li>
+     * <li>Keep one place that applies the same low-memory safeguards.</li>
+     * </ul>
+     *
+     * @param systemInformationClass
+     *            either {@code SystemExtendedHandleInformation} (preferred) or {@code SystemHandleInformation} (legacy fallback)
+     * @param legacy
+     *            true when called for legacy fallback (changes logging and terminal behavior)
+     * @param maxBuffer
+     *            upper safety limit for the temporary native buffer
+     * @param returnLength
+     *            receives required size from NtQuerySystemInformation
+     * @return filled buffer on success; {@code null} on failure (caller may fallback or abort)
+     */
+    private static Memory querySystemHandleBuffer(int systemInformationClass, boolean legacy, int maxBuffer, IntByReference returnLength) {
+        int bufferSize = LIST_HANDLES_MIN_BUFFER;
+        Memory buffer = null;
+        while (bufferSize <= maxBuffer) {
+            try {
+                buffer = closeMemoryQuietly(buffer);
+                buffer = new Memory(bufferSize);
+            } catch (OutOfMemoryError e) {
+                LogV3.warning("scanAllSystemHandles: OutOfMemoryError allocating " + bufferSize + " bytes" + (legacy ? " (legacy)" : ""));
+                if (bufferSize <= LIST_HANDLES_MIN_BUFFER) {
+                    return closeMemoryQuietly(buffer);
+                }
+                bufferSize = Math.max(LIST_HANDLES_MIN_BUFFER, bufferSize / 2);
+                continue;
+            }
+            returnLength.setValue(0);
+            int status = NtDllForHandleScan.INSTANCE.NtQuerySystemInformation(systemInformationClass, buffer, bufferSize, returnLength);
+            if (status == NtDllForHandleScan.STATUS_SUCCESS) {
+                return buffer;
+            }
+            if (status == NtDllForHandleScan.STATUS_INFO_LENGTH_MISMATCH || status == NtDllForHandleScan.STATUS_NO_MEMORY) {
+                int required = returnLength.getValue();
+                if (bufferSize >= maxBuffer) {
+                    if (legacy) {
+                        LogV3.info("scanAllSystemHandles (legacy): needs " + required + " bytes but maxBuffer is " + maxBuffer + ", giving up");
+                    } else {
+                        LogV3.info("scanAllSystemHandles: extended API needs " + required + " bytes but maxBuffer is " + maxBuffer + ", falling back to legacy");
+                    }
+                    return closeMemoryQuietly(buffer);
+                }
+                if (required > 0 && required <= maxBuffer) {
+                    bufferSize = required;
+                } else {
+                    bufferSize = Math.min(bufferSize * 2, maxBuffer);
+                }
+                continue;
+            }
+            if (legacy) {
+                LogV3.warning("scanAllSystemHandles: NtQuerySystemInformation failed, status=0x" + Integer.toHexString(status));
+            }
+            return closeMemoryQuietly(buffer);
+        }
+        return closeMemoryQuietly(buffer);
+    }
+
+    /**
+     * Scans all system handles via NtQuerySystemInformation (Extended then Legacy fallback) and calls the consumer for each handle entry.
+     * The consumer can filter by PID and return false to stop early.
+     * <p>
+     * There is no Windows API to get handles of a single process only; the full system handle table must be queried (see
+     * LIST_HANDLES_MAX_BUFFER). Memory usage is therefore determined by the number of handles in the system, not by the number of processes
+     * of interest.
+     *
+     * @param consumer
+     *            called for each (pid, handleVal, objectType); return false to stop iteration early
+     *            <p>
+     *            Exceptions during entry read or inside the consumer (e.g. handle closed during iteration, process exited) are caught and
+     *            logged; the scan continues with the next handle and is not aborted.
+     *            <p>
+     *            Mode strategy: try Extended first because it exposes full handle values and is therefore more reliable for handle
+     *            resolution. Legacy mode is only used as compatibility fallback if Extended cannot provide a buffer within memory limits.
+     */
+    private static void scanAllSystemHandles(HandleEntryConsumer consumer) {
+        IntByReference returnLength = new IntByReference();
+        final boolean is64 = com.sun.jna.Native.POINTER_SIZE == 8;
+        final int maxBuffer = LIST_HANDLES_MAX_BUFFER;
+        Memory buffer = null;
+        boolean useExtended = false;
+        try {
+            buffer = querySystemHandleBuffer(NtDllForHandleScan.SystemExtendedHandleInformation, false, maxBuffer, returnLength);
+            useExtended = buffer != null;
+            if (!useExtended) {
+                buffer = querySystemHandleBuffer(NtDllForHandleScan.SystemHandleInformation, true, maxBuffer, returnLength);
+                if (buffer == null) {
+                    return;
+                }
+            }
+            if (buffer == null || buffer.size() > maxBuffer) {
+                LogV3.info("scanAllSystemHandles: buffer is null or too large, returning");
+                return;
+            }
+            int bufSize = (int) buffer.size();
+            int handleCount;
+            int entrySize;
+            int arrayOffset;
+            if (useExtended) {
+                long countLong = is64 ? buffer.getLong(0) : (buffer.getInt(0) & 0xFFFFFFFFL);
+                handleCount = countLong > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) countLong;
+                entrySize = is64 ? new HandleScanExEntry64().size() : new HandleScanExEntry32().size();
+                arrayOffset = HANDLES_EX_ARRAY_OFFSET;
+            } else {
+                handleCount = buffer.getInt(0);
+                entrySize = is64 ? new HandleScanLegacyEntry64().size() : new HandleScanLegacyEntry32().size();
+                arrayOffset = HANDLES_ARRAY_OFFSET;
+            }
+            // LogV3.info("scanAllSystemHandles: useExtended=" + useExtended + ", is64=" + is64 + ", handleCount=" + handleCount + ",
+            // entrySize=" + entrySize + ", bufSize=" + bufSize);
+            // LogV3.info("scanAllSystemHandles: POINTER_SIZE=" + com.sun.jna.Native.POINTER_SIZE + ", Ex64.size=" + new
+            // HandleScanExEntry64().size() + ", Ex32.size=" + new HandleScanExEntry32().size());
+            for (int i = 0; i < handleCount; i++) {
+                int offset = arrayOffset + i * entrySize;
+                if (offset + entrySize > bufSize) {
+                    break;
+                }
+                int entryPid;
+                int handleVal;
+                int objectType;
+                int grantedAccess;
+                try {
+                    if (useExtended) {
+                        if (is64) {
+                            HandleScanExEntry64 entry64 = new HandleScanExEntry64(buffer.share(offset));
+                            entry64.read();
+                            entryPid = entry64.getProcessId();
+                            handleVal = entry64.getHandleValue();
+                            objectType = entry64.getObjectTypeNumber();
+                            grantedAccess = entry64.GrantedAccess;
+                        } else {
+                            HandleScanExEntry32 entry32 = new HandleScanExEntry32(buffer.share(offset));
+                            entry32.read();
+                            entryPid = entry32.getProcessId();
+                            handleVal = entry32.getHandleValue();
+                            objectType = entry32.getObjectTypeNumber();
+                            grantedAccess = entry32.GrantedAccess;
+                        }
+                    } else {
+                        if (is64) {
+                            HandleScanLegacyEntry64 entry64 = new HandleScanLegacyEntry64(buffer.share(offset));
+                            entry64.read();
+                            entryPid = entry64.getProcessId();
+                            handleVal = entry64.getHandleValue();
+                            objectType = entry64.getObjectTypeNumber();
+                            grantedAccess = entry64.GrantedAccess;
+                        } else {
+                            HandleScanLegacyEntry32 entry32 = new HandleScanLegacyEntry32(buffer.share(offset));
+                            entry32.read();
+                            entryPid = entry32.getProcessId();
+                            handleVal = entry32.getHandleValue();
+                            objectType = entry32.getObjectTypeNumber();
+                            grantedAccess = entry32.GrantedAccess;
+                        }
+                    }
+                } catch (Exception e) {
+                    LogV3.exception(WindowsUtils.class, e);
+                    continue;
+                }
+                try {
+                    if (!consumer.accept(entryPid, handleVal, objectType, grantedAccess)) {
+                        break;
+                    }
+                } catch (Exception e) {
+                    LogV3.exception(WindowsUtils.class, e);
+                }
+            }
+        } catch (Exception e) {
+            LogV3.exception(WindowsUtils.class, e);
+        } finally {
+            closeMemoryQuietly(buffer);
+        }
+    }
+
+    public static List<HandleInfo> listHandlesForProcess(int pid) {
+        if (!CrossSystem.isWindows()) {
+            return Collections.emptyList();
+        }
+        // Phase 1: Collect all handles for this PID (handleVal, objectType, grantedAccess)
+        final List<int[]> collectedHandles = new ArrayList<int[]>();
+        final int targetPid = pid;
+        final int targetPid16 = pid & 0xFFFF;
+        final int[] debugCounters = new int[2]; // [0]=total, [1]=matched
+        final StringBuilder debugTypes = new StringBuilder();
+        final StringBuilder debugPids = new StringBuilder();
+        scanAllSystemHandles(new HandleEntryConsumer() {
+            @Override
+            public boolean accept(int entryPid, int handleVal, int objectType, int grantedAccess) {
+                debugCounters[0]++;
+                if (debugPids.length() < 100 && debugCounters[0] <= 20) {
+                    debugPids.append(entryPid).append(",");
+                }
+                if (entryPid == targetPid || entryPid == targetPid16) {
+                    debugCounters[1]++;
+                    collectedHandles.add(new int[] { handleVal, objectType, grantedAccess });
+                    if (debugTypes.length() < 200) {
+                        debugTypes.append(objectType).append(",");
+                    }
+                }
+                return true;
+            }
+        });
+        // LogV3.info("listHandlesForProcess: first 20 PIDs in handle table: " + debugPids);
+        // LogV3.info("listHandlesForProcess: first object types for PID " + targetPid + ": " + debugTypes);
+        // LogV3.info("listHandlesForProcess: scanned " + debugCounters[0] + " handles total, " + debugCounters[1] + " matched PID " +
+        // targetPid);
+        if (collectedHandles.isEmpty()) {
+            return Collections.emptyList();
+        }
+        // Phase 2: Open process once, resolve all file handles, close
+        HANDLE hProcess = openProcessForHandleDup(pid);
+        if (hProcess == null) {
+            int err = Kernel32.INSTANCE.GetLastError();
+            String name = getProcessImageName(pid);
+            LogV3.info("listHandlesForProcess: cannot open process pid=" + pid + " (GetLastError=" + err + (err == 5 ? "=ACCESS_DENIED" : "") + (name != null ? ", " + name : "") + "), returning empty list");
+            return Collections.emptyList();
+        }
+        final List<HandleInfo> result = new ArrayList<HandleInfo>();
+        int fileTypeCount = 0;
+        try {
+            for (int[] entry : collectedHandles) {
+                int handleVal = entry[0];
+                int objectType = entry[1];
+                int grantedAccess = entry[2];
+                if (objectType == OBJECT_TYPE_FILE) {
+                    fileTypeCount++;
+                    String path = resolvePathWithProcessHandle(hProcess, handleVal);
+                    result.add(new HandleInfo(handleVal, OBJECT_TYPE_FILE, grantedAccess, path));
+                } else {
+                    result.add(new HandleInfo(handleVal, objectType, grantedAccess, null));
+                }
+            }
+        } finally {
+            closeHandleSafe(hProcess);
+        }
+        LogV3.info("listHandlesForProcess: " + collectedHandles.size() + " handles collected, " + fileTypeCount + " are FILE type (0x" + Integer.toHexString(OBJECT_TYPE_FILE) + ")");
         return result;
     }
 
@@ -1748,6 +3231,56 @@ public class WindowsUtils {
         }
     }
 
+    /**
+     * Called only when Java >= 8. Uses java.time via reflection so no java.time.* appears in this class's constant pool and WindowsUtils
+     * can load on JRE 6/7 (e.g. when Tests only call applyPermissions).
+     */
+    private static String[] formatTaskSchedulerBoundaryTimesJava8() {
+        try {
+            Class<?> zdt = Class.forName("java.time.ZonedDateTime");
+            Object now = zdt.getMethod("now").invoke(null);
+            Object start = zdt.getMethod("plusMinutes", long.class).invoke(now, Long.valueOf(1));
+            Object end = zdt.getMethod("plusMinutes", long.class).invoke(start, Long.valueOf(2));
+            Class<?> fmtClass = Class.forName("java.time.format.DateTimeFormatter");
+            Object fmt = fmtClass.getMethod("ofPattern", String.class).invoke(null, "yyyy-MM-dd'T'HH:mm:ssXXX");
+            Class<?> temporal = Class.forName("java.time.temporal.TemporalAccessor");
+            java.lang.reflect.Method formatMethod = fmtClass.getMethod("format", temporal);
+            String startStr = (String) formatMethod.invoke(fmt, start);
+            String endStr = (String) formatMethod.invoke(fmt, end);
+            return new String[] { startStr, endStr };
+        } catch (Exception e) {
+            throw new RuntimeException("java.time bridge failed", e);
+        }
+    }
+
+    /** Java 1.6 compatible path: Calendar + SimpleDateFormat. */
+    private static String[] formatTaskSchedulerBoundaryTimesLegacy() {
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US);
+        fmt.setTimeZone(TimeZone.getDefault());
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MINUTE, 1);
+        String startTime = formatIso8601Offset(fmt.format(cal.getTime()));
+        cal.add(Calendar.MINUTE, 2);
+        String endTime = formatIso8601Offset(fmt.format(cal.getTime()));
+        return new String[] { startTime, endTime };
+    }
+
+    /**
+     * Converts SimpleDateFormat "Z" offset (+0100) to ISO-8601 style (+01:00) for Windows Task Scheduler XML. Java 1.6 compatible.
+     */
+    private static String formatIso8601Offset(String dateTimeWithZ) {
+        if (dateTimeWithZ == null || dateTimeWithZ.length() < 6) {
+            return dateTimeWithZ;
+        }
+        int len = dateTimeWithZ.length();
+        char last = dateTimeWithZ.charAt(len - 1);
+        char sign = dateTimeWithZ.charAt(len - 5);
+        if ((sign == '+' || sign == '-') && len >= 5 && Character.isDigit(last)) {
+            return dateTimeWithZ.substring(0, len - 2) + ":" + dateTimeWithZ.substring(len - 2);
+        }
+        return dateTimeWithZ;
+    }
+
     private static String escapeXml(String input) {
         if (input == null) {
             return "";
@@ -1783,31 +3316,120 @@ public class WindowsUtils {
         }
     }
 
-    private static String querySessionInfo(int sessionId, int infoClass) {
-        final PointerByReference ppBuffer = new PointerByReference();
-        final IntByReference pBytesReturned = new IntByReference();
-        final boolean ok = Wtsapi32.INSTANCE.WTSQuerySessionInformation(Wtsapi32.WTS_CURRENT_SERVER_HANDLE, sessionId, infoClass, ppBuffer, pBytesReturned);
-        if (!ok) {
+    /**
+     * Returns the token handle of the active console user. Works only when running as LocalSystem or with sufficient privileges (e.g.
+     * service). Caller must close the returned handle.
+     *
+     * @return token handle, or null if no active console session or on failure
+     */
+    public static HANDLE getActiveConsoleUserToken() {
+        int sessionId = Kernel32Ext.INSTANCE.WTSGetActiveConsoleSessionId();
+        if (sessionId == 0xFFFFFFFF) {
             return null;
         }
-        final Pointer p = ppBuffer.getValue();
+        final PointerByReference token = new PointerByReference();
+        if (!Wtsapi32Ext.INSTANCE.WTSQueryUserToken(sessionId, token)) {
+            LogV3.log(new Win32Exception(Kernel32.INSTANCE.GetLastError()));
+            return null;
+        }
+        return new HANDLE(token.getValue());
+    }
+
+    /**
+     * Fallback when scheduler-based run fails: run via WindowsExecuter.runAsNonElevatedUser.
+     * Used by runViaWindowsScheduler for both WTFException and RuntimeException.
+     */
+    private static void runViaWindowsExecuterFallback(String binary, String workingDir, String sid, String[] args, Throwable original) throws IOException, InterruptedException {
+        String[] cmd = new String[args.length + 1];
+        cmd[0] = binary;
+        System.arraycopy(args, 0, cmd, 1, args.length);
+        ExecuteOptions.Builder opts = ExecuteOptions.builder().workingDir(workingDir != null ? new File(workingDir) : null).cmd(cmd).waitFor(false);
+        // Only set runInActiveSession when requested SID equals active console user (no SID passed to ExecuteOptions)
+        if (sid != null && sid.trim().length() > 0) {
+            try {
+                Account activeAccount = getActiveConsoleAccount();
+                if (activeAccount != null && sid.equals(activeAccount.sidString)) {
+                    opts.runInActiveSession(true);
+                } else {
+                    throw Exceptions.addSuppressed(original, new Exception("Cannot run  process as sid " + sid));
+                }
+            } catch (Throwable t) {
+                LogV3.log(t);
+                opts.runInActiveSession(true); // fallback to active session
+            }
+        }
         try {
-            return p.getWideString(0);
-        } finally {
-            Wtsapi32.INSTANCE.WTSFreeMemory(p);
+            WindowsExecuter.runAsNonElevatedUser(opts.build());
+        } catch (Exception e1) {
+            Throwable toThrow = Exceptions.addSuppressed(original, e1);
+            if (toThrow instanceof RuntimeException) {
+                throw (RuntimeException) toThrow;
+            }
+            if (toThrow instanceof Error) {
+                throw (Error) toThrow;
+            }
+            throw new RuntimeException(toThrow);
         }
     }
 
     public static void runViaWindowsScheduler(String binary, String workingDir, String sid, String... args) throws IOException, InterruptedException {
+        // When current process is already in the target user context (not elevated, same user), start normally via ProcessBuilderFactory.
+        if (!isElevated()) {
+            String currentSid = null;
+            try {
+                currentSid = getCurrentUserSID();
+            } catch (Throwable t) {
+                // ignore; will use scheduler path
+            }
+            if (currentSid != null && (sid == null || sid.trim().length() == 0 || sid.equals(currentSid))) {
+                List<String> cmd = new ArrayList<String>();
+                cmd.add(binary);
+                for (String a : args) {
+                    cmd.add(a);
+                }
+                ProcessBuilder pb = ProcessBuilderFactory.create(cmd.toArray(new String[cmd.size()]));
+                if (workingDir != null) {
+                    pb.directory(new File(workingDir));
+                }
+                pb.start();
+                return;
+            }
+        }
+        try {
+            startNonElevatedViaSchedulerCLI(binary, workingDir, sid, args);
+        } catch (WTFException e) {
+            runViaWindowsExecuterFallback(binary, workingDir, sid, args, e);
+        } catch (RuntimeException e) {
+            runViaWindowsExecuterFallback(binary, workingDir, sid, args, e);
+        }
+    }
+
+    /**
+     * @param binary
+     * @param workingDir
+     * @param sid
+     * @param args
+     * @throws IOException
+     * @throws UnsupportedEncodingException
+     * @throws InterruptedException
+     */
+    static void startNonElevatedViaSchedulerCLI(String binary, String workingDir, String sid, String... args) throws IOException, UnsupportedEncodingException, InterruptedException {
         String taskName = "TempAppWorkJavaTask_" + UniqueAlltimeID.next();
         LogV3.info("Launch via Scheduler: " + binary + "  " + Arrays.toString(args) + " in " + workingDir);
         File file = Application.getResource("tmp/" + taskName + ".xml");
         file.delete();
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
-        ZonedDateTime start = ZonedDateTime.now().plusMinutes(1);
-        ZonedDateTime end = start.plusMinutes(2);
-        String startTime = fmt.format(start);
-        String endTime = fmt.format(end);
+        // Java-Weiche: Java 8+ use java.time; older use Calendar/SimpleDateFormat for 1.6 runtime compatibility
+        String startTime;
+        String endTime;
+        if (JavaVersion.getVersion().isMinimum(JavaVersion.JVM_1_8)) {
+            String[] times = formatTaskSchedulerBoundaryTimesJava8();
+            startTime = times[0];
+            endTime = times[1];
+        } else {
+            String[] times = formatTaskSchedulerBoundaryTimesLegacy();
+            startTime = times[0];
+            endTime = times[1];
+        }
         String argumentsXMLNode = "";
         if (args.length > 0) {
             argumentsXMLNode = "<Arguments>" + escapeXml(ShellParser.createCommandLine(Style.WINDOWS, args)) + "</Arguments>\n";

@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.UpfilesIo;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50182 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { UpfilesIo.class })
 public class UpfilesIoFolder extends PluginForDecrypt {
     public UpfilesIoFolder(PluginWrapper wrapper) {

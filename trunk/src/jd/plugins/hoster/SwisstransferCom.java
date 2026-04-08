@@ -37,7 +37,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.SwisstransferComFolder;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50467 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { SwisstransferComFolder.class })
 public class SwisstransferCom extends PluginForHost {
     public SwisstransferCom(PluginWrapper wrapper) {

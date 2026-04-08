@@ -33,7 +33,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.hoster.ReverBnationComHoster;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "reverbnation.com" }, urls = { "https?://(?:www\\.)?reverbnation\\.com/([^/]+)/songs" })
+@DecrypterPlugin(revision = "$Revision: 45058 $", interfaceVersion = 3, names = { "reverbnation.com" }, urls = { "https?://(?:www\\.)?reverbnation\\.com/([^/]+)/songs" })
 public class ReverBnationCom extends antiDDoSForDecrypt {
     public ReverBnationCom(final PluginWrapper wrapper) {
         super(wrapper);

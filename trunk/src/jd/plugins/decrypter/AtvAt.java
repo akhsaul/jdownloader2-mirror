@@ -45,7 +45,7 @@ import jd.plugins.FilePackage;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.GenericM3u8;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "atv.at" }, urls = { "https?://(?:www\\.)?atv\\.at/([a-z0-9\\-_]+/[a-z0-9\\-_]+/(?:d|v)\\d+/|tv/[a-z0-9\\-]+/[a-z0-9\\-]+/[a-z0-9\\-]+/[a-z0-9\\-]+)" })
+@DecrypterPlugin(revision = "$Revision: 48194 $", interfaceVersion = 3, names = { "atv.at" }, urls = { "https?://(?:www\\.)?atv\\.at/([a-z0-9\\-_]+/[a-z0-9\\-_]+/(?:d|v)\\d+/|tv/[a-z0-9\\-]+/[a-z0-9\\-]+/[a-z0-9\\-]+/[a-z0-9\\-]+)" })
 public class AtvAt extends PluginForDecrypt {
     public AtvAt(PluginWrapper wrapper) {
         super(wrapper);

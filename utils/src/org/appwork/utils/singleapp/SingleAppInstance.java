@@ -4,7 +4,7 @@
  *         "AppWork Utilities" License
  *         The "AppWork Utilities" will be called [The Product] from now on.
  * ====================================================================================================================================================
- *         Copyright (c) 2009-2025, AppWork GmbH <e-mail@appwork.org>
+ *         Copyright (c) 2009-2026, AppWork GmbH <e-mail@appwork.org>
  *         Spalter Strasse 58
  *         91183 Abenberg
  *         Germany
@@ -71,6 +71,7 @@ import org.appwork.utils.IO;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.Time;
 import org.appwork.utils.formatter.HexFormatter;
+import org.appwork.utils.logging2.LogInterface;
 import org.appwork.utils.net.ChunkedInputStream;
 import org.appwork.utils.net.ChunkedOutputStream;
 import org.appwork.utils.net.httpconnection.HTTPConnectionUtils;
@@ -170,7 +171,17 @@ public class SingleAppInstance {
     private InetSocketAddress                 address;
     private int                               port                                         = -1;
     private ShutdownEvent                     shutdownEvent;
-    private final static Charset              UTF8                                         = Charset.forName("UTF-8");
+    private LogInterface                      logger;
+
+    /**
+     * @param logger
+     *            the logger to set
+     */
+    public void setLogger(LogInterface logger) {
+        this.logger = logger;
+    }
+
+    private final static Charset UTF8 = Charset.forName("UTF-8");
 
     public boolean isForwardMessageDirectIfNoOtherInstanceIsFound() {
         return forwardMessageDirectIfNoOtherInstanceIsFound;
@@ -189,6 +200,7 @@ public class SingleAppInstance {
         directory.mkdirs();
         this.lockFile = new File(directory, appID + ".lock");
         this.listener = listenr;
+        setLogger(LogV3.defaultLogger());
     }
 
     public IncommingMessageListener getListener() {
@@ -415,7 +427,7 @@ public class SingleAppInstance {
                 // long connectStart = Time.systemIndependentCurrentJVMTimeMillis();
                 socket.connect(con, 5000);
                 // System.out.println("Connect: " + (Time.systemIndependentCurrentJVMTimeMillis() - connectStart));
-                // LogV3.info("Set Readtimeout: " + getReadtimeoutForReadingResponses());
+                // if(logger!=null)logger.info("Set Readtimeout: " + getReadtimeoutForReadingResponses());
                 socket.setSoTimeout(getReadtimeoutForReadingResponses());
                 final ChunkedInputStream chunkedIn = new ChunkedInputStream(socket.getInputStream());
                 final ChunkedOutputStream chunkedOut = new ChunkedOutputStream(new BufferedOutputStream(socket.getOutputStream()));
@@ -555,13 +567,24 @@ public class SingleAppInstance {
     }
 
     /**
-     * @param singleApp2
-     * @param appID2
+     * Creates the client/server ID from app identifiers and root. Override {@link #createID(String, String)} to use a custom root (e.g.
+     * when running in a process with a different Application.getRoot() than the peer).
+     *
+     * @param singleApp
+     * @param appID
      * @param root
-     * @return
+     * @return singleApp + "." + appID + "." + root
      */
     protected String createID(String singleApp, String appID, String root) {
         return singleApp + "." + appID + "." + root;
+    }
+
+    /**
+     * Creates the client/server ID. Default implementation uses {@link Application#getRoot(Class)}; override to use a custom root (e.g.
+     * elevated helper that must match the client's ID).
+     */
+    protected String createID(String singleApp, String appID) {
+        return createID(singleApp, appID, Application.getRoot(SingleAppInstance.class));
     }
 
     public synchronized void start() throws AnotherInstanceRunningException, UncheckableInstanceException, AnotherInstanceRunningButFailedToConnectException, ErrorReadingResponseException, InterruptedException, ExceptionInRunningInstance {
@@ -583,6 +606,7 @@ public class SingleAppInstance {
         if (this.alreadyUsed) {
             this.cannotStart(new IllegalStateException("create new instance!"));
         }
+        final LogInterface logger = this.logger;
         this.alreadyUsed = true;
         try {
             GoAwayException goAwayException = null;
@@ -623,13 +647,19 @@ public class SingleAppInstance {
                     closeLockFlag = false;
                 }
                 if (goAwayException != null) {
-                    LogV3.info("Single Instance Issue: Process sent GoAway. Maybe another process with different ID is listening on port " + port + " - change port");
+                    if (logger != null) {
+                        logger.info("Single Instance Issue: Process sent GoAway. Maybe another process with different ID is listening on port " + port + " - change port");
+                    }
                 }
                 if (errorReadingException != null) {
-                    LogV3.info("Single Instance Issue: Response ReadingError. Maybe an incompatible process is listening on port " + port + " - change port");
+                    if (logger != null) {
+                        logger.info("Single Instance Issue: Response ReadingError. Maybe an incompatible process is listening on port " + port + " - change port");
+                    }
                 }
                 if (ioException != null) {
-                    LogV3.info("Single Instance Issue: Response IOException. Maybe an incompatible process is listening on port " + port + " - change port");
+                    if (logger != null) {
+                        logger.info("Single Instance Issue: Response IOException. Maybe an incompatible process is listening on port " + port + " - change port");
+                    }
                 }
             } catch (final OverlappingFileLockException e) {
                 handleExceptions(goAwayException, errorReadingException, ioException, e);
@@ -738,6 +768,10 @@ public class SingleAppInstance {
                         try {
                             /* accept new request */
                             final Socket client = SingleAppInstance.this.serverSocket.accept();
+                            if (!isIncomingSocketAllowed(client)) {
+                                client.close();
+                                return;
+                            }
                             final Thread thread = new Thread("SingleAppInstanceClient: " + SingleAppInstance.this.appID + " - " + client.getRemoteSocketAddress()) {
                                 {
                                     setDaemon(true);
@@ -748,7 +782,10 @@ public class SingleAppInstance {
                                         handleIncommingConnection(client);
                                     } catch (InterruptedException e) {
                                         DebugMode.breakIf(true, "It is actually not possble to reach this code");
-                                        LogV3.log(e);
+                                        final LogInterface logger = SingleAppInstance.this.logger;
+                                        if (logger != null) {
+                                            logger.log(e);
+                                        }
                                     } catch (Throwable e) {
                                         onUncaughtExceptionDuringHandlingIncommingConnections(e);
                                     }
@@ -775,6 +812,17 @@ public class SingleAppInstance {
         daemon.setDaemon(true);
         this.daemon.set(daemon);
         daemon.start();
+    }
+
+    /**
+     * Override to restrict which client connections are accepted (e.g. by remote PID). Default accepts all.
+     *
+     * @param sockets
+     *            the client socket
+     * @return true to accept the connection, false to reject
+     */
+    protected boolean isIncomingSocketAllowed(Socket sockets) {
+        return true;
     }
 
     /**
@@ -811,7 +859,10 @@ public class SingleAppInstance {
     }
 
     protected void onUncaughtExceptionDuringHandlingIncommingConnections(Throwable e) {
-        LogV3.log(e);
+        final LogInterface logger = this.logger;
+        if (logger != null) {
+            logger.log(e);
+        }
     };
 
     protected void sendResponse(OutputStream out, Response response) throws IOException {
@@ -900,6 +951,7 @@ public class SingleAppInstance {
         synchronized (connections) {
             connections.put(socket, null);
         }
+        final LogInterface logger = this.logger;
         try {
             final ClientConnection client = buildConnection(socket);
             synchronized (connections) {
@@ -910,9 +962,22 @@ public class SingleAppInstance {
             }
             final String clientID = client.readLine();
             if (!StringUtils.equals(clientID, getServerID())) {
-                client.sendResponse(new Response(GO_AWAY_INVALID_ID, "Bad clientID"));
+                try {
+                    client.sendResponse(new Response(GO_AWAY_INVALID_ID, "Bad clientID"));
+                } catch (IOException e) {
+                    if (logger != null) {
+                        logger.exception("SingleAppInstance: client disconnected before GO_AWAY could be sent: " + e.getMessage(), e);
+                    }
+                }
             } else {
-                client.sendResponse(new Response(CLIENT_ID_OK));
+                try {
+                    client.sendResponse(new Response(CLIENT_ID_OK));
+                } catch (IOException e) {
+                    if (logger != null) {
+                        logger.exception("SingleAppInstance: client disconnected before CLIENT_ID_OK could be sent: " + e.getMessage(), e);
+                    }
+                    return;
+                }
                 String line = client.readLine();
                 String[] message = null;
                 if (line != null && line.length() > 0) {
@@ -944,7 +1009,7 @@ public class SingleAppInstance {
                                                 try {
                                                     client.sendResponse(new Response(KEEP_ALIVE, String.valueOf(Time.now())));
                                                 } catch (IOException e) {
-                                                    // LogV3.severe("Failed to send Keep-Alive");
+                                                    // if(logger!=null)logger.severe("Failed to send Keep-Alive");
                                                     return;
                                                 }
                                             }
@@ -969,7 +1034,9 @@ public class SingleAppInstance {
                                                     throw new InvalidParameterException(CLIENT_ID_OK + " is reserved for internal usage");
                                                 } else {
                                                     try {
-                                                        LogV3.info("Send Response: " + response.getType() + ":" + response.getMessage());
+                                                        if (logger != null) {
+                                                            logger.info("Send Response: " + response.getType() + ":" + response.getMessage());
+                                                        }
                                                         client.sendResponse(response);
                                                     } catch (IOException e) {
                                                         throw new FailedToSendResponseException(response, e);
@@ -981,11 +1048,29 @@ public class SingleAppInstance {
                                         keepAliveThread.interrupt();
                                     }
                                 } catch (final Throwable e) {
-                                    client.sendResponse(new Response(EXCEPTION, Exceptions.getStackTrace(e)));
+                                    try {
+                                        client.sendResponse(new Response(EXCEPTION, Exceptions.getStackTrace(e)));
+                                    } catch (IOException e2) {
+                                        // Client likely disconnected (e.g. timeout); avoid secondary exception
+                                        if (e instanceof org.appwork.utils.singleapp.FailedToSendResponseException) {
+                                            if (logger != null) {
+                                                logger.finest("SingleAppInstance: client disconnected before response could be sent: " + e2.getMessage());
+                                            }
+                                        } else {
+                                            onUncaughtExceptionDuringHandlingIncommingConnections(e);
+                                        }
+                                    }
                                 }
                             }
                         } finally {
-                            sendDone(client);
+                            try {
+                                sendDone(client);
+                            } catch (IOException e) {
+                                // Client may have disconnected; avoid uncaught exception
+                                if (logger != null) {
+                                    logger.finest("SingleAppInstance: client disconnected before DONE could be sent: " + e.getMessage());
+                                }
+                            }
                         }
                     } else {
                         onIncommingInvalidMessage(line);
@@ -1032,11 +1117,17 @@ public class SingleAppInstance {
     }
 
     protected void onIncommingInvalidMessage(String message) {
-        org.appwork.loggingv3.LogV3.info("invalid SingleAppInstanceClient message:" + message);
+        final LogInterface logger = this.logger;
+        if (logger != null) {
+            logger.info("invalid SingleAppInstanceClient message:" + message);
+        }
     }
 
     protected void onIncommingTrailingMessage(String message) {
-        org.appwork.loggingv3.LogV3.info("trailing Message:" + message);
+        final LogInterface logger = this.logger;
+        if (logger != null) {
+            logger.info("trailing Message:" + message);
+        }
     };
 
     /**
@@ -1086,11 +1177,11 @@ public class SingleAppInstance {
     }
 
     public String getClientID() {
-        return createID(singleApp, appID, Application.getRoot(SingleAppInstance.class));
+        return createID(singleApp, appID);
     }
 
     public String getServerID() {
-        return createID(singleApp, appID, Application.getRoot(SingleAppInstance.class));
+        return createID(singleApp, appID);
     }
 
     /**

@@ -18,7 +18,7 @@ import jd.plugins.FilePackage;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "ipfs.io", "ipfs.io" }, urls = { "https?://(cloudflare-ipfs.com|ipfs.io|ipfs.video|gateway.ipfs.io)/ipfs/[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+(\\?filename=.+|/.+)?", "ipfs://[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+(/.+)?" })
+@DecrypterPlugin(revision = "$Revision: 49609 $", interfaceVersion = 3, names = { "ipfs.io", "ipfs.io" }, urls = { "https?://(cloudflare-ipfs.com|ipfs.io|ipfs.video|gateway.ipfs.io)/ipfs/[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+(\\?filename=.+|/.+)?", "ipfs://[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+(/.+)?" })
 public class IPFS extends PluginForDecrypt {
     // https://developers.cloudflare.com/distributed-web/ipfs-gateway
     // https://docs.ipfs.io/concepts/ipfs-gateway/

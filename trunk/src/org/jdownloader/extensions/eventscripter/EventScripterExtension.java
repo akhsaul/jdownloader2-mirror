@@ -20,10 +20,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 import jd.SecondLevelLaunch;
+import jd.controlling.TaskQueue;
 import jd.controlling.downloadcontroller.DownloadController;
 import jd.controlling.downloadcontroller.DownloadLinkCandidate;
 import jd.controlling.downloadcontroller.DownloadLinkCandidateResult;
@@ -33,10 +35,14 @@ import jd.controlling.downloadcontroller.SingleDownloadController;
 import jd.controlling.downloadcontroller.event.DownloadWatchdogListener;
 import jd.controlling.linkcollector.LinkCollectingJob;
 import jd.controlling.linkcollector.LinkCollector;
+import jd.controlling.linkcollector.LinkCollector.JobLinkCrawler;
 import jd.controlling.linkcollector.LinkCollectorCrawler;
 import jd.controlling.linkcollector.LinkCollectorEvent;
 import jd.controlling.linkcollector.LinkCollectorListener;
 import jd.controlling.linkcrawler.CrawledLink;
+import jd.controlling.linkcrawler.LinkCrawler;
+import jd.controlling.linkcrawler.LinkCrawlerEvent;
+import jd.controlling.linkcrawler.LinkCrawlerListener;
 import jd.controlling.reconnect.Reconnecter;
 import jd.controlling.reconnect.ReconnecterEvent;
 import jd.controlling.reconnect.ReconnecterListener;
@@ -51,6 +57,7 @@ import org.appwork.storage.config.events.GenericConfigEventListener;
 import org.appwork.storage.config.handler.KeyHandler;
 import org.appwork.utils.Application;
 import org.appwork.utils.StringUtils;
+import org.appwork.utils.event.queue.QueueAction;
 import org.appwork.utils.swing.EDTHelper;
 import org.appwork.utils.swing.EDTRunner;
 import org.appwork.utils.swing.dialog.Dialog;
@@ -76,6 +83,7 @@ import org.jdownloader.extensions.StartException;
 import org.jdownloader.extensions.StopException;
 import org.jdownloader.extensions.eventscripter.sandboxobjects.ArchiveSandbox;
 import org.jdownloader.extensions.eventscripter.sandboxobjects.CrawledLinkSandbox;
+import org.jdownloader.extensions.eventscripter.sandboxobjects.CrawlerJobHolderSandbox;
 import org.jdownloader.extensions.eventscripter.sandboxobjects.CrawlerJobSandbox;
 import org.jdownloader.extensions.eventscripter.sandboxobjects.DownloadLinkSandBox;
 import org.jdownloader.extensions.eventscripter.sandboxobjects.DownloadlistSelectionSandbox;
@@ -102,7 +110,7 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.tools.shell.Global;
 
-public class EventScripterExtension extends AbstractExtension<EventScripterConfig, EventScripterTranslation> implements MenuExtenderHandler, DownloadWatchdogListener, GenericConfigEventListener<Object>, FileCreationListener, LinkCollectorListener, PackagizerControllerListener, ExtractionListener, ReconnecterListener, ChallengeResponseListener {
+public class EventScripterExtension extends AbstractExtension<EventScripterConfig, EventScripterTranslation> implements MenuExtenderHandler, DownloadWatchdogListener, GenericConfigEventListener<Object>, FileCreationListener, LinkCollectorListener, PackagizerControllerListener, ExtractionListener, ReconnecterListener, ChallengeResponseListener, LinkCrawlerListener {
     private EventScripterConfigPanel          configPanel = null;
     private volatile List<ScriptEntry>        entries     = new ArrayList<ScriptEntry>();
     private final AtomicReference<Subscriber> subscriber  = new AtomicReference<Subscriber>(null);
@@ -135,6 +143,7 @@ public class EventScripterExtension extends AbstractExtension<EventScripterConfi
         CFG_EVENT_CALLER.SCRIPTS.getEventSender().removeListener(this);
         FileCreationManager.getInstance().getEventSender().removeListener(this);
         LinkCollector.getInstance().getEventsender().removeListener(this);
+        LinkCrawler.getGlobalEventSender().removeListener(this);
         final Subscriber old = EventScripterExtension.this.subscriber.getAndSet(null);
         if (old != null) {
             RemoteAPIController.getInstance().getEventsapi().removeSubscriber(old);
@@ -165,6 +174,7 @@ public class EventScripterExtension extends AbstractExtension<EventScripterConfi
         Reconnecter.getInstance().getEventSender().addListener(this);
         PackagizerController.getInstance().getEventSender().addListener(this);
         LinkCollector.getInstance().getEventsender().addListener(this);
+        LinkCrawler.getGlobalEventSender().addListener(this);
         FileCreationManager.getInstance().getEventSender().addListener(this);
         DownloadWatchDog.getInstance().getEventSender().addListener(this);
         if (!Application.isHeadless()) {
@@ -511,14 +521,16 @@ public class EventScripterExtension extends AbstractExtension<EventScripterConfi
     }
 
     public void save(final List<ScriptEntry> tableData) {
-        new Thread() {
+        TaskQueue.getQueue().add(new QueueAction<Void, RuntimeException>() {
+
             @Override
-            public void run() {
+            protected Void run() throws RuntimeException {
                 final ArrayList<ScriptEntry> entries = new ArrayList<ScriptEntry>(tableData);
                 setupRemoteAPIListener(entries);
                 getSettings().setScripts(entries);
+                return null;
             }
-        }.start();
+        });
     }
 
     public void runTestCompile(EventTrigger eventTrigger, String script) {
@@ -906,5 +918,44 @@ public class EventScripterExtension extends AbstractExtension<EventScripterConfi
 
     @Override
     public void onLinkCrawlerFinished() {
+    }
+
+    private static final WeakHashMap<JobLinkCrawler, CrawlerJobHolderSandbox> CRAWLERJOBHOLDERSANDBOX_CACHE = new WeakHashMap<LinkCollector.JobLinkCrawler, CrawlerJobHolderSandbox>();
+
+    public static CrawlerJobHolderSandbox get(JobLinkCrawler linkCrawler) {
+        synchronized (CRAWLERJOBHOLDERSANDBOX_CACHE) {
+            CrawlerJobHolderSandbox ret = CRAWLERJOBHOLDERSANDBOX_CACHE.get(linkCrawler);
+            if (ret != null) {
+                return ret;
+            }
+            ret = new CrawlerJobHolderSandbox(linkCrawler);
+            CRAWLERJOBHOLDERSANDBOX_CACHE.put(linkCrawler, ret);
+            return ret;
+        }
+    }
+
+    @Override
+    public void onLinkCrawlerEvent(LinkCrawlerEvent event) {
+        if (LinkCrawlerEvent.Type.FINISHED.equals(event.getType())) {
+            final LinkCrawler lc = event.getCaller();
+            if (!(lc instanceof JobLinkCrawler)) {
+                return;
+            }
+            CrawlerJobHolderSandbox crawlerJobHolderSandbox = null;
+            for (ScriptEntry script : entries) {
+                if (script.isEnabled() && EventTrigger.ON_FINISHED_CRAWLER_JOB.equals(script.getEventTrigger()) && StringUtils.isNotEmpty(script.getScript())) {
+                    try {
+                        final HashMap<String, Object> props = new HashMap<String, Object>();
+                        if (crawlerJobHolderSandbox == null) {
+                            crawlerJobHolderSandbox = get((JobLinkCrawler) lc);
+                        }
+                        props.put("crawler", crawlerJobHolderSandbox);
+                        runScript(script, props);
+                    } catch (Throwable e) {
+                        getLogger().log(e);
+                    }
+                }
+            }
+        }
     }
 }

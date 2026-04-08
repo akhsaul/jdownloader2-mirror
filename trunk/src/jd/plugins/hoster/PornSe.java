@@ -31,7 +31,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = {}, urls = {})
 public class PornSe extends PluginForHost {
     public PornSe(PluginWrapper wrapper) {
         super(wrapper);

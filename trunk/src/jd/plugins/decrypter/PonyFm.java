@@ -33,7 +33,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49699 $", interfaceVersion = 2, names = {}, urls = {})
 public class PonyFm extends PluginForDecrypt {
     public PonyFm(PluginWrapper wrapper) {
         super(wrapper);

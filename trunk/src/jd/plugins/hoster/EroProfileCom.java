@@ -40,7 +40,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "eroprofile.com" }, urls = { "https?://(?:\\w+\\.)?eroprofile\\.com/(m|p)/(videos|photos)/view/([A-Za-z0-9\\-_]+)" })
+@HostPlugin(revision = "$Revision: 49924 $", interfaceVersion = 3, names = { "eroprofile.com" }, urls = { "https?://(?:\\w+\\.)?eroprofile\\.com/(m|p)/(videos|photos)/view/([A-Za-z0-9\\-_]+)" })
 public class EroProfileCom extends PluginForHost {
     public EroProfileCom(PluginWrapper wrapper) {
         super(wrapper);

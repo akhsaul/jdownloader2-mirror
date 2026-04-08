@@ -39,7 +39,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.utils.JDUtilities;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "8muses.com" }, urls = { "https?://(?:www\\.|comics\\.)?8muses\\.com/((?:comix/|comics/)?(?:index/category/[a-z0-9\\-_]+|album(?:/[a-z0-9\\-_]+){1,6})|forum/[a-z0-9\\-]+/\\d+/[a-z0-9\\-]+/(page-\\d+)?)" })
+@DecrypterPlugin(revision = "$Revision: 45136 $", interfaceVersion = 3, names = { "8muses.com" }, urls = { "https?://(?:www\\.|comics\\.)?8muses\\.com/((?:comix/|comics/)?(?:index/category/[a-z0-9\\-_]+|album(?:/[a-z0-9\\-_]+){1,6})|forum/[a-z0-9\\-]+/\\d+/[a-z0-9\\-]+/(page-\\d+)?)" })
 public class EightMusesComDecrypter extends antiDDoSForDecrypt {
     public EightMusesComDecrypter(PluginWrapper wrapper) {
         super(wrapper);

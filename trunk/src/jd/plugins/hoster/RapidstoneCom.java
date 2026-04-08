@@ -26,7 +26,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 41831 $", interfaceVersion = 2, names = {}, urls = {})
 public class RapidstoneCom extends YetiShareCore {
     public RapidstoneCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -29,7 +29,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "yuvutu.com" }, urls = { "http://(www\\.)?yuvutu.com/(video/\\d+(?:/[A-Za-z0-9\\-_]+)?|modules\\.php\\?name=Video\\&op=view\\&video_id=\\d+)" })
+@HostPlugin(revision = "$Revision: 49732 $", interfaceVersion = 3, names = { "yuvutu.com" }, urls = { "http://(www\\.)?yuvutu.com/(video/\\d+(?:/[A-Za-z0-9\\-_]+)?|modules\\.php\\?name=Video\\&op=view\\&video_id=\\d+)" })
 public class YuvutuCom extends PluginForHost {
     public String dllink = null;
 

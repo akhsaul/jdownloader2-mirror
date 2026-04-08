@@ -37,7 +37,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DownloadRu;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51105 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { DownloadRu.class })
 public class DownloadRuFolder extends PluginForDecrypt {
     public DownloadRuFolder(PluginWrapper wrapper) {

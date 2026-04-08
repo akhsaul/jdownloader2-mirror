@@ -49,6 +49,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.PluginJSonUtils;
 import jd.plugins.hoster.DailyMotionCom;
+import jd.plugins.hoster.PornHubCom;
 
 import org.appwork.storage.TypeRef;
 import org.appwork.utils.DebugMode;
@@ -59,7 +60,7 @@ import org.jdownloader.plugins.controller.LazyPlugin;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
 //Decrypts embedded videos from dailymotion
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "dailymotion.com" }, urls = { "https?://(?:www\\.|geo\\.)?(dailymotion\\.com|dai\\.ly)/.+" })
+@DecrypterPlugin(revision = "$Revision: 52535 $", interfaceVersion = 2, names = { "dailymotion.com" }, urls = { "https?://(?:www\\.|geo\\.)?(dailymotion\\.com|dai\\.ly)/.+" })
 public class DailyMotionComDecrypter extends PluginForDecrypt {
     public DailyMotionComDecrypter(PluginWrapper wrapper) {
         super(wrapper);
@@ -86,12 +87,20 @@ public class DailyMotionComDecrypter extends PluginForDecrypt {
         return false;
     }
 
+    @Override
+    public Browser createNewBrowserInstance() {
+        final Browser br = super.createNewBrowserInstance();
+        PornHubCom.setSSLSocketStreamOptions(br);
+        return br;
+    }
+
     @SuppressWarnings("deprecation")
     public ArrayList<DownloadLink> decryptIt(final CryptedLink param, ProgressController progress) throws Exception {
         String contenturl = param.getCryptedUrl().replace("embed/video/", "video/").replaceAll("\\.com/swf(/video)?/", ".com/video/").replace("http://", "https://");
         // embedded video player -> rewrite URL
         contenturl = contenturl.replaceFirst("geo\\.dailymotion\\.com/player/[a-z0-9]+.html\\?video=", Matcher.quoteReplacement("dailymotion.com/video/"));
         contenturl = contenturl.replaceFirst("geo\\.dailymotion\\.com/player\\.html\\?video=", Matcher.quoteReplacement("dailymotion.com/video/"));
+        contenturl = contenturl.replaceFirst("(?i)https?://dailymotion.com", "https://www.dailymotion.com");// avoid required redirect
         br.setFollowRedirects(true);
         DailyMotionCom.prepBrowser(this.br);
         synchronized (ctrlLock) {
@@ -115,7 +124,7 @@ public class DailyMotionComDecrypter extends PluginForDecrypt {
             checkErrors(br);
             /* video == 'video_item', user == 'user_home' */
             String username = null;
-            final Regex profileregex1 = new Regex(param.getCryptedUrl(), "(?i)https?://(?:www\\.)?dailymotion\\.com/(user/([A-Za-z0-9_\\-]+)/\\d+|([^/]+)/videos)");
+            final Regex profileregex1 = new Regex(param.getCryptedUrl(), "(?i)https?://(?:www\\.)?dailymotion\\.com/(user/([A-Za-z0-9_\\-]+)(?:/\\d+|([^/]+)/videos|/playlists))");
             if (profileregex1.patternFind()) {
                 username = profileregex1.getMatch(2);
                 if (username == null) {
@@ -140,7 +149,7 @@ public class DailyMotionComDecrypter extends PluginForDecrypt {
         }
     }
 
-    private void checkErrors(final Browser br) throws PluginException {
+    private void checkErrors(final Browser br) throws PluginException, DecrypterRetryException {
         /* 404 */
         if (br.containsHTML("(<title>Dailymotion \\– 404 Not Found</title>|url\\(/images/404_background\\.jpg)") || this.br.getHttpConnection().getResponseCode() == 404) {
             throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
@@ -148,6 +157,10 @@ public class DailyMotionComDecrypter extends PluginForDecrypt {
             throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
         } else if (br.getHttpConnection().getResponseCode() == 410) {
             throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
+        } else if (br.containsHTML(">\\s*Dailymotion is currently offline for unplanned maintenance.\\s*<")) {
+            throw new DecrypterRetryException(RetryReason.HOST, "Dailymotion is currently offline for unplanned maintenance");
+        } else if (br.getHttpConnection().getResponseCode() == 503) {
+            throw new DecrypterRetryException(RetryReason.HOST);
         }
     }
 
@@ -168,6 +181,9 @@ public class DailyMotionComDecrypter extends PluginForDecrypt {
         }
         final FilePackage fp = FilePackage.getInstance();
         fp.setName(username);
+        if (SubConfiguration.getConfig(this.getHost()).getBooleanProperty(DailyMotionCom.USER_PACKAGE, false)) {
+            fp.setAllowInheritance(true);
+        }
         boolean has_more = false;
         int page = 0;
         int numberofVideos = -1;
@@ -318,9 +334,18 @@ public class DailyMotionComDecrypter extends PluginForDecrypt {
     }
 
     private void prepGraphqlBrowser(final Browser brg) throws Exception {
-        final String traffic_segment = brg.getRegex("window\\.__TS__ = (\\d+)").getMatch(0);
-        final String client_id = br.getRegex("var r=\"([a-f0-9]{20})").getMatch(0);
-        final String client_secret = br.getRegex("o=\"([a-f0-9]{20,})").getMatch(0);
+        String traffic_segment = brg.getRegex("window\\.__TS__ = (\\d+)").getMatch(0);
+        if (traffic_segment == null) {
+            traffic_segment = brg.getCookie(getHost(), "ts", Cookies.NOTDELETEDPATTERN);
+        }
+        String client_id = br.getRegex("var r=\"([a-f0-9]{20})").getMatch(0);
+        if (client_id == null) {
+            client_id = brg.getRegex("get apiClientId\\(\\)\\{return\"([^\"]+)").getMatch(0);
+        }
+        String client_secret = br.getRegex("o=\"([a-f0-9]{20,})").getMatch(0);
+        if (client_secret == null) {
+            client_secret = brg.getRegex("get apiClientSecret\\(\\)\\{return\"([^\"]+)").getMatch(0);
+        }
         String visitor_id = br.getRegex("2v1st%22%3A%22([a-f0-9\\-]+)%22%").getMatch(0);
         if (visitor_id == null) {
             visitor_id = brg.getCookie(brg.getHost(), "v1st", Cookies.NOTDELETEDPATTERN);
@@ -564,6 +589,9 @@ public class DailyMotionComDecrypter extends PluginForDecrypt {
             }
             brc.setFollowRedirects(true);
             brc.getPage(hlsMaster);
+            if (brc.getRequest().getHttpConnection().getResponseCode() == 403) {
+                throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
+            }
             final ArrayList<DownloadLink> selectedFoundQualities = new ArrayList<DownloadLink>();
             final List<HlsContainer> hlsqualities = HlsContainer.getHlsQualities(brc);
             DownloadLink bestQuality = null;
@@ -595,9 +623,9 @@ public class DailyMotionComDecrypter extends PluginForDecrypt {
                     selectedFoundQualities.add(dl);
                 }
             }
-            if (best) {
+            if (best && bestQuality != null) {
                 ret.add(bestQuality);
-            } else if (selectedFoundQualities.isEmpty()) {
+            } else if (selectedFoundQualities.isEmpty() && bestQuality != null) {
                 logger.info("Fallback to BEST video quality because none of users selected qualities were found");
                 ret.add(bestQuality);
             } else {

@@ -23,7 +23,7 @@ import jd.parser.Regex;
 import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "camvideos.org" }, urls = { "https?://(?:www\\.)?camvideos\\.org/videos/(\\d+)/([^/#?]+)/" })
+@DecrypterPlugin(revision = "$Revision: 51010 $", interfaceVersion = 3, names = { "camvideos.org" }, urls = { "https?://(?:www\\.)?camvideos\\.org/videos/(\\d+)/([^/#?]+)/" })
 public class CamVideosOrgCrawler extends PornEmbedParser {
     public CamVideosOrgCrawler(PluginWrapper wrapper) {
         super(wrapper);

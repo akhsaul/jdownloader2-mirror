@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "sfile.mobi" }, urls = { "https?://(?:www\\.)?sfile\\.mobi/(?!loads)([A-Za-z0-9]+)" })
+@HostPlugin(revision = "$Revision: 49201 $", interfaceVersion = 3, names = { "sfile.mobi" }, urls = { "https?://(?:www\\.)?sfile\\.mobi/(?!loads)([A-Za-z0-9]+)" })
 public class SfileMobi extends PluginForHost {
     public SfileMobi(PluginWrapper wrapper) {
         super(wrapper);

@@ -22,7 +22,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.GenericM3u8;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "rozhlas.cz" }, urls = { "https?://(?:[a-z0-9]+\\.)?rozhlas\\.cz/([a-z0-9\\-]+)\\-(\\d+)" })
+@DecrypterPlugin(revision = "$Revision: 49388 $", interfaceVersion = 3, names = { "rozhlas.cz" }, urls = { "https?://(?:[a-z0-9]+\\.)?rozhlas\\.cz/([a-z0-9\\-]+)\\-(\\d+)" })
 public class RozhlasCz extends PluginForDecrypt {
     public RozhlasCz(PluginWrapper wrapper) {
         super(wrapper);

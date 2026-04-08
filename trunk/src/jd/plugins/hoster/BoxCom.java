@@ -40,7 +40,7 @@ import org.appwork.utils.parser.UrlQuery;
 import org.jdownloader.plugins.components.antiDDoSForHost;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "box.com" }, urls = { "https?://(?:\\w+\\.|app\\.)*box\\.(?:com|net)/s(?:hared)?/(?:[a-z0-9]{32}|[a-z0-9]{20})/file/\\d+" })
+@HostPlugin(revision = "$Revision: 51887 $", interfaceVersion = 2, names = { "box.com" }, urls = { "https?://(?:\\w+\\.|app\\.)*box\\.(?:com|net)/s(?:hared)?/(?:[a-z0-9]{32}|[a-z0-9]{20})/file/\\d+" })
 public class BoxCom extends antiDDoSForHost {
     private static final String fileLink           = "https?://(?:\\w+\\.|app\\.)*box\\.com/s(?:hared)?/(?:[a-z0-9]{32}|[a-z0-9]{20})/file/\\d+";
     private String              dllink             = null;

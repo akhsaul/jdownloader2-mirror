@@ -31,7 +31,7 @@ import jd.plugins.FilePackage;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "mountfile.net" }, urls = { "https?://(?:www\\.)?mountfile\\.net/d/[A-Za-z0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 45953 $", interfaceVersion = 3, names = { "mountfile.net" }, urls = { "https?://(?:www\\.)?mountfile\\.net/d/[A-Za-z0-9]+" })
 public class MountFileNetFolder extends antiDDoSForDecrypt {
     public MountFileNetFolder(PluginWrapper wrapper) {
         super(wrapper);

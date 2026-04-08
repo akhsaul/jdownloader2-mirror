@@ -26,7 +26,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 41368 $", interfaceVersion = 3, names = {}, urls = {})
 public class CloudShareIn extends XFileSharingProBasic {
     public CloudShareIn(final PluginWrapper wrapper) {
         super(wrapper);

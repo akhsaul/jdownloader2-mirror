@@ -30,7 +30,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "tranny.one" }, urls = { "https?://(?:www\\.)?tranny\\.one/view/(\\d+)" })
+@HostPlugin(revision = "$Revision: 48055 $", interfaceVersion = 3, names = { "tranny.one" }, urls = { "https?://(?:www\\.)?tranny\\.one/view/(\\d+)" })
 public class TrannyOne extends antiDDoSForHost {
     public TrannyOne(PluginWrapper wrapper) {
         super(wrapper);

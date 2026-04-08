@@ -26,7 +26,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "film.bild.de" }, urls = { "https?://(www\\.)?bild\\.de/video/[^<>\"]+\\.bild\\.html" })
+@HostPlugin(revision = "$Revision: 47477 $", interfaceVersion = 2, names = { "film.bild.de" }, urls = { "https?://(www\\.)?bild\\.de/video/[^<>\"]+\\.bild\\.html" })
 public class FilmBildDe extends PluginForHost {
     public FilmBildDe(final PluginWrapper wrapper) {
         super(wrapper);

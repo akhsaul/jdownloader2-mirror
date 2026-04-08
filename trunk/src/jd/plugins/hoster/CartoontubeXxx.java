@@ -23,7 +23,7 @@ import jd.parser.Regex;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 47660 $", interfaceVersion = 3, names = {}, urls = {})
 public class CartoontubeXxx extends KernelVideoSharingComV2 {
     public CartoontubeXxx(final PluginWrapper wrapper) {
         super(wrapper);

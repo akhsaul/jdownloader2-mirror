@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "chip.de" }, urls = { "https?://(?:[A-Za-z0-9\\-]+\\.)?chip\\.de/(?!downloads|video)[^/]+/[^/]+_\\d+\\.html" })
+@DecrypterPlugin(revision = "$Revision: 48374 $", interfaceVersion = 3, names = { "chip.de" }, urls = { "https?://(?:[A-Za-z0-9\\-]+\\.)?chip\\.de/(?!downloads|video)[^/]+/[^/]+_\\d+\\.html" })
 public class ChipDeDecrypter extends PluginForDecrypt {
     public ChipDeDecrypter(PluginWrapper wrapper) {
         super(wrapper);

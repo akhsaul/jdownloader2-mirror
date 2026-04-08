@@ -19,7 +19,7 @@ import jd.PluginWrapper;
 import jd.plugins.HostPlugin;
 import jd.plugins.components.MultiHosterManagement;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "xt7.pl" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 48647 $", interfaceVersion = 3, names = { "xt7.pl" }, urls = { "" })
 public class Xt7Pl extends Tb7AndXt7PlCORE {
     public Xt7Pl(PluginWrapper wrapper) {
         super(wrapper);

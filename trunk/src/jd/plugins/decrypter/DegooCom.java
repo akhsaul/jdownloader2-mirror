@@ -38,7 +38,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "degoo.com" }, urls = { "https?://(?:cloud|app)\\.degoo\\.com/share/([A-Za-z0-9\\-_]+)(.*\\?ID=\\d+)?" })
+@DecrypterPlugin(revision = "$Revision: 48194 $", interfaceVersion = 3, names = { "degoo.com" }, urls = { "https?://(?:cloud|app)\\.degoo\\.com/share/([A-Za-z0-9\\-_]+)(.*\\?ID=\\d+)?" })
 public class DegooCom extends PluginForDecrypt {
     public DegooCom(PluginWrapper wrapper) {
         super(wrapper);

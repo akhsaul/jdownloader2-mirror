@@ -60,7 +60,7 @@ import org.mozilla.javascript.FunctionObject;
  * @author raztoki
  *
  */
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "hitomi.la" }, urls = { "https?://(?:www\\.)?hitomi\\.la/(?:galleries/\\d+\\.html|reader/\\d+\\.html|[^/]+/.*?-\\d+\\.html)" })
+@DecrypterPlugin(revision = "$Revision: 50900 $", interfaceVersion = 3, names = { "hitomi.la" }, urls = { "https?://(?:www\\.)?hitomi\\.la/(?:galleries/\\d+\\.html|reader/\\d+\\.html|[^/]+/.*?-\\d+\\.html)" })
 public class HitomiLa extends antiDDoSForDecrypt {
     public HitomiLa(PluginWrapper wrapper) {
         super(wrapper);

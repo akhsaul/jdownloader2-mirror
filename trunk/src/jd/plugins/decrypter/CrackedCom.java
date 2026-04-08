@@ -31,7 +31,7 @@ import jd.plugins.PluginForDecrypt;
  *
  * @author raztoki
  */
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "cracked.com" }, urls = { "https?://(?:www\\.)?cracked\\.com/video_\\d+_[a-z0-9\\-]+\\.html" })
+@DecrypterPlugin(revision = "$Revision: 45620 $", interfaceVersion = 2, names = { "cracked.com" }, urls = { "https?://(?:www\\.)?cracked\\.com/video_\\d+_[a-z0-9\\-]+\\.html" })
 public class CrackedCom extends PluginForDecrypt {
     public CrackedCom(PluginWrapper wrapper) {
         super(wrapper);

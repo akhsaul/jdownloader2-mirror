@@ -30,7 +30,7 @@ import jd.plugins.PluginForHost;
 
 import org.appwork.utils.formatter.SizeFormatter;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "4sync.com" }, urls = { "https?://(?:www\\.)?4sync\\.com/(?:file|rar|video|web/directDownload)/[A-Za-z0-9\\_\\-]+" })
+@HostPlugin(revision = "$Revision: 47477 $", interfaceVersion = 2, names = { "4sync.com" }, urls = { "https?://(?:www\\.)?4sync\\.com/(?:file|rar|video|web/directDownload)/[A-Za-z0-9\\_\\-]+" })
 public class FourSyncCom extends PluginForHost {
     public FourSyncCom(PluginWrapper wrapper) {
         super(wrapper);

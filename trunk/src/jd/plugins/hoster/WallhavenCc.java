@@ -44,7 +44,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.download.DownloadInterface;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49651 $", interfaceVersion = 3, names = {}, urls = {})
 public class WallhavenCc extends PluginForHost {
     public WallhavenCc(PluginWrapper wrapper) {
         super(wrapper);

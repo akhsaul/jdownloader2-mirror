@@ -40,7 +40,7 @@ import org.seamless.util.io.IO;
 
 public class C extends PluginsC {
     public C() {
-        super("CFF", "file:/.+\\.ccf$", "$Revision$");
+        super("CFF", "file:/.+\\.ccf$", "$Revision: 45974 $");
     }
 
     public C newPluginInstance() {

@@ -24,7 +24,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "tmblr.co" }, urls = { "https?://(?:www\\.)?tmblr\\.co/[A-Za-z0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 44074 $", interfaceVersion = 3, names = { "tmblr.co" }, urls = { "https?://(?:www\\.)?tmblr\\.co/[A-Za-z0-9]+" })
 public class TumblrComShorturls extends PluginForDecrypt {
     public TumblrComShorturls(PluginWrapper wrapper) {
         super(wrapper);

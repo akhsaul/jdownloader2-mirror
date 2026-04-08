@@ -32,7 +32,7 @@ import org.jdownloader.downloader.hls.HLSDownloader;
 import org.jdownloader.plugins.components.hls.HlsContainer;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "bundestag.de" }, urls = { "https?://(?:www\\.)?bundestag\\.de/mediathek.+" })
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = { "bundestag.de" }, urls = { "https?://(?:www\\.)?bundestag\\.de/mediathek.+" })
 public class BundestagDe extends PluginForHost {
     public BundestagDe(PluginWrapper wrapper) {
         super(wrapper);

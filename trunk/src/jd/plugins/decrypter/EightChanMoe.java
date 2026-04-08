@@ -46,7 +46,7 @@ import org.jdownloader.plugins.components.config.EightChanMoeConfig;
 import org.jdownloader.plugins.components.config.EightChanMoeConfig.POSTANCHORMODE;
 import org.jdownloader.plugins.config.PluginJsonConfig;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51187 $", interfaceVersion = 2, names = {}, urls = {})
 public class EightChanMoe extends PluginForDecrypt {
     /**
      * https://gitgud.io/LynxChan/LynxChan/-/blob/master/doc/Json.txt

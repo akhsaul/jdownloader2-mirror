@@ -33,7 +33,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.UserAgents;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "protected.socadvnet.com" }, urls = { "https?://(?:www\\.)?protected\\.socadvnet\\.com/\\?[a-z0-9\\-]+" })
+@DecrypterPlugin(revision = "$Revision: 49678 $", interfaceVersion = 2, names = { "protected.socadvnet.com" }, urls = { "https?://(?:www\\.)?protected\\.socadvnet\\.com/\\?[a-z0-9\\-]+" })
 public class PrtctdScdvntCm extends PluginForDecrypt {
     private Browser xhr = null;
 

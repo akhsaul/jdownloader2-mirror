@@ -31,7 +31,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "ti1ca.com" }, urls = { "https?://(?:www\\.)?ti1ca\\.com/[a-z0-9]+\\-[^<>\"]*?\\.html" })
+@HostPlugin(revision = "$Revision: 49226 $", interfaceVersion = 2, names = { "ti1ca.com" }, urls = { "https?://(?:www\\.)?ti1ca\\.com/[a-z0-9]+\\-[^<>\"]*?\\.html" })
 public class Ti1caCom extends PluginForHost {
     public Ti1caCom(PluginWrapper wrapper) {
         super(wrapper);

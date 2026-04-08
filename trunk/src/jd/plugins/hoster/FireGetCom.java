@@ -28,7 +28,7 @@ import jd.plugins.AccountUnavailableException;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 47816 $", interfaceVersion = 3, names = {}, urls = {})
 public class FireGetCom extends XFileSharingProBasic {
     public FireGetCom(final PluginWrapper wrapper) {
         super(wrapper);

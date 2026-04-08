@@ -32,7 +32,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.formatter.SizeFormatter;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "filehippo.com" }, urls = { "https?://(?:www\\.)?filehippo\\.com(?:/[a-z]{2})?/download_([\\w-]+)" })
+@HostPlugin(revision = "$Revision: 51734 $", interfaceVersion = 2, names = { "filehippo.com" }, urls = { "https?://(?:www\\.)?filehippo\\.com(?:/[a-z]{2})?/download_([\\w-]+)" })
 public class FileHippoCom extends PluginForHost {
     public FileHippoCom(PluginWrapper wrapper) {
         super(wrapper);

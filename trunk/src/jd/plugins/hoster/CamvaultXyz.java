@@ -50,7 +50,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.CamvaultXyzCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50051 $", interfaceVersion = 3, names = {}, urls = {})
 public class CamvaultXyz extends PluginForHost {
     public CamvaultXyz(PluginWrapper wrapper) {
         super(wrapper);

@@ -20,7 +20,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "bentbox.co" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51944 $", interfaceVersion = 3, names = { "bentbox.co" }, urls = { "" })
 public class BentBoxCo extends PluginForHost {
     public BentBoxCo(PluginWrapper wrapper) {
         super(wrapper);

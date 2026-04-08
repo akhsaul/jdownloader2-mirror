@@ -40,7 +40,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "wushare.com" }, urls = { "https?://(?:www\\.)?wushare\\.com/file/([A-Za-z0-9]+)" })
+@HostPlugin(revision = "$Revision: 48361 $", interfaceVersion = 2, names = { "wushare.com" }, urls = { "https?://(?:www\\.)?wushare\\.com/file/([A-Za-z0-9]+)" })
 public class WuShareCom extends PluginForHost {
     public WuShareCom(PluginWrapper wrapper) {
         super(wrapper);

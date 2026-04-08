@@ -31,7 +31,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "bigholestube.com" }, urls = { "https?://(?:www\\.)?bigholestube\\.com/([a-z0-9\\-_]+)/" })
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = { "bigholestube.com" }, urls = { "https?://(?:www\\.)?bigholestube\\.com/([a-z0-9\\-_]+)/" })
 public class BigholestubeCom extends PluginForHost {
     public BigholestubeCom(PluginWrapper wrapper) {
         super(wrapper);

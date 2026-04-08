@@ -41,7 +41,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.PluginJSonUtils;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50939 $", interfaceVersion = 2, names = {}, urls = {})
 public class FrancetelevisionsFrCrawler extends PluginForDecrypt {
     /**
      * Returns the annotations names array

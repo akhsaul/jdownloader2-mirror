@@ -44,7 +44,7 @@ import org.appwork.utils.StringUtils;
 import org.appwork.utils.formatter.TimeFormatter;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "linksvip.net" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 52202 $", interfaceVersion = 3, names = { "linksvip.net" }, urls = { "" })
 public class LinksvipNet extends PluginForHost {
     private static final String                            NICE_HOST                 = "linksvip.net";
     private static final String                            NICE_HOSTproperty         = NICE_HOST.replaceAll("(\\.|\\-)", "");

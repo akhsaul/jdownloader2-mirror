@@ -9,6 +9,13 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.WeakHashMap;
 
+import jd.config.SubConfiguration;
+import jd.plugins.DecrypterPlugin;
+import jd.plugins.HostPlugin;
+import jd.plugins.Plugin.PluginEnvironment;
+import jd.plugins.PluginForDecrypt;
+import jd.plugins.PluginForHost;
+
 import org.appwork.exceptions.WTFException;
 import org.appwork.scheduler.DelayedRunnable;
 import org.appwork.shutdown.ShutdownController;
@@ -27,6 +34,7 @@ import org.appwork.utils.Application;
 import org.appwork.utils.DebugMode;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.swing.dialog.Dialog;
+import org.jdownloader.plugins.components.captchasolver.abstractPluginForCaptchaSolver;
 import org.jdownloader.plugins.controller.LazyPlugin;
 import org.jdownloader.plugins.controller.PluginClassLoader.PluginClassLoaderChild;
 import org.jdownloader.plugins.controller.crawler.CrawlerPluginController;
@@ -34,22 +42,16 @@ import org.jdownloader.plugins.controller.crawler.LazyCrawlerPlugin;
 import org.jdownloader.plugins.controller.host.HostPluginController;
 import org.jdownloader.plugins.controller.host.LazyHostPlugin;
 
-import jd.config.SubConfiguration;
-import jd.plugins.DecrypterPlugin;
-import jd.plugins.HostPlugin;
-import jd.plugins.PluginForDecrypt;
-import jd.plugins.PluginForHost;
-
 public class PluginJsonConfig {
     private static final WeakHashMap<ClassLoader, HashMap<String, WeakReference<ConfigInterface>>> CONFIG_CACHE  = new WeakHashMap<ClassLoader, HashMap<String, WeakReference<ConfigInterface>>>();
     private static final HashMap<String, JsonKeyValueStorage>                                      STORAGE_CACHE = new HashMap<String, JsonKeyValueStorage>();
     protected static final DelayedRunnable                                                         SAVEDELAYER   = new DelayedRunnable(5000, 30000) {
-                                                                                                                     @Override
-                                                                                                                     public void delayedrun() {
-                                                                                                                         saveAll();
-                                                                                                                         cleanup();
-                                                                                                                     }
-                                                                                                                 };
+        @Override
+        public void delayedrun() {
+            saveAll();
+            cleanup();
+        }
+    };
     private final static boolean                                                                   DEBUG         = false;
     static {
         final File pluginsFolder = Application.getResource("cfg/plugins/");
@@ -91,6 +93,7 @@ public class PluginJsonConfig {
         CONFIG_CACHE.size();
     }
 
+    @Deprecated
     public synchronized static <T extends PluginConfigInterface> T get(Class<T> configInterface) {
         return get(null, configInterface);
     }
@@ -99,16 +102,31 @@ public class PluginJsonConfig {
         String host = null;
         final Type type;
         final PluginHost hostAnnotation = configInterface.getAnnotation(PluginHost.class);
+        final boolean isMulti;
         if (hostAnnotation != null) {
-            host = hostAnnotation.host();
+            isMulti = hostAnnotation.multi();
+            if (isMulti) {
+                if (lazyPlugin == null) {
+                    host = PluginEnvironment.getPluginEnvironment().getCurrentPlugin().getLazy().getDisplayName();
+                } else {
+                    host = lazyPlugin.getDisplayName();
+                }
+            } else {
+                host = hostAnnotation.host();
+            }
             type = hostAnnotation.type();
         } else {
+            isMulti = false;
             final Class<?> enc = configInterface.getEnclosingClass();
             if (enc == null) {
                 throw new WTFException("Bad Config Interface Definition. " + configInterface.getName() + ". @PluginHost(\"domain.de\") or    public Class<? extends UsenetConfigInterface> getConfigInterface() {... is missing");
             }
             if (PluginForHost.class.isAssignableFrom(enc)) {
-                type = Type.HOSTER;
+                if (abstractPluginForCaptchaSolver.class.isAssignableFrom(enc)) {
+                    type = Type.CAPTCHA;
+                } else {
+                    type = Type.HOSTER;
+                }
                 final HostPlugin anno = enc.getAnnotation(HostPlugin.class);
                 final String[] names = anno.names();
                 if (names.length == 0) {
@@ -162,7 +180,7 @@ public class PluginJsonConfig {
             }
         }
         String ID = JsonConfig.getStorageName(configInterface);
-        if (ID.equals(configInterface.getName())) {
+        if (ID.equals(configInterface.getName()) || isMulti) {
             ID = type + "/" + host;
         }
         final ClassLoader cl = configInterface.getClassLoader();

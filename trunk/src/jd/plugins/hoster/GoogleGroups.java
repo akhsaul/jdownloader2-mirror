@@ -31,7 +31,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "googlegroups.com" }, urls = { "http://[\\w\\.]*?googlegroups\\.com/web/.*" })
+@HostPlugin(revision = "$Revision: 50709 $", interfaceVersion = 2, names = { "googlegroups.com" }, urls = { "http://[\\w\\.]*?googlegroups\\.com/web/.*" })
 public class GoogleGroups extends PluginForHost {
     public GoogleGroups(PluginWrapper wrapper) {
         super(wrapper);

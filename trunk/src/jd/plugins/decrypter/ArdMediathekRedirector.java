@@ -26,7 +26,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "ard.de" }, urls = { "https?://\\w+\\.ard\\.de/\\w+" })
+@DecrypterPlugin(revision = "$Revision: 45405 $", interfaceVersion = 3, names = { "ard.de" }, urls = { "https?://\\w+\\.ard\\.de/\\w+" })
 public class ArdMediathekRedirector extends PluginForDecrypt {
     public ArdMediathekRedirector(PluginWrapper wrapper) {
         super(wrapper);

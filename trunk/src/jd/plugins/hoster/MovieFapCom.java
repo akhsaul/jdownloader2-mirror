@@ -30,7 +30,7 @@ import jd.plugins.PluginForHost;
 
 import org.jdownloader.controlling.filter.CompiledFiletypeFilter;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "moviefap.com" }, urls = { "https?://(?:www\\.)?moviefap\\.com/(videos/[a-z0-9]+/[a-z0-9\\-_]+\\.html|embedding_player/embedding_feed\\.php\\?viewkey=[a-z0-9]+)" })
+@HostPlugin(revision = "$Revision: 47483 $", interfaceVersion = 2, names = { "moviefap.com" }, urls = { "https?://(?:www\\.)?moviefap\\.com/(videos/[a-z0-9]+/[a-z0-9\\-_]+\\.html|embedding_player/embedding_feed\\.php\\?viewkey=[a-z0-9]+)" })
 public class MovieFapCom extends PluginForHost {
     public MovieFapCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -34,7 +34,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "kindgirls.com" }, urls = { "https?://(?:www\\.)?kindgirls\\.com/(?:gallery|girls|video)\\.php\\?id=\\d+" })
+@DecrypterPlugin(revision = "$Revision: 45838 $", interfaceVersion = 2, names = { "kindgirls.com" }, urls = { "https?://(?:www\\.)?kindgirls\\.com/(?:gallery|girls|video)\\.php\\?id=\\d+" })
 public class KndGrlsCom extends PluginForDecrypt {
     public KndGrlsCom(PluginWrapper wrapper) {
         super(wrapper);

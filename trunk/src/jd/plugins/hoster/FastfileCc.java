@@ -18,8 +18,6 @@ package jd.plugins.hoster;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jdownloader.plugins.components.XFileSharingProBasic;
-
 import jd.PluginWrapper;
 import jd.http.Browser;
 import jd.parser.Regex;
@@ -31,7 +29,10 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+import org.jdownloader.plugins.components.XFileSharingProBasic;
+import org.jdownloader.plugins.components.config.XFSConfigFastfileCc;
+
+@HostPlugin(revision = "$Revision: 52585 $", interfaceVersion = 3, names = {}, urls = {})
 public class FastfileCc extends XFileSharingProBasic {
     public FastfileCc(final PluginWrapper wrapper) {
         super(wrapper);
@@ -55,6 +56,12 @@ public class FastfileCc extends XFileSharingProBasic {
 
     public static String[] getAnnotationNames() {
         return buildAnnotationNames(getPluginDomains());
+    }
+
+    @Override
+    public void init() {
+        super.init();
+        Browser.setRequestIntervalLimitGlobal(getHost(), 500);
     }
 
     @Override
@@ -94,19 +101,26 @@ public class FastfileCc extends XFileSharingProBasic {
         }
     }
 
+    // 2026-03-10: For free and registered users the limit is 1 concurrent connection in total, and for Premium users the limit is up to 5
+    // concurrent
+    // connections in total.
+    private int getMaxDownloadSelect() {
+        return get(this.getConfigInterface()).getMaxSimultaneousFreeDownloads();
+    }
+
     @Override
     public int getMaxSimultaneousFreeAnonymousDownloads() {
-        return 20;
+        return getMaxDownloadSelect();
     }
 
     @Override
     public int getMaxSimultaneousFreeAccountDownloads() {
-        return 20;
+        return getMaxDownloadSelect();
     }
 
     @Override
     public int getMaxSimultanPremiumDownloadNum() {
-        return 20;
+        return 4;
     }
 
     @Override
@@ -123,7 +137,7 @@ public class FastfileCc extends XFileSharingProBasic {
     protected String regExTrafficLeft(final Browser br) {
         String betterTrafficLeft = br.getRegex("Traffic available today:\\s*<strong>\\s*?(\\d+[^<]+)</strong>").getMatch(0);
         if (betterTrafficLeft == null) {
-            betterTrafficLeft = br.getRegex(">Traffic available today</div>\\s*<div[^>]*>\\s*?(\\d+[^<]+)</div>").getMatch(0);
+            betterTrafficLeft = br.getRegex(">\\s*Traffic available today\\s*</div>\\s*<div[^>]*>\\s*?(\\d+[^<]+)</div>").getMatch(0);
         }
         if (betterTrafficLeft != null) {
             return betterTrafficLeft;
@@ -178,5 +192,10 @@ public class FastfileCc extends XFileSharingProBasic {
     public String[] scanInfo(String html, final String[] fileInfo) {
         final String strippedHtml = html.replaceAll("(?s)(<div\\s*class\\s*=\\s*\"UserHead\".*?</div>)", "");
         return super.scanInfo(strippedHtml, fileInfo);
+    }
+
+    @Override
+    public Class<? extends XFSConfigFastfileCc> getConfigInterface() {
+        return XFSConfigFastfileCc.class;
     }
 }

@@ -34,7 +34,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48125 $", interfaceVersion = 3, names = {}, urls = {})
 public class FileconvoyComFolder extends PluginForDecrypt {
     public FileconvoyComFolder(PluginWrapper wrapper) {
         super(wrapper);

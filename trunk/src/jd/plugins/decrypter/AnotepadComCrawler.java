@@ -29,7 +29,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50982 $", interfaceVersion = 2, names = {}, urls = {})
 public class AnotepadComCrawler extends AbstractPastebinCrawler {
     public AnotepadComCrawler(PluginWrapper wrapper) {
         super(wrapper);

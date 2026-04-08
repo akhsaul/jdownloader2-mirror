@@ -26,6 +26,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.appwork.storage.JSonMapperException;
+import org.appwork.storage.JSonStorage;
+import org.appwork.storage.TypeRef;
+import org.appwork.utils.ReflectionUtils;
+import org.appwork.utils.StringUtils;
+import org.jdownloader.captcha.v2.CaptchaHosterHelperInterface;
+import org.jdownloader.captcha.v2.challenge.hcaptcha.CaptchaHelperHostPluginHCaptcha;
+import org.jdownloader.captcha.v2.challenge.recaptcha.v2.CaptchaHelperHostPluginRecaptchaV2;
+import org.jdownloader.plugins.controller.LazyPlugin;
+
 import jd.PluginWrapper;
 import jd.config.ConfigContainer;
 import jd.config.ConfigEntry;
@@ -48,17 +58,7 @@ import jd.plugins.PluginBrowser;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-import org.appwork.storage.JSonMapperException;
-import org.appwork.storage.JSonStorage;
-import org.appwork.storage.TypeRef;
-import org.appwork.utils.ReflectionUtils;
-import org.appwork.utils.StringUtils;
-import org.jdownloader.captcha.v2.CaptchaHosterHelperInterface;
-import org.jdownloader.captcha.v2.challenge.hcaptcha.CaptchaHelperHostPluginHCaptcha;
-import org.jdownloader.captcha.v2.challenge.recaptcha.v2.CaptchaHelperHostPluginRecaptchaV2;
-import org.jdownloader.plugins.controller.LazyPlugin;
-
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52311 $", interfaceVersion = 2, names = {}, urls = {})
 public class FilerNet extends PluginForHost {
     private static final int     STATUSCODE_APIDISABLED                             = 400;
     private static final String  ERRORMESSAGE_APIDISABLEDTEXT                       = "API is disabled, please wait or use filer.net in your browser";
@@ -99,9 +99,9 @@ public class FilerNet extends PluginForHost {
             @Override
             public URLConnectionAdapter openRequestConnection(Request request, final boolean followRedirects) throws IOException {
                 /**
-                 * 2024-02-20: Ensure to enforce user-preferred protocol. </br> This can also be seen as a workaround since filer.net
-                 * redirects from https to http on final download-attempt so without this, http protocol would be used even if user
-                 * preferred https. <br>
+                 * 2024-02-20: Ensure to enforce user-preferred protocol. </br>
+                 * This can also be seen as a workaround since filer.net redirects from https to http on final download-attempt so without
+                 * this, http protocol would be used even if user preferred https. <br>
                  * Atm we don't know if this is a filer.net server side bug or if this is intentional. <br>
                  * Asked support about this, waiting for feedback
                  */
@@ -580,7 +580,6 @@ public class FilerNet extends PluginForHost {
         // TODO: Merge code- and "status" handling: error codes should be all we need here
         final Object codeObject = entries.get("code");
         final String statusObject = (String) entries.get("status");
-
         final Number code;
         if (codeObject == null) {
             code = null;
@@ -591,7 +590,6 @@ public class FilerNet extends PluginForHost {
         } else {
             throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
         }
-
         final String status;
         if (codeObject != null && !codeObject.toString().matches("\\d+") && !StringUtils.isNotEmpty(codeObject.toString())) {
             // still required? or can be removed?
@@ -636,7 +634,6 @@ public class FilerNet extends PluginForHost {
                 throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
             }
         }
-
         if (code != null) {
             final int statusCode = code.intValue();
             switch (statusCode) {
@@ -676,7 +673,6 @@ public class FilerNet extends PluginForHost {
                     throw new PluginException(LinkStatus.ERROR_FATAL, "Unknown API error code " + entries);
                 }
             }
-
         }
         final Object errorO = entries.get("error");
         final String message = (String) entries.get("message");
@@ -732,10 +728,10 @@ public class FilerNet extends PluginForHost {
             } else if (error.equalsIgnoreCase("HOURLY_DOWNLOAD_LIMIT")) {
                 throw new PluginException(LinkStatus.ERROR_IP_BLOCKED, getErrorMessage(error, message), TimeUnit.HOURS.toMillis(1));
             } else if (error.equalsIgnoreCase("TICKET_LIMIT_REACHED")) {
-                /*
-                 * HTTP/1.1 429 Too Many Requests
-                 * {"error":"TICKET_LIMIT_REACHED","message":"You already have an active download ticket. Please use or wait for it to expire."
-                 * ,"activeTickets":1,"maxTickets":1}
+                /**
+                 * HTTP/1.1 429 Too Many Requests {"error":"TICKET_LIMIT_REACHED","message":"You already have an active download ticket.
+                 * Please use or wait for it to expire." ,"activeTickets":1,"maxTickets":1} <br>
+                 * See: https://board.jdownloader.org/showthread.php?t=98395
                  */
                 throw new PluginException(LinkStatus.ERROR_IP_BLOCKED, getErrorMessage(error, message), TimeUnit.HOURS.toMillis(1));
             } else if (error.equalsIgnoreCase("Wait time not elapsed")) {

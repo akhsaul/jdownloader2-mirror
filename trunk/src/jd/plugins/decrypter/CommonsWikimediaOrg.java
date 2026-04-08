@@ -29,7 +29,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.FilePackage;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "commons.wikimedia.org" }, urls = { "https?://commons\\.wikimedia\\.org/wiki/Category:Pictures_by_User:[A-Za-z0-9\\-_]+" })
+@DecrypterPlugin(revision = "$Revision: 48975 $", interfaceVersion = 3, names = { "commons.wikimedia.org" }, urls = { "https?://commons\\.wikimedia\\.org/wiki/Category:Pictures_by_User:[A-Za-z0-9\\-_]+" })
 public class CommonsWikimediaOrg extends PluginForDecrypt {
     public CommonsWikimediaOrg(PluginWrapper wrapper) {
         super(wrapper);

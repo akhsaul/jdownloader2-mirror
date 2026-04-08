@@ -36,7 +36,7 @@ import org.appwork.storage.TypeRef;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "sketch.pixiv.net" }, urls = { "https?://sketch\\.pixiv\\.net/(@[^/]+)" })
+@DecrypterPlugin(revision = "$Revision: 48194 $", interfaceVersion = 3, names = { "sketch.pixiv.net" }, urls = { "https?://sketch\\.pixiv\\.net/(@[^/]+)" })
 public class PixivNetSketch extends PluginForDecrypt {
     public PixivNetSketch(PluginWrapper wrapper) {
         super(wrapper);

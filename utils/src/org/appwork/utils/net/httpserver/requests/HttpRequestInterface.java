@@ -4,9 +4,9 @@
  *         "AppWork Utilities" License
  *         The "AppWork Utilities" will be called [The Product] from now on.
  * ====================================================================================================================================================
- *         Copyright (c) 2009-2015, AppWork GmbH <e-mail@appwork.org>
- *         Schwabacher Straße 117
- *         90763 Fürth
+ *         Copyright (c) 2009-2026, AppWork GmbH <e-mail@appwork.org>
+ *         Spalter Strasse 58
+ *         91183 Abenberg
  *         Germany
  * === Preamble ===
  *     This license establishes the terms under which the [The Product] Source Code & Binary files may be used, copied, modified, distributed, and/or redistributed.
@@ -64,6 +64,13 @@ public interface HttpRequestInterface {
      * use {@link #getRequestedPath(String)}
      */
     public String getRequestedURL();
+
+    /**
+     * Returns the raw query string from the request URL (the part after '?').
+     *
+     * @return the query string without leading '?', or null if the URL has no query part
+     */
+    public String getQuery();
 
     /**
      * @return the requestedURLParameters

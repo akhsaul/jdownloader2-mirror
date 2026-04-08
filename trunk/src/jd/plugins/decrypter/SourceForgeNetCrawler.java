@@ -37,7 +37,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "sourceforge.net" }, urls = { "https?://(?:www\\.)?sourceforge\\.net/(?:projects/[^/]+/files/[^\\?<>\"]{0,}|settings/mirror_choices\\?projectname=.+\\&filename=.+)" })
+@DecrypterPlugin(revision = "$Revision: 48484 $", interfaceVersion = 3, names = { "sourceforge.net" }, urls = { "https?://(?:www\\.)?sourceforge\\.net/(?:projects/[^/]+/files/[^\\?<>\"]{0,}|settings/mirror_choices\\?projectname=.+\\&filename=.+)" })
 public class SourceForgeNetCrawler extends PluginForDecrypt {
     @SuppressWarnings("deprecation")
     public SourceForgeNetCrawler(PluginWrapper wrapper) {

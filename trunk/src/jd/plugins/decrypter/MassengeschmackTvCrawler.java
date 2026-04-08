@@ -48,7 +48,7 @@ import org.appwork.utils.StringUtils;
 import org.appwork.utils.formatter.SizeFormatter;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "massengeschmack.tv" }, urls = { "https?://(?:www\\.)?massengeschmack\\.tv/((?:play|clip)/|index_single\\.php\\?id=)[a-z0-9\\-]+|https?://(?:www\\.)?massengeschmack\\.tv/live/[a-z0-9\\-]+" })
+@DecrypterPlugin(revision = "$Revision: 45506 $", interfaceVersion = 3, names = { "massengeschmack.tv" }, urls = { "https?://(?:www\\.)?massengeschmack\\.tv/((?:play|clip)/|index_single\\.php\\?id=)[a-z0-9\\-]+|https?://(?:www\\.)?massengeschmack\\.tv/live/[a-z0-9\\-]+" })
 public class MassengeschmackTvCrawler extends PluginForDecrypt {
     public MassengeschmackTvCrawler(PluginWrapper wrapper) {
         super(wrapper);

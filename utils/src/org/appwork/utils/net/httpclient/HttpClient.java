@@ -53,6 +53,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.net.ssl.KeyManager;
@@ -74,11 +75,10 @@ import org.appwork.utils.net.CountingConnection;
 import org.appwork.utils.net.CountingInputStream;
 import org.appwork.utils.net.DownloadProgress;
 import org.appwork.utils.net.URLHelper;
-import org.appwork.utils.net.BasicHTTP.ReadIOException;
-import org.appwork.utils.net.BasicHTTP.WriteIOException;
 import org.appwork.utils.net.httpconnection.HTTPConnection;
 import org.appwork.utils.net.httpconnection.HTTPConnectionFactory;
 import org.appwork.utils.net.httpconnection.HTTPConnectionProfilerAdapter;
+import org.appwork.utils.net.httpconnection.DNSResolver;
 import org.appwork.utils.net.httpconnection.HTTPOutputStream;
 import org.appwork.utils.net.httpconnection.HTTPProxy;
 import org.appwork.utils.net.httpconnection.RequestMethod;
@@ -101,6 +101,7 @@ public class HttpClient {
         private OutputStream            target          = new ByteArrayOutputStream();
         private int                     postDataLength;
         private InputStream             postDataStream;
+        private int                     connectTimeout   = -1;
         private int                     readTimeout     = -1;
         public URL                      redirectTo;
         private long                    resumePosition  = -1;
@@ -110,6 +111,7 @@ public class HttpClient {
         private volatile boolean        executed        = false;
         private int                     redirectCounter = 0;
         private HashMap<String, String> requestHeaders;
+        private DNSResolver             dnsResolver;
 
         public TrustResult getTrustResult() {
             if (connection == null) {
@@ -133,13 +135,24 @@ public class HttpClient {
         }
 
         /**
-         * @param delete
+         * @param method
+         *            HTTP method (must not be null)
+         * @param url
+         *            request URL (must not be null)
          */
-        public RequestContext() {
+        public RequestContext(final RequestMethod method, final String url) {
+            if (method == null) {
+                throw new IllegalArgumentException("method is null");
+            }
+            if (url == null) {
+                throw new IllegalArgumentException("url is null");
+            }
+            this.method = method;
+            this.url = url;
         }
 
         public static RequestContext get(final String url) {
-            return new RequestContext().setMethod(RequestMethod.GET).setUrl(url);
+            return new RequestContext(RequestMethod.GET, url);
         }
 
         /**
@@ -189,6 +202,10 @@ public class HttpClient {
 
         public int getReadTimeout() {
             return this.readTimeout;
+        }
+
+        public int getConnectTimeout() {
+            return this.connectTimeout;
         }
 
         /**
@@ -384,6 +401,9 @@ public class HttpClient {
         }
 
         public RequestContext setMethod(final RequestMethod method) {
+            if (method == null) {
+                throw new IllegalArgumentException("method is null");
+            }
             this.method = method;
             return this;
         }
@@ -413,6 +433,11 @@ public class HttpClient {
             return this;
         }
 
+        public RequestContext setConnectTimeout(final int connectTimeout) {
+            this.connectTimeout = connectTimeout;
+            return this;
+        }
+
         public RequestContext setResumePosition(final long resumePosition) {
             this.resumePosition = resumePosition;
             return this;
@@ -424,8 +449,32 @@ public class HttpClient {
         }
 
         public RequestContext setUrl(final String url) {
+            if (url == null) {
+                throw new IllegalArgumentException("url is null");
+            }
             this.url = url;
             return this;
+        }
+
+        /**
+         * Set a custom DNS resolver for this request. When set, it is used to resolve the URL host to IPs instead of
+         * default DNS. See {@link HTTPConnection#setDNSResolver(DNSResolver)}. Context resolver overrides client-level
+         * resolver.
+         *
+         * @param resolver
+         *            custom resolver, or null for default
+         * @return this
+         */
+        public RequestContext setDNSResolver(final DNSResolver resolver) {
+            this.dnsResolver = resolver;
+            return this;
+        }
+
+        /**
+         * @return the custom DNS resolver for this request, or null
+         */
+        public DNSResolver getDNSResolver() {
+            return this.dnsResolver;
         }
 
         /**
@@ -598,7 +647,7 @@ public class HttpClient {
     }
 
     protected final static Charset          UTF8                 = Charset.forName("UTF-8");
-    protected HashSet<Integer>              allowedResponseCodes = new HashSet<Integer>(Arrays.asList(-1));
+    protected Set<Integer>                  allowedResponseCodes = new HashSet<Integer>(Arrays.asList(-1));
     protected int                           connectTimeout       = 15000;
     protected LogInterface                  logger               = null;
     protected HTTPProxy                     proxy                = HTTPProxy.NONE;
@@ -608,6 +657,7 @@ public class HttpClient {
     private boolean                         verboseLog           = false;
     private TrustProviderInterface          trustProvider        = null;
     private KeyManager[]                    keyManagers          = null;
+    private DNSResolver                     dnsResolver         = null;
 
     public HttpClient() {
         this.requestHeader = new HashMap<String, String>();
@@ -620,15 +670,26 @@ public class HttpClient {
      *
      */
     protected void checkResponseCode(final RequestContext context) throws InvalidResponseCode {
-        final HashSet<Integer> allowedResponseCodes = this.getAllowedResponseCodes();
-        if (allowedResponseCodes != null) {
-            if (allowedResponseCodes.contains(-1)) {
-                // allow all
-                return;
-            } else if (!allowedResponseCodes.contains(context.getConnection().getResponseCode())) {
-                throw new InvalidResponseCode(context);
-            }
+        final Set<Integer> allowedResponseCodes = this.getAllowedResponseCodes();
+        if (allowedResponseCodes == null) {
+            return;
+        } else if (allowedResponseCodes.contains(context.getConnection().getResponseCode())) {
+            return;
         }
+        if (allowedResponseCodes.contains(-1) && context.getConnection().getResponseCode() != HTTPConstants.ResponseCode.X_INVALID_HTTP_RESPONSE.getCode()) {
+            // if we want to allow 999, allowedResponseCodes MUSt explicitly contain it. -1 does not allow 999 but all others
+            // allow all
+            return;
+        } else {
+            throw createInvalidResponseCodeException(context);
+        }
+    }
+
+    protected InvalidResponseCode createInvalidResponseCodeException(final RequestContext context) throws InvalidResponseCode {
+        if (context != null && context.getConnection().getResponseCode() == HTTPConstants.ResponseCode.X_INVALID_HTTP_RESPONSE.getCode()) {
+            throw new InvalidHttpResponseException(context);
+        }
+        throw new InvalidResponseCode(context);
     }
 
     public void clearRequestHeader() {
@@ -694,7 +755,7 @@ public class HttpClient {
                 final long connectMethodElapsed = Time.systemIndependentCurrentJVMTimeMillis() - connectMethodStartTime;
                 LogV3.fine("HttpClient.connect: connect method failed after " + connectMethodElapsed + "ms: " + e.getMessage());
             }
-            throw new HttpClientException(context, new ReadIOException(e));
+            throw new HttpClientException(context, new ReadIOException(context, e));
         }
         if (!returnOutputStream) {
             if (this.isVerboseLog()) {
@@ -743,6 +804,11 @@ public class HttpClient {
                 LogV3.fine("HttpClient.createHTTPConnection: keyManagers is null, not setting on connection");
             }
         }
+        if (context.getDNSResolver() != null) {
+            connection.setDNSResolver(context.getDNSResolver());
+        } else if (this.getDNSResolver() != null) {
+            connection.setDNSResolver(this.getDNSResolver());
+        }
         context.setConnection(connection);
         return connection;
     }
@@ -756,7 +822,7 @@ public class HttpClient {
      * instead
      */
     public RequestContext delete(final String url) throws IOException, InterruptedException {
-        return this.execute(new RequestContext().setMethod(RequestMethod.DELETE).setUrl(url));
+        return this.execute(new RequestContext(RequestMethod.DELETE, url));
     }
 
     public boolean followRedirect(final RequestContext context) throws IOException, InterruptedException {
@@ -783,10 +849,10 @@ public class HttpClient {
     }
 
     public RequestContext get(final String url) throws IOException, InterruptedException {
-        return this.execute(new RequestContext().setMethod(RequestMethod.GET).setUrl(url));
+        return this.execute(new RequestContext(RequestMethod.GET, url));
     }
 
-    public HashSet<Integer> getAllowedResponseCodes() {
+    public Set<Integer> getAllowedResponseCodes() {
         return this.allowedResponseCodes;
     }
 
@@ -825,7 +891,7 @@ public class HttpClient {
      * @param <E>
      * @param HttpClientException
      */
-    private <E extends Throwable> E handleInterrupt(final E exception) throws InterruptedException, E {
+    protected <E extends Throwable> E handleInterrupt(final E exception) throws InterruptedException, E {
         if (exception instanceof InterruptedException) {
             throw (InterruptedException) exception;
         } else if (Thread.interrupted() || exception instanceof InterruptedIOException) {
@@ -864,7 +930,7 @@ public class HttpClient {
      * instead
      */
     public RequestContext post(final String url, final byte[] data) throws IOException, InterruptedException {
-        return this.execute(new RequestContext().setMethod(RequestMethod.POST).setUrl(url).setPostDataStream(new ByteArrayInputStream(data)).setPostDataLength(data.length));
+        return this.execute(new RequestContext(RequestMethod.POST, url).setPostDataStream(new ByteArrayInputStream(data)).setPostDataLength(data.length));
     }
 
     /**
@@ -877,7 +943,7 @@ public class HttpClient {
 
     protected void prepareConnection(final RequestContext context) {
         this.setAllowedResponseCodes(context);
-        context.connection.setConnectTimeout(this.getConnectTimeout());
+        context.connection.setConnectTimeout(context.getConnectTimeout() < 0 ? this.getConnectTimeout() : context.getConnectTimeout());
         context.connection.setReadTimeout(context.getReadTimeout() < 0 ? this.getReadTimeout() : context.getReadTimeout());
         context.connection.setRequestMethod(context.method);
         context.connection.setRequestProperty(HTTPConstants.HEADER_REQUEST_ACCEPT_LANGUAGE, TranslationFactory.getDesiredLanguage());
@@ -980,7 +1046,7 @@ public class HttpClient {
                     if (ret < 0) {
                         this.onDone();
                     } else {
-                        context.onBytesLoaded(b, off, len);
+                        context.onBytesLoaded(b, off, ret);
                     }
                     return ret;
                 } finally {
@@ -1001,7 +1067,7 @@ public class HttpClient {
                             break;
                         }
                     } catch (final IOException e) {
-                        throw new ReadIOException(e);
+                        throw new ReadIOException(context, e);
                     }
                     if (Thread.interrupted()) {
                         throw new InterruptedException();
@@ -1010,7 +1076,7 @@ public class HttpClient {
                         try {
                             out.write(b, 0, len);
                         } catch (final IOException e) {
-                            throw new WriteIOException(e);
+                            throw new WriteIOException(context, e);
                         }
                     }
                 }
@@ -1124,7 +1190,7 @@ public class HttpClient {
                         outputStream.flush();
                         outputStream.close();
                     } catch (final IOException e) {
-                        throw new WriteIOException(e);
+                        throw new WriteIOException(context, e);
                     } finally {
                         directHTTPConnectionOutputStream.setClosingAllowed(before);
                     }
@@ -1176,7 +1242,7 @@ public class HttpClient {
             } catch (final HttpClientException e) {
                 throw this.handleInterrupt(e);
             } catch (final IOException e) {
-                throw this.handleInterrupt(new HttpClientException(context, new ReadIOException(e)));
+                throw this.handleInterrupt(new HttpClientException(context, new ReadIOException(context, e)));
             } catch (RuntimeException e) {
                 throw e;
             } finally {
@@ -1247,7 +1313,7 @@ public class HttpClient {
     }
 
     public void setAllowedResponseCodes(final int... codes) {
-        final HashSet<Integer> allowedResponseCodes = new HashSet<Integer>();
+        final Set<Integer> allowedResponseCodes = new HashSet<Integer>();
         for (final int i : codes) {
             allowedResponseCodes.add(i);
         }
@@ -1255,7 +1321,7 @@ public class HttpClient {
     }
 
     protected void setAllowedResponseCodes(final RequestContext context) {
-        final HashSet<Integer> allowedResponseCodes = this.getAllowedResponseCodes();
+        final Set<Integer> allowedResponseCodes = this.getAllowedResponseCodes();
         if (allowedResponseCodes != null) {
             final int[] ret = new int[allowedResponseCodes.size()];
             int i = 0;
@@ -1326,9 +1392,27 @@ public class HttpClient {
         return this.keyManagers;
     }
 
+    /**
+     * Set a custom DNS resolver for all requests made with this client. Can be overridden per request via
+     * {@link RequestContext#setDNSResolver(DNSResolver)}.
+     *
+     * @param resolver
+     *            custom resolver, or null for default DNS
+     */
+    public void setDNSResolver(final DNSResolver resolver) {
+        this.dnsResolver = resolver;
+    }
+
+    /**
+     * @return the custom DNS resolver set on this client, or null
+     */
+    public DNSResolver getDNSResolver() {
+        return this.dnsResolver;
+    }
+
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Object#toString()
      */
     @Override

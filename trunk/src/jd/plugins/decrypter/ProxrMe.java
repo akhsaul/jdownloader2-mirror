@@ -30,7 +30,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "proxer.me" }, urls = { "https?://(?:www\\.)?proxer\\.me/watch/\\d+/\\d+/(ger|eng)sub" })
+@DecrypterPlugin(revision = "$Revision: 49718 $", interfaceVersion = 2, names = { "proxer.me" }, urls = { "https?://(?:www\\.)?proxer\\.me/watch/\\d+/\\d+/(ger|eng)sub" })
 public class ProxrMe extends PluginForDecrypt {
     public ProxrMe(PluginWrapper wrapper) {
         super(wrapper);

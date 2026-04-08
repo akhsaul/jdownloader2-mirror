@@ -19,7 +19,7 @@ import jd.plugins.FilePackage;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "warez-world.org", "ddl-mdh.org" }, urls = { "https?://(?:www\\.)?warez-world\\.org/(?:download/[^/]+|link/\\d+/\\d+)", "https?://(?:www\\.)?(?:ddl-mdh\\.org|mdh\\.to)/(?:download/[^/]+|video/[^/]+|link/\\d+/\\d+)" })
+@DecrypterPlugin(revision = "$Revision: 49675 $", interfaceVersion = 3, names = { "warez-world.org", "ddl-mdh.org" }, urls = { "https?://(?:www\\.)?warez-world\\.org/(?:download/[^/]+|link/\\d+/\\d+)", "https?://(?:www\\.)?(?:ddl-mdh\\.org|mdh\\.to)/(?:download/[^/]+|video/[^/]+|link/\\d+/\\d+)" })
 public class GenericWBoardDecrypter extends antiDDoSForDecrypt {
     public GenericWBoardDecrypter(PluginWrapper wrapper) {
         super(wrapper);

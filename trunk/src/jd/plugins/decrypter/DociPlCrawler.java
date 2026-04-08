@@ -36,7 +36,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.DociPl;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "doci.pl" }, urls = { "https?://(?:www\\.)?doci\\.pl/[^\\?\\&]+" })
+@DecrypterPlugin(revision = "$Revision: 49213 $", interfaceVersion = 3, names = { "doci.pl" }, urls = { "https?://(?:www\\.)?doci\\.pl/[^\\?\\&]+" })
 public class DociPlCrawler extends PluginForDecrypt {
     public DociPlCrawler(PluginWrapper wrapper) {
         super(wrapper);

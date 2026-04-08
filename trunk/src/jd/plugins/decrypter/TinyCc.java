@@ -26,7 +26,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "tiny.cc" }, urls = { "https?://(www\\.)?tiny\\.cc/[0-9a-zA-Z]+" })
+@DecrypterPlugin(revision = "$Revision: 45872 $", interfaceVersion = 2, names = { "tiny.cc" }, urls = { "https?://(www\\.)?tiny\\.cc/[0-9a-zA-Z]+" })
 public class TinyCc extends PluginForDecrypt {
     public TinyCc(PluginWrapper wrapper) {
         super(wrapper);

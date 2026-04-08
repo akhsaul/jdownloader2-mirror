@@ -32,7 +32,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "vine.co" }, urls = { "https?://(?:www\\.)?vine\\.co/v/([A-Za-z0-9]+)" })
+@HostPlugin(revision = "$Revision: 51485 $", interfaceVersion = 3, names = { "vine.co" }, urls = { "https?://(?:www\\.)?vine\\.co/v/([A-Za-z0-9]+)" })
 public class VineCo extends PluginForHost {
     public VineCo(PluginWrapper wrapper) {
         super(wrapper);

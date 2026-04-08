@@ -32,7 +32,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.RecordbateCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 47062 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { RecordbateCom.class })
 public class RecordbateComProfile extends PluginForDecrypt {
     public RecordbateComProfile(PluginWrapper wrapper) {

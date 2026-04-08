@@ -30,7 +30,7 @@ import jd.plugins.HostPlugin;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.components.XFileSharingProBasic;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50268 $", interfaceVersion = 3, names = {}, urls = {})
 public class UsersCloudCom extends XFileSharingProBasic {
     public UsersCloudCom(final PluginWrapper wrapper) {
         super(wrapper);

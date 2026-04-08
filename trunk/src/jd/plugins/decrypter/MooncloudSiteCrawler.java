@@ -38,7 +38,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 import jd.plugins.hoster.MooncloudSite;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48839 $", interfaceVersion = 3, names = {}, urls = {})
 public class MooncloudSiteCrawler extends PluginForDecrypt {
     public MooncloudSiteCrawler(PluginWrapper wrapper) {
         super(wrapper);

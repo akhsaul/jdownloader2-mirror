@@ -41,7 +41,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.KoofrNetFolder;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51692 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { KoofrNetFolder.class })
 public class KoofrNet extends PluginForHost {
     public KoofrNet(PluginWrapper wrapper) {

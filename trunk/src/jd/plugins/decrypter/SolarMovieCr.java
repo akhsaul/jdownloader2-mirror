@@ -30,7 +30,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51660 $", interfaceVersion = 2, names = {}, urls = {})
 public class SolarMovieCr extends PluginForDecrypt {
     public SolarMovieCr(PluginWrapper wrapper) {
         super(wrapper);

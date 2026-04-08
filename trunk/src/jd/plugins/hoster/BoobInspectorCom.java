@@ -33,7 +33,7 @@ import org.appwork.utils.Regex;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 47474 $", interfaceVersion = 2, names = {}, urls = {})
 public class BoobInspectorCom extends PluginForHost {
     public BoobInspectorCom(PluginWrapper wrapper) {
         super(wrapper);

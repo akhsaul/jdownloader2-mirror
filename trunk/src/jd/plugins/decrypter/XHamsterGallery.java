@@ -49,7 +49,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 import jd.plugins.hoster.XHamsterCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52605 $", interfaceVersion = 3, names = {}, urls = {})
 public class XHamsterGallery extends PluginForDecrypt {
     public XHamsterGallery(PluginWrapper wrapper) {
         super(wrapper);
@@ -71,7 +71,7 @@ public class XHamsterGallery extends PluginForDecrypt {
     public static List<String[]> getPluginDomains() {
         final List<String[]> ret = new ArrayList<String[]>();
         // each entry in List<String[]> will result in one PluginForHost, Plugin.getHost() will return String[0]->main domain
-        ret.add(new String[] { "xhamster.com", "xhamster.xxx", "xhamster.desi", "xhamster.one", "xhamster1.desi", "xhamster2.desi", "xhamster3.desi", "openxh.com", "openxh1.com", "openxh2.com", "megaxh.com", "xhvid.com", "xhbranch5.com", "xhamster.tv", "airportxh.life", "xhsay.life", "xhaccess.com", "xhopen.com" });
+        ret.add(new String[] { "xhamster.com", "xhamster.xxx", "xhamster.desi", "xhamster.one", "xhamster1.desi", "xhamster2.desi", "xhamster3.desi", "openxh.com", "openxh1.com", "openxh2.com", "megaxh.com", "xhvid.com", "xhbranch5.com", "xhamster.tv", "airportxh.life", "xhsay.life", "xhaccess.com", "xhopen.com", "zbnu.live", "faphouse.com", "faphouse2.com" });
         return ret;
     }
 
@@ -407,8 +407,8 @@ public class XHamsterGallery extends PluginForDecrypt {
                     final String title = video.get("title").toString();
                     final String icon = (String) video.get("icon");
                     final String url = (String) video.get("pageURL");
-                    if ("deleted".equalsIgnoreCase(icon)) {
-                        /* Item is offline */
+                    if ("deleted".equalsIgnoreCase(icon) || StringUtils.isEmpty(url)) {
+                        /* Item is offline(deleted) or no longer have any pageURL/thumbURL/unageURL... assigned = offline/removed */
                         numberofDeletedItemsThisPage++;
                         logger.info("Found deleted video: id: " + video_id + " | title: " + title);
                         final String urlForOfflineItem;
@@ -416,7 +416,7 @@ public class XHamsterGallery extends PluginForDecrypt {
                             urlForOfflineItem = url;
                         } else {
                             /* No URL given but we know how it would look */
-                            urlForOfflineItem = "https://xhamster.com/videos/" + OrfAt.toSlug(title) + "-" + video_id;
+                            urlForOfflineItem = "https://" + getHost() + "/videos/" + OrfAt.toSlug(title) + "-" + video_id;
                         }
                         if (!dupes.add(urlForOfflineItem)) {
                             /* This should never happen */
@@ -434,10 +434,6 @@ public class XHamsterGallery extends PluginForDecrypt {
                         ret.add(dummy);
                         distribute(dummy);
                         continue;
-                    }
-                    if (StringUtils.isEmpty(url)) {
-                        /* This should never happen: pageURL should only be null for offline items */
-                        throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
                     }
                     if (new Regex(url, ignoreVideo).patternFind()) {
                         continue;

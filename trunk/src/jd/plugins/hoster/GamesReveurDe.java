@@ -29,7 +29,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "games.reveur.de" }, urls = { "https?://(?:www\\.)?games\\.reveur\\.de/(?:en|de)/[A-Za-z0-9\\-_/]+\\.html" })
+@HostPlugin(revision = "$Revision: 49213 $", interfaceVersion = 2, names = { "games.reveur.de" }, urls = { "https?://(?:www\\.)?games\\.reveur\\.de/(?:en|de)/[A-Za-z0-9\\-_/]+\\.html" })
 public class GamesReveurDe extends PluginForHost {
     public GamesReveurDe(PluginWrapper wrapper) {
         super(wrapper);

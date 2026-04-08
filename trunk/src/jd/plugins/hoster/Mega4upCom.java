@@ -28,7 +28,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50608 $", interfaceVersion = 3, names = {}, urls = {})
 public class Mega4upCom extends XFileSharingProBasic {
     public Mega4upCom(final PluginWrapper wrapper) {
         super(wrapper);

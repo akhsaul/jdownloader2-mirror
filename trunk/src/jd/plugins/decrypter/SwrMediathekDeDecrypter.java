@@ -25,7 +25,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.PluginForDecrypt;
 import jd.utils.JDUtilities;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "swrmediathek.de" }, urls = { "https?://(?:www\\.)?swrmediathek\\.de/player\\.htm\\?show=[a-f0-9\\-]+" })
+@DecrypterPlugin(revision = "$Revision: 43973 $", interfaceVersion = 2, names = { "swrmediathek.de" }, urls = { "https?://(?:www\\.)?swrmediathek\\.de/player\\.htm\\?show=[a-f0-9\\-]+" })
 public class SwrMediathekDeDecrypter extends PluginForDecrypt {
     public SwrMediathekDeDecrypter(PluginWrapper wrapper) {
         super(wrapper);

@@ -41,7 +41,7 @@ import jd.plugins.FilePackage;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48652 $", interfaceVersion = 3, names = {}, urls = {})
 public class GetComicsInfo extends antiDDoSForDecrypt {
     private final String DOWNLOAD_SINGLE_PAGES = "DOWNLOAD_SINGLE_PAGES";
 

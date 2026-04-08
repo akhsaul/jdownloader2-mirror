@@ -27,7 +27,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "pixabay.com" }, urls = { "https?://(?:www\\.)?pixabay\\.com/(?:videos|music|sound-effects)/[a-z0-9\\-]+-(\\d+)/?" })
+@DecrypterPlugin(revision = "$Revision: 50074 $", interfaceVersion = 3, names = { "pixabay.com" }, urls = { "https?://(?:www\\.)?pixabay\\.com/(?:videos|music|sound-effects)/[a-z0-9\\-]+-(\\d+)/?" })
 public class PixabayComCrawler extends PluginForDecrypt {
     public PixabayComCrawler(PluginWrapper wrapper) {
         super(wrapper);

@@ -35,6 +35,10 @@ package org.appwork.utils.net.httpconnection;
 
 import java.net.InetAddress;
 
+import javax.net.ssl.KeyManager;
+
+import org.appwork.utils.net.httpconnection.trust.TrustProviderInterface;
+
 /**
  * @author daniel
  * @date 28.07.2017
@@ -77,5 +81,15 @@ public class KeepAliveSSLSocketStream extends KeepAliveSocketStream implements S
     @Override
     public TrustResult getTrustResult() {
         return getSocketStream().getTrustResult();
+    }
+
+    @Override
+    public TrustProviderInterface getTrustProvider() {
+        return getSocketStream().getTrustProvider();
+    }
+
+    @Override
+    public KeyManager[] getKeyManager() {
+        return getSocketStream().getKeyManager();
     }
 }

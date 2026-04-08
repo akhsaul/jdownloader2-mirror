@@ -36,7 +36,7 @@ import jd.plugins.PluginForHost;
 import jd.plugins.components.SiteType.SiteTemplate;
 import jd.plugins.decrypter.BooruOrgCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49846 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { BooruOrgCrawler.class })
 public class BooruOrg extends PluginForHost {
     public BooruOrg(PluginWrapper wrapper) {

@@ -36,7 +36,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "naughtymachinima.com" }, urls = { "https?://(?:www\\.)?naughtymachinima\\.com/video/(\\d+)(/([a-z0-9\\-_]+))?" })
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = { "naughtymachinima.com" }, urls = { "https?://(?:www\\.)?naughtymachinima\\.com/video/(\\d+)(/([a-z0-9\\-_]+))?" })
 public class NaughtymachinimaCom extends PluginForHost {
     public NaughtymachinimaCom(PluginWrapper wrapper) {
         super(wrapper);

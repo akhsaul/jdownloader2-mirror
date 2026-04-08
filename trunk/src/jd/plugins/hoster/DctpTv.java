@@ -32,7 +32,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "dctp.tv" }, urls = { "https?://(?:www\\.)?dctp\\.tv/filme/([a-z0-9_\\-]+)/?" })
+@HostPlugin(revision = "$Revision: 48114 $", interfaceVersion = 3, names = { "dctp.tv" }, urls = { "https?://(?:www\\.)?dctp\\.tv/filme/([a-z0-9_\\-]+)/?" })
 public class DctpTv extends PluginForHost {
     public DctpTv(PluginWrapper wrapper) {
         super(wrapper);

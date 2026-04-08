@@ -35,7 +35,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.EpubbooksCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "epubbooks.com" }, urls = { "https?://(?:www\\.)?epubbooks\\.com/book/\\d+\\-[a-z0-9\\-]+" })
+@DecrypterPlugin(revision = "$Revision: 48607 $", interfaceVersion = 3, names = { "epubbooks.com" }, urls = { "https?://(?:www\\.)?epubbooks\\.com/book/\\d+\\-[a-z0-9\\-]+" })
 public class EpubbooksComCrawler extends PluginForDecrypt {
     public EpubbooksComCrawler(PluginWrapper wrapper) {
         super(wrapper);

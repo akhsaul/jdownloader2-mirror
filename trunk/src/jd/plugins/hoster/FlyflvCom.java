@@ -28,7 +28,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "flyflv.com" }, urls = { "https?://(?:www\\.)?flyflv\\.com/movies/(\\d+(?:/[A-Za-z0-9\\-_]+)?|player/\\d+)" })
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = { "flyflv.com" }, urls = { "https?://(?:www\\.)?flyflv\\.com/movies/(\\d+(?:/[A-Za-z0-9\\-_]+)?|player/\\d+)" })
 public class FlyflvCom extends PluginForHost {
     public FlyflvCom(PluginWrapper wrapper) {
         super(wrapper);

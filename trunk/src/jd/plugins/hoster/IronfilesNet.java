@@ -34,7 +34,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "ironfiles.net" }, urls = { "https?://(www\\.)?ironfiles\\.net/file/download/id/\\d+(?:/key/[a-z0-9]+)?" })
+@HostPlugin(revision = "$Revision: 47664 $", interfaceVersion = 3, names = { "ironfiles.net" }, urls = { "https?://(www\\.)?ironfiles\\.net/file/download/id/\\d+(?:/key/[a-z0-9]+)?" })
 public class IronfilesNet extends PluginForHost {
     public IronfilesNet(PluginWrapper wrapper) {
         super(wrapper);

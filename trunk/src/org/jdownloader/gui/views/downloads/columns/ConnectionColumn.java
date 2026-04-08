@@ -33,6 +33,7 @@ import org.jdownloader.gui.IconKey;
 import org.jdownloader.gui.translate._GUI;
 import org.jdownloader.images.NewTheme;
 import org.jdownloader.plugins.SkipReason;
+import org.jdownloader.settings.staticreferences.CFG_GUI;
 
 import jd.controlling.downloadcontroller.DownloadWatchDog;
 import jd.controlling.downloadcontroller.SingleDownloadController;
@@ -43,7 +44,6 @@ import jd.controlling.proxy.SelectedProxy;
 import jd.controlling.reconnect.ipcheck.BalancedWebIPCheck;
 import jd.controlling.reconnect.ipcheck.IP;
 import jd.controlling.reconnect.ipcheck.IPCheckException;
-import jd.gui.swing.jdgui.GUIUtils;
 import jd.http.ProxySelectorInterface;
 import jd.http.Request;
 import jd.http.URLConnectionAdapter;
@@ -384,7 +384,13 @@ public class ConnectionColumn extends ExtColumn<AbstractNode> {
                     final DomainInfo domainInfo = DomainInfo.getInstance(plugin.getHost(link, sdc.getAccount(), false));
                     if (domainInfo != null) {
                         final Icon icon = domainInfo.getFavIcon();
-                        add(new JLabel(_GUI.T.ConnectionColumn_DownloadUsesAccount(GUIUtils.getAccountName(sdc.getAccount().getUser())), icon, JLabel.LEADING));
+                        final String usernameText;
+                        if (CFG_GUI.CFG.isPresentationModeEnabled()) {
+                            usernameText = CFG_GUI.CFG.getPresentationModeText();
+                        } else {
+                            usernameText = sdc.getAccount().getUser();
+                        }
+                        add(new JLabel(_GUI.T.ConnectionColumn_DownloadUsesAccount(usernameText), icon, JLabel.LEADING));
                     }
                 }
             }

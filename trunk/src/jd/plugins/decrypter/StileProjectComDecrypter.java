@@ -28,7 +28,7 @@ import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 import jd.plugins.hoster.StileProjectCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50142 $", interfaceVersion = 3, names = {}, urls = {})
 public class StileProjectComDecrypter extends PornEmbedParser {
     public StileProjectComDecrypter(PluginWrapper wrapper) {
         super(wrapper);

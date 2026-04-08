@@ -26,7 +26,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 47798 $", interfaceVersion = 3, names = {}, urls = {})
 public class UptomegaMe extends XFileSharingProBasic {
     public UptomegaMe(final PluginWrapper wrapper) {
         super(wrapper);

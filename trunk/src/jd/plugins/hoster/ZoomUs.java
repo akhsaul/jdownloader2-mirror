@@ -41,7 +41,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50893 $", interfaceVersion = 3, names = {}, urls = {})
 public class ZoomUs extends PluginForHost {
     public ZoomUs(PluginWrapper wrapper) {
         super(wrapper);

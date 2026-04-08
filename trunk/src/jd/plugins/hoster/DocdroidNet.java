@@ -37,7 +37,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "docdroid.net" }, urls = { "https?://(?:www\\.)?(?:docdroid\\.net|docdro\\.id)/([A-Za-z0-9\\-]+)(?:/[^/]+)?" })
+@HostPlugin(revision = "$Revision: 48966 $", interfaceVersion = 2, names = { "docdroid.net" }, urls = { "https?://(?:www\\.)?(?:docdroid\\.net|docdro\\.id)/([A-Za-z0-9\\-]+)(?:/[^/]+)?" })
 public class DocdroidNet extends PluginForHost {
     public DocdroidNet(PluginWrapper wrapper) {
         super(wrapper);

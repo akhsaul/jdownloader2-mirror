@@ -27,7 +27,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49877 $", interfaceVersion = 3, names = {}, urls = {})
 public class NfileCc extends PluginForDecrypt {
     public NfileCc(PluginWrapper wrapper) {
         super(wrapper);

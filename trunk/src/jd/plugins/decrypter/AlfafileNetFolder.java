@@ -35,7 +35,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.AlfafileNet;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52240 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { AlfafileNet.class })
 public class AlfafileNetFolder extends PluginForDecrypt {
     public AlfafileNetFolder(PluginWrapper wrapper) {

@@ -43,7 +43,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.F95zoneTo;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51517 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { F95zoneTo.class })
 public class F95zoneToCrawler extends PluginForDecrypt {
     public F95zoneToCrawler(PluginWrapper wrapper) {

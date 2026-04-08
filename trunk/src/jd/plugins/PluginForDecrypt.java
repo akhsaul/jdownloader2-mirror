@@ -21,11 +21,34 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import jd.PluginWrapper;
+import jd.config.SubConfiguration;
+import jd.controlling.ProgressController;
+import jd.controlling.captcha.CaptchaSettings;
+import jd.controlling.captcha.SkipException;
+import jd.controlling.captcha.SkipRequest;
+import jd.controlling.downloadcontroller.SingleDownloadController;
+import jd.controlling.linkcollector.LinkCollector;
+import jd.controlling.linkcollector.LinkCollector.JobLinkCrawler;
+import jd.controlling.linkcrawler.CrawledLink;
+import jd.controlling.linkcrawler.LinkCrawler;
+import jd.controlling.linkcrawler.LinkCrawler.LinkCrawlerGeneration;
+import jd.controlling.linkcrawler.LinkCrawlerDistributer;
+import jd.controlling.linkcrawler.LinkCrawlerThread;
+import jd.http.Browser;
+import jd.http.Browser.BlockedByException;
+import jd.http.Browser.BrowserException;
+import jd.http.Request;
+import jd.http.URLConnectionAdapter;
+import jd.nutils.encoding.Encoding;
+import jd.plugins.DecrypterRetryException.RetryReason;
+import jd.utils.JDUtilities;
 
 import org.appwork.storage.config.JsonConfig;
 import org.appwork.timetracker.TimeTracker;
@@ -68,29 +91,6 @@ import org.jdownloader.plugins.controller.crawler.LazyCrawlerPlugin;
 import org.jdownloader.plugins.controller.host.HostPluginController;
 import org.jdownloader.plugins.controller.host.LazyHostPlugin;
 import org.jdownloader.translate._JDT;
-
-import jd.PluginWrapper;
-import jd.config.SubConfiguration;
-import jd.controlling.ProgressController;
-import jd.controlling.captcha.CaptchaSettings;
-import jd.controlling.captcha.SkipException;
-import jd.controlling.captcha.SkipRequest;
-import jd.controlling.downloadcontroller.SingleDownloadController;
-import jd.controlling.linkcollector.LinkCollector;
-import jd.controlling.linkcollector.LinkCollector.JobLinkCrawler;
-import jd.controlling.linkcrawler.CrawledLink;
-import jd.controlling.linkcrawler.LinkCrawler;
-import jd.controlling.linkcrawler.LinkCrawler.LinkCrawlerGeneration;
-import jd.controlling.linkcrawler.LinkCrawlerDistributer;
-import jd.controlling.linkcrawler.LinkCrawlerThread;
-import jd.http.Browser;
-import jd.http.Browser.BlockedByException;
-import jd.http.Browser.BrowserException;
-import jd.http.Request;
-import jd.http.URLConnectionAdapter;
-import jd.nutils.encoding.Encoding;
-import jd.plugins.DecrypterRetryException.RetryReason;
-import jd.utils.JDUtilities;
 
 /**
  * Dies ist die Oberklasse für alle Plugins, die Links entschlüsseln können
@@ -146,16 +146,16 @@ public abstract class PluginForDecrypt extends Plugin {
     }
 
     /**
-     * Use this when e.g. crawling folders & subfolders from cloud-services. </br>
-     * Use this to find the last path in order to continue to build the path until all subfolders are crawled.
+     * Use this when e.g. crawling folders & subfolders from cloud-services. </br> Use this to find the last path in order to continue to
+     * build the path until all subfolders are crawled.
      */
     protected final String getAdoptedCloudFolderStructure() {
         return getAdoptedCloudFolderStructure(null);
     }
 
     /**
-     * Use this when e.g. crawling folders & subfolders from cloud-services. </br>
-     * Use this to find the last path in order to continue to build the path until all subfolders are crawled.
+     * Use this when e.g. crawling folders & subfolders from cloud-services. </br> Use this to find the last path in order to continue to
+     * build the path until all subfolders are crawled.
      */
     protected final String getAdoptedCloudFolderStructure(final String fallback) {
         CrawledLink current = getCurrentLink();
@@ -427,16 +427,22 @@ public abstract class PluginForDecrypt extends Plugin {
     }
 
     protected ArrayList<DownloadLink> addLinkCrawlerRetryTask(ArrayList<DownloadLink> results, final CrawledLink link, final DecrypterRetryException retryException) {
-        final String[] retryTasks = LinkCrawler.getConfig().getAddRetryCrawlerTasks3();
-        if (retryTasks != null && retryException != null && Arrays.asList(retryTasks).contains(retryException.getReason().name())) {
-            final DownloadLink retry = createLinkCrawlerRetry(link, retryException);
-            if (retry != null) {
-                if (results == null) {
-                    results = new ArrayList<DownloadLink>();
-                }
-                results.add(retry);
-            }
+        if (retryException == null) {
+            return results;
         }
+        final Set<RetryReason> ignoreRetryTasks = LinkCrawler.getConfig().getIgnoreRetryCrawlerTasks();
+        if (ignoreRetryTasks != null && ignoreRetryTasks.contains(retryException.getReason())) {
+            /* User wishes to ignore this RetryTask. */
+            return results;
+        }
+        final DownloadLink retry = createLinkCrawlerRetry(link, retryException);
+        if (retry == null) {
+            return results;
+        }
+        if (results == null) {
+            results = new ArrayList<DownloadLink>();
+        }
+        results.add(retry);
         return results;
     }
 

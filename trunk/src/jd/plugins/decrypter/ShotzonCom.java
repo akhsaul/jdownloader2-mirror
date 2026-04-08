@@ -28,7 +28,7 @@ import jd.plugins.components.SiteType.SiteTemplate;
 
 import org.appwork.utils.parser.UrlQuery;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "shotzon.com" }, urls = { "https?://(?:www\\.)?(?:enagato\\.com|shotzon\\.com)/(?:full/\\?api=[a-f0-9]+\\&url=[a-zA-Z0-9_/\\+\\=\\-%]+|[A-Za-z0-9]{2,})" })
+@DecrypterPlugin(revision = "$Revision: 45792 $", interfaceVersion = 3, names = { "shotzon.com" }, urls = { "https?://(?:www\\.)?(?:enagato\\.com|shotzon\\.com)/(?:full/\\?api=[a-f0-9]+\\&url=[a-zA-Z0-9_/\\+\\=\\-%]+|[A-Za-z0-9]{2,})" })
 public class ShotzonCom extends PluginForDecrypt {
     public ShotzonCom(PluginWrapper wrapper) {
         super(wrapper);

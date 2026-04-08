@@ -36,7 +36,7 @@ import org.jdownloader.downloader.hls.HLSDownloader;
 import org.jdownloader.plugins.components.hls.HlsContainer;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50002 $", interfaceVersion = 3, names = {}, urls = {})
 public class TurboviplayCom extends PluginForHost {
     public TurboviplayCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -21,7 +21,7 @@ import java.util.List;
 import jd.PluginWrapper;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 46515 $", interfaceVersion = 3, names = {}, urls = {})
 public class PornbimboCom extends KernelVideoSharingComV2 {
     public PornbimboCom(final PluginWrapper wrapper) {
         super(wrapper);

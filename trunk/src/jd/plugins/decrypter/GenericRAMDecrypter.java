@@ -12,7 +12,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "ram" }, urls = { "https?://.+/.*\\.ram($|\\?[^\\s<>\"']*)" })
+@DecrypterPlugin(revision = "$Revision: 46970 $", interfaceVersion = 3, names = { "ram" }, urls = { "https?://.+/.*\\.ram($|\\?[^\\s<>\"']*)" })
 public class GenericRAMDecrypter extends PluginForDecrypt {
     @Override
     public FEATURE[] getFeatures() {

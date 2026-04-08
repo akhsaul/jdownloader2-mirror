@@ -1,17 +1,19 @@
 package org.jdownloader.extensions.eventscripter.sandboxobjects;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.WeakHashMap;
 
 import javax.swing.Icon;
 
+import jd.controlling.downloadcontroller.DownloadController;
 import jd.controlling.downloadcontroller.DownloadWatchDog;
 import jd.controlling.downloadcontroller.SingleDownloadController;
 import jd.controlling.packagecontroller.AbstractNode;
-import jd.controlling.packagecontroller.PackageController;
 import jd.plugins.DownloadLink;
 import jd.plugins.DownloadLink.AvailableStatus;
 import jd.plugins.FilePackage;
@@ -21,6 +23,7 @@ import jd.plugins.download.HashInfo;
 import org.appwork.exceptions.WTFException;
 import org.appwork.storage.JsonKeyValueStorage;
 import org.appwork.storage.Storable;
+import org.appwork.utils.event.queue.QueueAction;
 import org.appwork.utils.os.CrossSystem;
 import org.appwork.utils.reflection.Clazz;
 import org.jdownloader.api.downloads.v2.DownloadLinkAPIStorableV2;
@@ -79,6 +82,17 @@ public class DownloadLinkSandBox {
                 downloadLink.setPriorityEnum(Priority.DEFAULT);
             }
         }
+    }
+
+    protected static DownloadLinkSandBox[] wrapSandBox(Collection<DownloadLink> links) {
+        final List<DownloadLinkSandBox> ret = new ArrayList<DownloadLinkSandBox>();
+        if (links == null) {
+            return ret.toArray(new DownloadLinkSandBox[0]);
+        }
+        for (DownloadLink link : links) {
+            ret.add(new DownloadLinkSandBox(link));
+        }
+        return ret.toArray(new DownloadLinkSandBox[0]);
     }
 
     /**
@@ -245,19 +259,40 @@ public class DownloadLinkSandBox {
     }
 
     public boolean remove() {
-        if (downloadLink != null) {
-            final FilePackage filePackage = downloadLink.getParentNode();
-            if (filePackage != null && !FilePackage.isDefaultFilePackage(filePackage)) {
-                final PackageController<FilePackage, DownloadLink> controller = filePackage.getControlledBy();
-                if (controller != null) {
-                    final ArrayList<DownloadLink> children = new ArrayList<DownloadLink>();
-                    children.add(downloadLink);
-                    controller.removeChildren(children);
-                    return true;
+        return remove(new DownloadLinkSandBox[] { this });
+    }
+
+    public boolean remove(final DownloadLinkSandBox[] remove) {
+        final Map<FilePackage, List<DownloadLink>> removeMap = new HashMap<FilePackage, List<DownloadLink>>();
+        return Boolean.TRUE.equals(DownloadController.getInstance().getQueue().addWait(new QueueAction<Boolean, RuntimeException>() {
+
+            @Override
+            protected Boolean run() throws RuntimeException {
+                for (DownloadLinkSandBox entry : remove) {
+                    final DownloadLink downloadLink = entry.downloadLink;
+                    if (downloadLink == null) {
+                        continue;
+                    }
+                    final FilePackage filePackage = downloadLink.getParentNode();
+                    if (filePackage == null || FilePackage.isDefaultFilePackage(filePackage) || filePackage.getControlledBy() == null) {
+                        continue;
+                    }
+                    List<DownloadLink> list = removeMap.get(filePackage);
+                    if (list == null) {
+                        list = new ArrayList<DownloadLink>();
+                        removeMap.put(filePackage, list);
+                    }
+                    list.add(downloadLink);
                 }
+                if (removeMap.size() == 0) {
+                    return false;
+                }
+                for (final Entry<FilePackage, List<DownloadLink>> removeEntry : removeMap.entrySet()) {
+                    DownloadController.getInstance().removeChildren(removeEntry.getKey(), removeEntry.getValue(), true);
+                }
+                return true;
             }
-        }
-        return false;
+        }));
     }
 
     public void setProperty(String key, Object value) {

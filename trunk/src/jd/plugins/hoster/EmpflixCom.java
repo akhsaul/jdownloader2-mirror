@@ -31,7 +31,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49739 $", interfaceVersion = 2, names = {}, urls = {})
 public class EmpflixCom extends PluginForHost {
     public EmpflixCom(PluginWrapper wrapper) {
         super(wrapper);

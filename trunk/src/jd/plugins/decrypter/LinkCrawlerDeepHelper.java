@@ -28,7 +28,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "linkcrawlerdeephelper" }, urls = { "" })
+@DecrypterPlugin(revision = "$Revision: 49457 $", interfaceVersion = 3, names = { "linkcrawlerdeephelper" }, urls = { "" })
 @Deprecated
 public class LinkCrawlerDeepHelper extends PluginForDecrypt implements LinkCrawlerDeepHelperInterface {
     public LinkCrawlerDeepHelper(PluginWrapper wrapper) {

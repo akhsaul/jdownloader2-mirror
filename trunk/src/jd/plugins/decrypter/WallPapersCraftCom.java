@@ -24,7 +24,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "wallpaperscraft.com" }, urls = { "https?://(?:www\\.)?wallpaperscraft\\.com/(download/[^/]+_\\d+/\\d+x\\d+|wallpaper/[^/]+_\\d+)" })
+@DecrypterPlugin(revision = "$Revision: 49820 $", interfaceVersion = 3, names = { "wallpaperscraft.com" }, urls = { "https?://(?:www\\.)?wallpaperscraft\\.com/(download/[^/]+_\\d+/\\d+x\\d+|wallpaper/[^/]+_\\d+)" })
 public class WallPapersCraftCom extends PluginForDecrypt {
     public WallPapersCraftCom(PluginWrapper wrapper) {
         super(wrapper);

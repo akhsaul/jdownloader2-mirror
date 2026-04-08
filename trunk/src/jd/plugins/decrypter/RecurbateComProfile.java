@@ -39,7 +39,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.RecurbateCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49091 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { RecurbateCom.class })
 public class RecurbateComProfile extends PluginForDecrypt {
     public RecurbateComProfile(PluginWrapper wrapper) {

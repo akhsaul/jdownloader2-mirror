@@ -29,7 +29,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "snipboard.io" }, urls = { "https?://(?:(?:www|i)\\.)?(?:snag\\.gy|snipboard\\.io)/([A-Za-z0-9]+)\\.jpg" })
+@HostPlugin(revision = "$Revision: 49093 $", interfaceVersion = 3, names = { "snipboard.io" }, urls = { "https?://(?:(?:www|i)\\.)?(?:snag\\.gy|snipboard\\.io)/([A-Za-z0-9]+)\\.jpg" })
 public class SnipboardIo extends PluginForHost {
     public SnipboardIo(PluginWrapper wrapper) {
         super(wrapper);

@@ -35,7 +35,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "4share.vn" }, urls = { "https?://(?:www\\.)?(?:up\\.)?4share\\.vn/(?:d|dlist)/([a-f0-9]{16})" })
+@DecrypterPlugin(revision = "$Revision: 50489 $", interfaceVersion = 3, names = { "4share.vn" }, urls = { "https?://(?:www\\.)?(?:up\\.)?4share\\.vn/(?:d|dlist)/([a-f0-9]{16})" })
 public class FourShareVnFolder extends PluginForDecrypt {
     public FourShareVnFolder(PluginWrapper wrapper) {
         super(wrapper);

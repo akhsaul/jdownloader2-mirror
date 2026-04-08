@@ -30,7 +30,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "trannytube.tv" }, urls = { "https?://(?:www\\.)?trannytube\\.tv/(?:[a-z]{2}/)?(movies/\\d+/[a-z0-9\\-]+|embed/\\d+)" })
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = { "trannytube.tv" }, urls = { "https?://(?:www\\.)?trannytube\\.tv/(?:[a-z]{2}/)?(movies/\\d+/[a-z0-9\\-]+|embed/\\d+)" })
 public class TrannytubeTv extends PluginForHost {
     public TrannytubeTv(PluginWrapper wrapper) {
         super(wrapper);

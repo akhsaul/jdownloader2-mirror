@@ -29,7 +29,7 @@ import jd.plugins.FilePackage;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.MissavCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51233 $", interfaceVersion = 3, names = {}, urls = {})
 public class MissavComCrawler extends PluginForDecrypt {
     public MissavComCrawler(PluginWrapper wrapper) {
         super(wrapper);

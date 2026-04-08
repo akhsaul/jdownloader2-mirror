@@ -31,7 +31,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "pornhost.com" }, urls = { "https?://(www\\.)?pornhost\\.com/([0-9]+.*|embed/\\d+)" })
+@DecrypterPlugin(revision = "$Revision: 49158 $", interfaceVersion = 2, names = { "pornhost.com" }, urls = { "https?://(www\\.)?pornhost\\.com/([0-9]+.*|embed/\\d+)" })
 public class PrnHstComFldr extends PluginForDecrypt {
     public PrnHstComFldr(PluginWrapper wrapper) {
         super(wrapper);

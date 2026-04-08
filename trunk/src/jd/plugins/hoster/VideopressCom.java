@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "videopress.com" }, urls = { "https?://(?:www\\.)?videopress\\.com/(?:embed|v)/([A-Za-z0-9]+)" })
+@HostPlugin(revision = "$Revision: 48054 $", interfaceVersion = 3, names = { "videopress.com" }, urls = { "https?://(?:www\\.)?videopress\\.com/(?:embed|v)/([A-Za-z0-9]+)" })
 public class VideopressCom extends PluginForHost {
     public VideopressCom(PluginWrapper wrapper) {
         super(wrapper);

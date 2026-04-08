@@ -60,7 +60,7 @@ import org.jdownloader.captcha.v2.challenge.recaptcha.v2.CaptchaHelperHostPlugin
 import org.jdownloader.gui.InputChangedCallbackInterface;
 import org.jdownloader.plugins.accounts.AccountBuilderInterface;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51817 $", interfaceVersion = 3, names = {}, urls = {})
 public class NexusmodsCom extends PluginForHost {
     public NexusmodsCom(PluginWrapper wrapper) {
         super(wrapper);

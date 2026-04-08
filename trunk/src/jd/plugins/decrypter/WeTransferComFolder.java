@@ -48,7 +48,7 @@ import jd.plugins.hoster.WeTransferCom;
 import jd.plugins.hoster.WeTransferCom.WetransferConfig;
 import jd.plugins.hoster.WeTransferCom.WetransferConfig.CrawlMode;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "wetransfer.com" }, urls = { WeTransferComFolder.patternShort + "|" + WeTransferComFolder.patternNormal + "|" + WeTransferComFolder.patternCollection })
+@DecrypterPlugin(revision = "$Revision: 51712 $", interfaceVersion = 3, names = { "wetransfer.com" }, urls = { WeTransferComFolder.patternShort + "|" + WeTransferComFolder.patternNormal + "|" + WeTransferComFolder.patternCollection })
 public class WeTransferComFolder extends PluginForDecrypt {
     public WeTransferComFolder(PluginWrapper wrapper) {
         super(wrapper);

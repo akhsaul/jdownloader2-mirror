@@ -21,7 +21,7 @@ import jd.plugins.Account;
 import jd.plugins.HostPlugin;
 import jd.plugins.components.MultiHosterManagement;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "nopremium.pl" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51945 $", interfaceVersion = 3, names = { "nopremium.pl" }, urls = { "" })
 public class NoPremiumPl extends RapideoCore {
     protected static MultiHosterManagement mhm = new MultiHosterManagement("nopremium.pl");
 

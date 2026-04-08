@@ -51,7 +51,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.decrypter.SwisstransferComFolder.SwisstransferComConfig.CrawlMode;
 import jd.plugins.hoster.SwisstransferCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50580 $", interfaceVersion = 3, names = {}, urls = {})
 public class SwisstransferComFolder extends PluginForDecrypt {
     public SwisstransferComFolder(PluginWrapper wrapper) {
         super(wrapper);

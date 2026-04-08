@@ -25,7 +25,7 @@ import jd.http.Browser;
 import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48544 $", interfaceVersion = 3, names = {}, urls = {})
 public class BoobinspectorComDecrypter extends PornEmbedParser {
     public BoobinspectorComDecrypter(PluginWrapper wrapper) {
         super(wrapper);

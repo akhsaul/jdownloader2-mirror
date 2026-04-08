@@ -39,7 +39,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52046 $", interfaceVersion = 3, names = {}, urls = {})
 public class DropmbComFolder extends PluginForDecrypt {
     public DropmbComFolder(PluginWrapper wrapper) {
         super(wrapper);

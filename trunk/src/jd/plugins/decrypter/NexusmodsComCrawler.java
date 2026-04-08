@@ -44,7 +44,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.NexusmodsCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "nexusmods.com" }, urls = { "https?://(?:www\\.)?nexusmods\\.com/(?!contents)([^/]+)/mods/(\\d+)/?(?:\\?tab=files&file_id=(\\d+))?" })
+@DecrypterPlugin(revision = "$Revision: 50505 $", interfaceVersion = 3, names = { "nexusmods.com" }, urls = { "https?://(?:www\\.)?nexusmods\\.com/(?!contents)([^/]+)/mods/(\\d+)/?(?:\\?tab=files&file_id=(\\d+))?" })
 public class NexusmodsComCrawler extends PluginForDecrypt {
     public NexusmodsComCrawler(PluginWrapper wrapper) {
         super(wrapper);

@@ -28,7 +28,7 @@ import jd.plugins.DecrypterRetryException;
 import jd.plugins.DecrypterRetryException.RetryReason;
 import jd.plugins.DownloadLink;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "miklpro.com" }, urls = { "https?://(?:www\\.)?miklpro\\.com/([A-Za-z0-9]+)" })
+@DecrypterPlugin(revision = "$Revision: 48281 $", interfaceVersion = 3, names = { "miklpro.com" }, urls = { "https?://(?:www\\.)?miklpro\\.com/([A-Za-z0-9]+)" })
 public class MiklproCom extends MightyScriptAdLinkFly {
     public MiklproCom(PluginWrapper wrapper) {
         super(wrapper);

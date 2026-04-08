@@ -27,7 +27,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "flashget.com" }, urls = { "flashget://.+&?" }) 
+@DecrypterPlugin(revision = "$Revision: 34675 $", interfaceVersion = 2, names = { "flashget.com" }, urls = { "flashget://.+&?" }) 
 public class FlshGt extends PluginForDecrypt {
 
     @Override

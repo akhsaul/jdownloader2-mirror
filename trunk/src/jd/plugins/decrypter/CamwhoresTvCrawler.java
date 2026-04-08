@@ -29,7 +29,7 @@ import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 import jd.plugins.hoster.CamwhoresTv;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48971 $", interfaceVersion = 3, names = {}, urls = {})
 public class CamwhoresTvCrawler extends PornEmbedParser {
     public CamwhoresTvCrawler(PluginWrapper wrapper) {
         super(wrapper);

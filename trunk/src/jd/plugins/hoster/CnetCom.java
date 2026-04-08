@@ -34,7 +34,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "cnet.com" }, urls = { "https?://(?:www\\.)?download\\.cnet\\.com/([A-Za-z0-9\\-_]+)/([A-Za-z0-9\\-_]+)-(\\d+)\\.html" })
+@HostPlugin(revision = "$Revision: 51011 $", interfaceVersion = 2, names = { "cnet.com" }, urls = { "https?://(?:www\\.)?download\\.cnet\\.com/([A-Za-z0-9\\-_]+)/([A-Za-z0-9\\-_]+)-(\\d+)\\.html" })
 public class CnetCom extends PluginForHost {
     public CnetCom(PluginWrapper wrapper) {
         super(wrapper);

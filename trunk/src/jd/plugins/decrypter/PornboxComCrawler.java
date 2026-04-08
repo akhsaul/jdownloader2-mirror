@@ -39,7 +39,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 import jd.plugins.hoster.PornboxCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52199 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { PornboxCom.class })
 public class PornboxComCrawler extends PluginForDecrypt {
     public PornboxComCrawler(PluginWrapper wrapper) {

@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "alphatv.gr" }, urls = { "https?://(?:www\\.)?alphatv\\.gr/.+vtype=[a-z0-9]+\\&vid=\\d+.+" })
+@HostPlugin(revision = "$Revision: 49122 $", interfaceVersion = 3, names = { "alphatv.gr" }, urls = { "https?://(?:www\\.)?alphatv\\.gr/.+vtype=[a-z0-9]+\\&vid=\\d+.+" })
 public class AlphatvGr extends PluginForHost {
     public AlphatvGr(PluginWrapper wrapper) {
         super(wrapper);

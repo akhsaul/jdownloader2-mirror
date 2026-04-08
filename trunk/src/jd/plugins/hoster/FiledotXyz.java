@@ -26,7 +26,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50452 $", interfaceVersion = 3, names = {}, urls = {})
 public class FiledotXyz extends XFileSharingProBasic {
     public FiledotXyz(final PluginWrapper wrapper) {
         super(wrapper);

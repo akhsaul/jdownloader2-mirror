@@ -29,7 +29,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48423 $", interfaceVersion = 3, names = {}, urls = {})
 public class PrntSc extends PluginForDecrypt {
     public PrntSc(PluginWrapper wrapper) {
         super(wrapper);

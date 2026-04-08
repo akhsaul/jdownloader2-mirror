@@ -33,7 +33,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "file.karelia.ru" }, urls = { "https?://(?:www\\.)?file\\.(?:karelia|sampo)\\.ru/[a-z0-9]+/" })
+@DecrypterPlugin(revision = "$Revision: 49947 $", interfaceVersion = 2, names = { "file.karelia.ru" }, urls = { "https?://(?:www\\.)?file\\.(?:karelia|sampo)\\.ru/[a-z0-9]+/" })
 public class FileKareliaRuDecrypter extends PluginForDecrypt {
     public FileKareliaRuDecrypter(PluginWrapper wrapper) {
         super(wrapper);

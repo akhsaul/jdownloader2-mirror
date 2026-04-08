@@ -33,7 +33,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "sendgb.com" }, urls = { "https?://(?:www\\.)?sendgb\\.com/(?:upload/\\?utm_source=)?([A-Za-z0-9]+)" })
+@HostPlugin(revision = "$Revision: 51662 $", interfaceVersion = 3, names = { "sendgb.com" }, urls = { "https?://(?:www\\.)?sendgb\\.com/(?:upload/\\?utm_source=)?([A-Za-z0-9]+)" })
 public class SendgbCom extends PluginForHost {
     public SendgbCom(PluginWrapper wrapper) {
         super(wrapper);

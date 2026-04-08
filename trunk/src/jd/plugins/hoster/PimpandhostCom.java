@@ -35,7 +35,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51138 $", interfaceVersion = 3, names = {}, urls = {})
 public class PimpandhostCom extends PluginForHost {
     public PimpandhostCom(PluginWrapper wrapper) {
         super(wrapper);

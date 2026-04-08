@@ -13,7 +13,7 @@ import org.appwork.utils.StringUtils;
 import org.appwork.utils.formatter.SizeFormatter;
 import org.jdownloader.plugins.components.antiDDoSForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "media.ccc.de" }, urls = { "https?://media.ccc.de/(v|c)/.+" })
+@DecrypterPlugin(revision = "$Revision: 41283 $", interfaceVersion = 3, names = { "media.ccc.de" }, urls = { "https?://media.ccc.de/(v|c)/.+" })
 public class MediaCCCde extends antiDDoSForDecrypt {
     public MediaCCCde(PluginWrapper wrapper) {
         super(wrapper);

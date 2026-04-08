@@ -28,7 +28,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "500px.com" }, urls = { "https?://(?:www\\.)?500px\\.com/p/([^/\\?&]+).*" })
+@DecrypterPlugin(revision = "$Revision: 49949 $", interfaceVersion = 2, names = { "500px.com" }, urls = { "https?://(?:www\\.)?500px\\.com/p/([^/\\?&]+).*" })
 public class FivehundretPxComCrawler extends PluginForDecrypt {
     public FivehundretPxComCrawler(PluginWrapper wrapper) {
         super(wrapper);

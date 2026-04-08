@@ -39,7 +39,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.MissavComCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49038 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { MissavComCrawler.class })
 public class MissavCom extends PluginForHost {
     public MissavCom(PluginWrapper wrapper) {

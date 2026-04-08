@@ -29,7 +29,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.Regex;
 import org.appwork.utils.formatter.SizeFormatter;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "tenfiles.com" }, urls = { "https?://(?:www\\.)?tenfiles\\.(?:com|info)/file/([a-z0-9]+)" })
+@HostPlugin(revision = "$Revision: 47487 $", interfaceVersion = 2, names = { "tenfiles.com" }, urls = { "https?://(?:www\\.)?tenfiles\\.(?:com|info)/file/([a-z0-9]+)" })
 public class TenFilesCom extends PluginForHost {
     public TenFilesCom(PluginWrapper wrapper) {
         super(wrapper);

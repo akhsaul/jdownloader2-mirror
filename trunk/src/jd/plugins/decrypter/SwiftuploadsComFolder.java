@@ -37,7 +37,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.SwiftuploadsCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50409 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { SwiftuploadsCom.class })
 public class SwiftuploadsComFolder extends PluginForDecrypt {
     public SwiftuploadsComFolder(PluginWrapper wrapper) {

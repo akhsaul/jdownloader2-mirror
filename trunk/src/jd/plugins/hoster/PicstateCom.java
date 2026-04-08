@@ -30,7 +30,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "picstate.com" }, urls = { "https?://(?:www\\.)?picstate\\.com/view/full/[A-Za-z0-9\\-_]+" })
+@HostPlugin(revision = "$Revision: 48067 $", interfaceVersion = 3, names = { "picstate.com" }, urls = { "https?://(?:www\\.)?picstate\\.com/view/full/[A-Za-z0-9\\-_]+" })
 public class PicstateCom extends PluginForHost {
     public PicstateCom(PluginWrapper wrapper) {
         super(wrapper);

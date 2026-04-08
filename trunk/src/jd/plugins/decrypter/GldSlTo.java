@@ -44,7 +44,7 @@ import org.jdownloader.plugins.components.config.GldSlToConfig;
 import org.jdownloader.plugins.config.PluginConfigInterface;
 import org.jdownloader.plugins.config.PluginJsonConfig;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50756 $", interfaceVersion = 2, names = {}, urls = {})
 public class GldSlTo extends antiDDoSForDecrypt {
     public GldSlTo(PluginWrapper wrapper) {
         super(wrapper);

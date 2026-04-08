@@ -51,11 +51,10 @@ import org.appwork.utils.parser.UrlQuery;
 import org.jdownloader.plugins.components.config.PornportalComConfig;
 import org.jdownloader.plugins.components.config.PornportalComConfig.FilenameScheme;
 import org.jdownloader.plugins.components.config.PornportalComConfig.QualitySelectionMode;
-import org.jdownloader.plugins.config.PluginJsonConfig;
 import org.jdownloader.plugins.controller.LazyPlugin;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52465 $", interfaceVersion = 2, names = {}, urls = {})
 @PluginDependencies(dependencies = { PornportalCom.class })
 public class PornportalComCrawler extends PluginForDecrypt {
     public PornportalComCrawler(PluginWrapper wrapper) {
@@ -87,6 +86,11 @@ public class PornportalComCrawler extends PluginForDecrypt {
     public static String[] buildAnnotationUrls(final List<String[]> pluginDomains) {
         final List<String> ret = new ArrayList<String>();
         for (final String[] domains : pluginDomains) {
+            for (int i = 0; i < domains.length; i++) {
+                String domain = domains[i];
+                domain = PornportalCom.correctDomain(domain);
+                domains[i] = domain;
+            }
             /* Premium URLs */
             String pattern = "https?://site-ma\\." + buildHostsPatternPart(domains) + "/(?:gallery|trailer|scene|series)/(\\d+)(/[a-z0-9\\-]+)?";
             /* Free URLs */
@@ -102,10 +106,11 @@ public class PornportalComCrawler extends PluginForDecrypt {
         if (acc == null) {
             /* Anonymous API auth */
             logger.info("No account given --> Trailer download");
-            if (!PornportalCom.prepareBrAPI(this, br, null)) {
+            final PornportalCom plugin = (PornportalCom) this.getNewPluginForHostInstance(this.getHost());
+            if (!plugin.prepareBrAPI(this, br, null)) {
                 logger.info("Getting fresh API data");
                 PornportalCom.getPage(br, "https://site-ma." + Browser.getHost(param.getCryptedUrl(), false) + "/login");
-                if (!PornportalCom.prepareBrAPI(this, br, null)) {
+                if (!plugin.prepareBrAPI(this, br, null)) {
                     logger.warning("Failed to set required API headers");
                     throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
                 }
@@ -116,7 +121,7 @@ public class PornportalComCrawler extends PluginForDecrypt {
             throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
         }
         final PornportalCom hostPlugin = (PornportalCom) getNewPluginForHostInstance(this.getHost());
-        return crawlContentAPI(hostPlugin, contentID, acc, PluginJsonConfig.get(PornportalComConfig.class));
+        return crawlContentAPI(hostPlugin, contentID, acc, get(PornportalComConfig.class));
     }
 
     @Override

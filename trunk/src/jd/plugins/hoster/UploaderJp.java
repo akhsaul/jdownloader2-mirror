@@ -30,7 +30,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "uploader.jp" }, urls = { "https?://u[a-z0-9]\\.getuploader\\.com/([a-z0-9\\-_]+)/download/(\\d+)" })
+@HostPlugin(revision = "$Revision: 48018 $", interfaceVersion = 2, names = { "uploader.jp" }, urls = { "https?://u[a-z0-9]\\.getuploader\\.com/([a-z0-9\\-_]+)/download/(\\d+)" })
 public class UploaderJp extends antiDDoSForHost {
     public UploaderJp(PluginWrapper wrapper) {
         super(wrapper);

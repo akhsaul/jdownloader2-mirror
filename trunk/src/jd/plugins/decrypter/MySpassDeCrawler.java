@@ -36,7 +36,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.PluginJSonUtils;
 import jd.utils.JDUtilities;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "myspass.de" }, urls = { "https://(?:www\\.)?myspass\\.de/details\\?.+" })
+@DecrypterPlugin(revision = "$Revision: 50946 $", interfaceVersion = 3, names = { "myspass.de" }, urls = { "https://(?:www\\.)?myspass\\.de/details\\?.+" })
 public class MySpassDeCrawler extends PluginForDecrypt {
     public MySpassDeCrawler(PluginWrapper wrapper) {
         super(wrapper);

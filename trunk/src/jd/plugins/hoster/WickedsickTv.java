@@ -30,7 +30,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "wickedsick.tv" }, urls = { "https?://(?:www\\.)?wickedsick\\.tv/(?:[a-z]{2}/)?video/(\\d+)" })
+@HostPlugin(revision = "$Revision: 48043 $", interfaceVersion = 3, names = { "wickedsick.tv" }, urls = { "https?://(?:www\\.)?wickedsick\\.tv/(?:[a-z]{2}/)?video/(\\d+)" })
 public class WickedsickTv extends antiDDoSForHost {
     public WickedsickTv(PluginWrapper wrapper) {
         super(wrapper);

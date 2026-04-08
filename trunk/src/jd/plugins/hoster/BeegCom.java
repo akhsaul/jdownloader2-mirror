@@ -43,7 +43,7 @@ import org.jdownloader.plugins.components.config.BeegComConfig.MODE;
 import org.jdownloader.plugins.config.PluginJsonConfig;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "beeg.com" }, urls = { "https?://(?:www\\.|beta\\.)?beeg\\.com/(-\\d+$|-?\\d+\\?t=\\d+-\\d+|-?\\d{8,}$)" })
+@HostPlugin(revision = "$Revision: 51427 $", interfaceVersion = 2, names = { "beeg.com" }, urls = { "https?://(?:www\\.|beta\\.)?beeg\\.com/(-\\d+$|-?\\d+\\?t=\\d+-\\d+|-?\\d{8,}$)" })
 public class BeegCom extends PluginForHost {
     private String dllink[] = null;
 

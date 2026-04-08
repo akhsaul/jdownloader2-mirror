@@ -33,7 +33,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "freetp.org" }, urls = { "https?://(?:www\\.)?freetp\\.org/getfile\\-(\\d+)" })
+@HostPlugin(revision = "$Revision: 40314 $", interfaceVersion = 3, names = { "freetp.org" }, urls = { "https?://(?:www\\.)?freetp\\.org/getfile\\-(\\d+)" })
 public class FreetpOrg extends PluginForHost {
     public FreetpOrg(PluginWrapper wrapper) {
         super(wrapper);

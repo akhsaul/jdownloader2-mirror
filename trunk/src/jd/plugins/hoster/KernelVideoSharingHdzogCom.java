@@ -22,7 +22,7 @@ import jd.PluginWrapper;
 import jd.plugins.Account;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51071 $", interfaceVersion = 3, names = {}, urls = {})
 public class KernelVideoSharingHdzogCom extends KernelVideoSharingComV2 {
     public KernelVideoSharingHdzogCom(final PluginWrapper wrapper) {
         super(wrapper);

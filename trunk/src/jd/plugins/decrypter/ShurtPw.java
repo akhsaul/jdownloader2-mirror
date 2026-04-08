@@ -24,7 +24,7 @@ import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48281 $", interfaceVersion = 3, names = {}, urls = {})
 public class ShurtPw extends MightyScriptAdLinkFly {
     public ShurtPw(PluginWrapper wrapper) {
         super(wrapper);

@@ -24,7 +24,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "bentbox.co" }, urls = { "https?://(?:www\\.)?bentbox\\.co/box(_view)?\\?[a-zA-Z0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 48194 $", interfaceVersion = 2, names = { "bentbox.co" }, urls = { "https?://(?:www\\.)?bentbox\\.co/box(_view)?\\?[a-zA-Z0-9]+" })
 public class BentBoxCoCrawler extends PluginForDecrypt {
     public BentBoxCoCrawler(PluginWrapper wrapper) {
         super(wrapper);

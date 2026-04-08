@@ -27,7 +27,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "parisanime.com" }, urls = { "https?://(?:www\\.)?parisanime\\.com/video/[A-Za-z0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 49699 $", interfaceVersion = 3, names = { "parisanime.com" }, urls = { "https?://(?:www\\.)?parisanime\\.com/video/[A-Za-z0-9]+" })
 public class ParisanimeCom extends antiDDoSForDecrypt {
     public ParisanimeCom(PluginWrapper wrapper) {
         super(wrapper);

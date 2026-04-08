@@ -31,7 +31,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.WorldStarHipHopCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48552 $", interfaceVersion = 2, names = {}, urls = {})
 public class WorldStarHipHopComDecrypter extends PluginForDecrypt {
     public WorldStarHipHopComDecrypter(PluginWrapper wrapper) {
         super(wrapper);

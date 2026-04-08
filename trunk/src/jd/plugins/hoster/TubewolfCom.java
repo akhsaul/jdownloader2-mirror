@@ -22,7 +22,7 @@ import jd.PluginWrapper;
 import jd.parser.Regex;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51344 $", interfaceVersion = 3, names = {}, urls = {})
 public class TubewolfCom extends KernelVideoSharingComV2 {
     public TubewolfCom(final PluginWrapper wrapper) {
         super(wrapper);

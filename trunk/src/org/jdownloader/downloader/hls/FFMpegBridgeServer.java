@@ -1,7 +1,11 @@
 package org.jdownloader.downloader.hls;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
+import org.appwork.utils.net.httpconnection.RequestMethod;
+import org.appwork.utils.net.httpserver.AllowAllSocketAddressValidator;
+import org.appwork.utils.net.httpserver.CorsHandler;
 import org.appwork.utils.net.httpserver.HeaderValidationRules;
 import org.appwork.utils.net.httpserver.HttpServer;
 
@@ -26,11 +30,14 @@ import org.appwork.utils.net.httpserver.HttpServer;
  * <b>Example:</b>
  * </p>
  *
- * <pre>{@code
- * FFMpegBridgeServer server = new FFMpegBridgeServer(0); // Port 0 = automatic port
- * server.start();
- * // Register request handlers...
- * }</pre>
+ * <pre>
+ * {
+ *     &#064;code
+ *     FFMpegBridgeServer server = new FFMpegBridgeServer(0); // Port 0 = automatic port
+ *     server.start();
+ *     // Register request handlers...
+ * }
+ * </pre>
  *
  * @author JDownloader Team
  */
@@ -54,10 +61,13 @@ public class FFMpegBridgeServer extends HttpServer {
         super(port);
         // Configure server for FFmpeg bridge usage
         this.setLocalhostOnly(true);
-        // Remove mandatory x-appwork header - FFmpeg cannot send custom headers
-        final HeaderValidationRules headerRules = new HeaderValidationRules(new HashMap<String, String>(), new HashMap<String, String>());
-        // this.setHeaderValidationRules(headerRules);
-        // Note: Security headers use default configuration from AbstractServerBasics
-        // This is sufficient for localhost-only server used by FFmpeg
+        setAllowedMethods(RequestMethod.OPTIONS, RequestMethod.GET, RequestMethod.HEAD);
+        final HeaderValidationRules header = new HeaderValidationRules(new HashMap<String, String>(), new HeaderValidationRules().getForbiddenHeaders());
+        setHeaderValidationRules(header);
+        CorsHandler corsHandler = new CorsHandler();
+        corsHandler.setAllowMethods();
+        corsHandler.setMaxAge(TimeUnit.MINUTES.toSeconds(30)); // 30 minutes
+        setSocketAddressValidator(new AllowAllSocketAddressValidator());
+        setCorsHandler(corsHandler);
     }
 }

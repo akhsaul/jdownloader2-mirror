@@ -39,7 +39,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51130 $", interfaceVersion = 3, names = {}, urls = {})
 public class MeocloudPtFolder extends PluginForDecrypt {
     public MeocloudPtFolder(PluginWrapper wrapper) {
         super(wrapper);

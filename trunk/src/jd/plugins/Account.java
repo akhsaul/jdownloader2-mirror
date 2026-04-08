@@ -687,10 +687,10 @@ public class Account extends Property {
         setEnabled(enabled, true);
     }
 
-    public void setEnabled(final boolean enabled, final boolean forceAccountCheckOnChange) {
+    public void setEnabled(final boolean enabled, final boolean allowAccountCheckOnChange) {
         if (this.enabled != enabled) {
             this.enabled = enabled;
-            if (forceAccountCheckOnChange) {
+            if (allowAccountCheckOnChange) {
                 notifyUpdate(AccountProperty.Property.ENABLED, enabled);
             }
         }
@@ -723,7 +723,10 @@ public class Account extends Property {
         return Math.min(timeout, Math.max(timeValid, 0));
     }
 
-    /** In which interval (milliseconds) will this account get checked? Min. = 5 minutes, default = 30 minutes. */
+    /**
+     * In which interval (milliseconds) will this account get checked? <br>
+     * Min. = 5 minutes, default = 30 minutes.
+     */
     public void setRefreshTimeout(long refresh_timeout) {
         this.setProperty(PROPERTY_REFRESH_TIMEOUT, refresh_timeout);
     }
@@ -768,11 +771,11 @@ public class Account extends Property {
         setPass(newPass, true);
     }
 
-    public void setPass(String newPass, final boolean forceAccountCheckOnChange) {
+    public void setPass(String newPass, final boolean allowAccountCheckOnChange) {
         newPass = updateAccountPassword(trim(newPass));
         if (!StringUtils.equals(this.pass, newPass)) {
             this.pass = newPass;
-            if (forceAccountCheckOnChange) {
+            if (allowAccountCheckOnChange) {
                 notifyUpdate(AccountProperty.Property.PASSWORD, newPass);
             }
         }

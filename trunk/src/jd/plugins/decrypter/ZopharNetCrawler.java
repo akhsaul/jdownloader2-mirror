@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "roms.zophar.net" }, urls = { "https?://(?:www\\.)?zophar\\.net/(?!download_file)[^<>\"/]*?/[^<>\"/]*?(/[^<>\"/]+)?\\.html" })
+@DecrypterPlugin(revision = "$Revision: 45435 $", interfaceVersion = 2, names = { "roms.zophar.net" }, urls = { "https?://(?:www\\.)?zophar\\.net/(?!download_file)[^<>\"/]*?/[^<>\"/]*?(/[^<>\"/]+)?\\.html" })
 public class ZopharNetCrawler extends PluginForDecrypt {
     static private final Pattern patternDownload = Pattern.compile("\"(https?://[^/]+/download_file/\\d+)\"", Pattern.CASE_INSENSITIVE);
 

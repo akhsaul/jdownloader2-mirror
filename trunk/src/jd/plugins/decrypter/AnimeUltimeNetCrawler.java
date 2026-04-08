@@ -34,7 +34,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.AnimeUltimeNet;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48620 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { AnimeUltimeNet.class })
 public class AnimeUltimeNetCrawler extends PluginForDecrypt {
     public AnimeUltimeNetCrawler(PluginWrapper wrapper) {

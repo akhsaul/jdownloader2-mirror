@@ -31,7 +31,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 46468 $", interfaceVersion = 3, names = {}, urls = {})
 public class BigfileCc extends PluginForDecrypt {
     public BigfileCc(PluginWrapper wrapper) {
         super(wrapper);

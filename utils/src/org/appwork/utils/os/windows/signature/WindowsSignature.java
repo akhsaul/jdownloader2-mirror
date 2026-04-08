@@ -51,7 +51,7 @@ import org.appwork.jna.windows.interfaces.CMSG_SIGNER_INFO;
 import org.appwork.jna.windows.interfaces.CRYPT_ATTRIBUTE;
 import org.appwork.jna.windows.interfaces.CRYPT_ATTRIBUTES;
 import org.appwork.jna.windows.interfaces.CRYPT_ATTR_BLOB;
-import org.appwork.jna.windows.interfaces.Crypt32Ext;
+import org.appwork.loggingv3.LogV3;
 import org.appwork.storage.flexijson.mapper.typemapper.DateMapper;
 
 import com.sun.jna.Memory;
@@ -111,7 +111,7 @@ public class WindowsSignature {
      */
     public static CodeSignature readCodeSignSignature(File file) throws InvalidNameException {
         if (file == null || !file.isFile()) {
-            System.err.println("ERROR: Invalid file.");
+            LogV3.info("ERROR: Invalid file.");
             return null;
         }
         // Convert Java String to native wide-character (UTF-16) array for Windows API
@@ -126,7 +126,7 @@ public class WindowsSignature {
         boolean ok = Crypt32.INSTANCE.CryptQueryObject(WinCrypt.CERT_QUERY_OBJECT_FILE, filePtr, WinCrypt.CERT_QUERY_CONTENT_FLAG_PKCS7_SIGNED_EMBED, WinCrypt.CERT_QUERY_FORMAT_FLAG_BINARY, 0, new IntByReference(), new IntByReference(), new IntByReference(), phCertStore, phMsg, ppvContext);
         if (!ok) {
             int lastError = Kernel32.INSTANCE.GetLastError();
-            System.err.println("ERROR: CryptQueryObject failed, error: " + lastError);
+            LogV3.info("ERROR: CryptQueryObject failed, error: " + lastError);
             return null;
         }
         HCERTSTORE hStore = new HCERTSTORE(phCertStore.getValue());
@@ -137,7 +137,7 @@ public class WindowsSignature {
             // The signer info contains issuer+serial to identify the signing certificate
             // ------------------------------------------------------------
             IntByReference pcbData = new IntByReference();
-            if (!Crypt32Ext.INSTANCE.CryptMsgGetParam(hMsg, CMSG_SIGNER_INFO_PARAM, 0, Pointer.NULL, pcbData)) {
+            if (!WindowsSignatureCrypt32Api.INSTANCE.CryptMsgGetParam(hMsg, CMSG_SIGNER_INFO_PARAM, 0, Pointer.NULL, pcbData)) {
                 return null;
             }
             int cbData = pcbData.getValue();
@@ -145,7 +145,7 @@ public class WindowsSignature {
                 return null;
             }
             Memory signerInfoMem = new Memory(cbData);
-            if (!Crypt32Ext.INSTANCE.CryptMsgGetParam(hMsg, CMSG_SIGNER_INFO_PARAM, 0, signerInfoMem, pcbData)) {
+            if (!WindowsSignatureCrypt32Api.INSTANCE.CryptMsgGetParam(hMsg, CMSG_SIGNER_INFO_PARAM, 0, signerInfoMem, pcbData)) {
                 return null;
             }
             CMSG_SIGNER_INFO signerInfo = new CMSG_SIGNER_INFO(signerInfoMem);
@@ -163,7 +163,7 @@ public class WindowsSignature {
                 }
             }
             if (found == null) {
-                System.err.println("WARNING: No matching signer certificate found.");
+                LogV3.info("WARNING: No matching signer certificate found.");
                 return null;
             }
             CodeSignature sig = new CodeSignature();
@@ -226,8 +226,8 @@ public class WindowsSignature {
     /**
      * Parses an X.509 distinguished name (Subject or Issuer) and extracts all Relative Distinguished Names (RDNs) into a map.
      * <p>
-     * Common RDN types include: CN (Common Name), O (Organization), OU (Organizational Unit), L (Locality),
-     * S (State/Province), C (Country), STREET, SERIALNUMBER, etc.
+     * Common RDN types include: CN (Common Name), O (Organization), OU (Organizational Unit), L (Locality), S (State/Province), C
+     * (Country), STREET, SERIALNUMBER, etc.
      * </p>
      *
      * @param blob
@@ -260,8 +260,8 @@ public class WindowsSignature {
     /**
      * Compares two certificate identifiers (Issuer + SerialNumber) to match the correct signer certificate.
      * <p>
-     * This is used to identify the actual signing certificate and avoid confusion with timestamp authority (TSA) certificates
-     * that may also be present in the certificate store.
+     * This is used to identify the actual signing certificate and avoid confusion with timestamp authority (TSA) certificates that may also
+     * be present in the certificate store.
      * </p>
      *
      * @param issuer1
@@ -317,22 +317,19 @@ public class WindowsSignature {
     // Windows Crypto API Constants
     // ------------------------------------------------------------
     /**
-     * Parameter ID for retrieving signer info from a cryptographic message.
-     * Used with CryptMsgGetParam.
+     * Parameter ID for retrieving signer info from a cryptographic message. Used with CryptMsgGetParam.
      */
     public static final int CMSG_SIGNER_INFO_PARAM = 6;
-
     /**
-     * PKCS#9 OID for the signingTime authenticated attribute (1.2.840.113549.1.9.5).
-     * This attribute contains the time when the signature was created.
+     * PKCS#9 OID for the signingTime authenticated attribute (1.2.840.113549.1.9.5). This attribute contains the time when the signature
+     * was created.
      */
-    static final String OID_SIGNING_TIME = "1.2.840.113549.1.9.5";
-
+    static final String     OID_SIGNING_TIME       = "1.2.840.113549.1.9.5";
     /**
-     * PKCS#9 OID for the counterSignature unauthenticated attribute (1.2.840.113549.1.9.6).
-     * This attribute contains a timestamp from a trusted timestamp authority (TSA).
+     * PKCS#9 OID for the counterSignature unauthenticated attribute (1.2.840.113549.1.9.6). This attribute contains a timestamp from a
+     * trusted timestamp authority (TSA).
      */
-    static final String OID_COUNTERSIGN = "1.2.840.113549.1.9.6";
+    static final String     OID_COUNTERSIGN        = "1.2.840.113549.1.9.6";
 
     /**
      * Extracts the signing timestamp from an Authenticode-signed file.
@@ -351,7 +348,7 @@ public class WindowsSignature {
     static String getSigningTimeFromMessage(HCRYPTMSG hMsg) {
         IntByReference pcbData = new IntByReference();
         // 1. Query size of signer info structure
-        if (!Crypt32Ext.INSTANCE.CryptMsgGetParam(hMsg, CMSG_SIGNER_INFO_PARAM, 0, Pointer.NULL, pcbData)) {
+        if (!WindowsSignatureCrypt32Api.INSTANCE.CryptMsgGetParam(hMsg, CMSG_SIGNER_INFO_PARAM, 0, Pointer.NULL, pcbData)) {
             return null;
         }
         int cbData = pcbData.getValue();
@@ -360,7 +357,7 @@ public class WindowsSignature {
         }
         // 2. Retrieve the actual signer info structure
         Memory signerInfoMem = new Memory(cbData);
-        if (!Crypt32Ext.INSTANCE.CryptMsgGetParam(hMsg, CMSG_SIGNER_INFO_PARAM, 0, signerInfoMem, pcbData)) {
+        if (!WindowsSignatureCrypt32Api.INSTANCE.CryptMsgGetParam(hMsg, CMSG_SIGNER_INFO_PARAM, 0, signerInfoMem, pcbData)) {
             return null;
         }
         CMSG_SIGNER_INFO signerInfo = new CMSG_SIGNER_INFO(signerInfoMem);
@@ -382,8 +379,8 @@ public class WindowsSignature {
     /**
      * Searches for a signingTime attribute (OID 1.2.840.113549.1.9.5) in the authenticated attributes.
      * <p>
-     * The signingTime attribute is a PKCS#9 attribute that contains the time when the signature was created.
-     * It may be present in legacy Authenticode signatures or within countersignature attributes.
+     * The signingTime attribute is a PKCS#9 attribute that contains the time when the signature was created. It may be present in legacy
+     * Authenticode signatures or within countersignature attributes.
      * </p>
      *
      * @param attrs
@@ -421,8 +418,7 @@ public class WindowsSignature {
     }
 
     /**
-     * Windows Crypto API structure type identifier for PKCS7_SIGNER_INFO.
-     * Used with CryptDecodeObject to decode countersignature blobs.
+     * Windows Crypto API structure type identifier for PKCS7_SIGNER_INFO. Used with CryptDecodeObject to decode countersignature blobs.
      * Corresponds to: #define PKCS7_SIGNER_INFO ((LPCSTR) 500)
      */
     private static final Pointer PKCS7_SIGNER_INFO = new Pointer(500);
@@ -430,9 +426,8 @@ public class WindowsSignature {
     /**
      * Searches for a counterSignature attribute (OID 1.2.840.113549.1.9.6) and extracts its embedded signing time.
      * <p>
-     * Countersignatures are used by RFC 3161 timestamp authorities to provide trusted timestamps.
-     * This method decodes the ASN.1-encoded countersignature blob and recursively searches for
-     * the signingTime attribute within it.
+     * Countersignatures are used by RFC 3161 timestamp authorities to provide trusted timestamps. This method decodes the ASN.1-encoded
+     * countersignature blob and recursively searches for the signingTime attribute within it.
      * </p>
      *
      * @param attrs
@@ -460,12 +455,12 @@ public class WindowsSignature {
                         try {
                             // Decode the ASN.1-encoded countersignature blob to CMSG_SIGNER_INFO structure
                             IntByReference pcbDecoded = new IntByReference();
-                            boolean ok = Crypt32Ext.INSTANCE.CryptDecodeObject(WinCrypt.X509_ASN_ENCODING | WinCrypt.PKCS_7_ASN_ENCODING, PKCS7_SIGNER_INFO, blob.pbData, blob.cbData, 0, Pointer.NULL, pcbDecoded);
+                            boolean ok = WindowsSignatureCrypt32Api.INSTANCE.CryptDecodeObject(WinCrypt.X509_ASN_ENCODING | WinCrypt.PKCS_7_ASN_ENCODING, PKCS7_SIGNER_INFO, blob.pbData, blob.cbData, 0, Pointer.NULL, pcbDecoded);
                             if (!ok || pcbDecoded.getValue() <= 0) {
                                 continue;
                             }
                             Memory decodedMem = new Memory(pcbDecoded.getValue());
-                            ok = Crypt32Ext.INSTANCE.CryptDecodeObject(WinCrypt.X509_ASN_ENCODING | WinCrypt.PKCS_7_ASN_ENCODING, PKCS7_SIGNER_INFO, blob.pbData, blob.cbData, 0, decodedMem, pcbDecoded);
+                            ok = WindowsSignatureCrypt32Api.INSTANCE.CryptDecodeObject(WinCrypt.X509_ASN_ENCODING | WinCrypt.PKCS_7_ASN_ENCODING, PKCS7_SIGNER_INFO, blob.pbData, blob.cbData, 0, decodedMem, pcbDecoded);
                             if (!ok) {
                                 continue;
                             }
@@ -546,8 +541,8 @@ public class WindowsSignature {
     /**
      * Legacy ASN.1 time parser (simplified version).
      * <p>
-     * <b>Note:</b> This method is retained for compatibility but is not currently used.
-     * Use {@link #parseAsn1TimeToIso(byte[])} instead for proper DER decoding.
+     * <b>Note:</b> This method is retained for compatibility but is not currently used. Use {@link #parseAsn1TimeToIso(byte[])} instead for
+     * proper DER decoding.
      * </p>
      *
      * @param bytes
@@ -582,12 +577,12 @@ public class WindowsSignature {
      */
     public static boolean verifySignature(File filePath) {
         if (filePath == null) {
-            System.err.println("filePath is null");
+            LogV3.info("filePath is null");
             return false;
         }
         File file = new File(filePath.getAbsolutePath());
         if (!file.isFile()) {
-            System.err.println("ERROR: File not found: " + filePath);
+            LogV3.info("ERROR: File not found: " + filePath);
             return false;
         }
         WinTrust.WINTRUST_FILE_INFO fileInfo = new WinTrust.WINTRUST_FILE_INFO(file.getAbsolutePath());
@@ -597,13 +592,13 @@ public class WindowsSignature {
         if (result == WinError.ERROR_SUCCESS) {
             return true;
         } else if (result == WinError.TRUST_E_NOSIGNATURE) {
-            System.err.println("WARNING: No digital signature found.");
+            LogV3.info("WARNING: No digital signature found.");
         } else if (result == WinError.TRUST_E_BAD_DIGEST) {
-            System.err.println("WARNING: Signature present but invalid.");
+            LogV3.info("WARNING: Signature present but invalid.");
         } else if (result == WinError.CERT_E_REVOKED) {
-            System.err.println("WARNING: Certificate revoked.");
+            LogV3.info("WARNING: Certificate revoked.");
         } else {
-            System.err.println("WARNING: WinVerifyTrust failed, code: 0x" + Integer.toHexString(result));
+            LogV3.info("WARNING: WinVerifyTrust failed, code: 0x" + Integer.toHexString(result));
         }
         return false;
     }

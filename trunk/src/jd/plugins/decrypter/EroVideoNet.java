@@ -35,7 +35,7 @@ import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.components.hls.HlsContainer;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "ero-video.net" }, urls = { "https?://(?:[a-z0-9]+\\.)?ero\\-video\\.net/movie/\\?mcd=[A-Za-z0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 49242 $", interfaceVersion = 3, names = { "ero-video.net" }, urls = { "https?://(?:[a-z0-9]+\\.)?ero\\-video\\.net/movie/\\?mcd=[A-Za-z0-9]+" })
 public class EroVideoNet extends PornEmbedParser {
     private static AtomicReference<String> DELIMITER = new AtomicReference<String>(null);
 

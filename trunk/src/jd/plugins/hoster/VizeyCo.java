@@ -35,7 +35,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52297 $", interfaceVersion = 3, names = {}, urls = {})
 public class VizeyCo extends PluginForHost {
     public VizeyCo(PluginWrapper wrapper) {
         super(wrapper);

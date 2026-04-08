@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49675 $", interfaceVersion = 3, names = {}, urls = {})
 public class Me2lineCom extends PluginForDecrypt {
     public Me2lineCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -21,7 +21,7 @@ import java.util.List;
 import jd.PluginWrapper;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 47722 $", interfaceVersion = 3, names = {}, urls = {})
 public class TktubeCom extends KernelVideoSharingComV2 {
     public TktubeCom(final PluginWrapper wrapper) {
         super(wrapper);

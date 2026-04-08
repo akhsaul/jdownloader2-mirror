@@ -20,7 +20,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "sproutvideo.com" }, urls = { "https?://(?:videos\\.sproutvideo\\.com/embed/[a-f0-9]{18}/[a-f0-9]{16}|\\w+\\.vids\\.io/videos/[a-f0-9]{18})" })
+@HostPlugin(revision = "$Revision: 51278 $", interfaceVersion = 2, names = { "sproutvideo.com" }, urls = { "https?://(?:videos\\.sproutvideo\\.com/embed/[a-f0-9]{18}/[a-f0-9]{16}|\\w+\\.vids\\.io/videos/[a-f0-9]{18})" })
 public class SproutVideoCom extends PluginForHost {
     public SproutVideoCom(PluginWrapper wrapper) {
         super(wrapper);

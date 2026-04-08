@@ -29,7 +29,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.LinkboxTo;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51117 $", interfaceVersion = 3, names = {}, urls = {})
 public class LinkboxToCrawlerShorturls extends PluginForDecrypt {
     public LinkboxToCrawlerShorturls(PluginWrapper wrapper) {
         super(wrapper);

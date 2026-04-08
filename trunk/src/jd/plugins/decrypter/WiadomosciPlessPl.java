@@ -34,7 +34,7 @@ import jd.plugins.hoster.DirectHTTP;
  * @author raztoki
  *
  */
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "wiadomosci.pless.pl" }, urls = { "https?://(\\w+\\.)?pless\\.pl/galeria/\\d+/\\d+" })
+@DecrypterPlugin(revision = "$Revision: 48550 $", interfaceVersion = 2, names = { "wiadomosci.pless.pl" }, urls = { "https?://(\\w+\\.)?pless\\.pl/galeria/\\d+/\\d+" })
 public class WiadomosciPlessPl extends PluginForDecrypt {
     public WiadomosciPlessPl(PluginWrapper wrapper) {
         super(wrapper);

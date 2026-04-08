@@ -27,7 +27,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "pin.it" }, urls = { "https?://(pin\\.it/[a-z0-9]+|api\\.pinterest\\.com/url_shortener/[a-z0-9]+/redirect/)" })
+@DecrypterPlugin(revision = "$Revision: 51867 $", interfaceVersion = 3, names = { "pin.it" }, urls = { "https?://(pin\\.it/[a-z0-9]+|api\\.pinterest\\.com/url_shortener/[a-z0-9]+/redirect/)" })
 public class PinterestComShorturl extends PluginForDecrypt {
     public PinterestComShorturl(PluginWrapper wrapper) {
         super(wrapper);

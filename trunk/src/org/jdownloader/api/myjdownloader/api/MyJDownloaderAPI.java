@@ -201,7 +201,7 @@ public class MyJDownloaderAPI extends AbstractMyJDClientForDesktopJVM {
         } catch (final Throwable e) {
             LoggerFactory.getDefaultLogger().log(e);
         }
-        final String revision = new Regex("$Revision$", "Revision:\\s*?(\\d+)").getMatch(0);
+        final String revision = new Regex("$Revision: 46545 $", "Revision:\\s*?(\\d+)").getMatch(0);
         if (revision == null) {
             return "api_0" + sb.toString();
         } else {

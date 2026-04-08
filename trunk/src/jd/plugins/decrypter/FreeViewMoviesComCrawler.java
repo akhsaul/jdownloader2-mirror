@@ -27,7 +27,7 @@ import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 import jd.plugins.hoster.FreeViewMoviesCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48304 $", interfaceVersion = 2, names = {}, urls = {})
 public class FreeViewMoviesComCrawler extends PornEmbedParser {
     public FreeViewMoviesComCrawler(PluginWrapper wrapper) {
         super(wrapper);

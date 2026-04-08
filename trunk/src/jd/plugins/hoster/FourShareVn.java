@@ -50,7 +50,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "4share.vn" }, urls = { "https?://(?:www\\.)?(?:up\\.)?4share\\.vn/f/([a-z0-9]{16,})" })
+@HostPlugin(revision = "$Revision: 50489 $", interfaceVersion = 2, names = { "4share.vn" }, urls = { "https?://(?:www\\.)?(?:up\\.)?4share\\.vn/f/([a-z0-9]{16,})" })
 public class FourShareVn extends PluginForHost {
     public FourShareVn(PluginWrapper wrapper) {
         super(wrapper);

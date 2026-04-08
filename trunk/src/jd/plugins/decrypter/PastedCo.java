@@ -35,7 +35,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48400 $", interfaceVersion = 2, names = {}, urls = {})
 public class PastedCo extends PluginForDecrypt {
     public PastedCo(PluginWrapper wrapper) {
         super(wrapper);

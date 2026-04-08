@@ -41,7 +41,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 47952 $", interfaceVersion = 3, names = {}, urls = {})
 public class BoxCaCom extends PluginForHost {
     public BoxCaCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -46,7 +46,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "peekvids.com" }, urls = { "https?://(?:www\\.)?peekvids\\.com/(?:watch\\?v=|v/)([A-Za-z0-9\\-_]+)(?:/[A-Za-z0-9\\-_]+)?" })
+@HostPlugin(revision = "$Revision: 51545 $", interfaceVersion = 2, names = { "peekvids.com" }, urls = { "https?://(?:www\\.)?peekvids\\.com/(?:watch\\?v=|v/)([A-Za-z0-9\\-_]+)(?:/[A-Za-z0-9\\-_]+)?" })
 public class PeekVidsCom extends PluginForHost {
     public PeekVidsCom(PluginWrapper wrapper) {
         super(wrapper);

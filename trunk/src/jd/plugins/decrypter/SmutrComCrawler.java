@@ -27,7 +27,7 @@ import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49186 $", interfaceVersion = 2, names = {}, urls = {})
 public class SmutrComCrawler extends PornEmbedParser {
     public SmutrComCrawler(PluginWrapper wrapper) {
         super(wrapper);

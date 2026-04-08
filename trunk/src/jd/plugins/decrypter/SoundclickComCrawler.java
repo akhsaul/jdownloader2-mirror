@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.SoundClickCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49206 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { SoundClickCom.class })
 public class SoundclickComCrawler extends PluginForDecrypt {
     public SoundclickComCrawler(PluginWrapper wrapper) {

@@ -40,7 +40,7 @@ import jd.plugins.PluginException;
 import org.jdownloader.plugins.components.antiDDoSForHost;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "gotporn.com" }, urls = { "https?://(?:www\\.)?gotporn\\.com/[a-z0-9\\-]+/video\\-\\d+|https?://(?:www\\.)?gotporn\\.com/video/\\d+" })
+@HostPlugin(revision = "$Revision: 52202 $", interfaceVersion = 2, names = { "gotporn.com" }, urls = { "https?://(?:www\\.)?gotporn\\.com/[a-z0-9\\-]+/video\\-\\d+|https?://(?:www\\.)?gotporn\\.com/video/\\d+" })
 public class GotpornCom extends antiDDoSForHost {
     public GotpornCom(PluginWrapper wrapper) {
         super(wrapper);

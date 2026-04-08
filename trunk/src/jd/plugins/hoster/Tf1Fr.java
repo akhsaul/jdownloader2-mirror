@@ -36,7 +36,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "tf1.fr" }, urls = { "https?://(?:www\\.)?tf1\\.fr/.+/videos/[A-Za-z0-9\\-_]+\\.html" })
+@HostPlugin(revision = "$Revision: 51838 $", interfaceVersion = 2, names = { "tf1.fr" }, urls = { "https?://(?:www\\.)?tf1\\.fr/.+/videos/[A-Za-z0-9\\-_]+\\.html" })
 public class Tf1Fr extends PluginForHost {
     public Tf1Fr(final PluginWrapper wrapper) {
         super(wrapper);

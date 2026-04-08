@@ -40,7 +40,7 @@ import jd.plugins.decrypter.BrightcoveDecrypter.BrightcoveEdgeContainer.Protocol
 import jd.plugins.hoster.DirectHTTP;
 import jd.utils.JDUtilities;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "oracle.com" }, urls = { "https?://learn\\.oracle\\.com/ols/course/[a-z0-9\\-]+/\\d+/\\d+/\\d+|https?://learn\\.oracle\\.com/ords/training/DL4_EKITDOCUMENT\\.getPDF\\?p_url=[^\\&]+" })
+@DecrypterPlugin(revision = "$Revision: 48398 $", interfaceVersion = 3, names = { "oracle.com" }, urls = { "https?://learn\\.oracle\\.com/ols/course/[a-z0-9\\-]+/\\d+/\\d+/\\d+|https?://learn\\.oracle\\.com/ords/training/DL4_EKITDOCUMENT\\.getPDF\\?p_url=[^\\&]+" })
 public class OracleComCrawler extends PluginForDecrypt {
     public OracleComCrawler(PluginWrapper wrapper) {
         super(wrapper);

@@ -36,7 +36,7 @@ import org.appwork.utils.Regex;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "rokfin.com" }, urls = { "https?://(www\\.)?rokfin.com/(post|stream)/\\d+" })
+@DecrypterPlugin(revision = "$Revision: 48194 $", interfaceVersion = 3, names = { "rokfin.com" }, urls = { "https?://(www\\.)?rokfin.com/(post|stream)/\\d+" })
 public class RokfinCom extends PluginForDecrypt {
     public RokfinCom(PluginWrapper wrapper) {
         super(wrapper);

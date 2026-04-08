@@ -30,7 +30,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 import jd.plugins.decrypter.CamwhoresTvCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51010 $", interfaceVersion = 3, names = {}, urls = {})
 public class CamwhoresTv extends KernelVideoSharingComV2 {
     public CamwhoresTv(final PluginWrapper wrapper) {
         super(wrapper);

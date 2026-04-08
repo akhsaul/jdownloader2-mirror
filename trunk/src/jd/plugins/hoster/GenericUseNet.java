@@ -31,7 +31,7 @@ import org.jdownloader.plugins.controller.LazyPlugin;
 import org.jdownloader.plugins.controller.host.HostPluginController;
 import org.jdownloader.plugins.controller.host.LazyHostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "genericusenet" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51817 $", interfaceVersion = 2, names = { "genericusenet" }, urls = { "" })
 public class GenericUseNet extends UseNet {
     public GenericUseNet(PluginWrapper wrapper) {
         super(wrapper);

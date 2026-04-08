@@ -28,7 +28,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 import jd.plugins.components.PluginJSonUtils;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "stayonline.pro" }, urls = { "https?://(?:www\\.)?stayonline\\.pro/l/([a-z0-9]+)" })
+@DecrypterPlugin(revision = "$Revision: 41696 $", interfaceVersion = 3, names = { "stayonline.pro" }, urls = { "https?://(?:www\\.)?stayonline\\.pro/l/([a-z0-9]+)" })
 public class StayonlinePro extends antiDDoSForDecrypt {
     public StayonlinePro(PluginWrapper wrapper) {
         super(wrapper);

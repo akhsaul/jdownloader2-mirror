@@ -50,7 +50,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.PanBaiduCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52281 $", interfaceVersion = 3, names = {}, urls = {})
 public class PanBaiduComCrawler extends PluginForDecrypt {
     public PanBaiduComCrawler(PluginWrapper wrapper) {
         super(wrapper);

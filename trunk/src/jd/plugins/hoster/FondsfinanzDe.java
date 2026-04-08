@@ -30,7 +30,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "fondsfinanz.de" }, urls = { "https?://(?:www\\.)?fondsfinanz\\.de/film/v(\\d+)" })
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 2, names = { "fondsfinanz.de" }, urls = { "https?://(?:www\\.)?fondsfinanz\\.de/film/v(\\d+)" })
 public class FondsfinanzDe extends PluginForHost {
     public FondsfinanzDe(PluginWrapper wrapper) {
         super(wrapper);

@@ -38,7 +38,7 @@ import org.jdownloader.plugins.controller.LazyPlugin;
  * @author raztoki
  *
  */
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "dnbshare.com" }, urls = { "^https?://[\\w\\.]*?dnbshare\\.com/download/[^<>\"/]*?(?:\\.mp3|\\.html)$" })
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 2, names = { "dnbshare.com" }, urls = { "^https?://[\\w\\.]*?dnbshare\\.com/download/[^<>\"/]*?(?:\\.mp3|\\.html)$" })
 public class DnbShareCom extends PluginForHost {
     @SuppressWarnings("deprecation")
     public DnbShareCom(PluginWrapper wrapper) {

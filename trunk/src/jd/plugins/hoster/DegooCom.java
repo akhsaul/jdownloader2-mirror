@@ -43,7 +43,7 @@ import org.appwork.utils.StringUtils;
 import org.jdownloader.downloader.text.TextDownloader;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49607 $", interfaceVersion = 3, names = {}, urls = {})
 public class DegooCom extends PluginForHost {
     public DegooCom(PluginWrapper wrapper) {
         super(wrapper);

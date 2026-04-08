@@ -31,7 +31,7 @@ import jd.plugins.PluginForHost;
 
 import org.appwork.utils.formatter.SizeFormatter;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "transfiles.ru" }, urls = { "https?://(?:www\\.)?transfiles\\.ru/([A-Za-z0-9]+)" })
+@HostPlugin(revision = "$Revision: 47487 $", interfaceVersion = 3, names = { "transfiles.ru" }, urls = { "https?://(?:www\\.)?transfiles\\.ru/([A-Za-z0-9]+)" })
 public class TransfilesRu extends PluginForHost {
     public TransfilesRu(PluginWrapper wrapper) {
         super(wrapper);

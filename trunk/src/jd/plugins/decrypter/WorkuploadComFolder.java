@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.WorkuploadCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "workupload.com" }, urls = { "https?://(?:www\\.)?workupload\\.com/archive/([A-Za-z0-9]+)" })
+@DecrypterPlugin(revision = "$Revision: 48760 $", interfaceVersion = 3, names = { "workupload.com" }, urls = { "https?://(?:www\\.)?workupload\\.com/archive/([A-Za-z0-9]+)" })
 public class WorkuploadComFolder extends PluginForDecrypt {
     public WorkuploadComFolder(PluginWrapper wrapper) {
         super(wrapper);

@@ -49,7 +49,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51344 $", interfaceVersion = 3, names = {}, urls = {})
 public class Tube8Com extends PluginForHost {
     /* DEV NOTES */
     /* Porn_plugin */

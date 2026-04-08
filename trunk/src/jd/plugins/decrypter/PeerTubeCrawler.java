@@ -42,7 +42,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.JoinPeerTubeOrg;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48194 $", interfaceVersion = 3, names = {}, urls = {})
 public class PeerTubeCrawler extends PluginForDecrypt {
     public PeerTubeCrawler(PluginWrapper wrapper) {
         super(wrapper);

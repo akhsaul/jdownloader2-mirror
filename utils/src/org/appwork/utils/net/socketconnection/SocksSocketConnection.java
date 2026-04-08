@@ -4,9 +4,9 @@
  *         "AppWork Utilities" License
  *         The "AppWork Utilities" will be called [The Product] from now on.
  * ====================================================================================================================================================
- *         Copyright (c) 2009-2015, AppWork GmbH <e-mail@appwork.org>
- *         Schwabacher Straße 117
- *         90763 Fürth
+ *         Copyright (c) 2009-2026, AppWork GmbH <e-mail@appwork.org>
+ *         Spalter Strasse 58
+ *         91183 Abenberg
  *         Germany
  * === Preamble ===
  *     This license establishes the terms under which the [The Product] Source Code & Binary files may be used, copied, modified, distributed, and/or redistributed.
@@ -33,18 +33,20 @@
  * ==================================================================================================================================================== */
 package org.appwork.utils.net.socketconnection;
 
+import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.appwork.utils.net.httpconnection.HTTPProxy;
+import org.appwork.utils.net.httpconnection.SocketStreamInterface;
 
 /**
  * @author daniel
  * @date Jul 6, 2022
  *
  */
-public abstract class SocksSocketConnection extends SocketConnection {
+public abstract class SocksSocketConnection extends SocketConnection implements SocketStreamInterface {
     protected final DESTTYPE destType;
 
     public SocksSocketConnection(HTTPProxy proxy, DESTTYPE destType) {
@@ -74,6 +76,12 @@ public abstract class SocksSocketConnection extends SocketConnection {
 
     public DESTTYPE getDestType() {
         return destType;
+    }
+    
+    
+    @Override
+    public Socket getSocket() {
+      return this;
     }
 
     public abstract DESTTYPE getDestType(final SocketAddress endpoint);

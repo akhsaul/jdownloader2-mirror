@@ -48,7 +48,7 @@ import org.jdownloader.captcha.v2.challenge.hcaptcha.CaptchaHelperHostPluginHCap
 import org.jdownloader.captcha.v2.challenge.recaptcha.v2.CaptchaHelperHostPluginRecaptchaV2;
 import org.jdownloader.plugins.components.antiDDoSForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "mountfile.net" }, urls = { "https?://(?:www\\.)?mountfile\\.net/(?!d/)[A-Za-z0-9]+" })
+@HostPlugin(revision = "$Revision: 52202 $", interfaceVersion = 2, names = { "mountfile.net" }, urls = { "https?://(?:www\\.)?mountfile\\.net/(?!d/)[A-Za-z0-9]+" })
 public class MountFileNet extends antiDDoSForHost {
     /* For reconnect special handling */
     private static Object            CTRLLOCK                      = new Object();

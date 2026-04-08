@@ -39,7 +39,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.ImagenetzDeCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51193 $", interfaceVersion = 2, names = {}, urls = {})
 @PluginDependencies(dependencies = { ImagenetzDeCrawler.class })
 public class ImageNetzDe extends PluginForHost {
     public ImageNetzDe(PluginWrapper wrapper) {

@@ -45,7 +45,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49390 $", interfaceVersion = 3, names = {}, urls = {})
 public class UploadhavenCom extends PluginForHost {
     public UploadhavenCom(PluginWrapper wrapper) {
         super(wrapper);

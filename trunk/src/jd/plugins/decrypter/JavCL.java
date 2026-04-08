@@ -14,7 +14,7 @@ import org.appwork.utils.StringUtils;
 import org.appwork.utils.encoding.Base64;
 import org.jdownloader.plugins.components.antiDDoSForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "javcl.com" }, urls = { "https?://(?:www\\.)?javcl\\.com/([a-z0-9\\-]+)" })
+@DecrypterPlugin(revision = "$Revision: 48804 $", interfaceVersion = 2, names = { "javcl.com" }, urls = { "https?://(?:www\\.)?javcl\\.com/([a-z0-9\\-]+)" })
 public class JavCL extends antiDDoSForDecrypt {
     public JavCL(PluginWrapper wrapper) {
         super(wrapper);

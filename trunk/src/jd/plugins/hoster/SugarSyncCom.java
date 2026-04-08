@@ -34,7 +34,7 @@ import org.appwork.utils.StringUtils;
 import org.appwork.utils.formatter.SizeFormatter;
 import org.appwork.utils.parser.UrlQuery;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "sugarsync.com" }, urls = { "https?://(?:www\\.)?sugarsync\\.com/pf/(D[\\d\\_]+)" })
+@HostPlugin(revision = "$Revision: 51818 $", interfaceVersion = 2, names = { "sugarsync.com" }, urls = { "https?://(?:www\\.)?sugarsync\\.com/pf/(D[\\d\\_]+)" })
 public class SugarSyncCom extends PluginForHost {
     public SugarSyncCom(PluginWrapper wrapper) {
         super(wrapper);

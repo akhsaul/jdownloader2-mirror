@@ -21,16 +21,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.appwork.storage.TypeRef;
-import org.appwork.utils.StringUtils;
-import org.appwork.utils.encoding.URLEncode;
-import org.appwork.utils.parser.UrlQuery;
-import org.jdownloader.controlling.filter.CompiledFiletypeFilter;
-import org.jdownloader.controlling.filter.CompiledFiletypeFilter.ExtensionsFilterInterface;
-import org.jdownloader.plugins.components.config.Rule34xxxConfig;
-import org.jdownloader.plugins.components.config.Rule34xxxConfig.AccessMode;
-import org.jdownloader.plugins.config.PluginJsonConfig;
-
 import jd.PluginWrapper;
 import jd.controlling.ProgressController;
 import jd.http.Browser;
@@ -49,8 +39,18 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.SiteType.SiteTemplate;
+import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "rule34.xxx" }, urls = { "https?://(?:www\\.)?rule34\\.xxx/index\\.php\\?page=post\\&s=(view\\&id=\\d+|list\\&tags=.+)" })
+import org.appwork.storage.TypeRef;
+import org.appwork.utils.StringUtils;
+import org.appwork.utils.encoding.URLEncode;
+import org.appwork.utils.parser.UrlQuery;
+import org.jdownloader.controlling.filter.CompiledFiletypeFilter;
+import org.jdownloader.controlling.filter.CompiledFiletypeFilter.ExtensionsFilterInterface;
+import org.jdownloader.plugins.components.config.Rule34xxxConfig;
+import org.jdownloader.plugins.components.config.Rule34xxxConfig.AccessMode;
+
+@DecrypterPlugin(revision = "$Revision: 52581 $", interfaceVersion = 3, names = { "rule34.xxx" }, urls = { "https?://(?:www\\.)?rule34\\.xxx/index\\.php\\?page=post\\&s=(view\\&id=\\d+|list\\&tags=.+)" })
 public class Rule34Xxx extends PluginForDecrypt {
     private final String        prefixLinkID                          = getHost().replaceAll("[\\.\\-]+", "") + "://";
     private static final String ERROR_MESSAG_API_CREDENTIALS_REQUIRED = "API credentials required. Add them in plugin settings or change access mode to website and try again.";
@@ -69,7 +69,7 @@ public class Rule34Xxx extends PluginForDecrypt {
     @Override
     public void init() {
         super.init();
-        Browser.setRequestIntervalLimitGlobal(getHost(), 250);
+        Browser.setRequestIntervalLimitGlobal(getHost(), 750);
     }
 
     @Override
@@ -78,15 +78,15 @@ public class Rule34Xxx extends PluginForDecrypt {
     }
 
     public ArrayList<DownloadLink> decryptIt(final CryptedLink param, ProgressController progress) throws Exception {
-        final Rule34xxxConfig cfg = PluginJsonConfig.get(this.getConfigInterface());
+        final Rule34xxxConfig cfg = get(this.getConfigInterface());
         final AccessMode am = cfg.getCrawlerAccessMode();
         switch (am) {
         case WEBSITE:
             return this.crawlWebsite(param);
         case API:
             return this.crawlAPI(param);
-        case AUTO:
         default:
+        case AUTO:
             try {
                 return this.crawlAPI(param);
             } catch (final AccountRequiredException e) {
@@ -97,7 +97,7 @@ public class Rule34Xxx extends PluginForDecrypt {
     }
 
     private ArrayList<DownloadLink> crawlAPI(final CryptedLink param) throws Exception {
-        final Rule34xxxConfig cfg = PluginJsonConfig.get(this.getConfigInterface());
+        final Rule34xxxConfig cfg = get(this.getConfigInterface());
         /**
          * 2025-08-21: API key is required for all API requests we are using. <br>
          * See: https://board.jdownloader.org/showthread.php?p=550333#post550333
@@ -248,11 +248,13 @@ public class Rule34Xxx extends PluginForDecrypt {
         final String link = result.get("file_url").toString();
         final String id = result.get("id").toString();
         final DownloadLink image = createDownloadlink(link);
+        image.setProperty(DirectHTTP.PROPERTY_RATE_LIMIT, 750);
+        image.setProperty(DirectHTTP.PROPERTY_REQUEST_TYPE, "HEAD");
         image.setAvailable(true);
         image.setLinkID(prefixLinkID + id);
         final String originalFilename = result.get("image").toString();
         final String extension = getFileNameExtensionFromString(originalFilename, ".bmp");
-        if (PluginJsonConfig.get(this.getConfigInterface()).isPreferServerFilenamesOverPluginDefaultFilenames()) {
+        if (get(this.getConfigInterface()).isPreferServerFilenamesOverPluginDefaultFilenames()) {
             image.setFinalFileName(originalFilename);
         } else {
             image.setFinalFileName("rule34xxx-" + id + extension);
@@ -269,17 +271,8 @@ public class Rule34Xxx extends PluginForDecrypt {
         final ArrayList<DownloadLink> ret = new ArrayList<DownloadLink>();
         final String contenturl = Encoding.htmlDecode(param.getCryptedUrl());
         br.getPage(contenturl);
-        if (br.getHttpConnection().getResponseCode() == 404 || br.containsHTML(">\\s*No Images Found\\s*<|>\\s*This post was deleted")) {
-            throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
-        } else if (br.containsHTML("<h1>\\s*Nobody here but us chickens")) {
-            throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
-        } else if (StringUtils.endsWithCaseInsensitive(br.getURL(), "/index.php?page=post&s=list&tags=all")) {
-            // redirect to base list page of all content/tags.. we don't want to crawl the entire website
-            throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
-        } else if (br.getHttpConnection().getResponseCode() == 429) {
-            throw new DecrypterRetryException(RetryReason.HOST_RATE_LIMIT);
-        }
-        final boolean preferServerFilenames = PluginJsonConfig.get(this.getConfigInterface()).isPreferServerFilenamesOverPluginDefaultFilenames();
+        this.checkErrorsWebsite(br);
+        final boolean preferServerFilenames = get(this.getConfigInterface()).isPreferServerFilenamesOverPluginDefaultFilenames();
         if (contenturl.contains("&s=view&")) {
             // from list to post page
             final String imageParts[] = br.getRegex("'domain'\\s*:\\s*'(.*?)'\\s*,.*?'dir'\\s*:\\s*(\\d+).*?'img'\\s*:\\s*'(.*?)'.*?'base_dir'\\s*:\\s*'(.*?)'").getRow(0);
@@ -392,10 +385,24 @@ public class Rule34Xxx extends PluginForDecrypt {
                 page++;
                 query.addAndReplace("pid", Integer.toString(index));
                 br.getPage(relativeURLWithoutParams + "?" + query.toString());
+                this.checkErrorsWebsite(br);
                 continue;
             } while (true);
         }
         return ret;
+    }
+
+    private void checkErrorsWebsite(final Browser br) throws PluginException, DecrypterRetryException {
+        if (br.getHttpConnection().getResponseCode() == 404 || br.containsHTML(">\\s*No Images Found\\s*<|>\\s*This post was deleted")) {
+            throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
+        } else if (br.containsHTML("<h1>\\s*Nobody here but us chickens")) {
+            throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
+        } else if (StringUtils.endsWithCaseInsensitive(br.getURL(), "/index.php?page=post&s=list&tags=all")) {
+            // redirect to base list page of all content/tags.. we don't want to crawl the entire website
+            throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
+        } else if (br.getHttpConnection().getResponseCode() == 429) {
+            throw new DecrypterRetryException(RetryReason.HOST_RATE_LIMIT);
+        }
     }
 
     private int getMaxIndexWebsite(final Browser br) {

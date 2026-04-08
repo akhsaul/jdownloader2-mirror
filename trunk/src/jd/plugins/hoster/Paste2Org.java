@@ -20,7 +20,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.PluginDependencies;
 import jd.plugins.decrypter.Paste2OrgCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 46885 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { Paste2OrgCrawler.class })
 public class Paste2Org extends AbstractPastebinHoster {
     public Paste2Org(PluginWrapper wrapper) {

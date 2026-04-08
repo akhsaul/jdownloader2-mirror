@@ -29,7 +29,7 @@ import jd.plugins.AccountInfo;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50692 $", interfaceVersion = 2, names = {}, urls = {})
 public class WrzucajPl extends YetiShareCore {
     public WrzucajPl(PluginWrapper wrapper) {
         super(wrapper);

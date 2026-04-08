@@ -39,7 +39,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49220 $", interfaceVersion = 3, names = {}, urls = {})
 public class RomsgamesNet extends PluginForHost {
     public RomsgamesNet(PluginWrapper wrapper) {
         super(wrapper);

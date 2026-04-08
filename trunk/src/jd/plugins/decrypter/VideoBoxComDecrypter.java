@@ -44,7 +44,7 @@ import org.appwork.utils.StringUtils;
 import org.appwork.utils.formatter.SizeFormatter;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "videobox.com" }, urls = { "https?://(?:www\\.)?videobox\\.com/(?:movie\\-details\\?contentId=|.*?flashPage/)\\d+" })
+@DecrypterPlugin(revision = "$Revision: 45506 $", interfaceVersion = 2, names = { "videobox.com" }, urls = { "https?://(?:www\\.)?videobox\\.com/(?:movie\\-details\\?contentId=|.*?flashPage/)\\d+" })
 public class VideoBoxComDecrypter extends PluginForDecrypt {
     public VideoBoxComDecrypter(PluginWrapper wrapper) {
         super(wrapper);

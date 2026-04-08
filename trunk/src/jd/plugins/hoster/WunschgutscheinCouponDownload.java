@@ -35,7 +35,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.net.protocol.http.HTTPConstants;
 import org.jdownloader.downloader.text.TextDownloader;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51820 $", interfaceVersion = 3, names = {}, urls = {})
 public class WunschgutscheinCouponDownload extends PluginForHost {
     public WunschgutscheinCouponDownload(PluginWrapper wrapper) {
         super(wrapper);

@@ -11,7 +11,7 @@ import jd.plugins.PluginException;
 import org.appwork.utils.formatter.SizeFormatter;
 import org.jdownloader.plugins.components.antiDDoSForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "forum.xda-developers.com" }, urls = { "https?://forum\\.xda-developers\\.com/devdb/project/dl/\\?id=(\\d+)" })
+@HostPlugin(revision = "$Revision: 47477 $", interfaceVersion = 2, names = { "forum.xda-developers.com" }, urls = { "https?://forum\\.xda-developers\\.com/devdb/project/dl/\\?id=(\\d+)" })
 public class ForumXDADevelopersCom extends antiDDoSForHost {
     public ForumXDADevelopersCom(PluginWrapper wrapper) {
         super(wrapper);

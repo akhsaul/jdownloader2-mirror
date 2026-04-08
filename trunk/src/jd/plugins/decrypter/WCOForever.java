@@ -33,7 +33,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48544 $", interfaceVersion = 2, names = {}, urls = {})
 public class WCOForever extends PluginForDecrypt {
     public WCOForever(PluginWrapper wrapper) {
         super(wrapper);

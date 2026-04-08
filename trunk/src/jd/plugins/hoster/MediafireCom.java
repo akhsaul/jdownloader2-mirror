@@ -61,7 +61,7 @@ import jd.plugins.decrypter.MediafireComFolder;
 import jd.plugins.download.HashInfo;
 import jd.utils.locale.JDL;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52190 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { MediafireComFolder.class })
 public class MediafireCom extends PluginForHost {
     /** Settings stuff */

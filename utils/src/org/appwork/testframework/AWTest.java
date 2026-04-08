@@ -71,6 +71,7 @@ import org.appwork.loggingv3.simple.sink.SimpleFormatter;
 import org.appwork.loggingv3.simple.sink.Sink;
 import org.appwork.serializer.Deser;
 import org.appwork.serializer.SC;
+import org.appwork.testframework.executer.AdminExecuter;
 import org.appwork.utils.Application;
 import org.appwork.utils.CompareUtils;
 import org.appwork.utils.Exceptions;
@@ -80,6 +81,7 @@ import org.appwork.utils.JVMVersion;
 import org.appwork.utils.Joiner;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.UniqueAlltimeID;
+import org.appwork.utils.ide.IDEUtils;
 import org.appwork.utils.net.LineParsingOutputStream;
 import org.appwork.utils.net.NoClosingInputStream;
 import org.appwork.utils.reflection.CompiledType;
@@ -90,6 +92,10 @@ import org.appwork.utils.reflection.CompiledType;
  *
  */
 public abstract class AWTest implements PostBuildTestInterface, TestInterface {
+    /**
+     *
+     */
+    private static final String AWTEST_IGNORE_MAINTENANCE = "awtest.IGNORE_MAINTENANCE";
     // static import helper: Window > Preferences > Java > Editor > Content Assist > Favorites
     /**
      * @author thomas
@@ -101,6 +107,28 @@ public abstract class AWTest implements PostBuildTestInterface, TestInterface {
             // https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/doc-files/net-properties.html
             System.setProperty("java.net.preferIPv6Addresses", "system");
         }
+    }
+
+    /**
+     * can be overwritten to true to skip tests in postbuild and idetestrunner
+     *
+     * @see org.appwork.testframework.TestInterface#isMaintenance()
+     */
+    @Override
+    public boolean isMaintenance() {
+        return false;
+    }
+
+    /**
+     * Default true: test may be skipped when dependencies have not changed. Override to false for tests that scan source (headers, line
+     * endings, etc.) so they always run.
+     *
+     * @see org.appwork.testframework.TestInterface#isSkipOnUnchangedDependencies()
+     * @see org.appwork.testframework.PostBuildTestInterface#isSkipOnUnchangedDependencies()
+     */
+    @Override
+    public boolean isSkipOnUnchangedDependencies() {
+        return true;
     }
 
     public static class LogCache extends AbstractSink {
@@ -194,7 +222,19 @@ public abstract class AWTest implements PostBuildTestInterface, TestInterface {
      */
     @Override
     public void runPostBuildTest(final String[] args, final File workingDirectory) throws Exception {
+        if (isSkipDueToMaintenance(this)) {
+            AWTest.logInfoAnyway("[** MAINTENANCE **]" + getClass().getName());
+            return;
+        }
         this.runTest();
+    }
+
+    /**
+     * @param test
+     * @return
+     */
+    public static boolean isSkipDueToMaintenance(TestInterface test) {
+        return test.isMaintenance() && !System.getProperty(AWTEST_IGNORE_MAINTENANCE, "false").equals("true");
     }
 
     public static class AssertThat {
@@ -319,7 +359,7 @@ public abstract class AWTest implements PostBuildTestInterface, TestInterface {
 
     public static void assertEqualsDeep(final Object a, final Object b) throws Exception {
         if (!CompareUtils.equalsDeep(a, b)) {
-            throw new Exception("a does not equal b. " + Deser.toString(a, SC.LOG_SINGLELINE) + "!=" + Deser.toString(b, SC.LOG_SINGLELINE));
+            throw new Exception("a does not equal b. \r\n" + Deser.toString(a, SC.LOG_SINGLELINE) + "\r\n!=\r\n" + Deser.toString(b, SC.LOG_SINGLELINE));
         }
     }
 
@@ -472,7 +512,7 @@ public abstract class AWTest implements PostBuildTestInterface, TestInterface {
 
             @Override
             protected LoggerToSink createLogger(final Object name) {
-                return new LoggerToSink(this) {
+                return new LoggerToSink(this, name) {
                     /*
                      * (non-Javadoc)
                      *
@@ -653,6 +693,17 @@ public abstract class AWTest implements PostBuildTestInterface, TestInterface {
         assertTrue(b, "Value=" + b + " Expected=true");
     }
 
+    /**
+     * System property to enable debug logging for the elevated helper. See {@link AdminExecuter#RUN_AS_ADMIN_DEBUG_HELPER_LOGS}.
+     */
+    public static final String RUN_AS_ADMIN_DEBUG_HELPER_LOGS = AdminExecuter.RUN_AS_ADMIN_DEBUG_HELPER_LOGS;
+    /**
+     * System property for intensive verbose logging (client and helper) to find errors. Set to "true" to enable. When enabled, helper is
+     * started with -verbose and logs to stdout (captured when {@link #RUN_AS_ADMIN_DEBUG_HELPER_LOGS} is also set). See
+     * {@link AdminExecuter#RUN_AS_ADMIN_VERBOSE}.
+     */
+    public static final String RUN_AS_ADMIN_VERBOSE           = AdminExecuter.RUN_AS_ADMIN_VERBOSE;
+
     public static File assertFileExists(final File file) throws Exception {
         if (!file.exists()) {
             throw new Exception("File/Folder does not exist: " + file);
@@ -747,6 +798,7 @@ public abstract class AWTest implements PostBuildTestInterface, TestInterface {
 
     public static void run() {
         BuildDecisions.setEnabled(false);
+        System.setProperty(AWTEST_IGNORE_MAINTENANCE, "true");
         IDETestRunner.run(getTestClass());
         LogV3.disableSysout();
     }
@@ -963,5 +1015,24 @@ public abstract class AWTest implements PostBuildTestInterface, TestInterface {
         } finally {
             is.close();
         }
+    }
+
+    /**
+     * @return
+     */
+    public static File getWorkspace() {
+        if (!Application.isJared(null)) {
+            return IDEUtils.getWorkSpace();
+        }
+        File here = Application.getResource("");
+        while (here != null) {
+            if (new File(here, ".metadata").isDirectory() && new File(here, ".metadata/.plugins").isDirectory()) {
+                if (new File(here, "AppWorkUtils/src").isDirectory()) {
+                    return here;
+                }
+            }
+            here = here.getParentFile();
+        }
+        throw new WTFException("Workspace not found. Check if " + Application.getResource("") + " is within the workspace");
     }
 }

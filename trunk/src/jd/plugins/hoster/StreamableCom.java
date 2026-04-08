@@ -35,7 +35,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 48773 $", interfaceVersion = 3, names = {}, urls = {})
 public class StreamableCom extends PluginForHost {
     public StreamableCom(PluginWrapper wrapper) {
         super(wrapper);

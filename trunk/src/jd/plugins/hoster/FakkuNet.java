@@ -40,7 +40,7 @@ import org.jdownloader.captcha.v2.challenge.recaptcha.v2.CaptchaHelperHostPlugin
 import org.jdownloader.plugins.components.antiDDoSForHost;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "fakku.net" }, urls = { "https://books\\.fakku\\.net/images/manga/[^/]+/.+" })
+@HostPlugin(revision = "$Revision: 47477 $", interfaceVersion = 3, names = { "fakku.net" }, urls = { "https://books\\.fakku\\.net/images/manga/[^/]+/.+" })
 public class FakkuNet extends antiDDoSForHost {
     public FakkuNet(PluginWrapper wrapper) {
         super(wrapper);

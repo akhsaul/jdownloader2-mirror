@@ -28,7 +28,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51438 $", interfaceVersion = 3, names = {}, urls = {})
 public class VidelloNet extends XFileSharingProBasic {
     public VidelloNet(final PluginWrapper wrapper) {
         super(wrapper);

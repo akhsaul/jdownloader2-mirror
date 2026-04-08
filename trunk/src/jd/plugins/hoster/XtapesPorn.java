@@ -29,7 +29,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51373 $", interfaceVersion = 3, names = {}, urls = {})
 public class XtapesPorn extends XFileSharingProBasic {
     public XtapesPorn(final PluginWrapper wrapper) {
         super(wrapper);

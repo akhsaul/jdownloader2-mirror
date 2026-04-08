@@ -38,7 +38,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.ModelKarteiDe;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50175 $", interfaceVersion = 3, names = {}, urls = {})
 public class ModelKarteiDeCrawler extends PluginForDecrypt {
     public ModelKarteiDeCrawler(PluginWrapper wrapper) {
         super(wrapper);

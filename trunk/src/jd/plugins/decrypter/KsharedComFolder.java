@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.KsharedCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52102 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { KsharedCom.class })
 public class KsharedComFolder extends PluginForDecrypt {
     public KsharedComFolder(PluginWrapper wrapper) {

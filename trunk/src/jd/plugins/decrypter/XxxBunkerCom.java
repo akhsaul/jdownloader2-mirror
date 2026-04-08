@@ -26,7 +26,7 @@ import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 45857 $", interfaceVersion = 2, names = {}, urls = {})
 public class XxxBunkerCom extends PornEmbedParser {
     public XxxBunkerCom(PluginWrapper wrapper) {
         super(wrapper);

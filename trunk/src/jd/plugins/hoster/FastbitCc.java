@@ -27,7 +27,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50076 $", interfaceVersion = 3, names = {}, urls = {})
 public class FastbitCc extends XFileSharingProBasic {
     public FastbitCc(final PluginWrapper wrapper) {
         super(wrapper);

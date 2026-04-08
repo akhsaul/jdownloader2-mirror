@@ -36,7 +36,7 @@ import org.appwork.utils.StringUtils;
  *
  * @author raztoki
  */
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "cloudup.com" }, urls = { "https://(?:www\\.)?cloudup\\.com/(i[a-zA-Z0-9_\\-]{10})" })
+@HostPlugin(revision = "$Revision: 47474 $", interfaceVersion = 2, names = { "cloudup.com" }, urls = { "https://(?:www\\.)?cloudup\\.com/(i[a-zA-Z0-9_\\-]{10})" })
 public class CloudUpCom extends PluginForHost {
     private String  csrfToken      = null;
     private String  mydb_socket_id = null;

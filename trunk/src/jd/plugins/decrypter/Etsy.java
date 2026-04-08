@@ -36,7 +36,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "etsy.com" }, urls = { "https?://(?:www\\.)?etsy\\.com/(?:[^/]+/)?listing/([0-9]+)/([a-z0-9\\-]+)" })
+@DecrypterPlugin(revision = "$Revision: 49577 $", interfaceVersion = 3, names = { "etsy.com" }, urls = { "https?://(?:www\\.)?etsy\\.com/(?:[^/]+/)?listing/([0-9]+)/([a-z0-9\\-]+)" })
 public class Etsy extends PluginForDecrypt {
     public Etsy(PluginWrapper wrapper) {
         super(wrapper);

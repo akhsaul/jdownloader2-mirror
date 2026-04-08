@@ -26,7 +26,7 @@ import jd.http.Browser;
 import jd.plugins.Account;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50551 $", interfaceVersion = 3, names = {}, urls = {})
 public class WhoreshubCom extends KernelVideoSharingComV2 {
     public WhoreshubCom(final PluginWrapper wrapper) {
         super(wrapper);

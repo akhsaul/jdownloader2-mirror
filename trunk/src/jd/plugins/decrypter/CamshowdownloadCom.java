@@ -34,7 +34,7 @@ import jd.plugins.FilePackage;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49519 $", interfaceVersion = 3, names = {}, urls = {})
 public class CamshowdownloadCom extends antiDDoSForDecrypt {
     public CamshowdownloadCom(PluginWrapper wrapper) {
         super(wrapper);

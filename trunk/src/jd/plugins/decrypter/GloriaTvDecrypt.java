@@ -36,7 +36,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.utils.JDUtilities;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "gloria.tv" }, urls = { "https?://(www\\.)?gloria\\.tv/(?:media|video|post|share)/[A-Za-z0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 47663 $", interfaceVersion = 2, names = { "gloria.tv" }, urls = { "https?://(www\\.)?gloria\\.tv/(?:media|video|post|share)/[A-Za-z0-9]+" })
 public class GloriaTvDecrypt extends PluginForDecrypt {
     public GloriaTvDecrypt(PluginWrapper wrapper) {
         super(wrapper);

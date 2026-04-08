@@ -109,8 +109,11 @@ public abstract class SSLTrustProviderTestBase extends AWTest {
         assertNotNull(this.sslContext, "SSL context should not be null");
         this.tempKeystoreFile = File.createTempFile("test-ssl-trust-", ".p12");
         this.tempKeystoreFile.deleteOnExit();
-        try (FileOutputStream fos = new FileOutputStream(this.tempKeystoreFile)) {
+        FileOutputStream fos = new FileOutputStream(this.tempKeystoreFile);
+        try {
             serverKs.store(fos, password);
+        } finally {
+            fos.close();
         }
         LogV3.info("Test certificates created successfully (in-memory keystore; temp file for provider tests)");
     }
@@ -185,7 +188,7 @@ public abstract class SSLTrustProviderTestBase extends AWTest {
         public javax.net.ssl.TrustManager[] getTrustManagersForProvider(final org.appwork.utils.net.httpconnection.trust.TrustProviderInterface provider) throws Exception {
             return new javax.net.ssl.TrustManager[] { generateTrustManagerDelegate(new org.appwork.utils.net.httpconnection.trust.TrustCallback() {
                 @Override
-                public void onTrustResult(org.appwork.utils.net.httpconnection.trust.TrustProviderInterface provider, X509Certificate[] chain, String authType, org.appwork.utils.net.httpconnection.TrustResult result) {
+                public void onTrustResult(org.appwork.utils.net.httpconnection.trust.TrustProviderInterface provider, String authType, org.appwork.utils.net.httpconnection.TrustResult result) {
                 }
 
                 @Override

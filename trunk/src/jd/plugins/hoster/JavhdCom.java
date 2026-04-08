@@ -34,7 +34,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "javhd.com" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 50001 $", interfaceVersion = 3, names = { "javhd.com" }, urls = { "" })
 public class JavhdCom extends PluginForHost {
     public JavhdCom(PluginWrapper wrapper) {
         super(wrapper);

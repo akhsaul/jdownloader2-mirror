@@ -36,7 +36,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 47781 $", interfaceVersion = 3, names = {}, urls = {})
 public class TwobayOrg extends PluginForHost {
     public TwobayOrg(PluginWrapper wrapper) {
         super(wrapper);

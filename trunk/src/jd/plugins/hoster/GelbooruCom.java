@@ -44,7 +44,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.SiteType.SiteTemplate;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51053 $", interfaceVersion = 3, names = {}, urls = {})
 public class GelbooruCom extends PluginForHost {
     public GelbooruCom(PluginWrapper wrapper) {
         super(wrapper);

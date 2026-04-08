@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.JumploadsCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51956 $", interfaceVersion = 3, names = {}, urls = {})
 public class JumploadsComFolder extends PluginForDecrypt {
     public JumploadsComFolder(PluginWrapper wrapper) {
         super(wrapper);

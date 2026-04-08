@@ -35,7 +35,7 @@ import org.jdownloader.plugins.SkipReasonException;
 import org.jdownloader.settings.GeneralSettings;
 import org.jdownloader.translate._JDT;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "filesystem" }, urls = { "filesystem:/.+" })
+@HostPlugin(revision = "$Revision: 51496 $", interfaceVersion = 2, names = { "filesystem" }, urls = { "filesystem:/.+" })
 public class FileSystem extends PluginForHost {
     public FileSystem(PluginWrapper wrapper) {
         super(wrapper);

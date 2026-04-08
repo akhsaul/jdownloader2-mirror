@@ -25,7 +25,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "eweka.nl" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 49941 $", interfaceVersion = 3, names = { "eweka.nl" }, urls = { "" })
 public class UseNetEwekaNl extends UseNet {
     public UseNetEwekaNl(PluginWrapper wrapper) {
         super(wrapper);

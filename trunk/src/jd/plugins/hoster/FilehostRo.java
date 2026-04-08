@@ -30,7 +30,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "filehost.ro" }, urls = { "https?://(?:www\\.)?filehost\\.ro/(\\d+)" })
+@HostPlugin(revision = "$Revision: 49021 $", interfaceVersion = 2, names = { "filehost.ro" }, urls = { "https?://(?:www\\.)?filehost\\.ro/(\\d+)" })
 public class FilehostRo extends PluginForHost {
     public FilehostRo(PluginWrapper wrapper) {
         super(wrapper);

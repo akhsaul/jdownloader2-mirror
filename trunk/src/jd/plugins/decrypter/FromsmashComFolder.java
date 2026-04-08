@@ -50,7 +50,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.FromsmashCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52275 $", interfaceVersion = 3, names = {}, urls = {})
 public class FromsmashComFolder extends PluginForDecrypt {
     public FromsmashComFolder(PluginWrapper wrapper) {
         super(wrapper);

@@ -10,7 +10,7 @@ import jd.plugins.PluginForHost;
 
 import org.appwork.utils.Regex;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "1x.com" }, urls = { "https?://(?:www\\.)?1x\\.com/photo/\\d+" })
+@HostPlugin(revision = "$Revision: 47483 $", interfaceVersion = 2, names = { "1x.com" }, urls = { "https?://(?:www\\.)?1x\\.com/photo/\\d+" })
 public class OneXCom extends PluginForHost {
     public OneXCom(PluginWrapper wrapper) {
         super(wrapper);

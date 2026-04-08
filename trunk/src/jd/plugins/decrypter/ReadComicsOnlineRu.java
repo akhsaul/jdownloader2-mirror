@@ -30,7 +30,7 @@ import org.appwork.utils.Regex;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.components.antiDDoSForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "readcomicsonline.ru" }, urls = { "https?://(?:www\\.)?readcomicsonline\\.ru/comic/.+" })
+@DecrypterPlugin(revision = "$Revision: 51818 $", interfaceVersion = 2, names = { "readcomicsonline.ru" }, urls = { "https?://(?:www\\.)?readcomicsonline\\.ru/comic/.+" })
 public class ReadComicsOnlineRu extends antiDDoSForDecrypt {
     public ReadComicsOnlineRu(PluginWrapper wrapper) {
         super(wrapper);

@@ -42,7 +42,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "dropnshare.me" }, urls = { "https?://(?:www\\.)?dropnshare\\.me/\\?d=([A-Z0-9]{10,})" })
+@HostPlugin(revision = "$Revision: 51850 $", interfaceVersion = 2, names = { "dropnshare.me" }, urls = { "https?://(?:www\\.)?dropnshare\\.me/\\?d=([A-Z0-9]{10,})" })
 public class DropnshareMe extends PluginForHost {
     public DropnshareMe(final PluginWrapper wrapper) {
         super(wrapper);

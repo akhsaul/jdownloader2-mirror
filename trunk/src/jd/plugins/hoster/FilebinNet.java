@@ -28,7 +28,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "filebin.net" }, urls = { "https?://(?:www\\.)?filebin\\.net/(?:qr/)?([a-z0-9]{12,})" })
+@HostPlugin(revision = "$Revision: 50452 $", interfaceVersion = 3, names = { "filebin.net" }, urls = { "https?://(?:www\\.)?filebin\\.net/(?:qr/)?([a-z0-9]{12,})" })
 public class FilebinNet extends PluginForHost {
     public FilebinNet(PluginWrapper wrapper) {
         super(wrapper);

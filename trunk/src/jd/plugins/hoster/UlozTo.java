@@ -54,7 +54,7 @@ import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 import jd.utils.JDUtilities;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51155 $", interfaceVersion = 2, names = {}, urls = {})
 public class UlozTo extends PluginForHost {
     private static final String  QUICKDOWNLOAD                  = "(?i)https?://[^/]+/quickDownload/\\d+";
     /* 2017-01-02: login API seems to be broken --> Use website as workaround */

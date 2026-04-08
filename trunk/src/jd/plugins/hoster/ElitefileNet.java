@@ -35,7 +35,7 @@ import jd.plugins.AccountInfo;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51515 $", interfaceVersion = 3, names = {}, urls = {})
 public class ElitefileNet extends XFileSharingProBasic {
     public ElitefileNet(final PluginWrapper wrapper) {
         super(wrapper);

@@ -18,7 +18,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.Regex;
 import org.appwork.utils.StringUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "app.frame.io" }, urls = { "https://app\\.frame\\.io/reviews/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/?([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})?" })
+@HostPlugin(revision = "$Revision: 50249 $", interfaceVersion = 3, names = { "app.frame.io" }, urls = { "https://app\\.frame\\.io/reviews/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/?([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})?" })
 public class AppFrameIo extends PluginForHost {
 
     public final static String PROPERTY_QUALITY = "selected_quality";

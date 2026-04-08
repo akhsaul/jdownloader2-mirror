@@ -48,7 +48,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.VscoCo;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51420 $", interfaceVersion = 3, names = {}, urls = {})
 public class VscoCoCrawler extends PluginForDecrypt {
     public VscoCoCrawler(PluginWrapper wrapper) {
         super(wrapper);

@@ -30,7 +30,7 @@ import jd.plugins.PluginForDecrypt;
 
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "coub.com" }, urls = { "https?://(?:www\\.)?coub\\.com/(?!(view|embed))[^/]+" })
+@DecrypterPlugin(revision = "$Revision: 50921 $", interfaceVersion = 3, names = { "coub.com" }, urls = { "https?://(?:www\\.)?coub\\.com/(?!(view|embed))[^/]+" })
 public class CoubComDecrypter extends PluginForDecrypt {
     public CoubComDecrypter(PluginWrapper wrapper) {
         super(wrapper);

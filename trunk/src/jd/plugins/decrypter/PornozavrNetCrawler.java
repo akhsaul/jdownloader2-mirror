@@ -27,7 +27,7 @@ import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 import jd.plugins.hoster.PornozavrNet;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 46852 $", interfaceVersion = 3, names = {}, urls = {})
 public class PornozavrNetCrawler extends PornEmbedParser {
     public PornozavrNetCrawler(PluginWrapper wrapper) {
         super(wrapper);

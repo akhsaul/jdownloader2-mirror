@@ -24,7 +24,7 @@ import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49326 $", interfaceVersion = 3, names = {}, urls = {})
 public class Loan2hostCom extends MightyScriptAdLinkFly {
     public Loan2hostCom(PluginWrapper wrapper) {
         super(wrapper);

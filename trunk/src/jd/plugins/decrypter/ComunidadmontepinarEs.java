@@ -18,7 +18,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "comunidadmontepinar.es" }, urls = { "https?://(?:www\\.)?comunidadmontepinar\\.es/episodios/\\d+x\\d+" })
+@DecrypterPlugin(revision = "$Revision: 49542 $", interfaceVersion = 2, names = { "comunidadmontepinar.es" }, urls = { "https?://(?:www\\.)?comunidadmontepinar\\.es/episodios/\\d+x\\d+" })
 public class ComunidadmontepinarEs extends antiDDoSForDecrypt {
     public ComunidadmontepinarEs(PluginWrapper wrapper) {
         super(wrapper);

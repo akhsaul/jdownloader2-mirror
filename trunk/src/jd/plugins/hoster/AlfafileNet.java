@@ -49,7 +49,7 @@ import org.jdownloader.captcha.v2.challenge.cloudflareturnstile.AbstractCloudfla
 import org.jdownloader.captcha.v2.challenge.cloudflareturnstile.CaptchaHelperHostPluginCloudflareTurnstile;
 import org.jdownloader.captcha.v2.challenge.recaptcha.v2.CaptchaHelperHostPluginRecaptchaV2;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52251 $", interfaceVersion = 3, names = {}, urls = {})
 public class AlfafileNet extends PluginForHost {
     public AlfafileNet(PluginWrapper wrapper) {
         super(wrapper);

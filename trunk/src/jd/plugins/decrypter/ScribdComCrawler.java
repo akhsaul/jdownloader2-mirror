@@ -39,7 +39,7 @@ import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 import jd.utils.JDUtilities;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "scribd.com" }, urls = { "https?://(?:(?:www|[a-z]{2})\\.)?scribd\\.com/(?:(?!doc/)collections/\\d+/[A-Za-z0-9\\-_%]+|user/\\d+/[^/]+|(?:audiobook|listen)/\\d+(?:/[^/]+)?)" })
+@DecrypterPlugin(revision = "$Revision: 48118 $", interfaceVersion = 3, names = { "scribd.com" }, urls = { "https?://(?:(?:www|[a-z]{2})\\.)?scribd\\.com/(?:(?!doc/)collections/\\d+/[A-Za-z0-9\\-_%]+|user/\\d+/[^/]+|(?:audiobook|listen)/\\d+(?:/[^/]+)?)" })
 public class ScribdComCrawler extends PluginForDecrypt {
     public ScribdComCrawler(PluginWrapper wrapper) {
         super(wrapper);

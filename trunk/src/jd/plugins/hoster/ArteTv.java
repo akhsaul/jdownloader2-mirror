@@ -31,7 +31,7 @@ import org.appwork.utils.StringUtils;
 import org.jdownloader.downloader.hls.HLSDownloader;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "arte.tv" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51231 $", interfaceVersion = 3, names = { "arte.tv" }, urls = { "" })
 public class ArteTv extends PluginForHost {
     @SuppressWarnings("deprecation")
     public ArteTv(PluginWrapper wrapper) {

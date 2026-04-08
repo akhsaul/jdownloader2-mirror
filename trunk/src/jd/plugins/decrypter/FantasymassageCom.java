@@ -37,7 +37,7 @@ import jd.plugins.PluginForHost;
 import jd.plugins.components.SiteType.SiteTemplate;
 import jd.utils.JDUtilities;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "fantasymassage.com" }, urls = { "https?://members\\.fantasymassage\\.com/[a-z]{2}/(?:video|picture)//[A-Za-z0-9\\-_]+/\\d+|https?://members\\.fantasymassage\\.com/[a-z]{2}/pornstar//\\d+/[A-Za-z0-9\\-_]+" })
+@DecrypterPlugin(revision = "$Revision: 45822 $", interfaceVersion = 2, names = { "fantasymassage.com" }, urls = { "https?://members\\.fantasymassage\\.com/[a-z]{2}/(?:video|picture)//[A-Za-z0-9\\-_]+/\\d+|https?://members\\.fantasymassage\\.com/[a-z]{2}/pornstar//\\d+/[A-Za-z0-9\\-_]+" })
 public class FantasymassageCom extends PluginForDecrypt {
     public FantasymassageCom(PluginWrapper wrapper) {
         super(wrapper);

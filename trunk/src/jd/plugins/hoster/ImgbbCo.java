@@ -16,17 +16,15 @@
 package jd.plugins.hoster;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-import org.appwork.utils.StringUtils;
-import org.appwork.utils.formatter.SizeFormatter;
-import org.jdownloader.plugins.controller.LazyPlugin;
-
 import jd.PluginWrapper;
 import jd.http.Browser;
+import jd.http.URLConnectionAdapter;
 import jd.nutils.encoding.Encoding;
 import jd.parser.Regex;
 import jd.plugins.DownloadLink;
@@ -36,7 +34,11 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+import org.appwork.utils.StringUtils;
+import org.appwork.utils.formatter.SizeFormatter;
+import org.jdownloader.plugins.controller.LazyPlugin;
+
+@HostPlugin(revision = "$Revision: 52486 $", interfaceVersion = 3, names = {}, urls = {})
 public class ImgbbCo extends PluginForHost {
     public ImgbbCo(PluginWrapper wrapper) {
         super(wrapper);
@@ -49,13 +51,13 @@ public class ImgbbCo extends PluginForHost {
 
     @Override
     public String getAGBLink() {
-        return "https://imgbb.com/tos";
+        return "https://" + getHost() + "/tos";
     }
 
     private static List<String[]> getPluginDomains() {
         final List<String[]> ret = new ArrayList<String[]>();
         // each entry in List<String[]> will result in one PluginForHost, Plugin.getHost() will return String[0]->main domain
-        ret.add(new String[] { "imgbb.com", "ibb.co" });
+        ret.add(new String[] { "imgbb.com", "ibb.co", "i.ibb.co" });
         return ret;
     }
 
@@ -71,7 +73,7 @@ public class ImgbbCo extends PluginForHost {
     public static String[] getAnnotationUrls() {
         final List<String> ret = new ArrayList<String>();
         for (final String[] domains : getPluginDomains()) {
-            ret.add("https?://(?:www\\.)?" + buildHostsPatternPart(domains) + "/(?!album)([A-Za-z0-9]+)");
+            ret.add("https?://(?:www\\.)?" + buildHostsPatternPart(domains) + "/(?!album)([A-Za-z0-9]+)(/.*)?");
         }
         return ret.toArray(new String[0]);
     }
@@ -95,15 +97,30 @@ public class ImgbbCo extends PluginForHost {
     }
 
     @Override
+    protected String getDefaultFileName(DownloadLink link) {
+        return this.getFID(link) + ".jpg";
+    }
+
+    private final String FREE_DIRECTLINK_PROPERTY = "free_directlink";
+
+    @Override
     public AvailableStatus requestFileInformation(final DownloadLink link) throws IOException, PluginException {
         final String fid = this.getFID(link);
-        if (!link.isNameSet()) {
-            /* Fallback */
-            link.setName(fid + ".jpg");
-        }
-        if (fid.toLowerCase(Locale.ENGLISH).equals(fid)) {
-            /* Only lowercase -> Invalid fid e.g. https://imgbb.com/tos -> "tos" */
-            throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
+        final String probe_URL = link.getStringProperty(FREE_DIRECTLINK_PROPERTY, link.getPluginPatternMatcher());
+        if (probe_URL != null && new URL(probe_URL).getHost().contains("i.ibb.co")) {
+            String url = probe_URL;
+            if (!url.matches(".+\\.(png|jpe?g|gif)$")) {
+                // rewrite invalid/incomplete to valid URL
+                url = "https://i.ibb.co/" + fid + "/" + fid + ".png";
+            }
+            try {
+                final URLConnectionAdapter con = basicLinkCheck(br.cloneBrowser(), br.createHeadRequest(url), link, null, ".jpg");
+                link.setProperty(FREE_DIRECTLINK_PROPERTY, con.getURL().toExternalForm());
+                return AvailableStatus.TRUE;
+            } catch (PluginException e) {
+                link.removeProperty(FREE_DIRECTLINK_PROPERTY);
+                throw e;
+            }
         }
         this.setBrowserExclusive();
         br.setFollowRedirects(true);
@@ -125,7 +142,7 @@ public class ImgbbCo extends PluginForHost {
         if (filesize != null) {
             link.setDownloadSize(SizeFormatter.getSize(filesize));
         }
-        if (filename == null && filesize == null && !br.containsHTML(Pattern.quote(fid))) {
+        if (filename == null && filesize == null && (!br.containsHTML(Pattern.quote(fid)) || br.containsHTML(">\\s*Diese Seite existiert nicht\\s*<"))) {
             /* E.g. https://imgbb.com/login or https://imgbb.com/upload */
             /*
              * 2024-06-04: Important: The fileID inside the URL can change (looks like they got old and new IDs) so it is important to only
@@ -138,13 +155,13 @@ public class ImgbbCo extends PluginForHost {
 
     @Override
     public void handleFree(final DownloadLink link) throws Exception, PluginException {
-        handleDownload(link, FREE_RESUME, FREE_MAXCHUNKS, "free_directlink");
+        handleDownload(link, FREE_RESUME, FREE_MAXCHUNKS, FREE_DIRECTLINK_PROPERTY);
     }
 
     private void handleDownload(final DownloadLink link, final boolean resumable, final int maxchunks, final String directlinkproperty) throws Exception, PluginException {
         if (!attemptStoredDownloadurlDownload(link, directlinkproperty, resumable, maxchunks)) {
             requestFileInformation(link);
-            String dllink = br.getRegex("href\\s*=\\s*\"(https?://[^\"]+)\"[^>]*download\\s*=").getMatch(0);
+            final String dllink = br.getRegex("href\\s*=\\s*\"(https?://[^\"]+)\"[^>]*download\\s*=").getMatch(0);
             if (StringUtils.isEmpty(dllink)) {
                 logger.warning("Failed to find final downloadurl");
                 throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
@@ -178,12 +195,8 @@ public class ImgbbCo extends PluginForHost {
         try {
             final Browser brc = br.cloneBrowser();
             dl = new jd.plugins.BrowserAdapter().openDownload(brc, link, url, resumable, maxchunks);
-            if (this.looksLikeDownloadableContent(dl.getConnection())) {
-                return true;
-            } else {
-                brc.followConnection(true);
-                throw new IOException();
-            }
+            handleConnectionErrors(brc, dl.getConnection());
+            return true;
         } catch (final Throwable e) {
             logger.log(e);
             try {
@@ -195,15 +208,17 @@ public class ImgbbCo extends PluginForHost {
     }
 
     @Override
+    protected void throwConnectionExceptions(final Browser br, final URLConnectionAdapter con) throws PluginException, IOException {
+        switch (con.getResponseCode()) {
+        case 404:
+            throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
+        default:
+            super.throwConnectionExceptions(br, con);
+        }
+    }
+
+    @Override
     public int getMaxSimultanFreeDownloadNum() {
         return Integer.MAX_VALUE;
-    }
-
-    @Override
-    public void reset() {
-    }
-
-    @Override
-    public void resetDownloadlink(DownloadLink link) {
     }
 }

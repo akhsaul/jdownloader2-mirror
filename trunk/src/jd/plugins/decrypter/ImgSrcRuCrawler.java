@@ -46,7 +46,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.ImgSrcRu;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50648 $", interfaceVersion = 2, names = {}, urls = {})
 public class ImgSrcRuCrawler extends PluginForDecrypt {
     // dev notes
     // &pwd= is a md5 hash id once you've provided password for that album.

@@ -11,7 +11,7 @@ import jd.http.Browser;
 import jd.plugins.DecrypterPlugin;
 import jd.plugins.hoster.BurningCamelCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51660 $", interfaceVersion = 2, names = {}, urls = {})
 public class BurningCamelComCrawler extends PornEmbedParser {
     public BurningCamelComCrawler(PluginWrapper wrapper) {
         super(wrapper);

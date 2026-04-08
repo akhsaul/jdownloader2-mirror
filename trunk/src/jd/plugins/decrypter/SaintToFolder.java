@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.SaintTo;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52231 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { SaintTo.class })
 public class SaintToFolder extends PluginForDecrypt {
     public SaintToFolder(PluginWrapper wrapper) {

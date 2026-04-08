@@ -22,7 +22,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "fuskator.com" }, urls = { "https?://(?:www\\.)?fuskator\\.com/(thumbs|expanded)/[^/]+/[^/]+\\.html" })
+@DecrypterPlugin(revision = "$Revision: 50600 $", interfaceVersion = 2, names = { "fuskator.com" }, urls = { "https?://(?:www\\.)?fuskator\\.com/(thumbs|expanded)/[^/]+/[^/]+\\.html" })
 public class FuskatorCom extends PluginForDecrypt {
     private enum RequestType {
         AUTH,

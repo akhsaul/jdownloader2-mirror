@@ -32,7 +32,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "dummydirect.jdownloader.org" }, urls = { "https?://dummydirect\\.jdownloader\\.org/[a-f0-9A-F]+" })
+@DecrypterPlugin(revision = "$Revision: 48194 $", interfaceVersion = 3, names = { "dummydirect.jdownloader.org" }, urls = { "https?://dummydirect\\.jdownloader\\.org/[a-f0-9A-F]+" })
 public class DummyDirect extends PluginForDecrypt {
     public DummyDirect(final PluginWrapper wrapper) {
         super(wrapper);

@@ -27,7 +27,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "uafile.com" }, urls = { "https?://(?:www\\.)?uafile\\.com/(\\d+)" })
+@HostPlugin(revision = "$Revision: 47665 $", interfaceVersion = 2, names = { "uafile.com" }, urls = { "https?://(?:www\\.)?uafile\\.com/(\\d+)" })
 public class UaFileCom extends PluginForHost {
     public UaFileCom(PluginWrapper wrapper) {
         super(wrapper);

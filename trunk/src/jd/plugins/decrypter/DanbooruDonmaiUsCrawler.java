@@ -42,7 +42,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.SiteType.SiteTemplate;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "danbooru.donmai.us" }, urls = { "https?://(?:www\\.)?danbooru\\.donmai\\.us/posts\\?(?:page=\\d+\\&)?tags=[^<>\"\\&=\\?/]+" })
+@DecrypterPlugin(revision = "$Revision: 49352 $", interfaceVersion = 3, names = { "danbooru.donmai.us" }, urls = { "https?://(?:www\\.)?danbooru\\.donmai\\.us/posts\\?(?:page=\\d+\\&)?tags=[^<>\"\\&=\\?/]+" })
 public class DanbooruDonmaiUsCrawler extends PluginForDecrypt {
     public DanbooruDonmaiUsCrawler(PluginWrapper wrapper) {
         super(wrapper);

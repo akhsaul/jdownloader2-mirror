@@ -59,7 +59,7 @@ import org.jdownloader.plugins.config.PluginJsonConfig;
 import org.jdownloader.plugins.controller.LazyPlugin;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "dropbox.com" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 52361 $", interfaceVersion = 3, names = { "dropbox.com" }, urls = { "" })
 public class DropboxCom extends PluginForHost {
     public DropboxCom(PluginWrapper wrapper) {
         super(wrapper);
@@ -96,6 +96,20 @@ public class DropboxCom extends PluginForHost {
             br.getHeaders().put(HTTPConstants.HEADER_REQUEST_USER_AGENT, customUserAgent);
         }
         return br;
+    }
+
+    @Override
+    public String getMirrorID(DownloadLink link) {
+        if (link.getFinalFileName() == null && "unknownFileName".equals(link.getName())) {
+            // avoid mirror handling for files that have not yet checked
+            return getLinkID(link);
+        }
+        return super.getMirrorID(link);
+    }
+
+    @Override
+    protected String getDefaultFileName(DownloadLink link) {
+        return link.getStringProperty(PROPERTY_ORIGINAL_FILENAME);
     }
 
     public static Browser prepBrAPI(final Browser br) {
@@ -223,6 +237,7 @@ public class DropboxCom extends PluginForHost {
                         filenameFromHeader = Encoding.htmlDecode(filenameFromHeader).trim();
                     }
                     link.setFinalFileName(filenameFromHeader);
+                    link.setProperty(DropboxCom.PROPERTY_ORIGINAL_FILENAME, filenameFromHeader);
                 }
                 return AvailableStatus.TRUE;
             }
@@ -258,10 +273,7 @@ public class DropboxCom extends PluginForHost {
          */
         logger.info("Looking to get file info via file view URL");
         br.getPage(this.getRootFolderURL(link, link.getPluginPatternMatcher()));
-        if (br.getHttpConnection().getResponseCode() == 403) {
-            /* Error 403 -> File is offline. */
-            throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
-        } else if (br.getHttpConnection().getResponseCode() == 404) {
+        if (DropBoxComCrawler.isOfflineWebsite(br)) {
             throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND);
         }
         /**

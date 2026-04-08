@@ -32,7 +32,7 @@ import org.appwork.utils.StringUtils;
 import org.jdownloader.downloader.hls.HLSDownloader;
 import org.jdownloader.plugins.components.hls.HlsContainer;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "onf.ca", "nfb.ca" }, urls = { "https?://(?:www\\.)?onf\\.ca/film/([a-z0-9\\-_]+)", "https?://(?:www\\.)?nfb\\.ca/film/([a-z0-9\\-_]+)" })
+@HostPlugin(revision = "$Revision: 51170 $", interfaceVersion = 3, names = { "onf.ca", "nfb.ca" }, urls = { "https?://(?:www\\.)?onf\\.ca/film/([a-z0-9\\-_]+)", "https?://(?:www\\.)?nfb\\.ca/film/([a-z0-9\\-_]+)" })
 public class OnfCa extends PluginForHost {
     public OnfCa(PluginWrapper wrapper) {
         super(wrapper);

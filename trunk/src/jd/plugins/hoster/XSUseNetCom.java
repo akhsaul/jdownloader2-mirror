@@ -24,7 +24,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "xsusenet.com" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51558 $", interfaceVersion = 3, names = { "xsusenet.com" }, urls = { "" })
 public class XSUseNetCom extends UseNet {
     /** 2025-09-24: TODO: Change this to easyusenet.com, see: https://board.jdownloader.org/showthread.php?t=97899 */
     public XSUseNetCom(PluginWrapper wrapper) {

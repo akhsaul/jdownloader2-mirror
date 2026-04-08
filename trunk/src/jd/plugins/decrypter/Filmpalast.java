@@ -28,7 +28,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "filmpalast.to" }, urls = { "https?://(?:www\\.)?filmpalast\\.to/stream/([a-z0-9\\-]+)" })
+@DecrypterPlugin(revision = "$Revision: 46532 $", interfaceVersion = 3, names = { "filmpalast.to" }, urls = { "https?://(?:www\\.)?filmpalast\\.to/stream/([a-z0-9\\-]+)" })
 public class Filmpalast extends PluginForDecrypt {
     public Filmpalast(PluginWrapper wrapper) {
         super(wrapper);

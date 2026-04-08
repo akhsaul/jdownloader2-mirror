@@ -35,7 +35,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.ImageNetzDe;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51193 $", interfaceVersion = 3, names = {}, urls = {})
 public class ImagenetzDeCrawler extends PluginForDecrypt {
     public ImagenetzDeCrawler(PluginWrapper wrapper) {
         super(wrapper);

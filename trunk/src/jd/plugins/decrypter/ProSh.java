@@ -26,7 +26,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "pro.sh" }, urls = { "https?://(?:www\\.)?pro\\.sh/[A-Za-z0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 45234 $", interfaceVersion = 3, names = { "pro.sh" }, urls = { "https?://(?:www\\.)?pro\\.sh/[A-Za-z0-9]+" })
 public class ProSh extends PluginForDecrypt {
     public ProSh(PluginWrapper wrapper) {
         super(wrapper);

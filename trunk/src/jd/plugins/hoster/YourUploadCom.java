@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51062 $", interfaceVersion = 2, names = {}, urls = {})
 public class YourUploadCom extends PluginForHost {
     private static final Pattern PATTERN_EMBED = Pattern.compile("/embed/([A-Za-z0-9]+)", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_WATCH = Pattern.compile("/watch/([A-Za-z0-9]+)", Pattern.CASE_INSENSITIVE);

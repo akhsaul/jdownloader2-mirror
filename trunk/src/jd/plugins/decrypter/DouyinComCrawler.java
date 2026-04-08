@@ -30,7 +30,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.DouyinCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 46558 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { DouyinCom.class })
 public class DouyinComCrawler extends PluginForDecrypt {
     public DouyinComCrawler(PluginWrapper wrapper) {

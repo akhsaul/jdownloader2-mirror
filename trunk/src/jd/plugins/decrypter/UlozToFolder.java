@@ -38,7 +38,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51155 $", interfaceVersion = 3, names = {}, urls = {})
 public class UlozToFolder extends PluginForDecrypt {
     public UlozToFolder(PluginWrapper wrapper) {
         super(wrapper);

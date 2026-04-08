@@ -42,7 +42,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.JamendoCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48194 $", interfaceVersion = 2, names = {}, urls = {})
 @PluginDependencies(dependencies = { JamendoCom.class })
 public class JamendoComCrawler extends PluginForDecrypt {
     public JamendoComCrawler(PluginWrapper wrapper) {

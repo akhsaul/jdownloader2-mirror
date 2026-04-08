@@ -34,7 +34,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "jizzbunker.com" }, urls = { "https?://(?:www\\.)?jizzbunker\\.com/(?:[a-z]{2}/)?(\\d+)/([a-z0-9\\-]+)\\.html" })
+@HostPlugin(revision = "$Revision: 48064 $", interfaceVersion = 3, names = { "jizzbunker.com" }, urls = { "https?://(?:www\\.)?jizzbunker\\.com/(?:[a-z]{2}/)?(\\d+)/([a-z0-9\\-]+)\\.html" })
 public class JizzbunkerCom extends PluginForHost {
     public JizzbunkerCom(PluginWrapper wrapper) {
         super(wrapper);

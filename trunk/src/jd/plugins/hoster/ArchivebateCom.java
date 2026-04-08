@@ -35,7 +35,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.ArchivebateComCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49838 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { ArchivebateComCrawler.class })
 public class ArchivebateCom extends PluginForHost {
     public ArchivebateCom(PluginWrapper wrapper) {

@@ -48,7 +48,7 @@ import org.appwork.utils.parser.UrlQuery;
 import org.jdownloader.plugins.components.config.WebshareCzConfig;
 import org.jdownloader.plugins.config.PluginJsonConfig;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51622 $", interfaceVersion = 2, names = {}, urls = {})
 public class WebShareCz extends PluginForHost {
     public WebShareCz(PluginWrapper wrapper) {
         super(wrapper);

@@ -33,7 +33,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49396 $", interfaceVersion = 2, names = {}, urls = {})
 public class PastebinComCrawler extends AbstractPastebinCrawler {
     public PastebinComCrawler(PluginWrapper wrapper) {
         super(wrapper);

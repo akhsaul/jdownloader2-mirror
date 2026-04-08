@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "fanfox.net" }, urls = { "https?://[\\w\\.]*?(?:mangafox\\.(com|me|mobi|la)|fanfox\\.net)/manga/[A-Za-z0-9\\-_]+/((v[A-Za-z0-9]+/c[\\d\\.]+|c[\\d\\.]+))?" })
+@DecrypterPlugin(revision = "$Revision: 43291 $", interfaceVersion = 3, names = { "fanfox.net" }, urls = { "https?://[\\w\\.]*?(?:mangafox\\.(com|me|mobi|la)|fanfox\\.net)/manga/[A-Za-z0-9\\-_]+/((v[A-Za-z0-9]+/c[\\d\\.]+|c[\\d\\.]+))?" })
 public class Mangafox extends PluginForDecrypt {
     public Mangafox(PluginWrapper wrapper) {
         super(wrapper);

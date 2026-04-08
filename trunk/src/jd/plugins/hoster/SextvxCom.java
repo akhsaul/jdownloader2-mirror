@@ -29,7 +29,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "sextvx.com" }, urls = { "https?://(?:www\\.)?sextvx\\.com/(?:(?:[a-z]{2}/)?video/\\d+/[a-z0-9\\-]+|embed/\\d+)" })
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = { "sextvx.com" }, urls = { "https?://(?:www\\.)?sextvx\\.com/(?:(?:[a-z]{2}/)?video/\\d+/[a-z0-9\\-]+|embed/\\d+)" })
 public class SextvxCom extends PluginForHost {
     public SextvxCom(PluginWrapper wrapper) {
         super(wrapper);

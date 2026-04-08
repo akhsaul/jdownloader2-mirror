@@ -47,7 +47,7 @@ import jd.plugins.PluginForHost;
 import jd.plugins.components.TwentyOneMembersVariantInfo;
 import jd.utils.JDUtilities;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "21members.com" }, urls = { "http://21members\\.com/dummy/file/\\d+" })
+@HostPlugin(revision = "$Revision: 51945 $", interfaceVersion = 3, names = { "21members.com" }, urls = { "http://21members\\.com/dummy/file/\\d+" })
 public class TwentyOneMembersCom extends PluginForHost {
     private final String LOGIN_ERROR_REGEX = "<ul.*?class=\"loginErrors\".*?>.*?<li class=\"warning\">(.+?)</li>";
 

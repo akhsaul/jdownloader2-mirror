@@ -59,7 +59,7 @@ import org.jdownloader.scripting.JavaScriptEngineFactory;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.FunctionObject;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51444 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { jd.plugins.hoster.GoogleDriveDirectoryIndex.class })
 public class GoogleDriveDirectoryIndexCrawler extends PluginForDecrypt {
     private static final String PROPERTY_FOLDER_USE_OLD_POST_REQUEST = "folder_use_old_post_request";

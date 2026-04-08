@@ -40,7 +40,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.PluginJSonUtils;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51142 $", interfaceVersion = 3, names = {}, urls = {})
 public class HideCx extends PluginForDecrypt {
     public HideCx(PluginWrapper wrapper) {
         super(wrapper);

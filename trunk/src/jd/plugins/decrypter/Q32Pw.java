@@ -42,7 +42,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.PluginJSonUtils;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49724 $", interfaceVersion = 3, names = {}, urls = {})
 public class Q32Pw extends PluginForDecrypt {
     public Q32Pw(PluginWrapper wrapper) {
         super(wrapper);

@@ -30,7 +30,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
 //Links come from a decrypter
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "soundsnap.com" }, urls = { "https?://(?:www\\.)?soundsnap\\.com/node/(\\d+)" })
+@HostPlugin(revision = "$Revision: 49212 $", interfaceVersion = 2, names = { "soundsnap.com" }, urls = { "https?://(?:www\\.)?soundsnap\\.com/node/(\\d+)" })
 public class SoundSnapCom extends PluginForHost {
     public SoundSnapCom(PluginWrapper wrapper) {
         super(wrapper);

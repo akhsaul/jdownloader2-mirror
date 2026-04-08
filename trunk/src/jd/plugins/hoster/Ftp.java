@@ -60,7 +60,7 @@ import org.jdownloader.plugins.controller.LazyPlugin;
 
 // DEV NOTES:
 // - ftp filenames can contain & characters!
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "ftp" }, urls = { "ftpviajd://.*?\\.[\\p{L}\\p{Nd}a-zA-Z0-9]{1,}(:\\d+)?/([^\\?&\"\r\n ]+|$)" })
+@HostPlugin(revision = "$Revision: 51066 $", interfaceVersion = 2, names = { "ftp" }, urls = { "ftpviajd://.*?\\.[\\p{L}\\p{Nd}a-zA-Z0-9]{1,}(:\\d+)?/([^\\?&\"\r\n ]+|$)" })
 public class Ftp extends PluginForHost implements DomainInfoFactory {
     public static Set<String> AUTH_TLS_DISABLED = new HashSet<String>();
 

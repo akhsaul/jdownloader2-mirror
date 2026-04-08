@@ -23,7 +23,7 @@ import jd.http.Browser;
 import jd.plugins.Account;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50983 $", interfaceVersion = 3, names = {}, urls = {})
 public class AnysexCom extends KernelVideoSharingComV2 {
     public AnysexCom(final PluginWrapper wrapper) {
         super(wrapper);

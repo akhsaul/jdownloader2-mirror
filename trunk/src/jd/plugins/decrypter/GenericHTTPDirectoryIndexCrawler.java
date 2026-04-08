@@ -47,7 +47,7 @@ import org.jdownloader.auth.AuthenticationController;
 import org.jdownloader.plugins.components.abstractGenericHTTPDirectoryIndexCrawler;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "HTTPDirectoryCrawler" }, urls = { "jd://directoryindex://.+" })
+@DecrypterPlugin(revision = "$Revision: 51973 $", interfaceVersion = 3, names = { "HTTPDirectoryCrawler" }, urls = { "jd://directoryindex://.+" })
 public class GenericHTTPDirectoryIndexCrawler extends abstractGenericHTTPDirectoryIndexCrawler {
     private enum DirectoryListingMode {
         NGINX,

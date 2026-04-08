@@ -30,7 +30,7 @@ import org.jdownloader.plugins.components.config.Keep2shareConfig;
 import org.jdownloader.plugins.components.config.Keep2shareConfigFileboom;
 import org.jdownloader.plugins.controller.LazyPlugin.FEATURE;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50178 $", interfaceVersion = 2, names = {}, urls = {})
 @PluginDependencies(dependencies = { Keep2ShareCcDecrypter.class })
 public class FileBoomMe extends K2SApi {
     public FileBoomMe(PluginWrapper wrapper) {

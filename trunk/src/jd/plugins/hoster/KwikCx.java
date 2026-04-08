@@ -39,7 +39,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.download.HashInfo;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50434 $", interfaceVersion = 3, names = {}, urls = {})
 public class KwikCx extends PluginForHost {
     public KwikCx(PluginWrapper wrapper) {
         super(wrapper);

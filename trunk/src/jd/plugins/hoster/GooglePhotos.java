@@ -31,7 +31,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.utils.locale.JDL;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "photos.google.com" }, urls = { "https?://photos\\.google\\.com/share/[A-Za-z0-9\\-_]+/photo/[A-Za-z0-9\\-_]+\\?key=[A-Za-z0-9\\-_]+" })
+@HostPlugin(revision = "$Revision: 49212 $", interfaceVersion = 3, names = { "photos.google.com" }, urls = { "https?://photos\\.google\\.com/share/[A-Za-z0-9\\-_]+/photo/[A-Za-z0-9\\-_]+\\?key=[A-Za-z0-9\\-_]+" })
 public class GooglePhotos extends PluginForHost {
     public GooglePhotos(PluginWrapper wrapper) {
         super(wrapper);

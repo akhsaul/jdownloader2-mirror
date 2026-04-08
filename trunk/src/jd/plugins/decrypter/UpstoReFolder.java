@@ -29,7 +29,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.UpstoRe;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 46440 $", interfaceVersion = 2, names = {}, urls = {})
 @PluginDependencies(dependencies = { UpstoRe.class })
 public class UpstoReFolder extends PluginForDecrypt {
     public UpstoReFolder(PluginWrapper wrapper) {

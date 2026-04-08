@@ -38,7 +38,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52031 $", interfaceVersion = 3, names = {}, urls = {})
 /**
  * This is a dummy plugin only used to provide login functionality. There is a crawler plugin using this plugin to login in order to be able
  * to crawl links to other websites.

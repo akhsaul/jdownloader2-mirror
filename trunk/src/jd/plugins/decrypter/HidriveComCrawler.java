@@ -40,7 +40,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.HidriveCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "hidrive.com" }, urls = { "https?://(?:my\\.hidrive\\.com/share/|(?:www\\.)?hidrive\\.strato\\.com/share/)(.+)" })
+@DecrypterPlugin(revision = "$Revision: 49063 $", interfaceVersion = 3, names = { "hidrive.com" }, urls = { "https?://(?:my\\.hidrive\\.com/share/|(?:www\\.)?hidrive\\.strato\\.com/share/)(.+)" })
 public class HidriveComCrawler extends PluginForDecrypt {
     public HidriveComCrawler(PluginWrapper wrapper) {
         super(wrapper);

@@ -24,7 +24,7 @@ import jd.plugins.HostPlugin;
 
 import org.appwork.utils.Regex;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51169 $", interfaceVersion = 3, names = {}, urls = {})
 public class OkXxx extends KernelVideoSharingComV2 {
     public OkXxx(final PluginWrapper wrapper) {
         super(wrapper);

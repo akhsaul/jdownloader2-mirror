@@ -34,7 +34,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "amazon.com" }, urls = { "https://amazondecrypted\\.com/\\d+" })
+@HostPlugin(revision = "$Revision: 49989 $", interfaceVersion = 2, names = { "amazon.com" }, urls = { "https://amazondecrypted\\.com/\\d+" })
 public class AmazonCloud extends PluginForHost {
     public AmazonCloud(PluginWrapper wrapper) {
         super(wrapper);

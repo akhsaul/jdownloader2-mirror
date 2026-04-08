@@ -33,7 +33,7 @@ import jd.plugins.download.DownloadInterface;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "hearthis.at" }, urls = { "https?://(?:www\\.)?hearthis\\.at/([^/]+)/([A-Za-z0-9-\\.]+)/?" })
+@HostPlugin(revision = "$Revision: 49518 $", interfaceVersion = 3, names = { "hearthis.at" }, urls = { "https?://(?:www\\.)?hearthis\\.at/([^/]+)/([A-Za-z0-9-\\.]+)/?" })
 public class HearthisAt extends PluginForHost {
     public HearthisAt(PluginWrapper wrapper) {
         super(wrapper);

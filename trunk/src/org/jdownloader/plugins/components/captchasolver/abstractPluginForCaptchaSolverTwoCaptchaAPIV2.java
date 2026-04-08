@@ -88,7 +88,7 @@ public abstract class abstractPluginForCaptchaSolverTwoCaptchaAPIV2 extends abst
                 final RecaptchaV2Challenge challenge = (RecaptchaV2Challenge) job.getChallenge();
                 task.put("type", "RecaptchaV2TaskProxyless");
                 task.put("websiteKey", challenge.getSiteKey());
-                task.put("websiteURL", challenge.getSiteUrl());
+                task.put("websiteURL", challenge.getSiteUrl(this));
                 final Map<String, Object> action = challenge.getV3Action();
                 if (challenge.isV3() || action != null) {
                     task.put("type", "RecaptchaV3TaskProxyless");
@@ -104,7 +104,7 @@ public abstract class abstractPluginForCaptchaSolverTwoCaptchaAPIV2 extends abst
                 if (minScore != null) {
                     task.put("minScore", minScore);
                 }
-                if (account.getHoster().equals("2captcha.com") && challenge.isEnterprise() && StringUtils.containsIgnoreCase(challenge.getSiteUrl(), "filer.net")) {
+                if (account.getHoster().equals("2captcha.com") && challenge.isEnterprise() && StringUtils.containsIgnoreCase(challenge.getSiteUrl(this), "filer.net")) {
                     /**
                      * Special workaround for API bug, this should be RecaptchaV3TaskProxyless but if we use it we will get wrong results.
                      * <br>
@@ -119,7 +119,7 @@ public abstract class abstractPluginForCaptchaSolverTwoCaptchaAPIV2 extends abst
             } else if (captchachallenge instanceof HCaptchaChallenge) {
                 final HCaptchaChallenge challenge = (HCaptchaChallenge) captchachallenge;
                 task.put("type", "HCaptchaTaskProxyless");
-                task.put("websiteURL", challenge.getSiteUrl());
+                task.put("websiteURL", challenge.getSiteUrl(this));
                 task.put("websiteKey", challenge.getSiteKey());
                 final AbstractHCaptcha<?> hCaptcha = challenge.getAbstractCaptchaHelperHCaptcha();
                 if (hCaptcha != null && AbstractHCaptcha.TYPE.INVISIBLE.equals(hCaptcha.getType())) {
@@ -131,12 +131,12 @@ public abstract class abstractPluginForCaptchaSolverTwoCaptchaAPIV2 extends abst
                 task.put("type", "CutCaptchaTaskProxyless");
                 task.put("miseryKey", challenge.getSiteKey());
                 task.put("apiKey", challenge.getApiKey());
-                task.put("websiteURL", challenge.getSiteUrl());
+                task.put("websiteURL", challenge.getSiteUrl(this));
             } else if (captchachallenge instanceof CloudflareTurnstileChallenge) {
                 /* Cloudflare turnstile: https://2captcha.com/api-docs/cloudflare-turnstile */
                 final CloudflareTurnstileChallenge challenge = (CloudflareTurnstileChallenge) captchachallenge;
                 task.put("type", "TurnstileTaskProxyless");
-                task.put("websiteURL", challenge.getSiteUrl());
+                task.put("websiteURL", challenge.getSiteUrl(this));
                 task.put("websiteKey", challenge.getSiteKey());
             } else if (captchachallenge instanceof ClickCaptchaChallenge) {
                 /* Coordinates task: https://2captcha.com/api-docs/coordinates */
@@ -169,7 +169,7 @@ public abstract class abstractPluginForCaptchaSolverTwoCaptchaAPIV2 extends abst
             /* Submit captcha */
             final PostRequest req_createTask = br.createJSonPostRequest(this.getApiBase() + "/createTask", postdata);
             br.getPage(req_createTask);
-            Map<String, Object> entries = this.handleAPIErrors(br, getCurrentAccount());
+            Map<String, Object> entries = this.handleAPIErrors(br, account);
             final String id = entries.get("taskId").toString();
             final Map<String, Object> postdata_getTaskResult = new HashMap<String, Object>();
             postdata_getTaskResult.put("clientKey", apikey);
@@ -180,7 +180,7 @@ public abstract class abstractPluginForCaptchaSolverTwoCaptchaAPIV2 extends abst
                 checkInterruption();
                 final PostRequest req_getTaskResult = br.createJSonPostRequest(this.getApiBase() + "/getTaskResult", postdata_getTaskResult);
                 br.getPage(req_getTaskResult);
-                entries = this.handleAPIErrors(br, getCurrentAccount());
+                entries = this.handleAPIErrors(br, account);
                 logger.info(br.getRequest().getHtmlCode());
                 final String status = entries.get("status").toString();
                 if (status.equalsIgnoreCase("processing")) {
@@ -282,7 +282,7 @@ public abstract class abstractPluginForCaptchaSolverTwoCaptchaAPIV2 extends abst
     }
 
     /** See docs: https://2captcha.com/api-docs/error-codes */
-    private Map<String, Object> handleAPIErrors(final Browser br, final Account account) throws Exception {
+    protected Map<String, Object> handleAPIErrors(final Browser br, final Account account) throws Exception {
         Map<String, Object> entries = null;
         try {
             /* 2024-11-21: Hotfix for API returning invalid json: "1{"val" (string starts with "1" and not with "{". */
@@ -293,6 +293,11 @@ public abstract class abstractPluginForCaptchaSolverTwoCaptchaAPIV2 extends abst
             final long wait = 1 * 60 * 1000;
             throw new AccountUnavailableException(msg, wait);
         }
+        handleAPIErrors(entries, account);
+        return entries;
+    }
+
+    protected void handleAPIErrors(final Map<String, Object> entries, final Account account) throws Exception {
         final HashSet<String> accountErrorsPermament = new HashSet<String>();
         accountErrorsPermament.add("ERROR_KEY_DOES_NOT_EXIST");
         accountErrorsPermament.add("ERROR_ZERO_BALANCE");
@@ -301,6 +306,10 @@ public abstract class abstractPluginForCaptchaSolverTwoCaptchaAPIV2 extends abst
         final HashSet<String> accountErrorsTemp = new HashSet<String>();
         accountErrorsTemp.add("ERROR_NO_SLOT_AVAILABLE");
         accountErrorsTemp.add("ERROR_IP_NOT_ALLOWED");
+        /*
+         * This should only happen if the user uses an IP black- or whitelist and when tries to solve captchas using a blocked IP ->
+         * User-induced problem!
+         */
         accountErrorsTemp.add("ERROR_IP_BLOCKED");
         final HashSet<String> captchaErrors = new HashSet<String>();
         captchaErrors.add("ERROR_ZERO_CAPTCHA_FILESIZE");
@@ -319,7 +328,7 @@ public abstract class abstractPluginForCaptchaSolverTwoCaptchaAPIV2 extends abst
         final int errorId = ((Number) entries.get("errorId")).intValue();
         if (errorId == 0) {
             /* No error */
-            return entries;
+            return;
         }
         final String errorCode = entries.get("errorCode").toString();
         final String errorDescription = entries.get("errorDescription").toString();

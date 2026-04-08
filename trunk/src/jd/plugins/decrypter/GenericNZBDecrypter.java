@@ -28,7 +28,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.NZBSAXHandler;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "nzb" }, urls = { "https?://.+/.*\\.nzb($|(\\?|&)[^\\s<>\"']*)" })
+@DecrypterPlugin(revision = "$Revision: 49600 $", interfaceVersion = 3, names = { "nzb" }, urls = { "https?://.+/.*\\.nzb($|(\\?|&)[^\\s<>\"']*)" })
 public class GenericNZBDecrypter extends PluginForDecrypt {
     @Override
     public Boolean siteTesterDisabled() {

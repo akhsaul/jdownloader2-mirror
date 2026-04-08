@@ -30,7 +30,7 @@ import jd.plugins.PluginForHost;
 
 import org.appwork.utils.formatter.SizeFormatter;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "jumpshare.com" }, urls = { "https?://(?:www\\.)?jumpshare\\.com/v/[A-Za-z0-9]+" })
+@HostPlugin(revision = "$Revision: 47482 $", interfaceVersion = 3, names = { "jumpshare.com" }, urls = { "https?://(?:www\\.)?jumpshare\\.com/v/[A-Za-z0-9]+" })
 public class JumpshareCom extends PluginForHost {
     public JumpshareCom(PluginWrapper wrapper) {
         super(wrapper);

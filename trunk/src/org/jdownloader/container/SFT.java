@@ -16,7 +16,7 @@ import org.jdownloader.container.sft.sftContainer;
 
 public class SFT extends PluginsC {
     public SFT() {
-        super("SFT", "file:/.+\\.sft$", "$Revision$");
+        super("SFT", "file:/.+\\.sft$", "$Revision: 48804 $");
     }
 
     public SFT newPluginInstance() {

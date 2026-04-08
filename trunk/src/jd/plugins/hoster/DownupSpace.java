@@ -26,7 +26,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52025 $", interfaceVersion = 3, names = {}, urls = {})
 public class DownupSpace extends XFileSharingProBasic {
     public DownupSpace(final PluginWrapper wrapper) {
         super(wrapper);

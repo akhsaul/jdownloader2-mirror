@@ -33,7 +33,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.PluginJSonUtils;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "comic-walker.com" }, urls = { "https?://(www\\.)?comic-walker\\.com/(viewer|contents/detail)/.+" })
+@DecrypterPlugin(revision = "$Revision: 52090 $", interfaceVersion = 2, names = { "comic-walker.com" }, urls = { "https?://(www\\.)?comic-walker\\.com/(viewer|contents/detail)/.+" })
 public class ComicWalkerCom extends PluginForDecrypt {
     public ComicWalkerCom(PluginWrapper wrapper) {
         super(wrapper);

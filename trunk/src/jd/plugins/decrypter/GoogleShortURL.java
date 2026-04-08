@@ -26,7 +26,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "goo.gl" }, urls = { "https?://[\\w\\.]*goo\\.gl/(?:photos/)?[A-Za-z0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 44102 $", interfaceVersion = 3, names = { "goo.gl" }, urls = { "https?://[\\w\\.]*goo\\.gl/(?:photos/)?[A-Za-z0-9]+" })
 public class GoogleShortURL extends PluginForDecrypt {
     public GoogleShortURL(PluginWrapper wrapper) {
         super(wrapper);

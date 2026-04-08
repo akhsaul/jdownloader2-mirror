@@ -37,7 +37,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.ModTheSimsInfo;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 47653 $", interfaceVersion = 3, names = {}, urls = {})
 public class ModTheSimsInfoCrawler extends PluginForDecrypt {
     public ModTheSimsInfoCrawler(PluginWrapper wrapper) {
         super(wrapper);

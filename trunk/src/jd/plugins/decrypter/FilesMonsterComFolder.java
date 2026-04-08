@@ -33,7 +33,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.FilesMonsterCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "filesmonster.com" }, urls = { "https?://(?:www\\.)?filesmonster\\.com/folders\\.php\\?fid=([0-9a-zA-Z_-]{22,}|\\d+)" })
+@DecrypterPlugin(revision = "$Revision: 50471 $", interfaceVersion = 2, names = { "filesmonster.com" }, urls = { "https?://(?:www\\.)?filesmonster\\.com/folders\\.php\\?fid=([0-9a-zA-Z_-]{22,}|\\d+)" })
 public class FilesMonsterComFolder extends PluginForDecrypt {
     public FilesMonsterComFolder(PluginWrapper wrapper) {
         super(wrapper);

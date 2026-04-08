@@ -32,7 +32,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "hentai.animestigma.com" }, urls = { "https?://(?:www\\.)?hentai\\.animestigma\\.com/([a-z0-9\\-]{2,})/?" })
+@DecrypterPlugin(revision = "$Revision: 49594 $", interfaceVersion = 3, names = { "hentai.animestigma.com" }, urls = { "https?://(?:www\\.)?hentai\\.animestigma\\.com/([a-z0-9\\-]{2,})/?" })
 public class HentaiAnimestigmaComCrawler extends antiDDoSForDecrypt {
     public HentaiAnimestigmaComCrawler(PluginWrapper wrapper) {
         super(wrapper);

@@ -35,7 +35,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50120 $", interfaceVersion = 3, names = {}, urls = {})
 public class GetsharedCom extends PluginForHost {
     public GetsharedCom(PluginWrapper wrapper) {
         super(wrapper);

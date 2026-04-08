@@ -10,6 +10,7 @@ import java.io.PushbackInputStream;
 import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -36,10 +37,12 @@ import org.appwork.storage.TypeRef;
 import org.appwork.storage.config.JsonConfig;
 import org.appwork.storage.config.handler.StorageHandler;
 import org.appwork.utils.Application;
+import org.appwork.utils.Exceptions;
 import org.appwork.utils.IO.SYNC;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.formatter.HexFormatter;
 import org.appwork.utils.net.httpconnection.RequestMethod;
+import org.appwork.utils.net.httpserver.AllowAllSocketAddressValidator;
 import org.appwork.utils.net.httpserver.ConnectionTimeouts;
 import org.appwork.utils.net.httpserver.ContentSecurityPolicy;
 import org.appwork.utils.net.httpserver.CorsHandler;
@@ -48,11 +51,11 @@ import org.appwork.utils.net.httpserver.HttpConnectionRunnable;
 import org.appwork.utils.net.httpserver.HttpHandlerInfo;
 import org.appwork.utils.net.httpserver.HttpServer;
 import org.appwork.utils.net.httpserver.HttpServerConnection;
-import org.appwork.utils.net.httpserver.HttpServerConnection.HttpConnectionType;
 import org.appwork.utils.net.httpserver.OriginRule;
 import org.appwork.utils.net.httpserver.RawHttpConnectionInterface;
 import org.appwork.utils.net.httpserver.ReferrerPolicy;
 import org.appwork.utils.net.httpserver.ResponseSecurityHeaders;
+import org.appwork.utils.net.httpserver.TimingContext;
 import org.appwork.utils.net.httpserver.XContentTypeOptions;
 import org.appwork.utils.net.httpserver.XFrameOptions;
 import org.appwork.utils.net.httpserver.handler.HttpRequestHandler;
@@ -93,6 +96,7 @@ import org.bouncycastle.tls.SignatureAndHashAlgorithm;
 import org.bouncycastle.tls.TlsCredentialedDecryptor;
 import org.bouncycastle.tls.TlsCredentialedSigner;
 import org.bouncycastle.tls.TlsExtensionsUtils;
+import org.bouncycastle.tls.TlsNoCloseNotifyException;
 import org.bouncycastle.tls.TlsServerProtocol;
 import org.bouncycastle.tls.crypto.TlsCertificate;
 import org.bouncycastle.tls.crypto.TlsCryptoParameters;
@@ -249,11 +253,17 @@ public class DeprecatedAPIServer extends HttpServer {
         setHeaderValidationRules(header);
         ConnectionTimeouts connectionTimeouts = new ConnectionTimeouts();
         setConnectionTimeouts(connectionTimeouts);
+        setSocketAddressValidator(new AllowAllSocketAddressValidator());
     }
 
     @Override
     public boolean onException(Throwable e, HttpRequest request, HttpResponse response) throws IOException {
-        return super.onException(e, request, response);
+        if (Exceptions.containsInstanceOf(e, SocketException.class, TlsNoCloseNotifyException.class)) {
+            // TLS socket already closed
+            return true;
+        } else {
+            return super.onException(e, request, response);
+        }
     }
 
     @Override
@@ -262,8 +272,8 @@ public class DeprecatedAPIServer extends HttpServer {
     }
 
     public class CustomHttpConnection extends HttpServerConnection {
-        protected CustomHttpConnection(HttpServer server, Socket clientSocket, InputStream is, OutputStream os) throws IOException {
-            super(server, clientSocket, is, os);
+        protected CustomHttpConnection(HttpServer server, Socket clientSocket, InputStream is, OutputStream os, TimingContext timingContext) throws IOException {
+            super(server, clientSocket, is, os, timingContext);
         }
 
         protected AbstractGetRequest buildGetRequest() {
@@ -427,12 +437,12 @@ public class DeprecatedAPIServer extends HttpServer {
                 }
                 guessProtocolBuffer[index] = (byte) read;
             }
-            final HttpConnectionType httpConnectionType = HttpConnectionType.get(guessProtocolBuffer);
+            final RequestMethod httpConnectionType = RequestMethod.get(guessProtocolBuffer);
             final PushbackInputStream clientSocketIS = new PushbackInputStream(is, 8);
             clientSocketIS.unread(guessProtocolBuffer, 0, index);
             final InputStream httpIS;
             final OutputStream httpOS;
-            if (!HttpConnectionType.UNKNOWN.equals(httpConnectionType)) {
+            if (!RequestMethod.UNKNOWN.equals(httpConnectionType)) {
                 // http
                 httpIS = clientSocketIS;
                 httpOS = clientSocket.getOutputStream();
@@ -551,7 +561,7 @@ public class DeprecatedAPIServer extends HttpServer {
     }
 
     @Override
-    protected HttpConnectionRunnable createHttpConnection(final Socket clientSocket) throws IOException {
+    protected HttpConnectionRunnable createHttpConnection(final Socket clientSocket, final TimingContext timingContext) throws IOException {
         return new HttpConnectionRunnable() {
             @Override
             public void run() {
@@ -559,7 +569,7 @@ public class DeprecatedAPIServer extends HttpServer {
                     final HttpServerConnection httpConnection = autoWrapSSLConnection(clientSocket, new AutoSSLHttpConnectionFactory() {
                         @Override
                         public HttpServerConnection create(Socket clientSocket, InputStream is, OutputStream os) throws IOException {
-                            return new CustomHttpConnection(DeprecatedAPIServer.this, clientSocket, is, os);
+                            return new CustomHttpConnection(DeprecatedAPIServer.this, clientSocket, is, os, timingContext);
                         }
                     });
                     if (httpConnection != null) {
@@ -576,4 +586,5 @@ public class DeprecatedAPIServer extends HttpServer {
             }
         };
     }
+
 }

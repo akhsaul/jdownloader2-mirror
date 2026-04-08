@@ -40,7 +40,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "welt.de" }, urls = { "https?://(?:www\\.)?welt\\.de/.*?/(?:video|sendung)\\d+/[A-Za-z0-9\\-]+\\.html" })
+@HostPlugin(revision = "$Revision: 50858 $", interfaceVersion = 3, names = { "welt.de" }, urls = { "https?://(?:www\\.)?welt\\.de/.*?/(?:video|sendung)\\d+/[A-Za-z0-9\\-]+\\.html" })
 public class WeltDeMediathek extends PluginForHost {
     public WeltDeMediathek(PluginWrapper wrapper) {
         super(wrapper);

@@ -26,7 +26,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "linkto.net" }, urls = { "https?://[\\w\\.]*?linkto\\.net/\\?[0-9a-z]+\\.[0-9]{8}" })
+@DecrypterPlugin(revision = "$Revision: 43882 $", interfaceVersion = 2, names = { "linkto.net" }, urls = { "https?://[\\w\\.]*?linkto\\.net/\\?[0-9a-z]+\\.[0-9]{8}" })
 public class LnkTNt extends PluginForDecrypt {
     public LnkTNt(PluginWrapper wrapper) {
         super(wrapper);

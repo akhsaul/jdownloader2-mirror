@@ -38,7 +38,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.download.HashInfo;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50681 $", interfaceVersion = 3, names = {}, urls = {})
 public class AxfcNet extends PluginForHost {
     public AxfcNet(PluginWrapper wrapper) {
         super(wrapper);

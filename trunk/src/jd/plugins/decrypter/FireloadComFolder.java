@@ -38,7 +38,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.SiteType.SiteTemplate;
 import jd.plugins.hoster.FireloadCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51346 $", interfaceVersion = 3, names = {}, urls = {})
 public class FireloadComFolder extends PluginForDecrypt {
     public FireloadComFolder(PluginWrapper wrapper) {
         super(wrapper);

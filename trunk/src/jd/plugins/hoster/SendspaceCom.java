@@ -44,7 +44,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.utils.locale.JDL;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "sendspace.com" }, urls = { "https?://(\\w+\\.)?sendspace\\.com/(file|pro/dl)/[0-9a-zA-Z]+" })
+@HostPlugin(revision = "$Revision: 50777 $", interfaceVersion = 2, names = { "sendspace.com" }, urls = { "https?://(\\w+\\.)?sendspace\\.com/(file|pro/dl)/[0-9a-zA-Z]+" })
 public class SendspaceCom extends PluginForHost {
     public SendspaceCom(PluginWrapper wrapper) {
         super(wrapper);

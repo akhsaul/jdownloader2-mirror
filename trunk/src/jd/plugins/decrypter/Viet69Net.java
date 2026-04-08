@@ -33,7 +33,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50259 $", interfaceVersion = 2, names = {}, urls = {})
 public class Viet69Net extends PluginForDecrypt {
     public Viet69Net(PluginWrapper wrapper) {
         super(wrapper);

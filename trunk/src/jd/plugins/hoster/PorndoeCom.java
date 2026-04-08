@@ -41,7 +41,7 @@ import org.jdownloader.plugins.config.PluginJsonConfig;
 import org.jdownloader.plugins.controller.LazyPlugin;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "porndoe.com" }, urls = { "https?://(?:[a-z]{2}\\.)?porndoe\\.com/(?:video(?:/embed)?/(\\d+)|watch)(/[a-z0-9\\-]+)?" })
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = { "porndoe.com" }, urls = { "https?://(?:[a-z]{2}\\.)?porndoe\\.com/(?:video(?:/embed)?/(\\d+)|watch)(/[a-z0-9\\-]+)?" })
 public class PorndoeCom extends PluginForHost {
     public PorndoeCom(PluginWrapper wrapper) {
         super(wrapper);

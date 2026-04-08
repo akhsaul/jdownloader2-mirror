@@ -40,7 +40,7 @@ import org.appwork.storage.JSonStorage;
 import org.appwork.storage.TypeRef;
 import org.appwork.utils.StringUtils;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "spiegel.de", "spon.de" }, urls = { "https?://(?:www\\.)?spiegel\\.de/.+", "https?://(?:www\\.)?spon\\.de/[A-Za-z0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 48194 $", interfaceVersion = 2, names = { "spiegel.de", "spon.de" }, urls = { "https?://(?:www\\.)?spiegel\\.de/.+", "https?://(?:www\\.)?spon\\.de/[A-Za-z0-9]+" })
 public class SpiegelDe extends PluginForDecrypt {
     private static final Pattern PATTERN_SUPPORTED_FOTOSTRECKE        = Pattern.compile("https?://[^/]+/fotostrecke/([a-z0-9\\-]+)-(\\d+)\\.html", Pattern.CASE_INSENSITIVE);
     private static final String  PATTERN_SUPPORTED_FOTOSTRECKE_SINGLE = "https?://[^/]+/fotostrecke/[a-z0-9\\-]+\\d+\\-\\d+\\.html";

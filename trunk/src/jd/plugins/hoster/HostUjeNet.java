@@ -35,7 +35,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "hostuje.net" }, urls = { "https?://[\\w\\.]*?hostuje\\.net/file\\.php\\?id=([a-zA-Z0-9]+)" })
+@HostPlugin(revision = "$Revision: 51002 $", interfaceVersion = 3, names = { "hostuje.net" }, urls = { "https?://[\\w\\.]*?hostuje\\.net/file\\.php\\?id=([a-zA-Z0-9]+)" })
 public class HostUjeNet extends PluginForHost {
     public HostUjeNet(PluginWrapper wrapper) {
         super(wrapper);

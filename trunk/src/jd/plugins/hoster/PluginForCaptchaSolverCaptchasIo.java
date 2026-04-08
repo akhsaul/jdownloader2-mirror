@@ -11,7 +11,7 @@ import jd.PluginWrapper;
 import jd.plugins.CaptchaType.CAPTCHA_TYPE;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "captchas.io" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 52170 $", interfaceVersion = 3, names = { "captchas.io" }, urls = { "" })
 public class PluginForCaptchaSolverCaptchasIo extends abstractPluginForCaptchaSolverTwoCaptchaAPIV2 {
     @Override
     public LazyPlugin.FEATURE[] getFeatures() {

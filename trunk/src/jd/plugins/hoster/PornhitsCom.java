@@ -34,7 +34,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49153 $", interfaceVersion = 3, names = {}, urls = {})
 public class PornhitsCom extends KernelVideoSharingComV2 {
     public PornhitsCom(final PluginWrapper wrapper) {
         super(wrapper);

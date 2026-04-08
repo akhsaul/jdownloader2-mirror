@@ -38,7 +38,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.utils.JDUtilities;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "livemixtapes.com" }, urls = { "https?://(?:www\\.)?livemixtap\\.es/[a-z0-9]+|https?://(\\w+\\.)?livemixtapes\\.com/((download(/mp3)?|mixtapes)/\\d+/[a-z0-9\\-]+\\.html|player\\.php\\?album_id=\\d+.*?)" })
+@DecrypterPlugin(revision = "$Revision: 48359 $", interfaceVersion = 2, names = { "livemixtapes.com" }, urls = { "https?://(?:www\\.)?livemixtap\\.es/[a-z0-9]+|https?://(\\w+\\.)?livemixtapes\\.com/((download(/mp3)?|mixtapes)/\\d+/[a-z0-9\\-]+\\.html|player\\.php\\?album_id=\\d+.*?)" })
 public class LiveMixtapesComDecrypter extends antiDDoSForDecrypt {
     public LiveMixtapesComDecrypter(PluginWrapper wrapper) {
         super(wrapper);

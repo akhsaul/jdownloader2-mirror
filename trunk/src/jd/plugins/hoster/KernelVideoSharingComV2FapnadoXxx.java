@@ -30,7 +30,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52221 $", interfaceVersion = 3, names = {}, urls = {})
 public class KernelVideoSharingComV2FapnadoXxx extends KernelVideoSharingComV2 {
     public KernelVideoSharingComV2FapnadoXxx(final PluginWrapper wrapper) {
         super(wrapper);

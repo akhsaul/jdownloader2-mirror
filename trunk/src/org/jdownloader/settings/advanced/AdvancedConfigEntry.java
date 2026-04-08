@@ -4,13 +4,10 @@ import java.awt.Dialog.ModalityType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Locale;
-
-import jd.gui.swing.jdgui.JDGui;
-import jd.gui.swing.jdgui.WarnLevel;
+import java.util.Set;
 
 import org.appwork.storage.config.ConfigInterface;
 import org.appwork.storage.config.ValidationException;
@@ -23,15 +20,23 @@ import org.appwork.storage.config.annotations.MultiLineString;
 import org.appwork.storage.config.annotations.RequiresRestart;
 import org.appwork.storage.config.annotations.SpinnerValidator;
 import org.appwork.storage.config.handler.KeyHandler;
+import org.appwork.storage.config.handler.StorageHandler;
 import org.appwork.uio.ConfirmDialogInterface;
 import org.appwork.uio.UIOManager;
 import org.appwork.utils.ReflectionUtils;
+import org.appwork.utils.Regex;
 import org.appwork.utils.locale._AWU;
+import org.appwork.utils.reflection.CompiledType;
 import org.appwork.utils.swing.dialog.ConfirmDialog;
 import org.appwork.utils.swing.dialog.Dialog;
 import org.jdownloader.gui.IconKey;
 import org.jdownloader.gui.translate._GUI;
 import org.jdownloader.images.NewTheme;
+import org.jdownloader.plugins.config.PluginConfigInterface;
+import org.jdownloader.plugins.config.PluginHost;
+
+import jd.gui.swing.jdgui.JDGui;
+import jd.gui.swing.jdgui.WarnLevel;
 
 public class AdvancedConfigEntry {
     private final ConfigInterface configInterface;
@@ -52,17 +57,21 @@ public class AdvancedConfigEntry {
 
     public String internalKey[] = null;
 
+    // used by search/filtering in GUI only
     public String[] getInternalKey() {
         if (internalKey == null) {
-            final List<String> ret = new ArrayList<String>();
-            ret.add(getKey());
+            final Set<String> ret = new HashSet<String>() {
+                @Override
+                public boolean add(final String key) {
+                    final String nkey = key.replaceAll("[^a-zA-Z0-9 ]+", "").replace("colour", "color").replace("directory", "folder").toLowerCase(Locale.ENGLISH);
+                    return super.add(nkey);
+                }
+            };
+            ret.add(getKey(false));
+            ret.add(getKey(true));
             final String[] lookupKeys = getKeyHandler().getBackwardsCompatibilityLookupKeys();
             if (lookupKeys != null) {
                 ret.addAll(Arrays.asList(lookupKeys));
-            }
-            for (int i = 0; i < ret.size(); i++) {
-                final String key = ret.get(i).replaceAll("[^a-zA-Z0-9 ]+", "").replace("colour", "color").replace("directory", "folder").toLowerCase(Locale.ENGLISH);
-                ret.set(i, key);
             }
             internalKey = ret.toArray(new String[0]);
             return internalKey;
@@ -71,16 +80,13 @@ public class AdvancedConfigEntry {
         }
     }
 
-    private String key = null;
+    public final String getKey() {
+        return getKey(true);
+    }
 
-    public String getKey() {
-        if (key == null) {
-            final String ret = getConfigInterfaceName().concat(".").concat(getHandlerKey());
-            key = ret;
-            return ret;
-        } else {
-            return key;
-        }
+    public String getKey(final boolean newConfigInterfaceNameScheme) {
+        final String ret = getConfigInterfaceName(newConfigInterfaceNameScheme).concat(".").concat(getHandlerKey());
+        return ret;
     }
 
     public static boolean equals(Object x, Object y) {
@@ -113,33 +119,51 @@ public class AdvancedConfigEntry {
         return false;
     }
 
-    public String getHandlerKey() {
+    public final String getHandlerKey() {
         return keyHandler.getKey();
     }
 
-    private String configInterfaceName = null;
+    protected String getConfigInterfaceName() {
+        return getConfigInterfaceName(true);
+    }
 
-    public String getConfigInterfaceName() {
-        if (configInterfaceName == null) {
-            String ret = configInterface._getStorageHandler().getConfigInterface().getSimpleName();
-            if (ret.contains("Config")) {
-                ret = ret.replace("Config", "");
+    protected String getConfigInterfaceName(final boolean newConfigInterfaceNameScheme) {
+        final StorageHandler<?> sh = configInterface._getStorageHandler();
+        String ret = null;
+        multiPluginConfig: if (newConfigInterfaceNameScheme && configInterface instanceof PluginConfigInterface) {
+            final PluginHost hostPlugin = sh.getConfigInterface().getAnnotation(PluginHost.class);
+            ret = new Regex(sh.getStorageID(), "/((?:HOSTER|CRAWLER|CAPTCHA|CONTAINER)/[a-z0-9\\-\\.]+)").getMatch(0);
+            if (ret == null) {
+                if (hostPlugin == null) {
+                    break multiPluginConfig;
+                }
+                ret = hostPlugin.type() + "/" + hostPlugin.host();
             }
-            configInterfaceName = ret;
-            return ret;
+            if (ret != null) {
+                ret = ret.toLowerCase(Locale.ROOT).replaceFirst("([^/]+)(/)", "$1Plugin: ");
+            }
         }
-        return configInterfaceName;
+        if (ret == null) {
+            ret = sh.getConfigInterface().getSimpleName();
+        }
+        if (ret.contains("Config")) {
+            ret = ret.replace("Config", "");
+        }
+        return ret;
+    }
+
+    protected String getUniqueID() {
+        return getConfigInterfaceName() + "/" + getKeyHandler().getKey();
     }
 
     private String keyText = null;
 
     public String getKeyText() {
-        if (keyText == null) {
-            keyText = getConfigInterfaceName() + ": " + getKeyHandler().getReadableName();
-            return keyText;
-        } else {
-            return keyText;
+        String ret = keyText;
+        if (ret == null) {
+            keyText = ret = getKeyHandler().getReadableName();
         }
+        return getConfigInterfaceName() + ": " + ret;
     }
 
     public Object getValue() {
@@ -340,8 +364,18 @@ public class AdvancedConfigEntry {
         } else {
             ret = gen.toString();
         }
+        ret = ret.replaceAll("[a-z0-9\\.]+\\.([^\\.]+)(<|\\{|,|$)", "$1$2");// remove package names
+        final CompiledType ct = CompiledType.create(gen);
+        if (ct.isContainer()) {
+            final CompiledType cot = ct.getComponentType();
+            if (cot != null && cot.isEnum(true)) {
+                ret += "\r\nvalid values for '" + cot.raw.getSimpleName() + "' are\r\n" + Arrays.toString(cot.raw.getEnumConstants());
+            }
+        } else if (ct.isEnum(true)) {
+            ret += "\r\nvalid values for '" + ct.raw.getSimpleName() + "' are\r\n" + Arrays.toString(ct.raw.getEnumConstants());
+        }
         if (v != null) {
-            ret += " [" + v + "]";
+            ret += "\r\n [" + v + "]";
         }
         return ret;
     }

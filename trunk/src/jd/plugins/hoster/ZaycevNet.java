@@ -36,7 +36,7 @@ import jd.plugins.Plugin;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "zaycev.net" }, urls = { "https?://(?:www\\.)?zaycev\\.net/pages/[0-9]+/([0-9]+)\\.shtml" })
+@HostPlugin(revision = "$Revision: 48886 $", interfaceVersion = 2, names = { "zaycev.net" }, urls = { "https?://(?:www\\.)?zaycev\\.net/pages/[0-9]+/([0-9]+)\\.shtml" })
 public class ZaycevNet extends PluginForHost {
     public ZaycevNet(PluginWrapper wrapper) {
         super(wrapper);

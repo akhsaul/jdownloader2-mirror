@@ -34,7 +34,7 @@ import jd.plugins.PluginException;
 import jd.plugins.components.PluginJSonUtils;
 import jd.plugins.components.SiteType.SiteTemplate;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "tr.link" }, urls = { "https?://(?:www\\.)?tr\\.link/(?!dmca|skype|webroot)([A-Za-z0-9]+)" })
+@DecrypterPlugin(revision = "$Revision: 46220 $", interfaceVersion = 3, names = { "tr.link" }, urls = { "https?://(?:www\\.)?tr\\.link/(?!dmca|skype|webroot)([A-Za-z0-9]+)" })
 public class TrLink extends antiDDoSForDecrypt {
     public TrLink(PluginWrapper wrapper) {
         super(wrapper);

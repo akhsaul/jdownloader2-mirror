@@ -29,7 +29,7 @@ import jd.plugins.PluginException;
 
 import org.jdownloader.plugins.components.antiDDoSForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "gaskrank.tv" }, urls = { "https?://(?:www\\.)?gaskrank\\.tv/tv/.*?(/filme[^/]+\\.htm|/$)" })
+@DecrypterPlugin(revision = "$Revision: 45878 $", interfaceVersion = 2, names = { "gaskrank.tv" }, urls = { "https?://(?:www\\.)?gaskrank\\.tv/tv/.*?(/filme[^/]+\\.htm|/$)" })
 public class Gaskrank extends antiDDoSForDecrypt {
     public Gaskrank(PluginWrapper wrapper) {
         super(wrapper);

@@ -27,7 +27,7 @@ import jd.parser.Regex;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50841 $", interfaceVersion = 2, names = {}, urls = {})
 public class XnxxCom extends XvideosCore {
     public XnxxCom(PluginWrapper wrapper) {
         super(wrapper);

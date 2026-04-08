@@ -32,7 +32,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.formatter.SizeFormatter;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51027 $", interfaceVersion = 2, names = {}, urls = {})
 public class DirectUploadNet extends PluginForHost {
     public DirectUploadNet(PluginWrapper wrapper) {
         super(wrapper);

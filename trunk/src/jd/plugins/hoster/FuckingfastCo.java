@@ -34,7 +34,7 @@ import jd.plugins.PluginForHost;
 
 import org.appwork.utils.formatter.SizeFormatter;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51880 $", interfaceVersion = 3, names = {}, urls = {})
 public class FuckingfastCo extends PluginForHost {
     public FuckingfastCo(PluginWrapper wrapper) {
         super(wrapper);

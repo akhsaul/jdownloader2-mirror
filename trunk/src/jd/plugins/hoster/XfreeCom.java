@@ -36,7 +36,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50831 $", interfaceVersion = 3, names = {}, urls = {})
 public class XfreeCom extends PluginForHost {
     public XfreeCom(PluginWrapper wrapper) {
         super(wrapper);

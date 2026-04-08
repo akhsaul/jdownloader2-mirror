@@ -38,7 +38,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "trntbl.me" }, urls = { "http://(www\\.)?trntbl\\.me/[a-z0-9\\-]+" })
+@DecrypterPlugin(revision = "$Revision: 48528 $", interfaceVersion = 2, names = { "trntbl.me" }, urls = { "http://(www\\.)?trntbl\\.me/[a-z0-9\\-]+" })
 public class TrnTblMe extends PluginForDecrypt {
     public TrnTblMe(PluginWrapper wrapper) {
         super(wrapper);

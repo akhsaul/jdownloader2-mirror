@@ -46,7 +46,7 @@ import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 import jd.plugins.components.SiteType.SiteTemplate;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "drtuber.com" }, urls = { "https?://(www\\.|m\\.)?drtuber\\.com/(?:embed/\\d+|video/\\d+(?:[a-z0-9\\-_]+)?)" })
+@HostPlugin(revision = "$Revision: 49985 $", interfaceVersion = 2, names = { "drtuber.com" }, urls = { "https?://(www\\.|m\\.)?drtuber\\.com/(?:embed/\\d+|video/\\d+(?:[a-z0-9\\-_]+)?)" })
 public class DrTuberCom extends PluginForHost {
     public DrTuberCom(final PluginWrapper wrapper) {
         super(wrapper);

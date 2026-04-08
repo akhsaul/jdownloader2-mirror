@@ -29,7 +29,7 @@ import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "hqporner.com", "hqpornerpro.com" }, urls = { "https?://(?:\\w+\\.)?hqporner\\.com/hdporn/\\d+\\-([^/]+)\\.html", "https?://(?:\\w+\\.)?hqpornerpro\\.com/([^/]+)" })
+@DecrypterPlugin(revision = "$Revision: 51000 $", interfaceVersion = 3, names = { "hqporner.com", "hqpornerpro.com" }, urls = { "https?://(?:\\w+\\.)?hqporner\\.com/hdporn/\\d+\\-([^/]+)\\.html", "https?://(?:\\w+\\.)?hqpornerpro\\.com/([^/]+)" })
 public class HqpornerCom extends PornEmbedParser {
     public HqpornerCom(PluginWrapper wrapper) {
         super(wrapper);

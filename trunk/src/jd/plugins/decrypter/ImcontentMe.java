@@ -41,7 +41,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.GenericM3u8;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49578 $", interfaceVersion = 3, names = {}, urls = {})
 public class ImcontentMe extends PluginForDecrypt {
     public ImcontentMe(PluginWrapper wrapper) {
         super(wrapper);

@@ -36,7 +36,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50857 $", interfaceVersion = 3, names = {}, urls = {})
 public class LiteroticaCom extends PluginForHost {
     public LiteroticaCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -23,7 +23,7 @@ import jd.parser.Regex;
 import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "nudespree.com" }, urls = { "https?://(?:www\\.)?nudespree\\.com/videos/(\\d+)/([a-z0-9\\-]+)/" })
+@DecrypterPlugin(revision = "$Revision: 45845 $", interfaceVersion = 3, names = { "nudespree.com" }, urls = { "https?://(?:www\\.)?nudespree\\.com/videos/(\\d+)/([a-z0-9\\-]+)/" })
 public class NudespreeCom extends PornEmbedParser {
     public NudespreeCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -4,9 +4,9 @@
  *         "AppWork Utilities" License
  *         The "AppWork Utilities" will be called [The Product] from now on.
  * ====================================================================================================================================================
- *         Copyright (c) 2009-2015, AppWork GmbH <e-mail@appwork.org>
- *         Schwabacher Straße 117
- *         90763 Fürth
+ *         Copyright (c) 2009-2026, AppWork GmbH <e-mail@appwork.org>
+ *         Spalter Strasse 58
+ *         91183 Abenberg
  *         Germany
  * === Preamble ===
  *     This license establishes the terms under which the [The Product] Source Code & Binary files may be used, copied, modified, distributed, and/or redistributed.
@@ -37,10 +37,10 @@ import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 
+import org.appwork.utils.net.httpconnection.DNSResolver.REQUESTOR;
 import org.appwork.utils.net.httpconnection.HTTPConnectionUtils.IPVERSION;
 import org.appwork.utils.net.socketconnection.Socks4SocketConnection;
 import org.appwork.utils.net.socketconnection.SocksSocketConnection;
@@ -51,20 +51,12 @@ import org.appwork.utils.net.socketconnection.SocksSocketConnection.DESTTYPE;
  *
  */
 public class Socks4HTTPConnectionImpl extends AbstractSocksHTTPConnection {
-
     public Socks4HTTPConnectionImpl(URL url, HTTPProxy proxy, DESTTYPE destType) {
         super(url, proxy, destType);
     }
 
     public Socks4HTTPConnectionImpl(URL url, HTTPProxy proxy) {
         super(url, proxy);
-    }
-
-    @Override
-    protected Socket createRawConnectionSocket(final InetAddress bindInetAddress) throws IOException {
-        final Socks4SocketConnection socket = buildSocksSocketConnection();
-        socket.setSoTimeout(getReadTimeout());
-        return socket;
     }
 
     @Override
@@ -90,17 +82,22 @@ public class Socks4HTTPConnectionImpl extends AbstractSocksHTTPConnection {
     }
 
     @Override
-    protected SocketStreamInterface connect(SocketStreamInterface socketStream) throws IOException {
-        final Socket socket = socketStream.getSocket();
-        final Socks4SocketConnection socks4Socket = ((Socks4SocketConnection) socket);
-        this.endPointInetSocketAddress = buildConnectEndPointSocketAddress(socks4Socket);
-        socks4Socket.connect(endPointInetSocketAddress, this.getConnectTimeout(), this.proxyRequest);
-        return socketStream;
-    }
-
-    @Override
     protected Socks4SocketConnection buildSocksSocketConnection() {
-        final Socks4SocketConnection socket = new Socks4SocketConnection(this.getProxy(), getDestType());
-        return socket;
+        return new Socks4SocketConnection(this.getProxy(), getDestType()) {
+            @Override
+            protected InetAddress[] resolveDomain(REQUESTOR requestor, IPVERSION ipVersion, HTTPProxy proxy) throws IOException {
+                return Socks4HTTPConnectionImpl.this.resolveDomain(requestor, ipVersion, proxy.getHost());
+            }
+
+            @Override
+            public IPVERSION getIPVersion() {
+                return Socks4HTTPConnectionImpl.this.getIPVersion();
+            }
+
+            @Override
+            public DNSResolver getDNSResolver() {
+                return Socks4HTTPConnectionImpl.this.getDNSResolver();
+            }
+        };
     }
 }

@@ -37,7 +37,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.MajorgeeksComCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49073 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { MajorgeeksComCrawler.class })
 public class MajorgeeksCom extends PluginForHost {
     public MajorgeeksCom(PluginWrapper wrapper) {

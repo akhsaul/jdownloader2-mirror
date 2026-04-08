@@ -34,7 +34,7 @@ import jd.plugins.hoster.DailyMotionCom;
 import jd.plugins.hoster.DailyMotionComV2;
 
 //Decrypts embedded videos from dailymotion
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "dailymotion.com" }, urls = { "https?://(?:www\\.|geo\\.)?(dailymotion\\.com|dai\\.ly)/.+" })
+@DecrypterPlugin(revision = "$Revision: 52123 $", interfaceVersion = 3, names = { "dailymotion.com" }, urls = { "https?://(?:www\\.|geo\\.)?(dailymotion\\.com|dai\\.ly)/.+" })
 public class DailyMotionComDecrypterV2 extends DailyMotionComDecrypter {
     public DailyMotionComDecrypterV2(PluginWrapper wrapper) {
         super(wrapper);

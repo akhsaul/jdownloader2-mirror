@@ -122,7 +122,11 @@ public class HTTPConstants {
          */
         SERVERERROR_SERVICE_UNAVAILABLE(503, "Service Unavailable"),
         GATEWAY_TIMEOUT(504, "Gateway Time-out"),
-        WEB_SERVER_DOWN(521, "Cloudflare, Web server is down");
+        WEB_SERVER_DOWN(521, "Cloudflare, Web server is down"),
+        /**
+         * seems like the server did not answer with valid HTTP(s)
+         */
+        X_INVALID_HTTP_RESPONSE(999, "INVALID HTTP Response");
 
         /**
          * @param responseCode
@@ -357,7 +361,7 @@ public class HTTPConstants {
      * browser to block the response if it detects an attack rather than sanitising the script.
      *
      * <p>
-     * <b>⚠️ DEPRECATED - DO NOT USE</b>
+     * <b>WARNING: DEPRECATED - DO NOT USE</b>
      * </p>
      * <p>
      * This header is deprecated and should no longer be used in modern applications. It has been removed from major browsers (Chrome 78+,
@@ -446,4 +450,5 @@ public class HTTPConstants {
     public static final String           ACCESS_CONTROL_ALLOW_CREDENTIALS              = "Access-Control-Allow-Credentials";
     public static final String           ACCESS_CONTROL_REQUEST_PRIVATE_NETWORK        = "Access-Control-Request-Private-Network";
     public static final String           ACCESS_CONTROL_ALLOW_PRIVATE_NETWORK          = "Access-Control-Allow-Private-Network";
+    public static final String           X_TOKEN                                       = "x-token";
 }

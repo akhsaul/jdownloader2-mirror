@@ -26,7 +26,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50072 $", interfaceVersion = 2, names = {}, urls = {})
 public class SqzfileCom extends YetiShareCore {
     public SqzfileCom(PluginWrapper wrapper) {
         super(wrapper);

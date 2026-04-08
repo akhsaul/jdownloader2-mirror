@@ -30,7 +30,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "girlswithmuscle.com" }, urls = { "https?://(www.)?girlswithmuscle\\.com/\\d+/?" })
+@DecrypterPlugin(revision = "$Revision: 48446 $", interfaceVersion = 3, names = { "girlswithmuscle.com" }, urls = { "https?://(www.)?girlswithmuscle\\.com/\\d+/?" })
 public class GirlswithmuscleCom extends antiDDoSForDecrypt {
     public GirlswithmuscleCom(final PluginWrapper wrapper) {
         super(wrapper);

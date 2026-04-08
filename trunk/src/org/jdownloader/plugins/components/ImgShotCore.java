@@ -18,7 +18,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.components.SiteType.SiteTemplate;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49212 $", interfaceVersion = 2, names = {}, urls = {})
 public class ImgShotCore extends antiDDoSForHost {
     public ImgShotCore(PluginWrapper wrapper) {
         super(wrapper);

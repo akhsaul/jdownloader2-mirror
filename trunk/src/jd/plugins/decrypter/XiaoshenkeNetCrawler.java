@@ -28,7 +28,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48661 $", interfaceVersion = 3, names = {}, urls = {})
 public class XiaoshenkeNetCrawler extends PluginForDecrypt {
     public XiaoshenkeNetCrawler(PluginWrapper wrapper) {
         super(wrapper);

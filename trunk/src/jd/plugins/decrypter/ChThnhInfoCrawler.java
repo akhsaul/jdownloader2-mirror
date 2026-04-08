@@ -37,7 +37,7 @@ import jd.utils.JDUtilities;
 
 import org.appwork.utils.formatter.SizeFormatter;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "chauthanh.info" }, urls = { "https?://[\\w\\.]*?chauthanh\\.info/(animeDownload/anime/.*?|\\w+/view/[^/]+)\\.html" })
+@DecrypterPlugin(revision = "$Revision: 49242 $", interfaceVersion = 2, names = { "chauthanh.info" }, urls = { "https?://[\\w\\.]*?chauthanh\\.info/(animeDownload/anime/.*?|\\w+/view/[^/]+)\\.html" })
 public class ChThnhInfoCrawler extends PluginForDecrypt {
     public ChThnhInfoCrawler(PluginWrapper wrapper) {
         super(wrapper);

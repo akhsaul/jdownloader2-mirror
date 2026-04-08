@@ -21,7 +21,7 @@ import java.util.List;
 import jd.PluginWrapper;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49189 $", interfaceVersion = 3, names = {}, urls = {})
 public class KernelVideoSharingComV2HclipsCom extends KernelVideoSharingComV2 {
     public KernelVideoSharingComV2HclipsCom(final PluginWrapper wrapper) {
         super(wrapper);

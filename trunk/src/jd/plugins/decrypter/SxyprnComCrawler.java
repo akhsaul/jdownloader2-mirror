@@ -24,7 +24,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.SxyprnCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "sxyprn.com" }, urls = { "https?://(?:www\\.)?sxyprn\\.(?:com|net)/.+" })
+@DecrypterPlugin(revision = "$Revision: 50650 $", interfaceVersion = 2, names = { "sxyprn.com" }, urls = { "https?://(?:www\\.)?sxyprn\\.(?:com|net)/.+" })
 public class SxyprnComCrawler extends antiDDoSForDecrypt {
     public SxyprnComCrawler(PluginWrapper wrapper) {
         super(wrapper);

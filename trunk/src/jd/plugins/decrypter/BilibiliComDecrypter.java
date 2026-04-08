@@ -34,7 +34,7 @@ import jd.plugins.FilePackage;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.PluginJSonUtils;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "bilibili.com" }, urls = { "https?://(?:www\\.)?bilibili\\.com/(?:video/av\\d+(?:/\\?p=\\d+)?|bangumi/(?:play|media)/.+)" })
+@DecrypterPlugin(revision = "$Revision: 49122 $", interfaceVersion = 3, names = { "bilibili.com" }, urls = { "https?://(?:www\\.)?bilibili\\.com/(?:video/av\\d+(?:/\\?p=\\d+)?|bangumi/(?:play|media)/.+)" })
 public class BilibiliComDecrypter extends PluginForDecrypt {
     public BilibiliComDecrypter(PluginWrapper wrapper) {
         super(wrapper);

@@ -24,7 +24,7 @@ import jd.PluginWrapper;
 import jd.http.Browser;
 import jd.plugins.DecrypterPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 46366 $", interfaceVersion = 3, names = {}, urls = {})
 public class PornzogCom extends PornEmbedParser {
     public PornzogCom(PluginWrapper wrapper) {
         super(wrapper);

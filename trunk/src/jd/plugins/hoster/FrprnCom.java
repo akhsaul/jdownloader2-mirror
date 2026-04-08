@@ -26,7 +26,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 import jd.plugins.decrypter.FrprnComCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49953 $", interfaceVersion = 3, names = {}, urls = {})
 public class FrprnCom extends KernelVideoSharingComV2 {
     public FrprnCom(final PluginWrapper wrapper) {
         super(wrapper);

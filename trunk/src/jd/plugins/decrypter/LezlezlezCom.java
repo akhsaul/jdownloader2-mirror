@@ -26,7 +26,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "lezlezlez.com" }, urls = { "https?://(?:www\\.)?lezlezlez\\.com/mediaswf\\.php\\?type=vid\\&name=[^<>\"/]+\\.flv" })
+@DecrypterPlugin(revision = "$Revision: 49213 $", interfaceVersion = 3, names = { "lezlezlez.com" }, urls = { "https?://(?:www\\.)?lezlezlez\\.com/mediaswf\\.php\\?type=vid\\&name=[^<>\"/]+\\.flv" })
 public class LezlezlezCom extends PluginForDecrypt {
     public LezlezlezCom(PluginWrapper wrapper) {
         super(wrapper);

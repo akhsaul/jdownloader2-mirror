@@ -49,7 +49,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.BandCampComDecrypter;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50407 $", interfaceVersion = 2, names = {}, urls = {})
 public class BandCampCom extends PluginForHost {
     public BandCampCom(PluginWrapper wrapper) {
         super(wrapper);

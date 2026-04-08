@@ -37,7 +37,7 @@ import org.appwork.utils.StringUtils;
 import org.jdownloader.controlling.filter.CompiledFiletypeFilter;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "500px.com" }, urls = { "https?://(?:www\\.)?500px\\.com/photo/(\\d+)(/[^/]+)?" })
+@HostPlugin(revision = "$Revision: 48194 $", interfaceVersion = 3, names = { "500px.com" }, urls = { "https?://(?:www\\.)?500px\\.com/photo/(\\d+)(/[^/]+)?" })
 public class FivehundretPxCom extends PluginForHost {
     public FivehundretPxCom(PluginWrapper wrapper) {
         super(wrapper);

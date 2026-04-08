@@ -41,7 +41,7 @@ import org.appwork.utils.DebugMode;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49242 $", interfaceVersion = 3, names = {}, urls = {})
 public class FotografDe extends PluginForDecrypt {
     public FotografDe(PluginWrapper wrapper) {
         super(wrapper);

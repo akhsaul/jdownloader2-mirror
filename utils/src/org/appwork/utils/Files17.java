@@ -4,9 +4,9 @@
  *         "AppWork Utilities" License
  *         The "AppWork Utilities" will be called [The Product] from now on.
  * ====================================================================================================================================================
- *         Copyright (c) 2009-2015, AppWork GmbH <e-mail@appwork.org>
- *         Schwabacher Straße 117
- *         90763 Fürth
+ *         Copyright (c) 2009-2026, AppWork GmbH <e-mail@appwork.org>
+ *         Spalter Strasse 58
+ *         91183 Abenberg
  *         Germany
  * === Preamble ===
  *     This license establishes the terms under which the [The Product] Source Code & Binary files may be used, copied, modified, distributed, and/or redistributed.
@@ -45,6 +45,7 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -155,6 +156,21 @@ public class Files17 {
         }
     }
 
+    /**
+     * Renames/moves source to dest using NIO Files.move. Replaces existing destination.
+     * Use this from Java 7+ code paths for better exceptions than File.renameTo().
+     *
+     * @param source
+     *            source file
+     * @param dest
+     *            destination file
+     * @throws IOException
+     *             if move fails (e.g. access denied, cross-device link)
+     */
+    public static void rename(final File source, final File dest) throws IOException {
+        Files.move(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    }
+
     protected static boolean deleteIfExists(final File file) throws IOException {
         return deleteIfExists(file.toPath());
     }
@@ -220,14 +236,18 @@ public class Files17 {
             if (followLinks(options)) {
                 try {
                     path.getFileSystem().provider().checkAccess(path);
+                    // file exists
+                    return true;
+                } catch (NoSuchFileException e) {
+                    return false;
                 } catch (AccessDeniedException e) {
-                    // we may have access to read the attributes anyway
-                    Files.readAttributes(path, BasicFileAttributes.class, options);
+                    // try via Files.readAttributes
+                } catch (FileSystemException e) {
+                    // try via Files.readAttributes
                 }
-            } else {
-                // attempt to read attributes without following links
-                Files.readAttributes(path, BasicFileAttributes.class, options);
             }
+            // attempt to read attributes of path with given options
+            Files.readAttributes(path, BasicFileAttributes.class, options);
             // file exists
             return true;
         } catch (NoSuchFileException e) {
@@ -245,7 +265,7 @@ public class Files17 {
      */
     public static boolean existsDirectory(Path path, LinkOption... options) throws ExtIOException {
         try {
-            BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class, options);
+            final BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class, options);
             return attributes.isDirectory();
         } catch (NoSuchFileException e) {
             return false;
@@ -262,7 +282,7 @@ public class Files17 {
      */
     public static boolean existsFile(Path path, LinkOption... options) throws ExtIOException {
         try {
-            BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class, options);
+            final BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class, options);
             return attributes.isRegularFile();
         } catch (NoSuchFileException e) {
             return false;

@@ -41,7 +41,7 @@ import org.appwork.net.protocol.http.HTTPConstants;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51149 $", interfaceVersion = 3, names = {}, urls = {})
 public class TokyomotionNet extends PluginForHost {
     public TokyomotionNet(PluginWrapper wrapper) {
         super(wrapper);

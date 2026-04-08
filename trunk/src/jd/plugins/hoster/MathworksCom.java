@@ -29,7 +29,7 @@ import jd.plugins.decrypter.BrightcoveDecrypter.BrightcoveEdgeContainer.Protocol
 
 import org.jdownloader.downloader.hls.HLSDownloader;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "mathworks.com" }, urls = { "https?://(?:[a-z]{2}|www)\\.mathworks\\.com/videos/[a-z0-9\\-]+\\-(\\d+)\\.html" })
+@HostPlugin(revision = "$Revision: 47483 $", interfaceVersion = 3, names = { "mathworks.com" }, urls = { "https?://(?:[a-z]{2}|www)\\.mathworks\\.com/videos/[a-z0-9\\-]+\\-(\\d+)\\.html" })
 public class MathworksCom extends PluginForHost {
     private String dllink = null;
 

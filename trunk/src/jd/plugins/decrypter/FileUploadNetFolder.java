@@ -31,7 +31,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48301 $", interfaceVersion = 3, names = {}, urls = {})
 public class FileUploadNetFolder extends PluginForDecrypt {
     public FileUploadNetFolder(PluginWrapper wrapper) {
         super(wrapper);

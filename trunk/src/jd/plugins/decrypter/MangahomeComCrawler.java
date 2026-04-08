@@ -32,7 +32,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "mangahome.com" }, urls = { "https?://(?:www\\.)?(mangakoi|mangahome)\\.com/manga/[A-Za-z0-9\\-_]+(?:/v\\d+)?/c\\d+(?:\\.\\d+)?" })
+@DecrypterPlugin(revision = "$Revision: 50550 $", interfaceVersion = 3, names = { "mangahome.com" }, urls = { "https?://(?:www\\.)?(mangakoi|mangahome)\\.com/manga/[A-Za-z0-9\\-_]+(?:/v\\d+)?/c\\d+(?:\\.\\d+)?" })
 public class MangahomeComCrawler extends PluginForDecrypt {
     public MangahomeComCrawler(PluginWrapper wrapper) {
         super(wrapper);

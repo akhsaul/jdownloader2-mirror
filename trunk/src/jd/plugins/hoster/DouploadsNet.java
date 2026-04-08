@@ -26,7 +26,7 @@ import jd.plugins.HostPlugin;
 
 import org.jdownloader.plugins.components.XFileSharingProBasic;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 41438 $", interfaceVersion = 3, names = {}, urls = {})
 public class DouploadsNet extends XFileSharingProBasic {
     public DouploadsNet(final PluginWrapper wrapper) {
         super(wrapper);

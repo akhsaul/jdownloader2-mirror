@@ -35,7 +35,7 @@ import org.appwork.utils.StringUtils;
 import org.jdownloader.controlling.filter.CompiledFiletypeFilter;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 47636 $", interfaceVersion = 3, names = {}, urls = {})
 public class MediasetplayMediasetIt extends PluginForHost {
     public MediasetplayMediasetIt(PluginWrapper wrapper) {
         super(wrapper);

@@ -31,7 +31,7 @@ import jd.plugins.PluginForHost;
 
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "girlfriendvideos.com" }, urls = { "https?://(?:www\\.)?girlfriendvideos\\.com/members/[a-z0-9]/([a-z0-9\\-_]+)/(\\d+)\\.php" })
+@HostPlugin(revision = "$Revision: 50337 $", interfaceVersion = 2, names = { "girlfriendvideos.com" }, urls = { "https?://(?:www\\.)?girlfriendvideos\\.com/members/[a-z0-9]/([a-z0-9\\-_]+)/(\\d+)\\.php" })
 public class GirlfriendvideosCom extends PluginForHost {
     public GirlfriendvideosCom(PluginWrapper wrapper) {
         super(wrapper);

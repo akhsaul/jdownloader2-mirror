@@ -39,7 +39,7 @@ import jd.plugins.Plugin;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49212 $", interfaceVersion = 3, names = {}, urls = {})
 public class MegagamesCom extends PluginForHost {
     public MegagamesCom(PluginWrapper wrapper) {
         super(wrapper);

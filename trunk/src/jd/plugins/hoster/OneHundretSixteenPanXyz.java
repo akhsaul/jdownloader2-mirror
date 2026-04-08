@@ -46,7 +46,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52384 $", interfaceVersion = 3, names = {}, urls = {})
 public class OneHundretSixteenPanXyz extends PluginForHost {
     public OneHundretSixteenPanXyz(PluginWrapper wrapper) {
         super(wrapper);
@@ -211,7 +211,13 @@ public class OneHundretSixteenPanXyz extends PluginForHost {
             link.setVerifiedFileSize(file_size.longValue());
         }
         // file.get("vipfile");
-        final String internal_file_id = file.get("file_id").toString();
+        String internal_file_id = (String) file.get("file_short_url");
+        if (internal_file_id == null) {
+            internal_file_id = (String) file.get("file_id");
+        }
+        if (StringUtils.isEmpty(internal_file_id)) {
+            throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
+        }
         link.setProperty(PROPERTY_INTERNAL_FILE_ID, internal_file_id);
         return AvailableStatus.TRUE;
     }

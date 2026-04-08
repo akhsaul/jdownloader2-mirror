@@ -42,7 +42,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51315 $", interfaceVersion = 2, names = {}, urls = {})
 public class YouPornCom extends PluginForHost {
     /* DEV NOTES */
     /* Porn_plugin */

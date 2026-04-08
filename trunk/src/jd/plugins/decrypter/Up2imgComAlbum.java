@@ -35,7 +35,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51615 $", interfaceVersion = 3, names = {}, urls = {})
 public class Up2imgComAlbum extends PluginForDecrypt {
     public Up2imgComAlbum(PluginWrapper wrapper) {
         super(wrapper);

@@ -38,7 +38,7 @@ import jd.plugins.hoster.EPornerCom;
 
 import org.appwork.utils.StringUtils;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49040 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { EPornerCom.class })
 public class EPornerComGallery extends PluginForDecrypt {
     public EPornerComGallery(PluginWrapper wrapper) {

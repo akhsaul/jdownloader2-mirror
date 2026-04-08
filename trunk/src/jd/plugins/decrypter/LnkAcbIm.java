@@ -27,7 +27,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48201 $", interfaceVersion = 2, names = {}, urls = {})
 public class LnkAcbIm extends AbstractPastebinCrawler {
     public LnkAcbIm(PluginWrapper wrapper) {
         super(wrapper);

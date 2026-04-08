@@ -40,7 +40,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.formatter.SizeFormatter;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "sendspace.com" }, urls = { "https?://(?:www\\.)?sendspace\\.com/(?:folder/[0-9a-zA-Z]+|filegroup/([0-9a-zA-Z%]+))" })
+@DecrypterPlugin(revision = "$Revision: 49779 $", interfaceVersion = 2, names = { "sendspace.com" }, urls = { "https?://(?:www\\.)?sendspace\\.com/(?:folder/[0-9a-zA-Z]+|filegroup/([0-9a-zA-Z%]+))" })
 public class SendspaceComFolder extends PluginForDecrypt {
     public SendspaceComFolder(PluginWrapper wrapper) {
         super(wrapper);

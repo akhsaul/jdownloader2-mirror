@@ -60,7 +60,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.TiktokCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52367 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { TiktokCom.class })
 public class TiktokComCrawler extends PluginForDecrypt {
     public TiktokComCrawler(PluginWrapper wrapper) {
@@ -224,6 +224,8 @@ public class TiktokComCrawler extends PluginForDecrypt {
             throw e;
         } catch (final IOException e) {
             throw e;
+        } catch (InterruptedException ie) {
+            throw ie;
         } catch (final Exception jme) {
             /* Most likely API has answered with blank page. */
             logger.info("Attempting website fallback in API mode");
@@ -701,7 +703,7 @@ public class TiktokComCrawler extends PluginForDecrypt {
         final String createTimeStr = (String) media.get("createTime");
         final String description = (String) media.get("desc");
         final String contentURL = getContentURL(username, videoID);
-        final boolean crawlAudio;
+        boolean crawlAudio;
         if (imagePost != null) {
             /* Image post */
             final List<Map<String, Object>> images = (List<Map<String, Object>>) imagePost.get("images");
@@ -738,6 +740,7 @@ public class TiktokComCrawler extends PluginForDecrypt {
             crawlAudio = true;
         } else {
             /* Video post */
+            boolean foundVideoDownloadlink = false;
             final DownloadLink video0 = new DownloadLink(hostPlg, this.getHost(), contentURL);
             video0.setProperty(TiktokCom.PROPERTY_TYPE, TiktokCom.TYPE_VIDEO);
             video0.setProperty(TiktokCom.PROPERTY_ALLOW_HEAD_REQUEST, true);
@@ -746,9 +749,20 @@ public class TiktokComCrawler extends PluginForDecrypt {
                 final List<Map<String, Object>> bit_rate = (List<Map<String, Object>>) videomap.get("bitrateInfo");
                 if (bit_rate != null && bit_rate.size() > 0) {
                     for (Map<String, Object> entry : bit_rate) {
+                        final String format = (String) entry.get("Format");
+                        if ("mp4".equals(format)) {
+                            // supported
+                        } else if ("dash".equals(format)) {
+                            // unsupported
+                            continue;
+                        } else {
+                            throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT, "Unsupported format:" + format);
+                        }
                         final Map<String, Object> play_addr = new HashMap<String, Object>((Map<String, Object>) entry.get("PlayAddr"));
                         if ("h265_hvc1".equals(StringUtils.valueOfOrNull(entry.get("CodecType")))) {
                             play_addr.put("codec", "h265");
+                            best_play_addr = play_addr;
+                            break;
                         } else if ("h264".equals(StringUtils.valueOfOrNull(entry.get("CodecType")))) {
                             play_addr.put("codec", "h264");
                         } else {
@@ -762,22 +776,35 @@ public class TiktokComCrawler extends PluginForDecrypt {
                         }
                     }
                 }
+                if (best_play_addr == null && videomap.get("PlayAddrStruct") != null) {
+                    /* 2026-02-20: For super old tiktok video items */
+                    best_play_addr = (Map<String, Object>) videomap.get("PlayAddrStruct");
+                }
                 if (best_play_addr != null) {
                     final String url = (String) JavaScriptEngineFactory.walkJson(best_play_addr, "UrlList/{0}");
-                    video0.setProperty(TiktokCom.PROPERTY_DIRECTURL_WEBSITE, url);
-                    final Object data_size = best_play_addr.get("DataSize");
-                    if (data_size != null) {
-                        /**
-                         * Set filesize of download-version because streaming- and download-version are nearly identical. </br>
-                         * If a video is watermarked and downloads are prohibited both versions should be identical.
-                         */
-                        video0.setDownloadSize(Long.parseLong(data_size.toString()));
+                    if (url != null) {
+                        video0.setProperty(TiktokCom.PROPERTY_DIRECTURL_WEBSITE, url);
+                        final Object data_size = best_play_addr.get("DataSize");
+                        if (data_size != null) {
+                            /**
+                             * Set filesize of download-version because streaming- and download-version are nearly identical. </br>
+                             * If a video is watermarked and downloads are prohibited both versions should be identical.
+                             */
+                            video0.setDownloadSize(Long.parseLong(data_size.toString()));
+                        }
+                        foundVideoDownloadlink = true;
                     }
                 }
             }
-            ret.add(video0);
-            /* Crawl separate audio only if wished by user. */
-            crawlAudio = cfg.isVideoCrawlerCrawlAudioSeparately();
+            if (foundVideoDownloadlink) {
+                ret.add(video0);
+                /* Crawl separate audio only if wished by user. */
+                crawlAudio = cfg.isVideoCrawlerCrawlAudioSeparately();
+            } else {
+                /* Rare case */
+                logger.info("Found un-downloadable video, this may happen for videos with mature content that can only be watched via Tiktok app -> Forcing to add audio-only | content_id = " + videoID);
+                crawlAudio = true;
+            }
         }
         if ((crawlAudio || forceGrabAll) && music != null) {
             final String musicURL = music.get("playUrl").toString();
@@ -791,6 +818,9 @@ public class TiktokComCrawler extends PluginForDecrypt {
             audio.setProperty(TiktokCom.PROPERTY_DIRECTURL_WEBSITE, musicURL);
             audio.setProperty(TiktokCom.PROPERTY_TYPE, TiktokCom.TYPE_AUDIO);
             ret.add(audio);
+        }
+        if (ret.isEmpty()) {
+            throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT, "Failed to find any downloadable media type");
         }
         String packagename = null;
         final String cookies = TiktokCom.saveCookies(this, br.getCookies(br.getHost()));
@@ -1165,6 +1195,7 @@ public class TiktokComCrawler extends PluginForDecrypt {
                     downloadInfo = (Map<String, Object>) misc_download_addrs.get("suffix_scene");
                 }
             }
+            boolean foundVideoDownloadlink = false;
             findVideoURL: {
                 Map<String, Object> best_play_addr = null;
                 final List<Map<String, Object>> bit_rate = (List<Map<String, Object>>) video.get("bit_rate");
@@ -1222,18 +1253,23 @@ public class TiktokComCrawler extends PluginForDecrypt {
                     } else {
                         video0.setProperty(TiktokCom.PROPERTY_HAS_WATERMARK, null);
                     }
+                    foundVideoDownloadlink = true;
                 }
                 if (downloadInfo != null) {
                     final String url = (String) JavaScriptEngineFactory.walkJson(downloadInfo, "url_list/{0}");
-                    if (url != null) {
-                        video0.setProperty(TiktokCom.PROPERTY_DIRECTURL_API, StringUtils.valueOfOrNull(url));
+                    if (!StringUtils.isEmpty(url)) {
+                        video0.setProperty(TiktokCom.PROPERTY_DIRECTURL_API, url);
                         final Number data_size = (Number) downloadInfo.get("data_size");
                         if (data_size != null) {
                             video0.setVerifiedFileSize(data_size.longValue());
                         }
                         video0.removeProperty(TiktokCom.PROPERTY_HAS_WATERMARK);
+                        foundVideoDownloadlink = true;
                     }
                 }
+            }
+            if (!foundVideoDownloadlink) {
+                logger.warning("Found un-downloadable video: " + contentID);
             }
             ret.add(video0);
             /* User decides whether or not he wants to download the audio of this video separately. */

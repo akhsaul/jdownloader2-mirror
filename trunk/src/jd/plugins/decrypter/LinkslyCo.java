@@ -24,7 +24,7 @@ import jd.http.Browser;
 import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48281 $", interfaceVersion = 3, names = {}, urls = {})
 public class LinkslyCo extends MightyScriptAdLinkFly {
     public LinkslyCo(PluginWrapper wrapper) {
         super(wrapper);

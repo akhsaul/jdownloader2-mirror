@@ -30,7 +30,7 @@ import org.appwork.utils.StringUtils;
 import org.jdownloader.controlling.filter.CompiledFiletypeFilter;
 import org.jdownloader.plugins.components.XFileSharingProBasic;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50523 $", interfaceVersion = 3, names = {}, urls = {})
 public class FilestoreMe extends XFileSharingProBasic {
     public FilestoreMe(final PluginWrapper wrapper) {
         super(wrapper);

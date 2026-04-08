@@ -30,7 +30,7 @@ import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "hoerbuch.in" }, urls = { "https?://(?:www\\.)?hoerbuch\\.(in|us)/(protection/(folder_\\d+|[a-z0-9]+/[a-z0-9]+)\\.html|wp/goto/Download/\\d+)" })
+@DecrypterPlugin(revision = "$Revision: 52140 $", interfaceVersion = 2, names = { "hoerbuch.in" }, urls = { "https?://(?:www\\.)?hoerbuch\\.(in|us)/(protection/(folder_\\d+|[a-z0-9]+/[a-z0-9]+)\\.html|wp/goto/Download/\\d+)" })
 public class RsHrbchn extends antiDDoSForDecrypt {
     private final String ua = RandomUserAgent.generate();
 

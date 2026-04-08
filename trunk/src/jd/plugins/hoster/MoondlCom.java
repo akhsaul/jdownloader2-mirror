@@ -30,7 +30,7 @@ import jd.plugins.HostPlugin;
 import org.appwork.utils.formatter.TimeFormatter;
 import org.jdownloader.plugins.components.XFileSharingProBasic;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51538 $", interfaceVersion = 3, names = {}, urls = {})
 public class MoondlCom extends XFileSharingProBasic {
     public MoondlCom(final PluginWrapper wrapper) {
         super(wrapper);

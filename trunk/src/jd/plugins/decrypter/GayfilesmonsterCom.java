@@ -26,7 +26,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "gayfilesmonster.com" }, urls = { "https?://(?:www\\.)?gayfilesmonster\\.com/(video/go\\.php\\?file=[a-zA-Z0-9_/\\+\\=\\-%]+|[^/]+/video/[^/]+\\.html)" })
+@DecrypterPlugin(revision = "$Revision: 37519 $", interfaceVersion = 3, names = { "gayfilesmonster.com" }, urls = { "https?://(?:www\\.)?gayfilesmonster\\.com/(video/go\\.php\\?file=[a-zA-Z0-9_/\\+\\=\\-%]+|[^/]+/video/[^/]+\\.html)" })
 public class GayfilesmonsterCom extends PluginForDecrypt {
     public GayfilesmonsterCom(PluginWrapper wrapper) {
         super(wrapper);

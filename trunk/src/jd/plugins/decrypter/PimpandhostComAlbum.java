@@ -35,7 +35,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.PimpandhostCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51139 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { PimpandhostCom.class })
 public class PimpandhostComAlbum extends PluginForDecrypt {
     public PimpandhostComAlbum(PluginWrapper wrapper) {

@@ -29,7 +29,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.decrypter.AbstractPastebinCrawler;
 import jd.plugins.decrypter.PastebinComCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49212 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { PastebinComCrawler.class })
 public class PastebinCom extends AbstractPastebinHoster {
     public PastebinCom(PluginWrapper wrapper) {

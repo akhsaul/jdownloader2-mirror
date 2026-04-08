@@ -26,7 +26,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "newshosting.com" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 52124 $", interfaceVersion = 3, names = { "newshosting.com" }, urls = { "" })
 public class NewsHostingCom extends UseNet {
     public NewsHostingCom(PluginWrapper wrapper) {
         super(wrapper);

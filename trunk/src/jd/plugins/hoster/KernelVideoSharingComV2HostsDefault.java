@@ -18,8 +18,7 @@ package jd.plugins.hoster;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.appwork.utils.Exceptions;
+import java.util.Map;
 
 import jd.PluginWrapper;
 import jd.http.Browser;
@@ -27,7 +26,11 @@ import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+import org.appwork.utils.Exceptions;
+import org.jdownloader.plugins.components.config.KVSConfig;
+import org.jdownloader.plugins.components.config.KVSConfigFullpornxxx;
+
+@HostPlugin(revision = "$Revision: 52513 $", interfaceVersion = 3, names = {}, urls = {})
 public class KernelVideoSharingComV2HostsDefault extends KernelVideoSharingComV2 {
     public KernelVideoSharingComV2HostsDefault(final PluginWrapper wrapper) {
         super(wrapper);
@@ -150,6 +153,8 @@ public class KernelVideoSharingComV2HostsDefault extends KernelVideoSharingComV2
         ret.add(new String[] { "lesbian8.com" });
         ret.add(new String[] { "justporn.com" });
         ret.add(new String[] { "w4nkr.com" });
+        ret.add(new String[] { "fullpornxxx.net" });
+        ret.add(new String[] { "fullhd.xxx" });
         return ret;
     }
 
@@ -158,6 +163,16 @@ public class KernelVideoSharingComV2HostsDefault extends KernelVideoSharingComV2
         final ArrayList<String> domains = new ArrayList<String>();
         domains.add("motherporno.com"); // 2025-01-07
         return domains;
+    }
+
+    @Override
+    public Class<? extends KVSConfig> getConfigInterface() {
+        if ("fullhd.xxx".equals(getHost())) {
+            return KVSConfig.class;
+        } else if ("fullpornxxx.net".equals(getHost())) {
+            return KVSConfigFullpornxxx.class;
+        }
+        return null;
     }
 
     @Override
@@ -193,6 +208,18 @@ public class KernelVideoSharingComV2HostsDefault extends KernelVideoSharingComV2
     }
 
     @Override
+    protected String handleQualitySelection(Browser br, DownloadLink link, Map<Integer, String> qualityMap) {
+        if (qualityMap == null || qualityMap.isEmpty()) {
+            return null;
+        }
+        final Map<Integer, String> qualityMapNew = handleOkRuGenerateMp4(br);
+        if (qualityMapNew != null) {
+            return super.handleQualitySelection(br, link, qualityMapNew);
+        }
+        return super.handleQualitySelection(br, link, qualityMap);
+    }
+
+    @Override
     protected boolean useAPI() {
         return ("upornia.com".equals(getHost()) || "upornia.tube".equals(getHost())) || "tubepornclassic.com".equals(getHost()) || "thegay.com".equals(getHost()) || super.useAPI();
     }
@@ -203,7 +230,8 @@ public class KernelVideoSharingComV2HostsDefault extends KernelVideoSharingComV2
 
     @Override
     protected boolean preferTitleHTML() {
-        if ("bigwank.com".equals(getHost()) || "fpo.xxx".equals(getHost()) | "cluset.com".equals(getHost())) {
+        final String host = getHost();
+        if ("bigwank.com".equals(host) || "fpo.xxx".equals(host) || "cluset.com".equals(host) || "fullpornxxx.net".equals(host) || "fullhd.xxx".equals(host)) {
             /* cluset.com example with bad title in URL: /videos/10824/100038/ */
             return true;
         } else {

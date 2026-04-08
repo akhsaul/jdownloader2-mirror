@@ -33,7 +33,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "wistia.com" }, urls = { "https?://(?:www\\.)?ksmedia\\-gmbh\\.wistia\\.com/medias/[A-Za-z0-9]+|https?://fast\\.wistia\\.net/embed/iframe/[a-z0-9]+|https:?//fast\\.wistia\\.com/embed/medias/[A-Za-z0-9]+(.jsonp?)?" })
+@HostPlugin(revision = "$Revision: 48844 $", interfaceVersion = 3, names = { "wistia.com" }, urls = { "https?://(?:www\\.)?ksmedia\\-gmbh\\.wistia\\.com/medias/[A-Za-z0-9]+|https?://fast\\.wistia\\.net/embed/iframe/[a-z0-9]+|https:?//fast\\.wistia\\.com/embed/medias/[A-Za-z0-9]+(.jsonp?)?" })
 public class WistiaCom extends PluginForHost {
     public WistiaCom(PluginWrapper wrapper) {
         super(wrapper);

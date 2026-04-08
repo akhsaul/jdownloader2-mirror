@@ -37,7 +37,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "epubbooks.com" }, urls = { "https?://(?:www\\.)?epubbooks\\.com/downloads/(\\d+)" })
+@HostPlugin(revision = "$Revision: 50944 $", interfaceVersion = 3, names = { "epubbooks.com" }, urls = { "https?://(?:www\\.)?epubbooks\\.com/downloads/(\\d+)" })
 public class EpubbooksCom extends PluginForHost {
     public EpubbooksCom(PluginWrapper wrapper) {
         super(wrapper);

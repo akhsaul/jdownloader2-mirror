@@ -42,7 +42,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.components.SiteType.SiteTemplate;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "uploadonall.com" }, urls = { "https?://(?:www\\.)?uploadonall\\.com/((download|files)/|download\\.php\\?uid=)[A-Z0-9]{8}" })
+@DecrypterPlugin(revision = "$Revision: 48308 $", interfaceVersion = 3, names = { "uploadonall.com" }, urls = { "https?://(?:www\\.)?uploadonall\\.com/((download|files)/|download\\.php\\?uid=)[A-Z0-9]{8}" })
 public class GeneralMultiuploadDecrypter extends antiDDoSForDecrypt {
     public GeneralMultiuploadDecrypter(PluginWrapper wrapper) {
         super(wrapper);

@@ -30,7 +30,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "upload.ee" }, urls = { "https?://(?:www\\.)?upload\\.ee/files/(\\d+)/([^/]+)\\.html" })
+@HostPlugin(revision = "$Revision: 47485 $", interfaceVersion = 2, names = { "upload.ee" }, urls = { "https?://(?:www\\.)?upload\\.ee/files/(\\d+)/([^/]+)\\.html" })
 public class UploadEe extends PluginForHost {
     // DEV NOTES:
     // other: urls can work without *.html, but it has to be

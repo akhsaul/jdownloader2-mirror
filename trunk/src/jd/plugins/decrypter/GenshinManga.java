@@ -21,7 +21,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "genshin.hoyoverse.com" }, urls = { "https?://genshin\\.hoyoverse\\.com/(?:[a-z]{2}/)?manga/detail/(\\d+)" })
+@DecrypterPlugin(revision = "$Revision: 52099 $", interfaceVersion = 2, names = { "genshin.hoyoverse.com" }, urls = { "https?://genshin\\.hoyoverse\\.com/(?:[a-z]{2}/)?manga/detail/(\\d+)" })
 public class GenshinManga extends PluginForDecrypt {
     public GenshinManga(PluginWrapper wrapper) {
         super(wrapper);

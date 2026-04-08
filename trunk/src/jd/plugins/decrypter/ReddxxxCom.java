@@ -27,7 +27,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49292 $", interfaceVersion = 3, names = {}, urls = {})
 public class ReddxxxCom extends PluginForDecrypt {
     public ReddxxxCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -23,14 +23,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
-
-import org.jdownloader.plugins.components.config.Keep2shareConfig;
-import org.jdownloader.plugins.components.config.Keep2shareConfig.FileLinkAddMode;
-import org.jdownloader.plugins.config.PluginJsonConfig;
 
 import jd.PluginWrapper;
 import jd.controlling.ProgressController;
+import jd.http.Browser;
+import jd.http.requests.PostRequest;
 import jd.nutils.encoding.Encoding;
 import jd.parser.Regex;
 import jd.plugins.CryptedLink;
@@ -44,7 +43,12 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.K2SApi;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+import org.appwork.storage.TypeRef;
+import org.appwork.utils.formatter.HexFormatter;
+import org.jdownloader.plugins.components.config.Keep2shareConfig;
+import org.jdownloader.plugins.components.config.Keep2shareConfig.FileLinkAddMode;
+
+@DecrypterPlugin(revision = "$Revision: 52517 $", interfaceVersion = 2, names = {}, urls = {})
 public class Keep2ShareCcDecrypter extends PluginForDecrypt {
     public Keep2ShareCcDecrypter(PluginWrapper wrapper) {
         super(wrapper);
@@ -113,7 +117,7 @@ public class Keep2ShareCcDecrypter extends PluginForDecrypt {
         final String contentid = fixContentID(contentidFromURL);
         final ArrayList<DownloadLink> ret = new ArrayList<DownloadLink>();
         final K2SApi plugin = (jd.plugins.hoster.K2SApi) getNewPluginForHostInstance(this.getHost());
-        final Keep2shareConfig cfg = PluginJsonConfig.get(plugin.getConfigInterface());
+        final Keep2shareConfig cfg = get(plugin.getConfigInterface());
         final FileLinkAddMode mode = cfg.getFileLinkAddMode();
         if (looksLikeSingleFileItem && (mode == FileLinkAddMode.HOSTER_PLUGIN_LINKCHECK || mode == FileLinkAddMode.DEFAULT)) {
             /* URL looks like single file URL -> Pass to hosterplugin so we can make use of mass-linkchecking feature. */
@@ -129,21 +133,18 @@ public class Keep2ShareCcDecrypter extends PluginForDecrypt {
         try {
             singleFileHandling: if (looksLikeSingleFileItem) {
                 /**
-                 * This handling is supposed to be for single files but can also be used for small folders. </br>
-                 * Using the folder handling down below for single files will prohibit our special referrer handling from working since it
-                 * seems to flag the current IP so the referrer will be ignored later and users who have configured a special referrer will
-                 * not get better download speeds anymore. </br>
-                 * More detailed explanation: https://board.jdownloader.org/showthread.php?t=94515
+                 * This handling is supposed to be for single files but can also be used for small folders. </br> Using the folder handling
+                 * down below for single files will prohibit our special referrer handling from working since it seems to flag the current
+                 * IP so the referrer will be ignored later and users who have configured a special referrer will not get better download
+                 * speeds anymore. </br> More detailed explanation: https://board.jdownloader.org/showthread.php?t=94515
                  */
                 logger.info("Link looks like single file link -> Jumping into single file handling");
                 final Map<String, Object> postdataGetfilesinfo = new HashMap<String, Object>();
                 postdataGetfilesinfo.put("ids", Arrays.asList(new String[] { contentid }));
                 /**
-                 * What this returns: </br>
-                 * ID leads to a single file: Single file information </br>
-                 * ID leads to a single SMALL(!) folder: All folder file items </br>
-                 * ID leads to a big folder: Only folder meta-information -> Folder items need to be crawled using a separate request down
-                 * below.
+                 * What this returns: </br> ID leads to a single file: Single file information </br> ID leads to a single SMALL(!) folder:
+                 * All folder file items </br> ID leads to a big folder: Only folder meta-information -> Folder items need to be crawled
+                 * using a separate request down below.
                  */
                 response = plugin.postPageRaw(br, "https://" + this.getHost() + "/api/v2/getfilesinfo", postdataGetfilesinfo, null);
                 if (!"success".equals(response.get("status"))) {
@@ -195,6 +196,9 @@ public class Keep2ShareCcDecrypter extends PluginForDecrypt {
                 postdataGetfilestatus.put("offset", offset);
                 response = plugin.postPageRaw(br, "/getfilestatus", postdataGetfilestatus, null);
                 items = (List<Map<String, Object>>) response.get("files");
+                if ((items == null || items.size() == 0) && Boolean.TRUE.equals(response.get("is_available")) && Boolean.TRUE.equals(response.get("is_folder"))) {
+                    items = listV1Files(contentid);
+                }
                 if (items == null && response.containsKey("is_available") && !response.containsKey("id")) {
                     /* Root map contains single loose file. */
                     isSingleFile = true;
@@ -240,7 +244,7 @@ public class Keep2ShareCcDecrypter extends PluginForDecrypt {
                     numberofNewItems++;
                     final String filenameOrFoldername = (String) item.get("name");
                     final DownloadLink result;
-                    if (Boolean.TRUE.equals(item.get("is_folder"))) {
+                    if (Boolean.TRUE.equals(item.get("is_folder")) || "folder".equals(item.get("type"))) {
                         /* Folder */
                         result = createDownloadlink(generateFolderUrl(id, filenameOrFoldername, referer));
                     } else {
@@ -290,6 +294,61 @@ public class Keep2ShareCcDecrypter extends PluginForDecrypt {
                 throw new PluginException(LinkStatus.ERROR_FILE_NOT_FOUND, "Private file which only the owner can download");
             } else {
                 throw e;
+            }
+        }
+        return ret;
+    }
+
+    public static AtomicBoolean LIST_V1_AVAILABLE = new AtomicBoolean(true);
+    private Browser             v1BrowserInstance = null;
+
+    private List<Map<String, Object>> listV1Files(String folderid) throws Exception {
+        if (LIST_V1_AVAILABLE.get() == false) {
+            throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
+        }
+        Browser br = v1BrowserInstance;
+        token: if (br == null) {
+            br = this.br.createNewBrowserInstance();
+            final Map<String, Object> json = new HashMap<String, Object>();
+            json.put("client_id", "k2s_web_app");
+            json.put("client_secret", new String(HexFormatter.hexToByteArray("706A633870795A76377668736365786570464E7A6D753450"), "UTF-8"));
+            json.put("grant_type", "client_credentials");
+            final PostRequest token = br.createJSonPostRequest("https://api.k2s.cc/v1/auth/token", json);
+            br.getPage(token);
+            if (br.getRequest().getHttpConnection().getResponseCode() == 401) {
+                LIST_V1_AVAILABLE.set(false);
+                throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
+            }
+            v1BrowserInstance = br;
+        }
+        final List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
+        final int limit = 50;
+        int offset = 0;
+        Number total = null;
+        pagination: while (true) {
+            br.getPage("https://api.k2s.cc/v1/files?limit=" + limit + "&offset=" + offset + "&sort=name&folderId=" + folderid + "&withFolders=true");
+            final Map<String, Object> response = restoreFromString(br.getRequest().getHtmlCode(), TypeRef.MAP);
+            total = total != null ? total : (Number) response.get("total");
+            final List<Map<String, Object>> items = (List<Map<String, Object>>) response.get("items");
+            if (items == null || items.size() == 0) {
+                break pagination;
+            }
+            for (Map<String, Object> item : items) {
+                if (!item.containsKey("is_available")) {
+                    final Boolean isDeleted = (Boolean) item.get("isDeleted");
+                    item.put("is_available", !Boolean.TRUE.equals(isDeleted));
+                }
+                if ("folder".equals(item.get("type"))) {
+                    item.put("is_folder", Boolean.TRUE);
+                }
+            }
+            ret.addAll(items);
+            if (isAbort()) {
+                break pagination;
+            } else if (total != null && ret.size() >= total.intValue()) {
+                break pagination;
+            } else {
+                offset += items.size();
             }
         }
         return ret;

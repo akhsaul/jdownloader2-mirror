@@ -31,7 +31,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "manhub.com" }, urls = { "https?://(?:www\\.)?manhub\\.com/watch/(\\d+)/" })
+@HostPlugin(revision = "$Revision: 48061 $", interfaceVersion = 2, names = { "manhub.com" }, urls = { "https?://(?:www\\.)?manhub\\.com/watch/(\\d+)/" })
 public class ManHubCom extends PluginForHost {
     public ManHubCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -33,7 +33,7 @@ import jd.plugins.decrypter.FreeViewMoviesComCrawler;
 
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 2, names = {}, urls = {})
 @PluginDependencies(dependencies = { jd.plugins.decrypter.FreeViewMoviesComCrawler.class })
 public class FreeViewMoviesCom extends PluginForHost {
     private String              dllink      = null;

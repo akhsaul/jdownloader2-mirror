@@ -30,7 +30,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "put.io" }, urls = { "https?://(?:[a-z0-9\\-]+\\.)?put\\.io/(?:(?:v2/)?files/\\d+/(mp4/download(/[^/]*)?|download(/[^/]*)?)|zipstream/\\d+.*?|download/\\d+.*)\\?oauth_token=[A-Z0-9]+.*" })
+@HostPlugin(revision = "$Revision: 48562 $", interfaceVersion = 3, names = { "put.io" }, urls = { "https?://(?:[a-z0-9\\-]+\\.)?put\\.io/(?:(?:v2/)?files/\\d+/(mp4/download(/[^/]*)?|download(/[^/]*)?)|zipstream/\\d+.*?|download/\\d+.*)\\?oauth_token=[A-Z0-9]+.*" })
 public class PutIO extends PluginForHost {
     private final String API_BASE      = "https://api.put.io/v2";
     private final String CLIENT_ID     = "181";

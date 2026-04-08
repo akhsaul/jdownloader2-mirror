@@ -32,7 +32,7 @@ import org.appwork.storage.TypeRef;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "coub.com" }, urls = { "https?://(?:www\\.)?coub\\.com/(?:view|embed)/([A-Za-z0-9]+)" })
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = { "coub.com" }, urls = { "https?://(?:www\\.)?coub\\.com/(?:view|embed)/([A-Za-z0-9]+)" })
 public class CoubCom extends PluginForHost {
     public CoubCom(PluginWrapper wrapper) {
         super(wrapper);

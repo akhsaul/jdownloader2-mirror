@@ -42,7 +42,7 @@ import org.appwork.utils.formatter.SizeFormatter;
 import org.jdownloader.plugins.components.YetiShareCore;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51165 $", interfaceVersion = 2, names = {}, urls = {})
 public class ShareplaceOrg extends YetiShareCore {
     public ShareplaceOrg(final PluginWrapper wrapper) {
         super(wrapper);

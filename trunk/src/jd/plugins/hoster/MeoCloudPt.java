@@ -33,7 +33,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.MeocloudPtFolder;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51130 $", interfaceVersion = 2, names = {}, urls = {})
 public class MeoCloudPt extends PluginForHost {
     public MeoCloudPt(PluginWrapper wrapper) {
         super(wrapper);

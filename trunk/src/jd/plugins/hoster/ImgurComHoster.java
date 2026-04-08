@@ -69,7 +69,7 @@ import jd.plugins.decrypter.ImgurComGallery;
  * IMPORTANT: Never grab IDs bigger than 7 characters because these are Thumbnails - see API description: https://api.imgur.com/models/image
  * --> New docs 2020-04-27: https://apidocs.imgur.com/?version=latest (scroll down to "Image thumbnails").
  */
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "imgur.com" }, urls = { "https?://(?:www\\.)?imgur\\.com/download/([A-Za-z0-9]{7}|[A-Za-z0-9]{5})" })
+@HostPlugin(revision = "$Revision: 50772 $", interfaceVersion = 3, names = { "imgur.com" }, urls = { "https?://(?:www\\.)?imgur\\.com/download/([A-Za-z0-9]{7}|[A-Za-z0-9]{5})" })
 public class ImgurComHoster extends PluginForHost {
     public ImgurComHoster(PluginWrapper wrapper) {
         super(wrapper);

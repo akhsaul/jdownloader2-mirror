@@ -31,7 +31,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "ivpaste.com" }, urls = { "https?://(www\\.)?ivpaste\\.com/(v/|view\\.php\\?id=)[A-Za-z0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 52232 $", interfaceVersion = 3, names = { "ivpaste.com" }, urls = { "https?://(www\\.)?ivpaste\\.com/(v/|view\\.php\\?id=)[A-Za-z0-9]+" })
 public class IvPasteCom extends PluginForDecrypt {
     public IvPasteCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -27,7 +27,7 @@ import jd.parser.html.Form;
 import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51697 $", interfaceVersion = 3, names = {}, urls = {})
 public class ShrinkeMe extends MightyScriptAdLinkFly {
     public ShrinkeMe(PluginWrapper wrapper) {
         super(wrapper);

@@ -54,7 +54,7 @@ import org.jdownloader.gui.translate._GUI;
 import org.jdownloader.plugins.accounts.AccountBuilderInterface;
 import org.jdownloader.plugins.controller.LazyPlugin.FEATURE;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51817 $", interfaceVersion = 3, names = {}, urls = {})
 public class GoogleDriveDirectoryIndex extends PluginForHost {
     public GoogleDriveDirectoryIndex(PluginWrapper wrapper) {
         super(wrapper);

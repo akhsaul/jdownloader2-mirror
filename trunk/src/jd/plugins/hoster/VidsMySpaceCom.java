@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "vids.myspace.com" }, urls = { "https?://(?:www\\.)?(myspace\\.com/(([a-z0-9\\-_\\.]+/)?video/[a-z0-9\\-_]+/\\d+)|mediaservices\\.myspace\\.com/services/media/embed\\.aspx/m=\\d+)" })
+@HostPlugin(revision = "$Revision: 49326 $", interfaceVersion = 2, names = { "vids.myspace.com" }, urls = { "https?://(?:www\\.)?(myspace\\.com/(([a-z0-9\\-_\\.]+/)?video/[a-z0-9\\-_]+/\\d+)|mediaservices\\.myspace\\.com/services/media/embed\\.aspx/m=\\d+)" })
 public class VidsMySpaceCom extends PluginForHost {
     @Override
     public void correctDownloadLink(final DownloadLink link) {

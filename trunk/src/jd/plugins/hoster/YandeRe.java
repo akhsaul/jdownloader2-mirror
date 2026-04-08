@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "yande.re" }, urls = { "https?://yande\\.re/post/show/(\\d+)" })
+@HostPlugin(revision = "$Revision: 48043 $", interfaceVersion = 3, names = { "yande.re" }, urls = { "https?://yande\\.re/post/show/(\\d+)" })
 public class YandeRe extends PluginForHost {
     public YandeRe(PluginWrapper wrapper) {
         super(wrapper);

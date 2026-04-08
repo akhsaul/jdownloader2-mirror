@@ -41,7 +41,7 @@ import jd.plugins.PluginException;
 import jd.plugins.components.SiteType.SiteTemplate;
 import jd.plugins.hoster.TurboBitNet;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48338 $", interfaceVersion = 2, names = {}, urls = {})
 @PluginDependencies(dependencies = { TurboBitNet.class })
 public class TurboBitNetFolder extends antiDDoSForDecrypt {
     @Override

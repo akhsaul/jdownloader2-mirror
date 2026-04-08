@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 45838 $", interfaceVersion = 3, names = {}, urls = {})
 public class SmaleTubeComGallery extends PluginForDecrypt {
     public SmaleTubeComGallery(PluginWrapper wrapper) {
         super(wrapper);

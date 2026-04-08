@@ -35,7 +35,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "tvigle.ru" }, urls = { "https?://cloud\\.tvigle\\.ru/video/\\d+|https?://www\\.tvigle\\.ru/video/[a-z0-9\\-]+/" })
+@HostPlugin(revision = "$Revision: 50745 $", interfaceVersion = 2, names = { "tvigle.ru" }, urls = { "https?://cloud\\.tvigle\\.ru/video/\\d+|https?://www\\.tvigle\\.ru/video/[a-z0-9\\-]+/" })
 public class TvigleRu extends PluginForHost {
     public TvigleRu(PluginWrapper wrapper) {
         super(wrapper);

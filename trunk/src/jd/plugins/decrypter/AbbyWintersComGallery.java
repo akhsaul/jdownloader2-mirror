@@ -40,7 +40,7 @@ import jd.plugins.hoster.AbbyWintersCom;
 
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49242 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { AbbyWintersCom.class })
 public class AbbyWintersComGallery extends PluginForDecrypt {
     public AbbyWintersComGallery(PluginWrapper wrapper) {

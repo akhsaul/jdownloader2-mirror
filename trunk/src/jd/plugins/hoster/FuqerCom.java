@@ -31,7 +31,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "fuqer.com" }, urls = { "https?://(?:www\\.)?fuqer\\.com/(?:videos/[a-z0-9\\-]+\\-\\d+\\.html|nuevo/player/embed\\.php\\?key=\\d+)" })
+@HostPlugin(revision = "$Revision: 47101 $", interfaceVersion = 3, names = { "fuqer.com" }, urls = { "https?://(?:www\\.)?fuqer\\.com/(?:videos/[a-z0-9\\-]+\\-\\d+\\.html|nuevo/player/embed\\.php\\?key=\\d+)" })
 public class FuqerCom extends PluginForHost {
     public FuqerCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -45,7 +45,7 @@ import jd.plugins.PluginException;
  * @version raz_Template
  * @author raztoki, psp
  */
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51681 $", interfaceVersion = 3, names = {}, urls = {})
 public class DlPrteCom extends antiDDoSForDecrypt {
     public static List<String[]> getPluginDomains() {
         final List<String[]> ret = new ArrayList<String[]>();

@@ -33,7 +33,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "animegalleries.net" }, urls = { "https?://(?:www\\.)?animegalleries\\.net/album/\\d+" })
+@DecrypterPlugin(revision = "$Revision: 48932 $", interfaceVersion = 3, names = { "animegalleries.net" }, urls = { "https?://(?:www\\.)?animegalleries\\.net/album/\\d+" })
 public class AnimegalleriesNetCrawler extends PluginForDecrypt {
     public AnimegalleriesNetCrawler(PluginWrapper wrapper) {
         super(wrapper);

@@ -29,7 +29,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "multcloud.com" }, urls = { "https?://(www\\.)?multcloud\\.com/(?:download/[A-Z0-9\\-]+|action/share!downloadShare\\?.+)" })
+@HostPlugin(revision = "$Revision: 49212 $", interfaceVersion = 2, names = { "multcloud.com" }, urls = { "https?://(www\\.)?multcloud\\.com/(?:download/[A-Z0-9\\-]+|action/share!downloadShare\\?.+)" })
 public class MultCloudCom extends PluginForHost {
     public MultCloudCom(PluginWrapper wrapper) {
         super(wrapper);

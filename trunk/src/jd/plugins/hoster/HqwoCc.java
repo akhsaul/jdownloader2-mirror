@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "hqwo.cc" }, urls = { "https?://(?:www\\.)?hqwo\\.cc/player/([a-f0-9]{32})" })
+@HostPlugin(revision = "$Revision: 51000 $", interfaceVersion = 3, names = { "hqwo.cc" }, urls = { "https?://(?:www\\.)?hqwo\\.cc/player/([a-f0-9]{32})" })
 public class HqwoCc extends PluginForHost {
     public HqwoCc(PluginWrapper wrapper) {
         super(wrapper);

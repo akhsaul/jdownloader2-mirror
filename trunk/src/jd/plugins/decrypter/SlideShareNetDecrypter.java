@@ -16,6 +16,7 @@
 package jd.plugins.decrypter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import jd.PluginWrapper;
 import jd.controlling.AccountController;
@@ -34,10 +35,38 @@ import jd.plugins.PluginForHost;
 import jd.plugins.hoster.DirectHTTP;
 import jd.utils.JDUtilities;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "slideshare.net" }, urls = { "https?://(?:(?:\\w+)\\.)?slideshare\\.net/(slideshow/[a-z0-9\\-]+/\\d+|[a-z0-9\\-_]+/[a-z0-9\\-_]+)" })
+@DecrypterPlugin(revision = "$Revision: 52465 $", interfaceVersion = 3, names = {}, urls = {})
 public class SlideShareNetDecrypter extends PluginForDecrypt {
     public SlideShareNetDecrypter(PluginWrapper wrapper) {
         super(wrapper);
+    }
+
+    private static List<String[]> getPluginDomains() {
+        final List<String[]> ret = new ArrayList<String[]>();
+        // each entry in List<String[]> will result in one PluginForDecrypt, Plugin.getHost() will return String[0]->main domain
+        ret.add(new String[] { "slideshare.net" });
+        return ret;
+    }
+
+    public static String[] getAnnotationNames() {
+        return buildAnnotationNames(getPluginDomains());
+    }
+
+    @Override
+    public String[] siteSupportedNames() {
+        return buildSupportedNames(getPluginDomains());
+    }
+
+    public static String[] getAnnotationUrls() {
+        return buildAnnotationUrls(getPluginDomains());
+    }
+
+    public static String[] buildAnnotationUrls(final List<String[]> pluginDomains) {
+        final List<String> ret = new ArrayList<String>();
+        for (final String[] domains : pluginDomains) {
+            ret.add("https?://(?:(?:\\w+)\\.)?" + buildHostsPatternPart(domains) + "/(slideshow/[a-z0-9\\-]+/\\d+|(?!category/)[a-z0-9\\-_]+/[a-z0-9\\-_]+)");
+        }
+        return ret.toArray(new String[0]);
     }
 
     public ArrayList<DownloadLink> decryptIt(CryptedLink param, ProgressController progress) throws Exception {
@@ -81,7 +110,7 @@ public class SlideShareNetDecrypter extends PluginForDecrypt {
             } while (next != null);
         }
         /* Single url */
-        title = br.getRegex("<title>([^<>\"]*?)</title>").getMatch(0);
+        title = br.getRegex("<title[^>]*>([^<>\"]*?)</title>").getMatch(0);
         if (title != null) {
             title = Encoding.htmlDecode(title.trim());
         }
@@ -107,6 +136,7 @@ public class SlideShareNetDecrypter extends PluginForDecrypt {
                     }
                 }
                 final DownloadLink dl = createDownloadlink(DirectHTTP.createURLForThisPlugin(url));
+                dl.setProperty(DirectHTTP.PROPERTY_CUSTOM_HOST, getHost());
                 dl.setAvailable(true);
                 dl._setFilePackage(fp);
                 ret.add(dl);

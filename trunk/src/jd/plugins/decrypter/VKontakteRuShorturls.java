@@ -31,7 +31,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49612 $", interfaceVersion = 3, names = {}, urls = {})
 public class VKontakteRuShorturls extends PluginForDecrypt {
     public VKontakteRuShorturls(PluginWrapper wrapper) {
         super(wrapper);

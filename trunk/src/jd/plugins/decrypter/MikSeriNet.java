@@ -31,7 +31,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "mikseri.net" }, urls = { "https?://(?:www\\.)?mikseri\\.net/(artists/[^/]+/[^/]+/\\d+/|artists/\\?id=\\d+|artists/[^\"\\']+\\.\\d+)" })
+@DecrypterPlugin(revision = "$Revision: 49678 $", interfaceVersion = 2, names = { "mikseri.net" }, urls = { "https?://(?:www\\.)?mikseri\\.net/(artists/[^/]+/[^/]+/\\d+/|artists/\\?id=\\d+|artists/[^\"\\']+\\.\\d+)" })
 public class MikSeriNet extends PluginForDecrypt {
     public MikSeriNet(PluginWrapper wrapper) {
         super(wrapper);

@@ -50,7 +50,7 @@ import org.appwork.storage.TypeRef;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "twitch.tv" }, urls = { "https?://((www\\.|[a-z]{2}\\.|secure\\.|m\\.)?(twitchtv\\.com|twitch\\.tv)/(?!directory)(?:[^<>/\"]+/(?:(b|c|v)/\\d+|videos(\\?page=\\d+)?|video/\\d+)|videos/\\d+)|(www\\.|secure\\.)?twitch\\.tv/archive/archive_popout\\?id=\\d+)|https?://(?:www\\.)?twitch\\.tv/[^/]+/clip/[A-Za-z0-9]+|https?://clips\\.twitch\\.tv/(embed\\?clip=)?[A-Za-z0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 52202 $", interfaceVersion = 2, names = { "twitch.tv" }, urls = { "https?://((www\\.|[a-z]{2}\\.|secure\\.|m\\.)?(twitchtv\\.com|twitch\\.tv)/(?!directory)(?:[^<>/\"]+/(?:(b|c|v)/\\d+|videos(\\?page=\\d+)?|video/\\d+)|videos/\\d+)|(www\\.|secure\\.)?twitch\\.tv/archive/archive_popout\\?id=\\d+)|https?://(?:www\\.)?twitch\\.tv/[^/]+/clip/[A-Za-z0-9]+|https?://clips\\.twitch\\.tv/(embed\\?clip=)?[A-Za-z0-9]+" })
 public class TwitchTvDecrypt extends PluginForDecrypt {
     public TwitchTvDecrypt(PluginWrapper wrapper) {
         super(wrapper);

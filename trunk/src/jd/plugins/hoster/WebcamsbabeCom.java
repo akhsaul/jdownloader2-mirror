@@ -30,7 +30,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51795 $", interfaceVersion = 3, names = {}, urls = {})
 public class WebcamsbabeCom extends KernelVideoSharingComV2 {
     public WebcamsbabeCom(final PluginWrapper wrapper) {
         super(wrapper);

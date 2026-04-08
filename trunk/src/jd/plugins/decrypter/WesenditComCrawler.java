@@ -36,7 +36,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.WesenditCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50205 $", interfaceVersion = 3, names = {}, urls = {})
 public class WesenditComCrawler extends PluginForDecrypt {
     public WesenditComCrawler(PluginWrapper wrapper) {
         super(wrapper);

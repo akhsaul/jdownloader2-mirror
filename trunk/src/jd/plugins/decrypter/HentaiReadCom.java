@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "hentairead.com" }, urls = { "https?://(?:www\\.)?hentairead.com/hentai/([^/?]+)/?" })
+@DecrypterPlugin(revision = "$Revision: 49603 $", interfaceVersion = 3, names = { "hentairead.com" }, urls = { "https?://(?:www\\.)?hentairead.com/hentai/([^/?]+)/?" })
 public class HentaiReadCom extends PluginForDecrypt {
     public HentaiReadCom(PluginWrapper wrapper) {
         super(wrapper);

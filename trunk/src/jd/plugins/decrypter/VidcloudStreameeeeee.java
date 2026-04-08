@@ -38,7 +38,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 import jd.plugins.hoster.GenericM3u8;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52089 $", interfaceVersion = 3, names = {}, urls = {})
 public class VidcloudStreameeeeee extends PluginForDecrypt {
     public VidcloudStreameeeeee(PluginWrapper wrapper) {
         super(wrapper);

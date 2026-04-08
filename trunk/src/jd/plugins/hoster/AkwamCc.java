@@ -35,7 +35,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49370 $", interfaceVersion = 3, names = {}, urls = {})
 public class AkwamCc extends PluginForHost {
     public AkwamCc(PluginWrapper wrapper) {
         super(wrapper);

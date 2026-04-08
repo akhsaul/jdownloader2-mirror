@@ -32,7 +32,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "dropmefiles.com" }, urls = { "https?://(?:www\\.)?dropmefiles\\.com/([A-Za-z0-9]{3,})" })
+@HostPlugin(revision = "$Revision: 48286 $", interfaceVersion = 2, names = { "dropmefiles.com" }, urls = { "https?://(?:www\\.)?dropmefiles\\.com/([A-Za-z0-9]{3,})" })
 public class DropmefilesCom extends PluginForHost {
     public DropmefilesCom(PluginWrapper wrapper) {
         super(wrapper);

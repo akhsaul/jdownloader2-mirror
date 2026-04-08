@@ -37,7 +37,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "livestream.com" }, urls = { "https?://(?:www\\.)?livestream\\.com/[^<>\"]+/videos/(\\d+)" })
+@HostPlugin(revision = "$Revision: 48064 $", interfaceVersion = 2, names = { "livestream.com" }, urls = { "https?://(?:www\\.)?livestream\\.com/[^<>\"]+/videos/(\\d+)" })
 public class LiveStreamCom extends PluginForHost {
     @SuppressWarnings("deprecation")
     public LiveStreamCom(PluginWrapper wrapper) {

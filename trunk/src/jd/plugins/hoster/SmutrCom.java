@@ -27,7 +27,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.PluginDependencies;
 import jd.plugins.decrypter.SmutrComCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 48971 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { SmutrComCrawler.class })
 public class SmutrCom extends KernelVideoSharingComV2 {
     public SmutrCom(final PluginWrapper wrapper) {

@@ -32,6 +32,7 @@
  * ==================================================================================================================================================== */
 package org.appwork.utils.net.httpconnection.tests;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -59,6 +60,7 @@ import org.appwork.utils.net.httpconnection.trust.AllTrustProvider;
 import org.appwork.utils.net.httpconnection.trust.CompositeTrustProvider;
 import org.appwork.utils.net.httpconnection.trust.CurrentJRETrustProvider;
 import org.appwork.utils.net.httpconnection.trust.CustomTrustProvider;
+import org.appwork.utils.net.httpconnection.trust.JNAWindowsTrustProvider;
 import org.appwork.utils.net.httpconnection.trust.TrustLinuxProvider;
 import org.appwork.utils.net.httpconnection.trust.TrustProviderInterface;
 import org.appwork.utils.net.httpconnection.trust.WindowsTrustProvider;
@@ -66,7 +68,7 @@ import org.appwork.utils.net.httpconnection.trust.ccadb.CCADBTrustProvider;
 import org.appwork.utils.os.CrossSystem;
 import org.appwork.utils.os.WindowsCertUtils;
 import org.appwork.utils.os.WindowsCertUtils.CertListEntry;
-import org.appwork.utils.os.WindowsCertUtils.KeyStore;
+import org.appwork.utils.os.WindowsCertUtils.TargetKeyStore;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
@@ -89,24 +91,7 @@ public class HTTPSIntegrationTest extends ProxyConnectionTestBase {
 
     @Override
     public void runTest() throws Exception {
-        if (!CrossSystem.isWindows()) {
-            return;
-        }
         try {
-            setupProxyServers();
-            createTestCertificates();
-            List<CertListEntry> list = WindowsCertUtils.listCertificates(KeyStore.CURRENT_USER, org.appwork.utils.net.httpconnection.tests.SSLTrustProviderTestBase.APP_WORK_AW_TEST_CA, null, null);
-            for (CertListEntry c : list) {
-                removeCertificateWithAutoConfirm(c.thumbprint, KeyStore.CURRENT_USER);
-            }
-            boolean isInUserStore = WindowsCertUtils.isCertificateInstalled(caCertificateFingerPrint, WindowsCertUtils.KeyStore.CURRENT_USER);
-            boolean isInLocalSystem = WindowsCertUtils.isCertificateInstalled(caCertificateFingerPrint, WindowsCertUtils.KeyStore.LOCAL_MACHINE);
-            assertFalse(isInLocalSystem);
-            if (isInUserStore) {
-                LogV3.info("Removing existing certificate from user store (with auto-confirm)");
-                removeCertificateWithAutoConfirm(caCertificateFingerPrint, WindowsCertUtils.KeyStore.CURRENT_USER);
-                assertFalse(WindowsCertUtils.isCertificateInstalled(caCertificateFingerPrint, WindowsCertUtils.KeyStore.CURRENT_USER));
-            }
             // Test various certificate scenarios over all connection variants
             for (final HTTPProxy proxy : getConnectionVariants()) {
                 LogV3.info("badssl / public HTTPS tests via " + proxy);
@@ -125,10 +110,27 @@ public class HTTPSIntegrationTest extends ProxyConnectionTestBase {
                 new HttpClient().proxy(proxy).trust(CurrentJRETrustProvider.getInstance()).get("https://rsa4096.badssl.com/");
                 testPublicHttpsWithValidCertificateForProxy(proxy);
                 testPublicHttpsByIpForProxy(proxy);
+                testNativeHttpsURLConnectionWithTrustProvider();
+                testAllProvidersWithRealHTTPS();
+            }
+            if (!CrossSystem.isWindows()) {
+                return;
+            }
+            setupProxyServers();
+            createTestCertificates();
+            List<CertListEntry> list = WindowsCertUtils.listCertificates(TargetKeyStore.CURRENT_USER, org.appwork.utils.net.httpconnection.tests.SSLTrustProviderTestBase.APP_WORK_AW_TEST_CA, null, null);
+            for (CertListEntry c : list) {
+                removeCertificateWithAutoConfirm(c.thumbprint, TargetKeyStore.CURRENT_USER);
+            }
+            boolean isInUserStore = WindowsCertUtils.isCertificateInstalled(caCertificateFingerPrint, WindowsCertUtils.TargetKeyStore.CURRENT_USER);
+            boolean isInLocalSystem = WindowsCertUtils.isCertificateInstalled(caCertificateFingerPrint, WindowsCertUtils.TargetKeyStore.LOCAL_MACHINE);
+            assertFalse(isInLocalSystem);
+            if (isInUserStore) {
+                LogV3.info("Removing existing certificate from user store (with auto-confirm)");
+                removeCertificateWithAutoConfirm(caCertificateFingerPrint, WindowsCertUtils.TargetKeyStore.CURRENT_USER);
+                assertFalse(WindowsCertUtils.isCertificateInstalled(caCertificateFingerPrint, WindowsCertUtils.TargetKeyStore.CURRENT_USER));
             }
             testLocalServerBy127_0_0_1();
-            testNativeHttpsURLConnectionWithTrustProvider();
-            testAllProvidersWithRealHTTPS();
             LogV3.info("HTTPS integration tests completed successfully");
         } finally {
             teardownProxyServers();
@@ -168,6 +170,11 @@ public class HTTPSIntegrationTest extends ProxyConnectionTestBase {
             assertTrue(combinedOk.getTrustResult().isTrusted(), "CompositeTrustProvider (JRE+Linux) must accept valid CA-signed cert for " + url + " via " + proxy + (combinedOk.getTrustResult().getException() != null ? ": " + combinedOk.getTrustResult().getException().getMessage() : ""));
         }
         if (CrossSystem.isWindows()) {
+            {
+                final RequestContext jreOk = new HttpClient().proxy(proxy).trust(new JNAWindowsTrustProvider()).get(url);
+                assertTrue(jreOk.getTrustResult().getTrustProvider() instanceof JNAWindowsTrustProvider);
+                assertTrue(jreOk.getTrustResult().isTrusted(), "TrustCurrentJREProvider must accept valid CA-signed cert for " + url + " via " + proxy + (jreOk.getTrustResult().getException() != null ? ": " + jreOk.getTrustResult().getException().getMessage() : ""));
+            }
             {
                 final RequestContext windowsOk = new HttpClient().proxy(proxy).trust(WindowsTrustProvider.getInstance()).get(url);
                 assertTrue(windowsOk.getTrustResult().getTrustProvider() instanceof WindowsTrustProvider);
@@ -261,11 +268,21 @@ public class HTTPSIntegrationTest extends ProxyConnectionTestBase {
         final RequestContext trustAllNative = new HttpClient().proxy(proxy).trust(AllTrustProvider.getInstance()).get(url);
         assertTrue(trustAllNative.getTrustResult().isTrusted(), "Native HttpsURLConnection with TrustAllProvider must reach " + url);
         // Optional: url.openStream() style – same stack, just trigger getInputStream()
-        try (InputStream stream = openStreamWithTrustProvider(url, CurrentJRETrustProvider.getInstance())) {
+        InputStream stream = null;
+        try {
+            stream = openStreamWithTrustProvider(url, CurrentJRETrustProvider.getInstance());
             assertTrue(stream != null, "url.openStream() with TrustCurrentJREProvider should return stream");
             final byte[] buf = new byte[512];
             final int n = stream.read(buf);
             assertTrue(n > 0, "Should read data from " + url);
+        } finally {
+            if (stream != null) {
+                try {
+                    stream.close();
+                } catch (IOException e) {
+                    // ignore
+                }
+            }
         }
     }
 
@@ -304,8 +321,8 @@ public class HTTPSIntegrationTest extends ProxyConnectionTestBase {
                 testProviderWithServer(url, null, true, "Null Provider", proxy);
             }
             LogV3.info("Installing certificate to user store (with auto-confirm)");
-            installCertificateWithAutoConfirm(caCertificate, WindowsCertUtils.KeyStore.CURRENT_USER);
-            assertTrue(WindowsCertUtils.isCertificateInstalled(caCertificateFingerPrint, WindowsCertUtils.KeyStore.CURRENT_USER));
+            installCertificateWithAutoConfirm(caCertificate, WindowsCertUtils.TargetKeyStore.CURRENT_USER);
+            assertTrue(WindowsCertUtils.isCertificateInstalled(caCertificateFingerPrint, WindowsCertUtils.TargetKeyStore.CURRENT_USER));
             final WindowsTrustProvider windowsProvider = WindowsTrustProvider.getInstance();
             windowsProvider.reload();
             for (final HTTPProxy proxy : getConnectionVariants()) {
@@ -319,8 +336,8 @@ public class HTTPSIntegrationTest extends ProxyConnectionTestBase {
         } finally {
             server.stop();
             LogV3.info("Removing certificate from user store (with auto-confirm)");
-            removeCertificateWithAutoConfirm(caCertificateFingerPrint, org.appwork.utils.os.WindowsCertUtils.KeyStore.CURRENT_USER);
-            assertFalse(WindowsCertUtils.isCertificateInstalled(caCertificateFingerPrint, WindowsCertUtils.KeyStore.CURRENT_USER));
+            removeCertificateWithAutoConfirm(caCertificateFingerPrint, org.appwork.utils.os.WindowsCertUtils.TargetKeyStore.CURRENT_USER);
+            assertFalse(WindowsCertUtils.isCertificateInstalled(caCertificateFingerPrint, WindowsCertUtils.TargetKeyStore.CURRENT_USER));
         }
     }
 
@@ -443,7 +460,7 @@ public class HTTPSIntegrationTest extends ProxyConnectionTestBase {
     /**
      * Test-only helper: Installs certificate with auto-confirmation of Windows dialog.
      */
-    private static void installCertificateWithAutoConfirm(final X509Certificate certificate, final WindowsCertUtils.KeyStore target) throws Exception {
+    private static void installCertificateWithAutoConfirm(final X509Certificate certificate, final WindowsCertUtils.TargetKeyStore target) throws Exception {
         // Start auto-confirmation in background
         final Thread confirmationThread = new Thread(new Runnable() {
             @Override
@@ -467,7 +484,7 @@ public class HTTPSIntegrationTest extends ProxyConnectionTestBase {
     /**
      * Test-only helper: Removes certificate with auto-confirmation of Windows dialog.
      */
-    private static boolean removeCertificateWithAutoConfirm(final String thumbprintHex, final WindowsCertUtils.KeyStore target) throws Exception {
+    private static boolean removeCertificateWithAutoConfirm(final String thumbprintHex, final WindowsCertUtils.TargetKeyStore target) throws Exception {
         // Start auto-confirmation in background
         final Thread confirmationThread = new Thread(new Runnable() {
             @Override

@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "seedr.cc" }, urls = { "https?://(?:www\\.)?seedr\\.cc/files(/\\d+)?" })
+@DecrypterPlugin(revision = "$Revision: 47718 $", interfaceVersion = 3, names = { "seedr.cc" }, urls = { "https?://(?:www\\.)?seedr\\.cc/files(/\\d+)?" })
 public class SeedrCcCrawler extends PluginForDecrypt {
     public SeedrCcCrawler(PluginWrapper wrapper) {
         super(wrapper);

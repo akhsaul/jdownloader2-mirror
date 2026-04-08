@@ -36,7 +36,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51616 $", interfaceVersion = 3, names = {}, urls = {})
 public class AbdlSt extends PluginForDecrypt {
     public AbdlSt(PluginWrapper wrapper) {
         super(wrapper);

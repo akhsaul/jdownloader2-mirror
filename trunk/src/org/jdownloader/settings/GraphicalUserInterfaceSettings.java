@@ -18,6 +18,7 @@ import org.appwork.storage.config.annotations.DefaultFactory;
 import org.appwork.storage.config.annotations.DefaultIntArrayValue;
 import org.appwork.storage.config.annotations.DefaultIntValue;
 import org.appwork.storage.config.annotations.DefaultLongValue;
+import org.appwork.storage.config.annotations.DefaultOnNull;
 import org.appwork.storage.config.annotations.DefaultStringValue;
 import org.appwork.storage.config.annotations.DescriptionForConfigEntry;
 import org.appwork.storage.config.annotations.EnumLabel;
@@ -398,8 +399,15 @@ public interface GraphicalUserInterfaceSettings extends ConfigInterface {
 
     @AboutConfig
     @DefaultBooleanValue(false)
-    @DescriptionForConfigEntry("Presentation mode peforms tasks like: account username obstruction throughout GUI")
+    @DescriptionForConfigEntry("Hides sensitive data in GUI, mostly in username columns. This can be helpful for making screenshots for tutorials without worrying about exposing private data.")
     boolean isPresentationModeEnabled();
+
+    @DescriptionForConfigEntry("Text that is displayed in string columns (mostly username columns) when presentation mode is active.")
+    @DefaultStringValue("***HIDDEN_DUE_TO_ENABLED_PRESENTATION_MODE***")
+    @AboutConfig
+    public String getPresentationModeText();
+
+    public void setPresentationModeText(String text);
 
     void setTooltipEnabled(boolean b);
 
@@ -436,6 +444,172 @@ public interface GraphicalUserInterfaceSettings extends ConfigInterface {
     boolean isFileCountInSizeColumnVisible();
 
     void setFileCountInSizeColumnVisible(boolean b);
+
+    @AboutConfig
+    @RequiresRestart("A JDownloader Restart is Required")
+    @DefaultEnumValue("MiB")
+    @DefaultOnNull
+    SPEEDUNIT getMaxSpeedUnit();
+
+    void setMaxSpeedUnit(SPEEDUNIT speedUnit);
+
+    public static enum SPEEDUNIT {
+        TiB(1024 * 1024 * 1024 * 1024l, true),
+        TiBit(1024 * 1024 * 1024 * 1024l, true),
+        TB(1000 * 1000 * 1000 * 1000l),
+        TBit(1000 * 1000 * 1000 * 1000l),
+        GiB(1024 * 1024 * 1024l, true),
+        GiBit(1024 * 1024 * 1024l, true),
+        GB(1000 * 1000 * 1000l),
+        GBit(1000 * 1000 * 1000l),
+        MiB(1024 * 1024l, true),
+        MiBit(1024 * 1024l, true),
+        MB(1000 * 1000l),
+        MBit(1000 * 1000l),
+        KiB(1024, true),
+        KiBit(1024, true),
+        KB(1000l),
+        KBit(1000l),
+        B(1),
+        Bit(1);
+
+        private final long    divider;
+        private final boolean iecPrefix;
+        private final boolean isBit;
+
+        public final boolean isBit() {
+            return isBit;
+        }
+
+        public final boolean isIECPrefix() {
+            return iecPrefix;
+        }
+
+        public final long getDivider() {
+            return divider;
+        }
+
+        private SPEEDUNIT(long divider, boolean isIECPrefix) {
+            this.divider = divider;
+            this.iecPrefix = isIECPrefix;
+            this.isBit = name().endsWith("it");
+        }
+
+        private SPEEDUNIT(long divider) {
+            this(divider, false);
+        }
+
+        public long to(SIZEUNIT dest, long value) {
+            final long ret = (value * getDivider()) / dest.getDivider();
+            return ret;
+        }
+
+        public static final String formatValue(SPEEDUNIT maxSizeUnit, final long speed) {
+            return formatValue(maxSizeUnit, new DecimalFormat(), speed);
+        }
+
+        public static final String formatValue(SPEEDUNIT maxSizeUnit, final DecimalFormat formatter, final long speed) {
+            return formatValue(maxSizeUnit, (NumberFormat) formatter, speed);
+        }
+
+        public static final String formatValue(final SPEEDUNIT maxSpeedUnit, final NumberFormat formatter, long speed) {
+            final boolean isIECPrefix = maxSpeedUnit.isIECPrefix();
+            final boolean isBit = maxSpeedUnit.isBit();
+            if (isBit) {
+                speed = speed * 8;
+            }
+            switch (maxSpeedUnit) {
+            case TiB:
+            case TiBit:
+                if (speed >= TiB.getDivider()) {
+                    if (isBit) {
+                        return formatter.format(speed / (double) TiB.getDivider()).concat(" TiBit");
+                    } else {
+                        return formatter.format(speed / (double) TiB.getDivider()).concat(" TiB");
+                    }
+                }
+            case TB:
+            case TBit:
+                if (!isIECPrefix && speed >= TB.getDivider()) {
+                    if (isBit) {
+                        return formatter.format(speed / (double) TB.getDivider()).concat(" TBit");
+                    } else {
+                        return formatter.format(speed / (double) TB.getDivider()).concat(" TB");
+                    }
+                }
+            case GiB:
+            case GiBit:
+                if (isIECPrefix && speed >= GiB.getDivider()) {
+                    if (isBit) {
+                        return formatter.format(speed / (double) GiB.getDivider()).concat(" GiBit");
+                    } else {
+                        return formatter.format(speed / (double) GiB.getDivider()).concat(" GiB");
+                    }
+                }
+            case GB:
+            case GBit:
+                if (!isIECPrefix && speed >= GB.getDivider()) {
+                    if (isBit) {
+                        return formatter.format(speed / (double) GB.getDivider()).concat(" GBit");
+                    } else {
+                        return formatter.format(speed / (double) GB.getDivider()).concat(" GB");
+                    }
+                }
+            case MiB:
+            case MiBit:
+                if (isIECPrefix && speed >= MiB.getDivider()) {
+                    if (isBit) {
+                        return formatter.format(speed / (double) MiB.getDivider()).concat(" MiBit");
+                    } else {
+                        return formatter.format(speed / (double) MiB.getDivider()).concat(" MiB");
+                    }
+                }
+            case MB:
+            case MBit:
+                if (!isIECPrefix && speed >= MB.getDivider()) {
+                    if (isBit) {
+                        return formatter.format(speed / (double) MB.getDivider()).concat(" MBit");
+                    } else {
+                        return formatter.format(speed / (double) MB.getDivider()).concat(" MB");
+                    }
+                }
+            case KiB:
+            case KiBit:
+                if (isIECPrefix && speed >= KiB.getDivider()) {
+                    if (isBit) {
+                        return formatter.format(speed / (double) KiB.getDivider()).concat(" KiBit");
+                    } else {
+                        return formatter.format(speed / (double) KiB.getDivider()).concat(" KiB");
+                    }
+                }
+            case KB:
+            case KBit:
+                if (!isIECPrefix && speed >= KB.getDivider()) {
+                    if (isBit) {
+                        return formatter.format(speed / (double) KB.getDivider()).concat(" KBit");
+                    } else {
+                        return formatter.format(speed / (double) KB.getDivider()).concat(" KB");
+                    }
+                }
+            default:
+                if (speed > 0) {
+                    if (isBit) {
+                        return formatter.format(speed / (double) B.getDivider()).concat(" Bit");
+                    } else {
+                        return formatter.format(speed / (double) B.getDivider()).concat(" Byte");
+                    }
+                } else if (speed < 0) {
+                    return "~";
+                } else {
+                    if (isBit) {
+                        return formatter.format(0).concat(" Bit");
+                    } else {
+                        return formatter.format(0).concat(" Byte");
+                    }
+                }
+            }
+        }
+    }
 
     public static enum SIZEUNIT {
         TiB(1024 * 1024 * 1024 * 1024l, true),
@@ -530,6 +704,8 @@ public interface GraphicalUserInterfaceSettings extends ConfigInterface {
 
     @AboutConfig
     @RequiresRestart("A JDownloader Restart is Required")
+    @DefaultEnumValue("TiB")
+    @DefaultOnNull
     SIZEUNIT getMaxSizeUnit();
 
     void setMaxSizeUnit(SIZEUNIT sizeUnit);
@@ -1273,6 +1449,12 @@ public interface GraphicalUserInterfaceSettings extends ConfigInterface {
     void setOverviewPositions(HashMap<String, Position> map);
 
     public static enum DockingPosition implements LabelInterface {
+        INVISIBE() {
+            @Override
+            public String getLabel() {
+                return _GUI.T.setOverviewPositions_invisible();
+            }
+        },
         NORTH() {
             @Override
             public String getLabel() {
@@ -1291,6 +1473,12 @@ public interface GraphicalUserInterfaceSettings extends ConfigInterface {
     DockingPosition getLinkgrabberBottombarPosition();
 
     void setLinkgrabberBottombarPosition(DockingPosition pos);
+
+    @DefaultEnumValue("SOUTH")
+    @AboutConfig
+    DockingPosition getDownloadListBottombarPosition();
+
+    void setDownloadListBottombarPosition(DockingPosition pos);
 
     public static enum DownloadFolderChooserDialogDefaultPath implements LabelInterface {
         CURRENT_PATH {

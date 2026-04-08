@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51879 $", interfaceVersion = 2, names = {}, urls = {})
 public class EdiskCz extends PluginForHost {
     public EdiskCz(PluginWrapper wrapper) {
         super(wrapper);

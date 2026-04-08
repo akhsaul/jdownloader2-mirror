@@ -36,7 +36,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48650 $", interfaceVersion = 3, names = {}, urls = {})
 public class KrakenfilesComFolder extends PluginForDecrypt {
     public KrakenfilesComFolder(PluginWrapper wrapper) {
         super(wrapper);

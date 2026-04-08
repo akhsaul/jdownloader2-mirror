@@ -25,7 +25,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "bilibili.com" }, urls = { "https://bilibilidecrypted\\.com/\\d+" })
+@HostPlugin(revision = "$Revision: 39323 $", interfaceVersion = 3, names = { "bilibili.com" }, urls = { "https://bilibilidecrypted\\.com/\\d+" })
 public class BilibiliCom extends PluginForHost {
     public BilibiliCom(PluginWrapper wrapper) {
         super(wrapper);

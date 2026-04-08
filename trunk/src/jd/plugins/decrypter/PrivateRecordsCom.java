@@ -27,7 +27,7 @@ import jd.parser.Regex;
 import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51509 $", interfaceVersion = 3, names = {}, urls = {})
 public class PrivateRecordsCom extends PornEmbedParser {
     public PrivateRecordsCom(PluginWrapper wrapper) {
         super(wrapper);

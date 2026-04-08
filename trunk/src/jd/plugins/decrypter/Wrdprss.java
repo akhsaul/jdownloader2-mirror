@@ -38,7 +38,7 @@ import jd.plugins.PluginException;
 import jd.plugins.components.SiteType.SiteTemplate;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "hoerbuch.in", "hi10anime.com", "scene-rls.com", "cgpersia.com" }, urls = { "https?://(www\\.)?hoerbuch\\.in/blog\\.php\\?id=[\\d]+", "https?://(www\\.)?hi10anime\\.com/\\?page_id=.+", "https?://((www|nfo)\\.)?scene-rls\\.(com|net)/(?!(?:category/|releases/|contact/|wp-json/))[\\w-/]+/?$", "https?://(?:www\\.)?cgpersia\\.com/\\d+/\\d+/[^/$]+\\.html?" })
+@DecrypterPlugin(revision = "$Revision: 52141 $", interfaceVersion = 3, names = { "hoerbuch.in", "hi10anime.com", "scene-rls.com", "cgpersia.com" }, urls = { "https?://(www\\.)?hoerbuch\\.in/blog\\.php\\?id=[\\d]+", "https?://(www\\.)?hi10anime\\.com/\\?page_id=.+", "https?://((www|nfo)\\.)?scene-rls\\.(com|net)/(?!(?:category/|releases/|contact/|wp-json/))[\\w-/]+/?$", "https?://(?:www\\.)?cgpersia\\.com/\\d+/\\d+/[^/$]+\\.html?" })
 public class Wrdprss extends antiDDoSForDecrypt {
     private HashMap<String, String[]> defaultPasswords = new HashMap<String, String[]>();
 

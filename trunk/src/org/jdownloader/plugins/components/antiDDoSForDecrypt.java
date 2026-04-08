@@ -60,7 +60,7 @@ import jd.plugins.components.UserAgents.BrowserName;
  *
  */
 @SuppressWarnings({ "deprecation", "unused" })
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50777 $", interfaceVersion = 2, names = {}, urls = {})
 public abstract class antiDDoSForDecrypt extends PluginForDecrypt {
     public antiDDoSForDecrypt(PluginWrapper wrapper) {
         super(wrapper);

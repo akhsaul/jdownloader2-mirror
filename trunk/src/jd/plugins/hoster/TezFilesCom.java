@@ -31,7 +31,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.PluginDependencies;
 import jd.plugins.decrypter.Keep2ShareCcDecrypter;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51620 $", interfaceVersion = 2, names = {}, urls = {})
 @PluginDependencies(dependencies = { Keep2ShareCcDecrypter.class })
 public class TezFilesCom extends K2SApi {
     public TezFilesCom(PluginWrapper wrapper) {

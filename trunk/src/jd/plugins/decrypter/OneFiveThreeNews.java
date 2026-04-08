@@ -28,7 +28,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.FilePackage;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "153news.net" }, urls = { "https?://(?:www\\.)?153news\\.net/watch_video\\.php?.*" })
+@DecrypterPlugin(revision = "$Revision: 46365 $", interfaceVersion = 3, names = { "153news.net" }, urls = { "https?://(?:www\\.)?153news\\.net/watch_video\\.php?.*" })
 public class OneFiveThreeNews extends PluginForDecrypt {
     public OneFiveThreeNews(PluginWrapper wrapper) {
         super(wrapper);

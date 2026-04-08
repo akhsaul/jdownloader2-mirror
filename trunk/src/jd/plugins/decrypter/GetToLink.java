@@ -31,7 +31,7 @@ import jd.plugins.FilePackage;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 44694 $", interfaceVersion = 3, names = {}, urls = {})
 public class GetToLink extends antiDDoSForDecrypt {
     public GetToLink(PluginWrapper wrapper) {
         super(wrapper);

@@ -29,7 +29,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "try2link.com" }, urls = { "https?://(?:www\\.)?try2link\\.com/(full\\?api=[a-f0-9]+\\&url=aHR[a-zA-Z0-9_/\\+\\=\\-%]+|[A-Za-z0-9]+)" })
+@DecrypterPlugin(revision = "$Revision: 48577 $", interfaceVersion = 3, names = { "try2link.com" }, urls = { "https?://(?:www\\.)?try2link\\.com/(full\\?api=[a-f0-9]+\\&url=aHR[a-zA-Z0-9_/\\+\\=\\-%]+|[A-Za-z0-9]+)" })
 public class Try2LinkCom extends MightyScriptAdLinkFly {
     public Try2LinkCom(PluginWrapper wrapper) {
         super(wrapper);

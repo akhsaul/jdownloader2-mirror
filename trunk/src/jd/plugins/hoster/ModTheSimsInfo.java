@@ -38,7 +38,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49212 $", interfaceVersion = 2, names = {}, urls = {})
 public class ModTheSimsInfo extends PluginForHost {
     public ModTheSimsInfo(PluginWrapper wrapper) {
         super(wrapper);

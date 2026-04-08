@@ -37,7 +37,7 @@ import org.appwork.utils.StringUtils;
 import org.appwork.utils.formatter.SizeFormatter;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51271 $", interfaceVersion = 3, names = {}, urls = {})
 public class SledujtetoCz extends PluginForHost {
     public SledujtetoCz(PluginWrapper wrapper) {
         super(wrapper);

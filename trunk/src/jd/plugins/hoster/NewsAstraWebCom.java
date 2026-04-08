@@ -26,7 +26,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "astraweb.com" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51945 $", interfaceVersion = 3, names = { "astraweb.com" }, urls = { "" })
 public class NewsAstraWebCom extends UseNet {
     public NewsAstraWebCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -35,7 +35,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "audionow.de" }, urls = { "https?://(?:(?:www\\.)?audionow\\.de|plus\\.rtl\\.de)/podcast/([a-z0-9\\-]+)" })
+@DecrypterPlugin(revision = "$Revision: 49508 $", interfaceVersion = 3, names = { "audionow.de" }, urls = { "https?://(?:(?:www\\.)?audionow\\.de|plus\\.rtl\\.de)/podcast/([a-z0-9\\-]+)" })
 public class AudionowDe extends PluginForDecrypt {
     public AudionowDe(PluginWrapper wrapper) {
         super(wrapper);

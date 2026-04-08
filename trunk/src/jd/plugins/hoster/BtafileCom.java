@@ -26,7 +26,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49946 $", interfaceVersion = 3, names = {}, urls = {})
 public class BtafileCom extends XFileSharingProBasic {
     public BtafileCom(final PluginWrapper wrapper) {
         super(wrapper);

@@ -34,7 +34,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49732 $", interfaceVersion = 2, names = {}, urls = {})
 public class TnaFlixCom extends PluginForHost {
     public TnaFlixCom(PluginWrapper wrapper) {
         super(wrapper);

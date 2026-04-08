@@ -37,7 +37,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50219 $", interfaceVersion = 3, names = {}, urls = {})
 public class YumpuCom extends PluginForDecrypt {
     public YumpuCom(PluginWrapper wrapper) {
         super(wrapper);

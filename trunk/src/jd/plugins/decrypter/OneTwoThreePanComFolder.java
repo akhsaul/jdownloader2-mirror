@@ -42,7 +42,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.OneTwoThreePanCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48686 $", interfaceVersion = 3, names = {}, urls = {})
 public class OneTwoThreePanComFolder extends PluginForDecrypt {
     public OneTwoThreePanComFolder(PluginWrapper wrapper) {
         super(wrapper);

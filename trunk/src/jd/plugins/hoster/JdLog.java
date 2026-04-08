@@ -51,7 +51,7 @@ import org.jdownloader.plugins.controller.LazyPlugin;
  * @author raztoki
  *
  */
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "jdlog" }, urls = { "jdlog://(\\d+)" })
+@HostPlugin(revision = "$Revision: 51793 $", interfaceVersion = 3, names = { "jdlog" }, urls = { "jdlog://(\\d+)" })
 public class JdLog extends PluginForHost {
     @Override
     public String getAGBLink() {

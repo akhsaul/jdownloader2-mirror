@@ -27,7 +27,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "filebig.net" }, urls = { "https?://(?:www\\.)?filebig\\.net/files/([A-Za-z0-9]+)" })
+@HostPlugin(revision = "$Revision: 47477 $", interfaceVersion = 2, names = { "filebig.net" }, urls = { "https?://(?:www\\.)?filebig\\.net/files/([A-Za-z0-9]+)" })
 public class FileBigNet extends PluginForHost {
     public FileBigNet(PluginWrapper wrapper) {
         super(wrapper);

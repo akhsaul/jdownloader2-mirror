@@ -40,7 +40,7 @@ import org.appwork.utils.StringUtils;
  * @author raztoki
  *
  */
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "cloudup.com" }, urls = { "https://(www\\.)?cloudup\\.com/c[a-zA-Z0-9_\\-]{10}" })
+@DecrypterPlugin(revision = "$Revision: 38918 $", interfaceVersion = 2, names = { "cloudup.com" }, urls = { "https://(www\\.)?cloudup\\.com/c[a-zA-Z0-9_\\-]{10}" })
 public class CloudUpCom extends PluginForDecrypt {
     private String  csrfToken      = null;
     private String  mydb_socket_id = null;

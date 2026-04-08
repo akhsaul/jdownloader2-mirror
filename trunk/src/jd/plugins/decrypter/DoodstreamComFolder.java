@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DoodstreamCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50222 $", interfaceVersion = 3, names = {}, urls = {})
 public class DoodstreamComFolder extends PluginForDecrypt {
     public DoodstreamComFolder(PluginWrapper wrapper) {
         super(wrapper);

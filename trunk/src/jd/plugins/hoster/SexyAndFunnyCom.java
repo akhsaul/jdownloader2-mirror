@@ -32,7 +32,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 2, names = {}, urls = {})
 public class SexyAndFunnyCom extends PluginForHost {
     public SexyAndFunnyCom(PluginWrapper wrapper) {
         super(wrapper);

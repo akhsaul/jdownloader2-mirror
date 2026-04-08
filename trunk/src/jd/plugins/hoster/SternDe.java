@@ -30,7 +30,7 @@ import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.BrightcoveDecrypter.BrightcoveEdgeContainer;
 import jd.plugins.decrypter.BrightcoveDecrypter.BrightcoveEdgeContainer.Protocol;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "stern.de" }, urls = { "https?://(?:www\\.)?stern\\.de/.*?\\.html|https?://(?:www\\.)?stern\\.de/action/\\d+/videoembed\\?video=\\d+" })
+@HostPlugin(revision = "$Revision: 47769 $", interfaceVersion = 3, names = { "stern.de" }, urls = { "https?://(?:www\\.)?stern\\.de/.*?\\.html|https?://(?:www\\.)?stern\\.de/action/\\d+/videoembed\\?video=\\d+" })
 public class SternDe extends PluginForHost {
     private String dllink = null;
 

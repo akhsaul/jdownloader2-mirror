@@ -33,7 +33,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 48286 $", interfaceVersion = 2, names = {}, urls = {})
 public class DropmefilesComUa extends PluginForHost {
     public DropmefilesComUa(PluginWrapper wrapper) {
         super(wrapper);

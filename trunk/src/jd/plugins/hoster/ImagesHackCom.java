@@ -39,7 +39,7 @@ import org.appwork.utils.parser.UrlQuery;
 import org.jdownloader.plugins.controller.LazyPlugin;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { ImagesHackComCrawler.class })
 public class ImagesHackCom extends PluginForHost {
     private static final boolean enable_api_image = true;

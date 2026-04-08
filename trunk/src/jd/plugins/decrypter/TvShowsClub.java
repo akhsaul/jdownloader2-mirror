@@ -33,7 +33,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49808 $", interfaceVersion = 2, names = {}, urls = {})
 public class TvShowsClub extends PluginForDecrypt {
     public TvShowsClub(PluginWrapper wrapper) {
         super(wrapper);

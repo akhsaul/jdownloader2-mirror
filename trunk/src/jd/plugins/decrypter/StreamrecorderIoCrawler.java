@@ -47,7 +47,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 import jd.plugins.hoster.StreamrecorderIo;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51692 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { StreamrecorderIo.class })
 public class StreamrecorderIoCrawler extends PluginForDecrypt {
     public StreamrecorderIoCrawler(PluginWrapper wrapper) {

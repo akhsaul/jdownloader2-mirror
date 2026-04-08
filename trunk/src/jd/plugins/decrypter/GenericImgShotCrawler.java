@@ -38,7 +38,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.GenericImgShot;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 47120 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { GenericImgShot.class })
 public class GenericImgShotCrawler extends PluginForDecrypt {
     public GenericImgShotCrawler(PluginWrapper wrapper) {

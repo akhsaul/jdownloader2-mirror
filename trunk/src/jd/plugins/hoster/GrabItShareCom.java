@@ -41,7 +41,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.SiteType.SiteTemplate;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "grabitshare.com" }, urls = { "https?://(?:www\\.)?grabitshare\\.com/((\\?d|download\\.php\\?id)=[A-Z0-9]+|([a-z]{2}/)?file/[0-9]+/)" })
+@HostPlugin(revision = "$Revision: 51437 $", interfaceVersion = 2, names = { "grabitshare.com" }, urls = { "https?://(?:www\\.)?grabitshare\\.com/((\\?d|download\\.php\\?id)=[A-Z0-9]+|([a-z]{2}/)?file/[0-9]+/)" })
 public class GrabItShareCom extends PluginForHost {
     private static final String CHEAPCAPTCHATEXT = "captcha\\.php";
     /* 2024-02-12: They do not support https lol */

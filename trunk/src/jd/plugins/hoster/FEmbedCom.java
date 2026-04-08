@@ -21,7 +21,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.crawler.LazyCrawlerPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "fembed.com" }, urls = { "decryptedforFEmbedHosterPlugin://.*" })
+@HostPlugin(revision = "$Revision: 47477 $", interfaceVersion = 2, names = { "fembed.com" }, urls = { "decryptedforFEmbedHosterPlugin://.*" })
 public class FEmbedCom extends PluginForHost {
     public FEmbedCom(PluginWrapper wrapper) {
         super(wrapper);

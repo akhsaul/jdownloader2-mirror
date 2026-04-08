@@ -29,7 +29,7 @@ import jd.plugins.PluginForDecrypt;
 
 import org.jdownloader.controlling.filter.CompiledFiletypeFilter;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "alphatv.gr" }, urls = { "https?://(?:www\\.)?alphatv\\.gr/shows?/.+" })
+@DecrypterPlugin(revision = "$Revision: 51818 $", interfaceVersion = 3, names = { "alphatv.gr" }, urls = { "https?://(?:www\\.)?alphatv\\.gr/shows?/.+" })
 public class AlphatvGr extends PluginForDecrypt {
     public AlphatvGr(PluginWrapper wrapper) {
         super(wrapper);

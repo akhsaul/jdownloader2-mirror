@@ -29,7 +29,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "peeplink.in", "alfalink.to" }, urls = { "https?://(?:www\\.)?peeplink\\.in/[a-f0-9]+", "https?://(?:www\\.)?alfalink\\.(?:info|to)/[a-f0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 44576 $", interfaceVersion = 2, names = { "peeplink.in", "alfalink.to" }, urls = { "https?://(?:www\\.)?peeplink\\.in/[a-f0-9]+", "https?://(?:www\\.)?alfalink\\.(?:info|to)/[a-f0-9]+" })
 public class PrrpLinkIn extends PluginForDecrypt {
     public PrrpLinkIn(PluginWrapper wrapper) {
         super(wrapper);

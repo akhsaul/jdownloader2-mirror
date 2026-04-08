@@ -32,7 +32,7 @@ import org.jdownloader.plugins.controller.LazyPlugin;
  *
  * Please note: right now, if a model has multiple pages worth of galleries, paging must be done manually.
  */
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51818 $", interfaceVersion = 2, names = {}, urls = {})
 @Deprecated
 public class SimpleHtmlBasedGalleryPlugin extends PluginForDecrypt {
     @Override

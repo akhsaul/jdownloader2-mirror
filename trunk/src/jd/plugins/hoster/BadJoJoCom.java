@@ -31,7 +31,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.Regex;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "badjojo.com" }, urls = { "https?://(www\\.)?badjojo\\.com/(\\d+)/.{1}" })
+@HostPlugin(revision = "$Revision: 47474 $", interfaceVersion = 2, names = { "badjojo.com" }, urls = { "https?://(www\\.)?badjojo\\.com/(\\d+)/.{1}" })
 public class BadJoJoCom extends PluginForHost {
     /* DEV NOTES */
     /* Porn_plugin */

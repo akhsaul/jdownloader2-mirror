@@ -24,7 +24,7 @@ import jd.plugins.Plugin;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "genericautocontainer" }, urls = { "https?://[\\w\\.:\\-@]*/.*\\.(dlc|ccf|rsdf|nzb|sfdl)$" })
+@DecrypterPlugin(revision = "$Revision: 51695 $", interfaceVersion = 2, names = { "genericautocontainer" }, urls = { "https?://[\\w\\.:\\-@]*/.*\\.(dlc|ccf|rsdf|nzb|sfdl)$" })
 public class GenericAutoContainer extends PluginForDecrypt {
     @Override
     public Boolean siteTesterDisabled() {

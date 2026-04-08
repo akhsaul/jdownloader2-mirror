@@ -38,7 +38,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "boyztube.com" }, urls = { "https?://(?:www\\.)?boyztube\\.com/[a-z0-9\\-]+/watch/([a-z0-9\\-_]+)\\.html" })
+@HostPlugin(revision = "$Revision: 47663 $", interfaceVersion = 2, names = { "boyztube.com" }, urls = { "https?://(?:www\\.)?boyztube\\.com/[a-z0-9\\-]+/watch/([a-z0-9\\-_]+)\\.html" })
 public class BoyzTubeCom extends PluginForHost {
     public BoyzTubeCom(PluginWrapper wrapper) {
         super(wrapper);

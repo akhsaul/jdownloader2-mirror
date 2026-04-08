@@ -20,7 +20,7 @@ import jd.plugins.PluginException;
 import jd.plugins.components.PluginJSonUtils;
 import jd.plugins.components.SiteType.SiteTemplate;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48401 $", interfaceVersion = 3, names = {}, urls = {})
 public class OnlySpankingOrgSpankingPhotos extends antiDDoSForDecrypt {
     public OnlySpankingOrgSpankingPhotos(PluginWrapper wrapper) {
         super(wrapper);

@@ -42,7 +42,7 @@ import org.jdownloader.plugins.components.config.ThreeQVideoConfig;
 import org.jdownloader.plugins.config.PluginConfigInterface;
 import org.jdownloader.plugins.config.PluginJsonConfig;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49093 $", interfaceVersion = 3, names = {}, urls = {})
 public class ThreeQVideo extends PluginForDecrypt {
     public ThreeQVideo(PluginWrapper wrapper) {
         super(wrapper);

@@ -35,7 +35,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.GenericM3u8;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51559 $", interfaceVersion = 3, names = {}, urls = {})
 public class FreemoviesfullCc extends PluginForDecrypt {
     public FreemoviesfullCc(PluginWrapper wrapper) {
         super(wrapper);

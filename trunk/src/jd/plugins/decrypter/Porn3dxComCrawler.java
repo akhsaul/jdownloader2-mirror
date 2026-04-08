@@ -35,7 +35,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.MediadeliveryNet;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "porn3dx.com" }, urls = { "https?://(?:www\\.)?porn3dx\\.com/post/(\\d+)(/([a-z0-9\\-_]+))?" })
+@DecrypterPlugin(revision = "$Revision: 48406 $", interfaceVersion = 3, names = { "porn3dx.com" }, urls = { "https?://(?:www\\.)?porn3dx\\.com/post/(\\d+)(/([a-z0-9\\-_]+))?" })
 public class Porn3dxComCrawler extends PluginForDecrypt {
     public Porn3dxComCrawler(PluginWrapper wrapper) {
         super(wrapper);

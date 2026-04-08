@@ -25,7 +25,7 @@ import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 import jd.plugins.hoster.DefineBabeCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "definebabe.com" }, urls = { "https?://(?:www\\.)?definebabes?\\.com/video/([a-z0-9]+)/([a-z0-9\\-]+)/" })
+@DecrypterPlugin(revision = "$Revision: 48603 $", interfaceVersion = 3, names = { "definebabe.com" }, urls = { "https?://(?:www\\.)?definebabes?\\.com/video/([a-z0-9]+)/([a-z0-9\\-]+)/" })
 public class DefinebabeComDecrypter extends PornEmbedParser {
     public DefinebabeComDecrypter(PluginWrapper wrapper) {
         super(wrapper);

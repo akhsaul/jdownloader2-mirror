@@ -27,7 +27,7 @@ import jd.plugins.HostPlugin;
 
 import org.jdownloader.plugins.components.XFileSharingProBasic;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51150 $", interfaceVersion = 3, names = {}, urls = {})
 public class NelionMe extends XFileSharingProBasic {
     public NelionMe(final PluginWrapper wrapper) {
         super(wrapper);

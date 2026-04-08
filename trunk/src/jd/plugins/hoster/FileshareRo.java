@@ -29,7 +29,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "fileshare.ro" }, urls = { "http://(www\\.)?fileshare.ro/(e\\d+)" })
+@HostPlugin(revision = "$Revision: 49023 $", interfaceVersion = 3, names = { "fileshare.ro" }, urls = { "http://(www\\.)?fileshare.ro/(e\\d+)" })
 public class FileshareRo extends PluginForHost {
     public FileshareRo(PluginWrapper wrapper) {
         super(wrapper);

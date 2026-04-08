@@ -41,7 +41,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "parteeey.de" }, urls = { "https?://(?:www\\.)?parteeey\\.de/(?:.*#mulFile\\-|galerie/datei\\?p=)(\\d+)" })
+@HostPlugin(revision = "$Revision: 49651 $", interfaceVersion = 3, names = { "parteeey.de" }, urls = { "https?://(?:www\\.)?parteeey\\.de/(?:.*#mulFile\\-|galerie/datei\\?p=)(\\d+)" })
 public class ParteeeyDe extends PluginForHost {
     public ParteeeyDe(PluginWrapper wrapper) {
         super(wrapper);

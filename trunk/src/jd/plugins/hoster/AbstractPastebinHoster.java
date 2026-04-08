@@ -32,7 +32,7 @@ import jd.plugins.decrypter.AbstractPastebinCrawler;
 import jd.plugins.decrypter.AbstractPastebinCrawler.PastebinMetadata;
 
 /** Use this for pastebin websites. A crawler plugin which extends AbstractPastebinCrawler is needed for this to work. */
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 48872 $", interfaceVersion = 3, names = {}, urls = {})
 public abstract class AbstractPastebinHoster extends PluginForHost {
     public AbstractPastebinHoster(PluginWrapper wrapper) {
         super(wrapper);

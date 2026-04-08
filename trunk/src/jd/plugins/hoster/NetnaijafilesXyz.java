@@ -26,7 +26,7 @@ import jd.plugins.HostPlugin;
 
 import org.jdownloader.plugins.components.YetiShareCore;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51506 $", interfaceVersion = 2, names = {}, urls = {})
 public class NetnaijafilesXyz extends YetiShareCore {
     public NetnaijafilesXyz(PluginWrapper wrapper) {
         super(wrapper);

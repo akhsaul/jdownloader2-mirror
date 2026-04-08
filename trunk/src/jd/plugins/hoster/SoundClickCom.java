@@ -36,7 +36,7 @@ import jd.plugins.PluginForHost;
 import jd.plugins.download.HashInfo;
 import jd.plugins.download.raf.HTTPDownloader;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49207 $", interfaceVersion = 2, names = {}, urls = {})
 public class SoundClickCom extends PluginForHost {
     public SoundClickCom(PluginWrapper wrapper) {
         super(wrapper);

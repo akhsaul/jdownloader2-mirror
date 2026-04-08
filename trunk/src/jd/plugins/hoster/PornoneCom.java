@@ -39,7 +39,7 @@ import org.jdownloader.plugins.components.config.PornoneComConfig.PreferredStrea
 import org.jdownloader.plugins.config.PluginJsonConfig;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "pornone.com" }, urls = { "https?://(?:www\\.)?(?:vporn|pornone)\\.com/.*?/(\\d+)/?" })
+@HostPlugin(revision = "$Revision: 47484 $", interfaceVersion = 2, names = { "pornone.com" }, urls = { "https?://(?:www\\.)?(?:vporn|pornone)\\.com/.*?/(\\d+)/?" })
 public class PornoneCom extends PluginForHost {
     @SuppressWarnings("deprecation")
     public PornoneCom(PluginWrapper wrapper) {

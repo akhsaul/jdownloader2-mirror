@@ -29,7 +29,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "inbox.lv" }, urls = { "https?://(?:www\\.)?files\\.inbox\\.lv/(?:ticket|shared/file)/([a-f0-9]+)" })
+@HostPlugin(revision = "$Revision: 47589 $", interfaceVersion = 2, names = { "inbox.lv" }, urls = { "https?://(?:www\\.)?files\\.inbox\\.lv/(?:ticket|shared/file)/([a-f0-9]+)" })
 public class InboxLv extends PluginForHost {
     public InboxLv(PluginWrapper wrapper) {
         super(wrapper);

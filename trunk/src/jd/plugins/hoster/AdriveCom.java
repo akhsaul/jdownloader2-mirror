@@ -29,7 +29,7 @@ import jd.plugins.PluginForHost;
 
 import org.appwork.utils.StringUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "adrive.com" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 47474 $", interfaceVersion = 2, names = { "adrive.com" }, urls = { "" })
 public class AdriveCom extends PluginForHost {
     public AdriveCom(PluginWrapper wrapper) {
         super(wrapper);

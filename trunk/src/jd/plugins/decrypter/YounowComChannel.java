@@ -34,7 +34,7 @@ import jd.plugins.components.PluginJSonUtils;
 
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "younow.com" }, urls = { "https?://(?:www\\.)?younow\\.com/[^/]+(?:/\\d+)?" })
+@DecrypterPlugin(revision = "$Revision: 50622 $", interfaceVersion = 3, names = { "younow.com" }, urls = { "https?://(?:www\\.)?younow\\.com/[^/]+(?:/\\d+)?" })
 public class YounowComChannel extends PluginForDecrypt {
     public YounowComChannel(PluginWrapper wrapper) {
         super(wrapper);

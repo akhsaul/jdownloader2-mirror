@@ -39,7 +39,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "opendrive.com" }, urls = { "https?://(?:www\\.)?opendrive\\.com/folders\\?[A-Za-z0-9]+|https?://od\\.lk/(?:fl|s)/[A-Za-z0-9]+(?:\\?folderpath=[a-zA-Z0-9_/\\+\\=\\-%]+)?" })
+@DecrypterPlugin(revision = "$Revision: 50191 $", interfaceVersion = 2, names = { "opendrive.com" }, urls = { "https?://(?:www\\.)?opendrive\\.com/folders\\?[A-Za-z0-9]+|https?://od\\.lk/(?:fl|s)/[A-Za-z0-9]+(?:\\?folderpath=[a-zA-Z0-9_/\\+\\=\\-%]+)?" })
 public class OpenDriveComDecrypter extends PluginForDecrypt {
     public OpenDriveComDecrypter(PluginWrapper wrapper) {
         super(wrapper);

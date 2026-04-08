@@ -20,9 +20,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+
+import org.appwork.utils.StringUtils;
+import org.appwork.utils.encoding.URLEncode;
+import org.appwork.utils.formatter.SizeFormatter;
+import org.appwork.utils.parser.UrlQuery;
+import org.jdownloader.plugins.components.XFileSharingProBasic;
+import org.jdownloader.plugins.components.antiDDoSForDecrypt;
 
 import jd.PluginWrapper;
 import jd.controlling.AccountController;
@@ -48,19 +56,12 @@ import jd.plugins.hoster.FileupOrg;
 import jd.plugins.hoster.TakefileLink;
 import jd.plugins.hoster.UploadBoyCom;
 
-import org.appwork.utils.StringUtils;
-import org.appwork.utils.encoding.URLEncode;
-import org.appwork.utils.formatter.SizeFormatter;
-import org.appwork.utils.parser.UrlQuery;
-import org.jdownloader.plugins.components.XFileSharingProBasic;
-import org.jdownloader.plugins.components.antiDDoSForDecrypt;
-
 @SuppressWarnings("deprecation")
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52492 $", interfaceVersion = 2, names = {}, urls = {})
 public class GenericXFileShareProFolder extends antiDDoSForDecrypt {
     private static final String[] domains        = new String[] { "up-4.net", "up-4ever.com", "up-4ever.net", "subyshare.com", "brupload.net", "powvideo.net", "youwatch.org", "salefiles.com", "free-uploading.com", "rapidfileshare.net", "fireget.com", "mixshared.com", "novafile.com", "novafile.org", "qtyfiles.com", "free-uploading.com", "free-uploading.com", "downloadani.me", "clicknupload.org", "isra.cloud", "world-files.com", "katfile.vip", "katfile.online", "katfile.cloud", "katfile.com", "filefox.cc", "cosmobox.org", "tstorage.info", "fastfile.cc", "datanodes.to", "filestore.me", "ezvn.net", "filoz.net", "rapidbytez.com", "filextras.com", "dropload.io", "datanodes.to" };
     /* This list contains all hosts which need special Patterns (see below) - all other XFS hosts have the same folder patterns! */
-    private static final String[] specialDomains = { "hotlink.cc", "ex-load.com", "imgbaron.com", "filespace.com", "spaceforfiles.com", "prefiles.com", "imagetwist.com", "file.al", "takefile.link", "florenfile.com" };
+    private static final String[] specialDomains = { "hotlink.cc", "ex-load.com", "imgbaron.com", "filespace.com", "spaceforfiles.com", "prefiles.com", "file.al", "takefile.link", "florenfile.com" };
 
     public static String[] getAnnotationNames() {
         return getAllDomains();
@@ -119,8 +120,6 @@ public class GenericXFileShareProFolder extends antiDDoSForDecrypt {
         ret.add("https?://spaceforfiles\\.com/dir/[a-z0-9]+");
         /* prefiles.com */
         ret.add("https?://(?:www\\.)?prefiles\\.com/folder/\\d+[A-Za-z0-9\\-_]+");
-        /* imagetwist.com (image galleries) */
-        ret.add("https?://(?:www\\.)?imagetwist\\.com/p/[^/]+/\\d+/[^/]+");
         /* file.al */
         ret.add("https?://(?:www\\.)?file\\.al/public/\\d+/.+");
         /* "florenfile.com" */
@@ -153,6 +152,8 @@ public class GenericXFileShareProFolder extends antiDDoSForDecrypt {
     }
 
     public ArrayList<DownloadLink> decryptIt(final CryptedLink param, final ProgressController progress) throws Exception {
+        /* Nullification */
+        this.totalNumberofFiles = -1;
         final ArrayList<DownloadLink> ret = new ArrayList<DownloadLink>();
         PluginForHost hostPlg = null;
         try {
@@ -277,9 +278,6 @@ public class GenericXFileShareProFolder extends antiDDoSForDecrypt {
         String title;
         if ("hotlink.cc".equals(br.getHost())) {
             title = br.getRegex("<i class=\"glyphicon glyphicon-folder-open\"></i>\\s*(.*?)\\s*</span>").getMatch(0);
-        } else if ("imagetwist.com".equals(br.getHost())) {
-            /* 2023-11-09 */
-            title = br.getRegex("page_main_title\"[^>]*>([^<]+)<").getMatch(0);
         } else {
             // ex-load.com
             title = br.getRegex("Files in\\s+([^<]+?)\\s+folder[^<]*</").getMatch(0);
@@ -442,19 +440,22 @@ public class GenericXFileShareProFolder extends antiDDoSForDecrypt {
         }
         /* These should only be shown when its a /user/ decrypt task */
         final String currentFolderPath = new Regex(param.getCryptedUrl(), "(?i)https?://[^/]+/(.+)").getMatch(0);
-        String folders[] = br.getRegex("folder.?\\.gif.*?<a href=\"(.+?" + Pattern.quote(br.getHost(true)) + "[^\"]+users/[^\"]+)").getColumn(0);
-        if (folders == null || folders.length == 0) {
-            folders = br.getRegex("folder.?\\.gif.*?<a href=\"(.+?" + Pattern.quote(br.getHost(false)) + "[^\"]+users/[^\"]+)").getColumn(0);
-            if (folders == null || folders.length == 0) {
-                /* 2024-06-28: New attempt */
-                folders = br.getRegex("\"([^\"]*/users/[^\"']+)").getColumn(0);
-                if (folders == null || folders.length == 0) {
-                    /* 2025-09-23: e.g. katfile.cloud */
-                    folders = br.getRegex("(/f/[a-z0-9]{32})\"").getColumn(0);
-                }
+        final LinkedHashSet<String> folders = new LinkedHashSet<String>();
+        {
+            String matches[] = br.getRegex("folder.?\\.gif.*?<a href=\"([^\"]*?" + "(" + Pattern.quote(br.getHost(true)) + "|" + Pattern.quote(br.getHost(false)) + ")" + "[^\"]+users/[^\"]+)").getColumn(0);
+            if (matches != null) {
+                folders.addAll(Arrays.asList(matches));
+            }
+            matches = br.getRegex("\"([^\"]*/users/[^\"']+)").getColumn(0);
+            if (matches != null) {
+                folders.addAll(Arrays.asList(matches));
+            }
+            matches = br.getRegex("(/f/[a-z0-9]{32})\"").getColumn(0);
+            if (matches != null) {
+                folders.addAll(Arrays.asList(matches));
             }
         }
-        if (folders != null && folders.length > 0) {
+        if (folders != null && folders.size() > 0) {
             for (String folderlink : folders) {
                 final String path;
                 if (folderlink.startsWith("/")) {

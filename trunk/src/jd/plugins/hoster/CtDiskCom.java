@@ -58,7 +58,7 @@ import jd.plugins.components.PluginJSonUtils;
 import jd.plugins.components.UserAgents;
 import jd.plugins.decrypter.CtDiskComFolder;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51847 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { CtDiskComFolder.class })
 public class CtDiskCom extends PluginForHost {
     public static final String                WEBAPI_BASE       = "https://webapi.ctfile.com";

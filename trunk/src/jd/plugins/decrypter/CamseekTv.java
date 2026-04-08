@@ -23,7 +23,7 @@ import jd.parser.Regex;
 import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "camseek.tv" }, urls = { "https?://(?:www\\.)?camseek\\.tv/videos/(\\d+)/([a-z0-9\\-]+)/?" })
+@DecrypterPlugin(revision = "$Revision: 46534 $", interfaceVersion = 3, names = { "camseek.tv" }, urls = { "https?://(?:www\\.)?camseek\\.tv/videos/(\\d+)/([a-z0-9\\-]+)/?" })
 public class CamseekTv extends PornEmbedParser {
     public CamseekTv(PluginWrapper wrapper) {
         super(wrapper);

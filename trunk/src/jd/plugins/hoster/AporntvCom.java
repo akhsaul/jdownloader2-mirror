@@ -33,7 +33,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49379 $", interfaceVersion = 3, names = {}, urls = {})
 public class AporntvCom extends PluginForHost {
     public AporntvCom(PluginWrapper wrapper) {
         super(wrapper);

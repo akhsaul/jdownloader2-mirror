@@ -31,7 +31,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49226 $", interfaceVersion = 2, names = {}, urls = {})
 public class ImgpornTo extends YetiShareCore {
     public ImgpornTo(PluginWrapper wrapper) {
         super(wrapper);

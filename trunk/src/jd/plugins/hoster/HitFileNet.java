@@ -34,7 +34,7 @@ import org.jdownloader.plugins.components.config.TurbobitCoreConfigHitfileNet;
 import org.jdownloader.plugins.config.PluginConfigInterface;
 import org.jdownloader.plugins.config.PluginJsonConfig;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51473 $", interfaceVersion = 2, names = {}, urls = {})
 public class HitFileNet extends TurbobitCore {
     public HitFileNet(PluginWrapper wrapper) {
         super(wrapper);

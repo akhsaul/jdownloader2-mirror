@@ -38,7 +38,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.BuzzheavierCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52054 $", interfaceVersion = 3, names = {}, urls = {})
 public class BuzzheavierComFolder extends PluginForDecrypt {
     public BuzzheavierComFolder(PluginWrapper wrapper) {
         super(wrapper);

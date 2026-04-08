@@ -46,7 +46,7 @@ import org.jdownloader.plugins.controller.LazyPlugin;
  * @author raztoki
  *
  */
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51332 $", interfaceVersion = 2, names = {}, urls = {})
 public class NhentaiNetCrawler extends PluginForDecrypt {
     public NhentaiNetCrawler(PluginWrapper wrapper) {
         super(wrapper);

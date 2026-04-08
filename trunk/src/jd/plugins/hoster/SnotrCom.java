@@ -31,7 +31,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "snotr.com" }, urls = { "https?://(www\\.)?snotr\\.com/video/\\d+" })
+@HostPlugin(revision = "$Revision: 40280 $", interfaceVersion = 2, names = { "snotr.com" }, urls = { "https?://(www\\.)?snotr\\.com/video/\\d+" })
 public class SnotrCom extends PluginForHost {
     public SnotrCom(PluginWrapper wrapper) {
         super(wrapper);

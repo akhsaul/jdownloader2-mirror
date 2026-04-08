@@ -26,7 +26,7 @@ import jd.plugins.HostPlugin;
 
 import org.jdownloader.plugins.components.XFileSharingProBasic;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 44759 $", interfaceVersion = 3, names = {}, urls = {})
 public class ImgSpiceCom extends XFileSharingProBasic {
     public ImgSpiceCom(final PluginWrapper wrapper) {
         super(wrapper);

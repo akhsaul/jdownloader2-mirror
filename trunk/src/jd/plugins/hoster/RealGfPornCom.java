@@ -31,7 +31,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "realgfporn.com" }, urls = { "https?://(?:www\\.)?realgfporn\\.com/videos/([a-z0-9\\-_%\\.]+)-(\\d+)\\.html" })
+@HostPlugin(revision = "$Revision: 50859 $", interfaceVersion = 2, names = { "realgfporn.com" }, urls = { "https?://(?:www\\.)?realgfporn\\.com/videos/([a-z0-9\\-_%\\.]+)-(\\d+)\\.html" })
 public class RealGfPornCom extends PluginForHost {
     public RealGfPornCom(PluginWrapper wrapper) {
         super(wrapper);

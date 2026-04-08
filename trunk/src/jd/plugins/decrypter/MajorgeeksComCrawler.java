@@ -33,7 +33,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 47618 $", interfaceVersion = 3, names = {}, urls = {})
 public class MajorgeeksComCrawler extends PluginForDecrypt {
     public MajorgeeksComCrawler(PluginWrapper wrapper) {
         super(wrapper);

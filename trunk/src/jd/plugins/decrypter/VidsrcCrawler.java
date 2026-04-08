@@ -41,7 +41,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 import jd.plugins.hoster.GenericM3u8;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51811 $", interfaceVersion = 3, names = {}, urls = {})
 public class VidsrcCrawler extends PluginForDecrypt {
     public VidsrcCrawler(PluginWrapper wrapper) {
         super(wrapper);

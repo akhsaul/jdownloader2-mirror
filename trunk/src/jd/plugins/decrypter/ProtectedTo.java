@@ -36,7 +36,7 @@ import jd.plugins.PluginForDecrypt;
 import org.appwork.utils.parser.UrlQuery;
 import org.jdownloader.captcha.v2.challenge.recaptcha.v2.CaptchaHelperCrawlerPluginRecaptchaV2;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 49242 $", interfaceVersion = 3, names = {}, urls = {})
 public class ProtectedTo extends PluginForDecrypt {
     public ProtectedTo(PluginWrapper wrapper) {
         super(wrapper);

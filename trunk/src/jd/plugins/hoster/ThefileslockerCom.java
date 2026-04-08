@@ -26,7 +26,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 42514 $", interfaceVersion = 3, names = {}, urls = {})
 public class ThefileslockerCom extends XFileSharingProBasic {
     public ThefileslockerCom(final PluginWrapper wrapper) {
         super(wrapper);

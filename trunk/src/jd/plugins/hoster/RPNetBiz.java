@@ -48,7 +48,7 @@ import jd.plugins.PluginForHost;
 import jd.plugins.PluginProgress;
 import jd.plugins.components.MultiHosterManagement;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "premium.rpnet.biz" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51886 $", interfaceVersion = 3, names = { "premium.rpnet.biz" }, urls = { "" })
 public class RPNetBiz extends PluginForHost {
     private static final String          mName                    = "rpnet.biz";
     private static final String          mProt                    = "http://";

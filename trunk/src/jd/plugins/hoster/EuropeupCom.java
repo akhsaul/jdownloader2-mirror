@@ -27,7 +27,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 46569 $", interfaceVersion = 3, names = {}, urls = {})
 public class EuropeupCom extends XFileSharingProBasic {
     public EuropeupCom(final PluginWrapper wrapper) {
         super(wrapper);

@@ -25,6 +25,7 @@ import javax.net.ssl.SSLEngineResult.HandshakeStatus;
 import javax.net.ssl.SSLException;
 
 import org.appwork.loggingv3.LogV3;
+import org.appwork.utils.JDK8BufferHelper;
 import org.appwork.utils.net.httpconnection.RequestMethod;
 import org.appwork.utils.net.httpconnection.TrustResult;
 
@@ -90,7 +91,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
     }
 
     @Override
-    protected HttpConnectionRunnable createHttpConnection(final Socket clientSocket) throws IOException {
+    protected HttpConnectionRunnable createHttpConnection(final Socket clientSocket, final TimingContext timingContext) throws IOException {
         if (clientSocket == null) {
             throw new IOException("ClientSocket is null");
         }
@@ -107,14 +108,14 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
                     if (ExperimentalAutoSSLHttpServer.this.sslContext != null) {
                         if (ExperimentalAutoSSLHttpServer.this.autoUpgrade) {
                             // Auto-upgrade enabled: detect HTTP/HTTPS on same port
-                            run = ExperimentalAutoSSLHttpServer.this.autoWrapSSLConnection(ExperimentalAutoSSLHttpServer.this, clientSocket);
+                            run = ExperimentalAutoSSLHttpServer.this.autoWrapSSLConnection(ExperimentalAutoSSLHttpServer.this, clientSocket, timingContext);
                         } else {
                             // Auto-upgrade disabled: HTTPS-only, direct SSL connection
-                            run = ExperimentalAutoSSLHttpServer.this.directSSLConnection(ExperimentalAutoSSLHttpServer.this, clientSocket);
+                            run = ExperimentalAutoSSLHttpServer.this.directSSLConnection(ExperimentalAutoSSLHttpServer.this, clientSocket, timingContext);
                         }
                     } else {
                         // Fall back to plain HTTP handling when no SSL context is configured
-                        run = ExperimentalAutoSSLHttpServer.super.createHttpConnection(clientSocket);
+                        run = ExperimentalAutoSSLHttpServer.super.createHttpConnection(clientSocket, timingContext);
                     }
                     run.run();
                 } catch (final Throwable e) {
@@ -191,7 +192,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
      * @throws IOException
      *             if SSL handshake fails
      */
-    private HttpConnectionRunnable directSSLConnection(final AbstractServerBasics server, final Socket clientSocket) throws IOException {
+    private HttpConnectionRunnable directSSLConnection(final AbstractServerBasics server, final Socket clientSocket, final TimingContext timingContext) throws IOException {
         boolean finallyCloseSocket = true;
         try {
             clientSocket.setSoTimeout(60 * 1000);
@@ -217,7 +218,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
                 // Just continue without client certificate
             }
             finallyCloseSocket = false;
-            return this.createSSLHttpConnection(server, true, clientSocket, httpIS, httpOS, clientCertificate.get());
+            return this.createSSLHttpConnection(server, true, clientSocket, httpIS, httpOS, clientCertificate.get(), timingContext);
         } finally {
             try {
                 if (finallyCloseSocket) {
@@ -252,12 +253,12 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
      * @throws IOException
      *             if the connection cannot be created
      */
-    protected HttpConnectionRunnable createSSLHttpConnection(final AbstractServerBasics server, final boolean ssl, final Socket clientSocket, final InputStream httpIS, final OutputStream httpOS, final Object clientCertificate) throws IOException {
+    protected HttpConnectionRunnable createSSLHttpConnection(final AbstractServerBasics server, final boolean ssl, final Socket clientSocket, final InputStream httpIS, final OutputStream httpOS, final Object clientCertificate, final TimingContext timingContext) throws IOException {
         // Default implementation: create HttpServerConnection with ssl and client cert TrustResult
         // Subclasses can override to provide their own implementation
         final X509Certificate[] chain = toClientCertificateChain(clientCertificate);
         final org.appwork.utils.net.httpconnection.TrustResult trustResult = (chain != null && chain.length > 0) ? new org.appwork.utils.net.httpconnection.TrustResult(null, chain, null, org.appwork.utils.net.httpconnection.TrustResult.TrustType.CLIENT) : null;
-        return new HttpServerConnection(server, clientSocket, httpIS, httpOS, true, trustResult);
+        return new HttpServerConnection(server, clientSocket, httpIS, httpOS, true, trustResult, timingContext);
     }
 
     /**
@@ -276,7 +277,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
         return null;
     }
 
-    private HttpServerConnection autoWrapSSLConnection(final AbstractServerBasics server, final Socket clientSocket) throws IOException {
+    private HttpConnectionRunnable autoWrapSSLConnection(final AbstractServerBasics server, final Socket clientSocket, final TimingContext timingContext) throws IOException {
         boolean finallyCloseSocket = true;
         try {
             clientSocket.setSoTimeout(60 * 1000);
@@ -331,7 +332,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
                 }
             }
             finallyCloseSocket = false;
-            return this.createSSLHttpConnection(server, ssl, clientSocket, httpIS, httpOS, clientCertificate);
+            return this.createSSLHttpConnection(server, ssl, clientSocket, httpIS, httpOS, clientCertificate, timingContext);
         } finally {
             try {
                 if (finallyCloseSocket) {
@@ -367,7 +368,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
         // In server mode, the handshake starts when we receive ClientHello
         if (status == HandshakeStatus.NOT_HANDSHAKING) {
             // Read initial data from client to trigger handshake
-            inNetBuffer.clear();
+            JDK8BufferHelper.clear(inNetBuffer);
             final byte[] initialData = new byte[bufferSize];
             final int bytesRead = inputStream.read(initialData);
             if (bytesRead == -1) {
@@ -383,7 +384,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
                     }
                 }
                 inNetBuffer.put(initialData, 0, bytesRead);
-                inNetBuffer.flip();
+                JDK8BufferHelper.flip(inNetBuffer);
                 // Now unwrap to start the handshake
                 try {
                     final SSLEngineResult unwrapResult = engine.unwrap(inNetBuffer, inAppBuffer);
@@ -409,7 +410,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
                     if (inNetBuffer.position() > 0) {
                         inNetBuffer.compact();
                     } else {
-                        inNetBuffer.clear();
+                        JDK8BufferHelper.clear(inNetBuffer);
                     }
                     // Read available data (blocking read if needed)
                     final byte[] data = new byte[bufferSize];
@@ -419,7 +420,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
                     }
                     if (bytesRead > 0) {
                         inNetBuffer.put(data, 0, bytesRead);
-                        inNetBuffer.flip();
+                        JDK8BufferHelper.flip(inNetBuffer);
                     } else {
                         // No data available yet, wait a bit
                         try {
@@ -455,14 +456,14 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
                 break;
             case NEED_WRAP:
                 // Wrap outgoing data (empty buffer for handshake)
-                outNetBuffer.clear();
+                JDK8BufferHelper.clear(outNetBuffer);
                 final ByteBuffer emptyAppBuffer = ByteBuffer.allocate(0);
                 SSLEngineResult wrapResult = engine.wrap(emptyAppBuffer, outNetBuffer);
                 status = wrapResult.getHandshakeStatus();
                 // Handle buffer overflow by resizing and retrying
                 while (wrapResult.getStatus() == SSLEngineResult.Status.BUFFER_OVERFLOW) {
                     final ByteBuffer newOutNetBuffer = ByteBuffer.allocate(outNetBuffer.capacity() * 2);
-                    outNetBuffer.flip();
+                    JDK8BufferHelper.flip(outNetBuffer);
                     newOutNetBuffer.put(outNetBuffer);
                     outNetBuffer = newOutNetBuffer;
                     wrapResult = engine.wrap(emptyAppBuffer, outNetBuffer);
@@ -470,7 +471,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
                 }
                 // Write wrapped data if any was produced (regardless of wrap result status)
                 if (outNetBuffer.position() > 0) {
-                    outNetBuffer.flip();
+                    JDK8BufferHelper.flip(outNetBuffer);
                     final byte[] data = new byte[outNetBuffer.remaining()];
                     outNetBuffer.get(data);
                     outputStream.write(data);
@@ -500,15 +501,15 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
         if (inNetBuffer.limit() == inNetBuffer.capacity()) {
             if (inNetBuffer.position() > 0) {
                 // Buffer is in write mode with data in [0, position)
-                inNetBuffer.flip();
+                JDK8BufferHelper.flip(inNetBuffer);
             } else {
                 // No pending data
-                inNetBuffer.clear();
+                JDK8BufferHelper.clear(inNetBuffer);
             }
         }
         if (inAppBuffer.position() > 0) {
             // Handshake should not leave application data to consume
-            inAppBuffer.clear();
+            JDK8BufferHelper.clear(inAppBuffer);
         }
         // Create wrapped streams for application data using existing buffers
         return new SSLEngineStreams(engine, inputStream, outputStream, bufferSize, inNetBuffer, inAppBuffer);
@@ -538,7 +539,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
             this.inNetBuffer = inNetBuffer != null ? inNetBuffer : ByteBuffer.allocate(bufferSize);
             this.inAppBuffer = inAppBuffer != null ? inAppBuffer : ByteBuffer.allocate(bufferSize);
             if (this.inAppBuffer.position() > 0) {
-                this.inAppBuffer.clear();
+                JDK8BufferHelper.clear(this.inAppBuffer);
             }
             this.outAppBuffer = ByteBuffer.allocate(bufferSize);
         }
@@ -567,7 +568,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
             public int read(final byte[] b, final int off, final int len) throws IOException {
                 // If we have decrypted data available, return it
                 if (inAppBuffer.position() > 0) {
-                    inAppBuffer.flip();
+                    JDK8BufferHelper.flip(inAppBuffer);
                     final int toRead = Math.min(len, inAppBuffer.remaining());
                     inAppBuffer.get(b, off, toRead);
                     inAppBuffer.compact();
@@ -581,7 +582,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
                         if (inNetBuffer.position() > 0) {
                             inNetBuffer.compact();
                         } else {
-                            inNetBuffer.clear();
+                            JDK8BufferHelper.clear(inNetBuffer);
                         }
                         // Read available data (blocking read)
                         final byte[] data = new byte[bufferSize];
@@ -599,7 +600,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
                                 }
                             }
                             inNetBuffer.put(data, 0, bytesRead);
-                            inNetBuffer.flip();
+                            JDK8BufferHelper.flip(inNetBuffer);
                         } else {
                             return 0; // No data available yet
                         }
@@ -620,7 +621,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
                     // Handle buffer overflow by resizing
                     while (result.getStatus() == SSLEngineResult.Status.BUFFER_OVERFLOW) {
                         final ByteBuffer newInAppBuffer = ByteBuffer.allocate(inAppBuffer.capacity() * 2);
-                        inAppBuffer.flip();
+                        JDK8BufferHelper.flip(inAppBuffer);
                         newInAppBuffer.put(inAppBuffer);
                         inAppBuffer = newInAppBuffer;
                         try {
@@ -642,7 +643,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
                     }
                     // We got some data - return it
                     if (inAppBuffer.position() > 0) {
-                        inAppBuffer.flip();
+                        JDK8BufferHelper.flip(inAppBuffer);
                         final int toRead = Math.min(len, inAppBuffer.remaining());
                         inAppBuffer.get(b, off, toRead);
                         inAppBuffer.compact();
@@ -651,7 +652,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
                     // No data produced but status is OK - might need more input
                     // This shouldn't happen, but if it does, try reading more
                     if (inNetBuffer.remaining() == 0) {
-                        inNetBuffer.clear();
+                        JDK8BufferHelper.clear(inNetBuffer);
                     }
                 }
             }
@@ -675,18 +676,18 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
                 while (remaining > 0) {
                     final int toWrite = Math.min(remaining, outAppBuffer.remaining());
                     outAppBuffer.put(b, offset, toWrite);
-                    outAppBuffer.flip();
+                    JDK8BufferHelper.flip(outAppBuffer);
                     // Wrap and send
                     final ByteBuffer outNetBuffer = ByteBuffer.allocate(bufferSize);
                     final SSLEngineResult result = engine.wrap(outAppBuffer, outNetBuffer);
                     if (result.getStatus() == SSLEngineResult.Status.OK) {
-                        outNetBuffer.flip();
+                        JDK8BufferHelper.flip(outNetBuffer);
                         final byte[] data = new byte[outNetBuffer.remaining()];
                         outNetBuffer.get(data);
                         outputStream.write(data);
                         outputStream.flush();
                     }
-                    outAppBuffer.clear();
+                    JDK8BufferHelper.clear(outAppBuffer);
                     remaining -= toWrite;
                     offset += toWrite;
                 }
@@ -705,7 +706,7 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
                     final ByteBuffer outNetBuffer = ByteBuffer.allocate(bufferSize);
                     final SSLEngineResult result = engine.wrap(ByteBuffer.allocate(0), outNetBuffer);
                     if (result.getStatus() == SSLEngineResult.Status.OK) {
-                        outNetBuffer.flip();
+                        JDK8BufferHelper.flip(outNetBuffer);
                         final byte[] data = new byte[outNetBuffer.remaining()];
                         outNetBuffer.get(data);
                         outputStream.write(data);
@@ -740,8 +741,11 @@ public class ExperimentalAutoSSLHttpServer extends HttpServer {
      */
     public static SSLContext createSSLContextFromPKCS12(final String keystorePath, final String keystorePassword) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException, UnrecoverableKeyException, KeyManagementException {
         final KeyStore ks = KeyStore.getInstance("PKCS12");
-        try (java.io.FileInputStream fis = new java.io.FileInputStream(keystorePath)) {
+        java.io.FileInputStream fis = new java.io.FileInputStream(keystorePath);
+        try {
             ks.load(fis, keystorePassword.toCharArray());
+        } finally {
+            fis.close();
         }
         return createSSLContextFromKeyStore(ks, keystorePassword.toCharArray());
     }

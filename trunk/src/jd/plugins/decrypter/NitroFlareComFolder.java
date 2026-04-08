@@ -44,7 +44,7 @@ import jd.plugins.hoster.NitroFlareCom;
  * @author raztoki, pspzockerscene
  *
  */
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48615 $", interfaceVersion = 2, names = {}, urls = {})
 @PluginDependencies(dependencies = { NitroFlareCom.class })
 public class NitroFlareComFolder extends PluginForDecrypt {
     public NitroFlareComFolder(PluginWrapper wrapper) {

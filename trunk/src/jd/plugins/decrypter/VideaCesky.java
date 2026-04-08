@@ -28,7 +28,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "videacesky.cz" }, urls = { "https?://(?:www\\.)?(?:videacesky\\.cz)/(?:video)/[A-Za-z0-9-]+" })
+@DecrypterPlugin(revision = "$Revision: 46877 $", interfaceVersion = 3, names = { "videacesky.cz" }, urls = { "https?://(?:www\\.)?(?:videacesky\\.cz)/(?:video)/[A-Za-z0-9-]+" })
 public class VideaCesky extends PluginForDecrypt {
     public VideaCesky(PluginWrapper wrapper) {
         super(wrapper);

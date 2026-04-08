@@ -30,7 +30,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "tookapic.com" }, urls = { "https?://(?:stock\\.)?tookapic\\.com/photos/\\d+" })
+@HostPlugin(revision = "$Revision: 40212 $", interfaceVersion = 3, names = { "tookapic.com" }, urls = { "https?://(?:stock\\.)?tookapic\\.com/photos/\\d+" })
 public class TookapicCom extends PluginForHost {
     public TookapicCom(PluginWrapper wrapper) {
         super(wrapper);

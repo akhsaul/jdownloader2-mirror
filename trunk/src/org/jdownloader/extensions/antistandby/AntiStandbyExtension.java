@@ -16,33 +16,40 @@
 package org.jdownloader.extensions.antistandby;
 
 import java.awt.Dialog.ModalityType;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import jd.controlling.downloadcontroller.DownloadWatchDog;
+import jd.controlling.linkchecker.LinkChecker;
 import jd.controlling.linkcollector.LinkCollector;
 import jd.plugins.AddonPanel;
 
 import org.appwork.shutdown.ShutdownController;
+import org.appwork.shutdown.ShutdownEvent;
 import org.appwork.shutdown.ShutdownRequest;
-import org.appwork.shutdown.ShutdownVetoException;
-import org.appwork.shutdown.ShutdownVetoListener;
 import org.appwork.uio.ExceptionDialogInterface;
 import org.appwork.uio.UIOManager;
 import org.appwork.utils.Application;
+import org.appwork.utils.DebugMode;
 import org.appwork.utils.os.CrossSystem;
 import org.appwork.utils.swing.EDTHelper;
 import org.appwork.utils.swing.dialog.ExceptionDialog;
 import org.jdownloader.extensions.AbstractExtension;
 import org.jdownloader.extensions.ExtensionConfigPanel;
+import org.jdownloader.extensions.ExtensionController;
 import org.jdownloader.extensions.StartException;
 import org.jdownloader.extensions.StopException;
 import org.jdownloader.extensions.antistandby.translate.AntistandbyTranslation;
+import org.jdownloader.extensions.extraction.ExtractionExtension;
+import org.jdownloader.extensions.extraction.contextmenu.downloadlist.ArchiveValidator;
 import org.jdownloader.gui.IconKey;
 import org.jdownloader.gui.translate._GUI;
 
-public class AntiStandbyExtension extends AbstractExtension<AntiStandbyConfig, AntistandbyTranslation> implements ShutdownVetoListener {
+public class AntiStandbyExtension extends AbstractExtension<AntiStandbyConfig, AntistandbyTranslation> {
     private final AtomicReference<Thread>              currentThread = new AtomicReference<Thread>(null);
     private ExtensionConfigPanel<AntiStandbyExtension> configPanel;
+    private volatile ShutdownEvent                     shutdownEvent;
 
     public ExtensionConfigPanel<AntiStandbyExtension> getConfigPanel() {
         return configPanel;
@@ -55,9 +62,25 @@ public class AntiStandbyExtension extends AbstractExtension<AntiStandbyConfig, A
     public AntiStandbyExtension() throws StartException {
         super();
         setTitle(T.jd_plugins_optional_antistandby_jdantistandby());
+        shutdownEvent = new ShutdownEvent() {
+
+            @Override
+            public void onShutdown(ShutdownRequest shutdownRequest) {
+                setThread(null);
+            }
+
+            @Override
+            public int getHookPriority() {
+                return Integer.MIN_VALUE;
+            }
+
+        };
     }
 
     public boolean isLinuxRunnable() {
+        if (DebugMode.TRUE_IN_IDE_ELSE_FALSE && CrossSystem.isLinux()) {
+            return true;
+        }
         return false;
     }
 
@@ -68,6 +91,7 @@ public class AntiStandbyExtension extends AbstractExtension<AntiStandbyConfig, A
 
     @Override
     protected void stop() throws StopException {
+        ShutdownController.getInstance().removeShutdownEvent(shutdownEvent);
         setThread(null);
     }
 
@@ -86,9 +110,7 @@ public class AntiStandbyExtension extends AbstractExtension<AntiStandbyConfig, A
 
     private void setThread(final Thread thread) {
         if (thread != null) {
-            ShutdownController.getInstance().addShutdownVetoListener(this);
-        } else {
-            ShutdownController.getInstance().removeShutdownVetoListener(this);
+            ShutdownController.getInstance().addShutdownEvent(shutdownEvent);
         }
         currentThread.getAndSet(thread);
         if (thread != null) {
@@ -96,23 +118,51 @@ public class AntiStandbyExtension extends AbstractExtension<AntiStandbyConfig, A
         }
     }
 
-    protected boolean requiresAntiStandby() {
-        return requiresAntiStandby(getSettings().getMode());
+    public Set<Condition> getCurrentAntiStandbyConditions() {
+        final Thread antiStandbyThread = this.currentThread.get();
+        if (antiStandbyThread instanceof WindowsAntiStandby) {
+            return ((WindowsAntiStandby) antiStandbyThread).getConditions();
+        }
+        return null;
     }
 
-    protected boolean requiresAntiStandby(final Mode mode) {
-        switch (mode) {
-        case RUNNING:
-            return true;
-        case CRAWLING:
-            return LinkCollector.getInstance().isCollecting();
-        case DOWNLOADING:
-            return DownloadWatchDog.getInstance().getStateMachine().isState(DownloadWatchDog.RUNNING_STATE, DownloadWatchDog.PAUSE_STATE, DownloadWatchDog.STOPPING_STATE);
-        case DOWNLOADINGDORCRAWLING:
-            return requiresAntiStandby(Mode.CRAWLING) || requiresAntiStandby(Mode.DOWNLOADING);
-        default:
-            return false;
+    protected Set<Condition> requiresAntiStandby() {
+        return requiresAntiStandby(getSettings().getCondition());
+    }
+
+    protected Set<Condition> requiresAntiStandby(final Set<Condition> condition) {
+        Set<Condition> ret = new HashSet<Condition>();
+        if (condition == null || condition.size() == 0) {
+            return ret;
         }
+        if (condition.contains(Condition.RUNNING)) {
+            ret.add(Condition.RUNNING);
+        }
+        if (condition.contains(Condition.CRAWLING) && (LinkCollector.getInstance().isCollecting() || LinkChecker.isChecking())) {
+            ret.add(Condition.CRAWLING);
+        }
+        if (condition.contains(Condition.DOWNLOADING) && DownloadWatchDog.getInstance().getStateMachine().isState(DownloadWatchDog.RUNNING_STATE, DownloadWatchDog.PAUSE_STATE, DownloadWatchDog.STOPPING_STATE)) {
+            ret.add(Condition.DOWNLOADING);
+        }
+        if (condition.contains(Condition.EXTRACTING)) {
+            final ExtractionExtension extension = ArchiveValidator.EXTENSION;
+            if (extension != null && !extension.getJobQueue().isEmpty()) {
+                ret.add(Condition.EXTRACTING);
+            }
+        }
+        if (condition.contains(Condition.EXTENSION)) {
+            for (AbstractExtension<?, ?> extension : ExtensionController.getInstance().getEnabledExtensions()) {
+                try {
+                    if (extension instanceof AntiStandbyExtension) {
+                        continue;
+                    } else if (Boolean.TRUE.equals(extension.invoke("requiresAntiStandby", Boolean.class))) {
+                        ret.add(Condition.EXTENSION);
+                    }
+                } catch (Throwable e) {
+                }
+            }
+        }
+        return ret;
     }
 
     @Override
@@ -168,35 +218,9 @@ public class AntiStandbyExtension extends AbstractExtension<AntiStandbyConfig, A
         }
     }
 
-    public Mode getMode() {
-        final Mode ret = getSettings().getMode();
-        if (ret == null) {
-            return Mode.DOWNLOADING;
-        } else {
-            return ret;
-        }
-    }
-
     @Override
     public boolean isHeadlessRunnable() {
         return true;
     }
 
-    @Override
-    public void onShutdown(ShutdownRequest request) {
-        setThread(null);
-    }
-
-    @Override
-    public void onShutdownVeto(ShutdownRequest request) {
-    }
-
-    @Override
-    public void onShutdownVetoRequest(ShutdownRequest request) throws ShutdownVetoException {
-    }
-
-    @Override
-    public long getShutdownVetoPriority() {
-        return 0;
-    }
 }

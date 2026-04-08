@@ -29,7 +29,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "pichost.biz" }, urls = { "https?://(?:www\\.)?pichost\\.biz/viewer\\.php\\?id=(.+)" })
+@HostPlugin(revision = "$Revision: 40875 $", interfaceVersion = 3, names = { "pichost.biz" }, urls = { "https?://(?:www\\.)?pichost\\.biz/viewer\\.php\\?id=(.+)" })
 public class PichostBiz extends antiDDoSForHost {
     public PichostBiz(PluginWrapper wrapper) {
         super(wrapper);

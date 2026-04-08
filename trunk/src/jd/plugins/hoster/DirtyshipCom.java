@@ -28,7 +28,7 @@ import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.components.antiDDoSForHost;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "dirtyship.com" }, urls = { "https?://(?:www\\.)?dirtyship\\.com/([a-z0-9\\-]+)/" })
+@HostPlugin(revision = "$Revision: 47474 $", interfaceVersion = 3, names = { "dirtyship.com" }, urls = { "https?://(?:www\\.)?dirtyship\\.com/([a-z0-9\\-]+)/" })
 public class DirtyshipCom extends antiDDoSForHost {
     public DirtyshipCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -44,7 +44,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "krakenfiles.com" }, urls = { "https?://(?:www\\.)?krakenfiles\\.com/view/([a-z0-9]+)/file\\.html" })
+@HostPlugin(revision = "$Revision: 52214 $", interfaceVersion = 3, names = { "krakenfiles.com" }, urls = { "https?://(?:www\\.)?krakenfiles\\.com/view/([a-z0-9]+)/file\\.html" })
 public class KrakenfilesCom extends PluginForHost {
     public KrakenfilesCom(PluginWrapper wrapper) {
         super(wrapper);

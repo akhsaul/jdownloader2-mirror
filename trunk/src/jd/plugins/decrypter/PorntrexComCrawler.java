@@ -43,7 +43,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 import jd.plugins.hoster.PorntrexCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52280 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { PorntrexCom.class })
 public class PorntrexComCrawler extends PluginForDecrypt {
     public PorntrexComCrawler(PluginWrapper wrapper) {

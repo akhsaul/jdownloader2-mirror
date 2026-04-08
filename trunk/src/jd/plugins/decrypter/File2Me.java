@@ -37,7 +37,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 45949 $", interfaceVersion = 3, names = {}, urls = {})
 public class File2Me extends PluginForDecrypt {
     public File2Me(PluginWrapper wrapper) {
         super(wrapper);

@@ -28,7 +28,7 @@ import jd.plugins.HostPlugin;
 
 import org.jdownloader.plugins.components.XFileSharingProBasic;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 46225 $", interfaceVersion = 3, names = {}, urls = {})
 public class UsersdriveCom extends XFileSharingProBasic {
     public UsersdriveCom(final PluginWrapper wrapper) {
         super(wrapper);

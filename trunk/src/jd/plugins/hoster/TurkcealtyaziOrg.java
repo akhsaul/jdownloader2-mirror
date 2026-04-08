@@ -31,7 +31,7 @@ import jd.plugins.PluginForHost;
 
 import org.appwork.utils.formatter.SizeFormatter;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "turkcealtyazi.org" }, urls = { "http://(?:www\\.)?turkcealtyazi\\.org/sub/\\d+/[a-z0-9\\-]+\\.html" }) 
+@HostPlugin(revision = "$Revision: 34675 $", interfaceVersion = 2, names = { "turkcealtyazi.org" }, urls = { "http://(?:www\\.)?turkcealtyazi\\.org/sub/\\d+/[a-z0-9\\-]+\\.html" }) 
 public class TurkcealtyaziOrg extends PluginForHost {
 
     public TurkcealtyaziOrg(PluginWrapper wrapper) {

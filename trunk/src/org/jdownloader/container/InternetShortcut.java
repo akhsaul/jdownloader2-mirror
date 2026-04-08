@@ -31,7 +31,7 @@ import jd.plugins.PluginsC;
 
 public class InternetShortcut extends PluginsC {
     public InternetShortcut() {
-        super("InternetShortcut", "file:/.+\\.url$", "$Revision$");
+        super("InternetShortcut", "file:/.+\\.url$", "$Revision: 50430 $");
     }
 
     public InternetShortcut newPluginInstance() {

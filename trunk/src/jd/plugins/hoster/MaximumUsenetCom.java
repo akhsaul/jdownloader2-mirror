@@ -28,7 +28,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "maximumusenet.com" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51945 $", interfaceVersion = 3, names = { "maximumusenet.com" }, urls = { "" })
 public class MaximumUsenetCom extends UseNet {
     public MaximumUsenetCom(PluginWrapper wrapper) {
         super(wrapper);

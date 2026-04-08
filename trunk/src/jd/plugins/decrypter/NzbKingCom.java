@@ -24,7 +24,7 @@ import jd.plugins.components.NZBSAXHandler;
 
 import org.jdownloader.container.NZB;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "nzbking.com" }, urls = { "https?://(?:www\\.)?nzbking\\.com/details(?::|%3a)[a-f0-9]{24}" })
+@DecrypterPlugin(revision = "$Revision: 49212 $", interfaceVersion = 3, names = { "nzbking.com" }, urls = { "https?://(?:www\\.)?nzbking\\.com/details(?::|%3a)[a-f0-9]{24}" })
 public class NzbKingCom extends PluginForDecrypt {
     public NzbKingCom(PluginWrapper wrapper) {
         super(wrapper);

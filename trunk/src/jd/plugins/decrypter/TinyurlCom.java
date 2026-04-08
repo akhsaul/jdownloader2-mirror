@@ -26,7 +26,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "tinyurl.com" }, urls = { "https?://(?:www\\.)?tinyurl\\.com/[a-z0-9]+(?:/[^/]+){0,}" })
+@DecrypterPlugin(revision = "$Revision: 48505 $", interfaceVersion = 3, names = { "tinyurl.com" }, urls = { "https?://(?:www\\.)?tinyurl\\.com/[a-z0-9]+(?:/[^/]+){0,}" })
 public class TinyurlCom extends PluginForDecrypt {
     public TinyurlCom(PluginWrapper wrapper) {
         super(wrapper);

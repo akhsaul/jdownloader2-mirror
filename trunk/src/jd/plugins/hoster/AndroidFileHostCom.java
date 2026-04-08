@@ -27,7 +27,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "androidfilehost.com" }, urls = { "https?://(www\\.)?androidfilehost\\.com/\\?fid=\\d+" })
+@HostPlugin(revision = "$Revision: 42494 $", interfaceVersion = 2, names = { "androidfilehost.com" }, urls = { "https?://(www\\.)?androidfilehost\\.com/\\?fid=\\d+" })
 public class AndroidFileHostCom extends antiDDoSForHost {
     public AndroidFileHostCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -37,7 +37,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.utils.JDUtilities;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "hentai-foundry.com" }, urls = { "https?://(?:www\\.)?hentai-foundry\\.com/pictures/user/[A-Za-z0-9\\-_]+(?:/scraps)?(?:/\\d+)?|https?://(?:www\\.)?hentai-foundry\\.com/user/[A-Za-z0-9\\-_]+/(profile|faves/pictures)" })
+@DecrypterPlugin(revision = "$Revision: 48101 $", interfaceVersion = 3, names = { "hentai-foundry.com" }, urls = { "https?://(?:www\\.)?hentai-foundry\\.com/pictures/user/[A-Za-z0-9\\-_]+(?:/scraps)?(?:/\\d+)?|https?://(?:www\\.)?hentai-foundry\\.com/user/[A-Za-z0-9\\-_]+/(profile|faves/pictures)" })
 public class HentaiFoundryComGallery extends PluginForDecrypt {
     public HentaiFoundryComGallery(PluginWrapper wrapper) {
         super(wrapper);

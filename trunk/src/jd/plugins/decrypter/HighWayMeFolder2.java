@@ -37,7 +37,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.HighWayCore;
 import jd.plugins.hoster.HighWayMe2;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50144 $", interfaceVersion = 3, names = {}, urls = {})
 public class HighWayMeFolder2 extends PluginForDecrypt {
     public HighWayMeFolder2(PluginWrapper wrapper) {
         super(wrapper);

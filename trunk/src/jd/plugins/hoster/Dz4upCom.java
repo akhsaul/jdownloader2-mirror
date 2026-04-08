@@ -26,7 +26,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 43291 $", interfaceVersion = 2, names = {}, urls = {})
 public class Dz4upCom extends YetiShareCore {
     public Dz4upCom(PluginWrapper wrapper) {
         super(wrapper);

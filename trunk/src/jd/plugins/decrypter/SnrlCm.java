@@ -30,7 +30,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "snurl.com" }, urls = { "https?://[\\w\\.]*?(snurl\\.com|snipurl\\.com|sn\\.im|snipr\\.com)/[\\w]+" })
+@DecrypterPlugin(revision = "$Revision: 46150 $", interfaceVersion = 2, names = { "snurl.com" }, urls = { "https?://[\\w\\.]*?(snurl\\.com|snipurl\\.com|sn\\.im|snipr\\.com)/[\\w]+" })
 public class SnrlCm extends PluginForDecrypt {
     public SnrlCm(PluginWrapper wrapper) {
         super(wrapper);

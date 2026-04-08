@@ -33,7 +33,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "hypem.com" }, urls = { "https?://(?:www\\.)?hypem\\.com/((track|item)/[a-z0-9]+|go/[a-z0-9]+/[A-Za-z0-9]+)" })
+@DecrypterPlugin(revision = "$Revision: 48344 $", interfaceVersion = 2, names = { "hypem.com" }, urls = { "https?://(?:www\\.)?hypem\\.com/((track|item)/[a-z0-9]+|go/[a-z0-9]+/[A-Za-z0-9]+)" })
 public class HypemCom extends PluginForDecrypt {
     public HypemCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -33,7 +33,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "free-loops.com" }, urls = { "https?://(www\\.)?free\\-loops\\.com/\\d+[a-z0-9\\-]+\\.html" })
+@DecrypterPlugin(revision = "$Revision: 49953 $", interfaceVersion = 2, names = { "free-loops.com" }, urls = { "https?://(www\\.)?free\\-loops\\.com/\\d+[a-z0-9\\-]+\\.html" })
 public class FreeLoopsCom extends PluginForDecrypt {
     public FreeLoopsCom(PluginWrapper wrapper) {
         super(wrapper);

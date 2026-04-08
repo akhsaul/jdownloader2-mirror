@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.FromsmashComFolder;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49060 $", interfaceVersion = 3, names = {}, urls = {})
 public class FromsmashCom extends PluginForHost {
     public FromsmashCom(PluginWrapper wrapper) {
         super(wrapper);

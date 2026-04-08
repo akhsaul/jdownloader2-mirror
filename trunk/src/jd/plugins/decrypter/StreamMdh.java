@@ -16,7 +16,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "stream-mdh.co" }, urls = { "https?://(?:www\\.)?stream-mdh.co/(view|video)/.*?/.+" })
+@DecrypterPlugin(revision = "$Revision: 46168 $", interfaceVersion = 2, names = { "stream-mdh.co" }, urls = { "https?://(?:www\\.)?stream-mdh.co/(view|video)/.*?/.+" })
 public class StreamMdh extends antiDDoSForDecrypt {
     public StreamMdh(PluginWrapper wrapper) {
         super(wrapper);

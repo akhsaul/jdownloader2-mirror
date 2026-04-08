@@ -31,7 +31,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "biguz.net" }, urls = { "https?://(?:www\\.)?biguz\\.net/(?:watch\\.php\\?id=\\d+|video/\\?id=\\d+\\&name=[a-z0-9\\-]+)" })
+@HostPlugin(revision = "$Revision: 49396 $", interfaceVersion = 3, names = { "biguz.net" }, urls = { "https?://(?:www\\.)?biguz\\.net/(?:watch\\.php\\?id=\\d+|video/\\?id=\\d+\\&name=[a-z0-9\\-]+)" })
 public class BiguzNet extends PluginForHost {
     public BiguzNet(PluginWrapper wrapper) {
         super(wrapper);

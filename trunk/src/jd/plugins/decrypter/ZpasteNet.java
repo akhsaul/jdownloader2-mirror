@@ -28,7 +28,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 44905 $", interfaceVersion = 3, names = {}, urls = {})
 public class ZpasteNet extends PluginForDecrypt {
     public ZpasteNet(PluginWrapper wrapper) {
         super(wrapper);

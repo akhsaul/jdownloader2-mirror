@@ -27,7 +27,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "hqmaturetube.com" }, urls = { "https?://(?:www\\.)?hqmaturetube\\.com/(cms/watch/\\d+\\.php|go\\?vx=[a-zA-Z0-9_/\\+\\=\\-%]+)" })
+@DecrypterPlugin(revision = "$Revision: 45822 $", interfaceVersion = 3, names = { "hqmaturetube.com" }, urls = { "https?://(?:www\\.)?hqmaturetube\\.com/(cms/watch/\\d+\\.php|go\\?vx=[a-zA-Z0-9_/\\+\\=\\-%]+)" })
 public class HqMatureTubeCom extends PluginForDecrypt {
     public HqMatureTubeCom(PluginWrapper wrapper) {
         super(wrapper);

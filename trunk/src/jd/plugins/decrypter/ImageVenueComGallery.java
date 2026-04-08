@@ -30,7 +30,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "imagevenue.com" }, urls = { "https?://(www\\.)?(img\\d+\\.)?imagevenue\\.com/(galshow\\.php\\?gal=gallery_.+|GA[A-Za-z0-9]+)" })
+@DecrypterPlugin(revision = "$Revision: 48342 $", interfaceVersion = 2, names = { "imagevenue.com" }, urls = { "https?://(www\\.)?(img\\d+\\.)?imagevenue\\.com/(galshow\\.php\\?gal=gallery_.+|GA[A-Za-z0-9]+)" })
 public class ImageVenueComGallery extends PluginForDecrypt {
     public ImageVenueComGallery(PluginWrapper wrapper) {
         super(wrapper);

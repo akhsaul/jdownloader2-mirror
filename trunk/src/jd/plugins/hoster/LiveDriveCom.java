@@ -33,7 +33,7 @@ import jd.plugins.decrypter.LiveDriveComFolder;
 
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 47483 $", interfaceVersion = 2, names = {}, urls = {})
 @PluginDependencies(dependencies = { LiveDriveComFolder.class })
 public class LiveDriveCom extends PluginForHost {
     public LiveDriveCom(PluginWrapper wrapper) {

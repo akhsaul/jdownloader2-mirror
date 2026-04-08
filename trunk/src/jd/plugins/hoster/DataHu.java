@@ -50,7 +50,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.components.PluginJSonUtils;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "data.hu" }, urls = { "https?://(?:www\\.)?data.hu/get/(\\d+)/([^<>\"/%]+)" })
+@HostPlugin(revision = "$Revision: 51050 $", interfaceVersion = 2, names = { "data.hu" }, urls = { "https?://(?:www\\.)?data.hu/get/(\\d+)/([^<>\"/%]+)" })
 public class DataHu extends antiDDoSForHost {
     private int statuscode = 0;
 

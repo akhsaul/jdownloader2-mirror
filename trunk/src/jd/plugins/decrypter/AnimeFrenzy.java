@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.GenericM3u8;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52088 $", interfaceVersion = 2, names = {}, urls = {})
 public class AnimeFrenzy extends PluginForDecrypt {
     public AnimeFrenzy(PluginWrapper wrapper) {
         super(wrapper);

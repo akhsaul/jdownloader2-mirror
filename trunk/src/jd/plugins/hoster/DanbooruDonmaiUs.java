@@ -50,7 +50,7 @@ import org.appwork.utils.swing.dialog.ConfirmDialog;
 import org.jdownloader.plugins.components.config.DanbooruDonmaiUsConfig;
 import org.jdownloader.plugins.config.PluginJsonConfig;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "danbooru.donmai.us" }, urls = { "https?://(?:www\\.)?danbooru\\.donmai\\.us/posts/(\\d+)" })
+@HostPlugin(revision = "$Revision: 48194 $", interfaceVersion = 3, names = { "danbooru.donmai.us" }, urls = { "https?://(?:www\\.)?danbooru\\.donmai\\.us/posts/(\\d+)" })
 public class DanbooruDonmaiUs extends PluginForHost {
     public DanbooruDonmaiUs(PluginWrapper wrapper) {
         super(wrapper);

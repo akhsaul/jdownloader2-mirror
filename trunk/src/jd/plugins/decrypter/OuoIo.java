@@ -43,7 +43,7 @@ import jd.plugins.components.SiteType.SiteTemplate;
  * @author psp
  * @tags: similar to MightyScriptAdLinkFly
  */
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "ouo.io", "ouo.today", "ouo.press", "cpmlink.net", "uskip.me" }, urls = { "https?://(?:www\\.)?ouo\\.io/(:?s/[A-Za-z0-9]{4,}\\?s=(?:http|ftp).+|[A-Za-z0-9]{4,})", "https?://(?:\\w+\\.)?ouo\\.today/\\?[^/]*(s|cr)=((?:http|ftp).+|[0-9a-zA-Z\\+\\/]+(%3D|=){0,2})", "https?://(?:www\\.)?ouo\\.press/(:?s/[A-Za-z0-9]{4,}\\?s=(?:http|ftp).+|[A-Za-z0-9]{4,})", "https?://cpmlink\\.net/[A-Za-z0-9]+", "https?://uskip\\.me/[A-Za-z0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 48392 $", interfaceVersion = 3, names = { "ouo.io", "ouo.today", "ouo.press", "cpmlink.net", "uskip.me" }, urls = { "https?://(?:www\\.)?ouo\\.io/(:?s/[A-Za-z0-9]{4,}\\?s=(?:http|ftp).+|[A-Za-z0-9]{4,})", "https?://(?:\\w+\\.)?ouo\\.today/\\?[^/]*(s|cr)=((?:http|ftp).+|[0-9a-zA-Z\\+\\/]+(%3D|=){0,2})", "https?://(?:www\\.)?ouo\\.press/(:?s/[A-Za-z0-9]{4,}\\?s=(?:http|ftp).+|[A-Za-z0-9]{4,})", "https?://cpmlink\\.net/[A-Za-z0-9]+", "https?://uskip\\.me/[A-Za-z0-9]+" })
 public class OuoIo extends antiDDoSForDecrypt {
     public OuoIo(PluginWrapper wrapper) {
         super(wrapper);

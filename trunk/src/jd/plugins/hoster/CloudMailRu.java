@@ -46,7 +46,7 @@ import jd.plugins.PluginForHost;
 import jd.plugins.components.PluginJSonUtils;
 import jd.utils.locale.JDL;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "cloud.mail.ru" }, urls = { "https?://cloud\\.mail\\.ru/public/[A-Za-z0-9]+/[A-Za-z0-9]+.*|https?://[a-z0-9]+\\.datacloudmail\\.ru/weblink/(view|get)/[a-z0-9]+/[^<>\"/]+/[^<>\"/]+" })
+@HostPlugin(revision = "$Revision: 50511 $", interfaceVersion = 2, names = { "cloud.mail.ru" }, urls = { "https?://cloud\\.mail\\.ru/public/[A-Za-z0-9]+/[A-Za-z0-9]+.*|https?://[a-z0-9]+\\.datacloudmail\\.ru/weblink/(view|get)/[a-z0-9]+/[^<>\"/]+/[^<>\"/]+" })
 public class CloudMailRu extends PluginForHost {
     public CloudMailRu(PluginWrapper wrapper) {
         super(wrapper);

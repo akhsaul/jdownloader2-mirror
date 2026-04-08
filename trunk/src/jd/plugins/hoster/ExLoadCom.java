@@ -35,7 +35,7 @@ import jd.plugins.PluginException;
 
 import org.jdownloader.plugins.components.XFileSharingProBasic;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 48924 $", interfaceVersion = 3, names = {}, urls = {})
 public class ExLoadCom extends XFileSharingProBasic {
     public ExLoadCom(final PluginWrapper wrapper) {
         super(wrapper);

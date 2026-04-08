@@ -30,7 +30,7 @@ import org.appwork.utils.encoding.URLEncode;
 import org.appwork.utils.formatter.SizeFormatter;
 
 //Links come from a decrypter
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "file.karelia.ru" }, urls = { "https?://(?:www\\.)?file\\.kareliadecrypted\\.ru/([a-z0-9]+)/\\d+" })
+@HostPlugin(revision = "$Revision: 47477 $", interfaceVersion = 2, names = { "file.karelia.ru" }, urls = { "https?://(?:www\\.)?file\\.kareliadecrypted\\.ru/([a-z0-9]+)/\\d+" })
 public class FileKareliaRu extends PluginForHost {
     public FileKareliaRu(PluginWrapper wrapper) {
         super(wrapper);

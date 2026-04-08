@@ -44,7 +44,7 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.Scriptable;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "dummycnl.jdownloader.org" }, urls = { "https?://dummycnl\\.jdownloader\\.org/#?[a-f0-9A-F]+" })
+@DecrypterPlugin(revision = "$Revision: 51264 $", interfaceVersion = 3, names = { "dummycnl.jdownloader.org" }, urls = { "https?://dummycnl\\.jdownloader\\.org/#?[a-f0-9A-F]+" })
 public class DummyCNL extends PluginForDecrypt {
     public DummyCNL(final PluginWrapper wrapper) {
         super(wrapper);

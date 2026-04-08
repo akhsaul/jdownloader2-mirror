@@ -56,7 +56,7 @@ import org.jdownloader.plugins.components.config.FileCryptConfig;
 import org.jdownloader.plugins.components.config.FileCryptConfig.CrawlMode;
 import org.jdownloader.plugins.config.PluginJsonConfig;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51985 $", interfaceVersion = 3, names = {}, urls = {})
 public class FileCryptCc extends PluginForDecrypt {
     public FileCryptCc(PluginWrapper wrapper) {
         super(wrapper);

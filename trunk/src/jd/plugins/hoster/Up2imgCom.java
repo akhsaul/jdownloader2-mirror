@@ -41,7 +41,7 @@ import jd.plugins.decrypter.Up2imgComAlbum;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51617 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { Up2imgComAlbum.class })
 public class Up2imgCom extends PluginForHost {
     public Up2imgCom(PluginWrapper wrapper) {

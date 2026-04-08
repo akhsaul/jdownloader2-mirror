@@ -28,7 +28,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "newlunarrepublic.fr" }, urls = { "https?://(?:www\\.)?newlunarrepublic\\.fr/(episodes|films)/.+" })
+@DecrypterPlugin(revision = "$Revision: 46972 $", interfaceVersion = 3, names = { "newlunarrepublic.fr" }, urls = { "https?://(?:www\\.)?newlunarrepublic\\.fr/(episodes|films)/.+" })
 public class NewlunarrepublicFr extends PluginForDecrypt {
     public NewlunarrepublicFr(PluginWrapper wrapper) {
         super(wrapper);

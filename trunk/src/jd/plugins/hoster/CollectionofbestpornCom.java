@@ -31,7 +31,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "collectionofbestporn.com" }, urls = { "https?://(?:www\\.)?collectionofbestporn\\.com/video/([a-z0-9\\-]+)\\.html" })
+@HostPlugin(revision = "$Revision: 48061 $", interfaceVersion = 2, names = { "collectionofbestporn.com" }, urls = { "https?://(?:www\\.)?collectionofbestporn\\.com/video/([a-z0-9\\-]+)\\.html" })
 public class CollectionofbestpornCom extends PluginForHost {
     public CollectionofbestpornCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -35,7 +35,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.SiteType.SiteTemplate;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "fux.com", "4tube.com" }, urls = { "https?://(?:www\\.)?fux\\.com/(?:videos?|embed)/\\d+/?(?:[\\w-]+)?", "https?://(?:www\\.)?4tube\\.com/(?:embed|videos)/\\d+/?(?:[\\w-]+)?|https?://m\\.4tube\\.com/videos/\\d+/?(?:[\\w-]+)?" })
+@HostPlugin(revision = "$Revision: 51082 $", interfaceVersion = 2, names = { "fux.com", "4tube.com" }, urls = { "https?://(?:www\\.)?fux\\.com/(?:videos?|embed)/\\d+/?(?:[\\w-]+)?", "https?://(?:www\\.)?4tube\\.com/(?:embed|videos)/\\d+/?(?:[\\w-]+)?|https?://m\\.4tube\\.com/videos/\\d+/?(?:[\\w-]+)?" })
 public class FuxCom extends PluginForHost {
     public FuxCom(PluginWrapper wrapper) {
         super(wrapper);

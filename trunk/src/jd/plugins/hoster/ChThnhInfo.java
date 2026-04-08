@@ -25,7 +25,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "chauthanh.info" }, urls = { "https?://(www\\.)?chauthanh\\.info/(animeDownload/(download|new)/\\d+/[^<>\"/]+/[^<>\"/]+|animeOST/download/[a-z0-9\\-_]+/[a-z0-9\\-_\\.]+|[a-z]+/download/[^<>\"]+\\.html)" })
+@HostPlugin(revision = "$Revision: 49682 $", interfaceVersion = 2, names = { "chauthanh.info" }, urls = { "https?://(www\\.)?chauthanh\\.info/(animeDownload/(download|new)/\\d+/[^<>\"/]+/[^<>\"/]+|animeOST/download/[a-z0-9\\-_]+/[a-z0-9\\-_\\.]+|[a-z]+/download/[^<>\"]+\\.html)" })
 public class ChThnhInfo extends antiDDoSForHost {
     public String dllink = null;
 

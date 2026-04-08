@@ -29,7 +29,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "vidble.com" }, urls = { "https?://(?:www\\.)?vidble\\.com/(?:show|explore)/[A-Za-z0-9]+" })
+@HostPlugin(revision = "$Revision: 48054 $", interfaceVersion = 3, names = { "vidble.com" }, urls = { "https?://(?:www\\.)?vidble\\.com/(?:show|explore)/[A-Za-z0-9]+" })
 public class VidbleCom extends PluginForHost {
     public VidbleCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -30,7 +30,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "hdpussy.xxx" }, urls = { "https?://(?:www\\.)?hdpussy\\.xxx/video/([a-f0-9]{32})/?" })
+@HostPlugin(revision = "$Revision: 51080 $", interfaceVersion = 3, names = { "hdpussy.xxx" }, urls = { "https?://(?:www\\.)?hdpussy\\.xxx/video/([a-f0-9]{32})/?" })
 public class HdPussyXxx extends PluginForHost {
     public HdPussyXxx(PluginWrapper wrapper) {
         super(wrapper);

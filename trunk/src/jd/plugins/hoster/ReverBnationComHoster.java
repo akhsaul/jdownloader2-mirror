@@ -29,7 +29,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "reverbnation.com" }, urls = { "https?://(?:www\\.)?reverbnation\\.com/([^/]+)/song/(\\d+)-([a-z0-9\\-]+)" })
+@HostPlugin(revision = "$Revision: 47484 $", interfaceVersion = 2, names = { "reverbnation.com" }, urls = { "https?://(?:www\\.)?reverbnation\\.com/([^/]+)/song/(\\d+)-([a-z0-9\\-]+)" })
 public class ReverBnationComHoster extends PluginForHost {
     @SuppressWarnings("deprecation")
     public ReverBnationComHoster(final PluginWrapper wrapper) {

@@ -33,7 +33,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.SiteType.SiteTemplate;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "palcomix.com" }, urls = { "https?://(?:www\\.)?palcomix\\.com/[^/]+/imagepages/image\\d+\\.html" })
+@HostPlugin(revision = "$Revision: 48058 $", interfaceVersion = 2, names = { "palcomix.com" }, urls = { "https?://(?:www\\.)?palcomix\\.com/[^/]+/imagepages/image\\d+\\.html" })
 public class PalcomixCom extends PluginForHost {
     public PalcomixCom(PluginWrapper wrapper) {
         super(wrapper);

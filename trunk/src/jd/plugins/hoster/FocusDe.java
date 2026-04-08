@@ -34,7 +34,7 @@ import org.appwork.storage.TypeRef;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "focus.de" }, urls = { "https?://(?:www\\.)?focus\\.de/.+" })
+@HostPlugin(revision = "$Revision: 52202 $", interfaceVersion = 3, names = { "focus.de" }, urls = { "https?://(?:www\\.)?focus\\.de/.+" })
 public class FocusDe extends PluginForHost {
     public FocusDe(PluginWrapper wrapper) {
         super(wrapper);

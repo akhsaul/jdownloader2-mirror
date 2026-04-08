@@ -216,9 +216,9 @@ public enum JavaVersion implements JavaVersionInterface {
             }
             return JavaVersion.UNKNOWN;
         } catch (final EOFException e) {
-            return JavaVersion.UNKNOWN;
+            throw e;
         } catch (final IOException e) {
-            return JavaVersion.UNKNOWN;
+            throw e;
         }
     }
 
@@ -298,7 +298,13 @@ public enum JavaVersion implements JavaVersionInterface {
         }
     }
 
+    public static final ThreadLocal<JavaVersionInterface> THREAD_VERSION = new ThreadLocal<JavaVersionInterface>();
+
     public static JavaVersionInterface getVersion() {
+        final JavaVersionInterface threadVersion = THREAD_VERSION.get();
+        if (threadVersion != null) {
+            return threadVersion;
+        }
         return VERSION;
     }
 

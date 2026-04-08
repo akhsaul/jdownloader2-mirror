@@ -26,7 +26,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.DownloadLink;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3,
+@DecrypterPlugin(revision = "$Revision: 35524 $", interfaceVersion = 3,
 
         names = { "2ch.io", "anonym.to", "hiderefer.com", "blankrefer.com", "anon.click", "lolinez.com", "nullrefer.com", "redirect.am", "relinker.org", "href.li" },
 

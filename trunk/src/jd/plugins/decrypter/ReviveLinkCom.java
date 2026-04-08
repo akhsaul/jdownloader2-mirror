@@ -28,7 +28,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.FilePackage;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "revivelink.com" }, urls = { "https?://(?:www\\.)?revivelink.com/\\??([A-Z0-9]+)" })
+@DecrypterPlugin(revision = "$Revision: 46079 $", interfaceVersion = 2, names = { "revivelink.com" }, urls = { "https?://(?:www\\.)?revivelink.com/\\??([A-Z0-9]+)" })
 public class ReviveLinkCom extends PluginForDecrypt {
     public ReviveLinkCom(PluginWrapper wrapper) {
         super(wrapper);

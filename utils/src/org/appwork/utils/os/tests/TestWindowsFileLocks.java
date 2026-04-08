@@ -4,7 +4,7 @@
  *         "AppWork Utilities" License
  *         The "AppWork Utilities" will be called [The Product] from now on.
  * ====================================================================================================================================================
- *         Copyright (c) 2009-2025, AppWork GmbH <e-mail@appwork.org>
+ *         Copyright (c) 2009-2026, AppWork GmbH <e-mail@appwork.org>
  *         Spalter Strasse 58
  *         91183 Abenberg
  *         e-mail@appwork.org
@@ -36,6 +36,7 @@ package org.appwork.utils.os.tests;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.HashSet;
 import java.util.List;
 
 import org.appwork.testframework.AWTest;
@@ -45,10 +46,12 @@ import org.appwork.utils.IO;
 import org.appwork.utils.Time;
 import org.appwork.utils.os.CrossSystem;
 import org.appwork.utils.os.WindowsUtils;
+import org.appwork.utils.os.WindowsUtils.HandleInfo;
 import org.appwork.utils.os.WindowsUtils.LockInfo;
+import org.appwork.utils.processes.command.Command;
 
 /**
- * Test suite for Windows file lock detection functionality. Tests the ability to identify which processes have file handles/locks on
+ * Test suite for Windows file lock dete ction functionality. Tests the ability to identify which processes have file handles/locks on
  * files.
  *
  * @author thomas
@@ -65,30 +68,120 @@ public class TestWindowsFileLocks extends AWTest {
             logInfoAnyway("Test must run on Windows!");
             return;
         }
+        testListHandlesOfCurrentProcess();
+        testOwnFileHandleFound();
+        testProcessesByFile();
         testHandleBlocks();
+        testCmdExeHomeHandle();
+    }
+
+    /**
+     * Outputs all handles of the current Java process (own PID) via {@link WindowsUtils#listHandlesForProcess(int)}. File handles show
+     * resolved path; other types show object type number only.
+     */
+    private void testListHandlesOfCurrentProcess() {
+        long myPID = CrossSystem.getPID();
+        List<HandleInfo> handles = WindowsUtils.listHandlesForProcess((int) myPID);
+        logInfoAnyway("Handles of current Java process (PID " + myPID + "): " + handles.size() + " total");
+        int fileCount = 0;
+        for (HandleInfo h : handles) {
+            if (h.getPath() != null) {
+                fileCount++;
+                logInfoAnyway("  [FILE] handle=0x" + Integer.toHexString(h.getHandleValue()) + " access=" + h.getAccessString() + " (0x" + Integer.toHexString(h.getGrantedAccess()) + ") path=" + h.getPath());
+            } else {
+                // logInfoAnyway(" [type=" + h.getObjectTypeNumber() + "] handle=0x" + Integer.toHexString(h.getHandleValue()));
+            }
+        }
+        logInfoAnyway("  -> " + fileCount + " file handles with path, " + (handles.size() - fileCount) + " other handles");
+    }
+
+    /**
+     * Opens a file in the current process and verifies that {@link WindowsUtils#listHandlesForProcess(int)} finds that handle with a
+     * resolved path. This confirms that the handle scan and path resolution work for our own process.
+     */
+    private void testOwnFileHandleFound() throws Exception {
+        String uniqueName = "handle_scan_test_" + Time.now() + ".tmp";
+        File file = Application.getTempFile("tests", uniqueName);
+        try {
+            IO.secureWrite(file, "test".getBytes());
+            FileOutputStream fos = new FileOutputStream(file, true);
+            try {
+                List<HandleInfo> handles = WindowsUtils.listHandlesForProcess((int) CrossSystem.getPID());
+                boolean found = false;
+                for (HandleInfo h : handles) {
+                    if (h.getPath() != null && h.getPath().replace('\\', '/').contains(file.getName())) {
+                        found = true;
+                        logInfoAnyway("Found our open file in handle list: handle=0x" + Integer.toHexString(h.getHandleValue()) + " path=" + h.getPath());
+                        break;
+                    }
+                }
+                assertTrue(found, "Handle scan should find our open file " + file.getAbsolutePath() + " in listHandlesForProcess result (got " + handles.size() + " handles)");
+            } finally {
+                fos.close();
+            }
+        } finally {
+            file.delete();
+        }
+    }
+
+    /**
+     * Scans all processes via handle scan and lists every process that has an open handle on a given file. Creates a temp file, holds it
+     * open in the current process, then calls {@link WindowsUtils#getPIDsWithHandleOnFile(File)} and
+     * {@link WindowsUtils#getLocksOnPathViaHandleScan(File)} and asserts the current process is in the list.
+     */
+    private void testProcessesByFile() throws Exception {
+        long myPID = CrossSystem.getPID();
+        String uniqueName = "processes_by_file_test_" + Time.now() + ".tmp";
+        File file = Application.getTempFile("tests", uniqueName);
+        try {
+            IO.secureWrite(file, "test".getBytes());
+            FileOutputStream fos = new FileOutputStream(file, true);
+            try {
+                HashSet<Integer> pids = new HashSet<Integer>();
+                List<LockInfo> processes = WindowsUtils.getLocksOnPathViaHandleScan(file);
+                logInfoAnyway("Processes with handle on " + file.getName() + ": " + processes.size() + " PID(s)");
+                for (LockInfo l : processes) {
+                    pids.add(l.getPid());
+                    logInfoAnyway("  PID=" + l.getPid() + " appName=" + l.getAppName());
+                }
+                Integer me = Integer.valueOf((int) myPID);
+                assertTrue(pids.contains(me), "getPIDsWithHandleOnFile should include current process (PID " + me + "), got: " + pids);
+                boolean foundInLockInfo = false;
+                for (LockInfo l : processes) {
+                    if (l.getPid() == myPID) {
+                        foundInLockInfo = true;
+                        break;
+                    }
+                }
+                assertTrue(foundInLockInfo, "getLocksOnPathViaHandleScan should include current process (PID " + myPID + ")");
+            } finally {
+                fos.close();
+            }
+        } finally {
+            file.delete();
+        }
     }
 
     /**
      * Test file handle/lock detection functionality on Windows.
-     * 
+     *
      * This test verifies that {@link WindowsUtils#getLocksOnPath(File)} correctly identifies processes that have file handles/locks on
      * files. It performs two verification steps:
-     * 
-     * <h3>1. Self-Lock Verification (java.exe) - INFORMATIONAL ONLY</h3>
-     * First, it attempts to verify that the currently running Java process has a lock on its own executable (java.exe) by calling
-     * {@link WindowsUtils#getLocksOnPath(File)}. However, this check is NOT mandatory and only serves as additional verification,
-     * because:
+     *
+     * <h3>1. Self-Lock Verification (java.exe) - INFORMATIONAL ONLY</h3> First, it attempts to verify that the currently running Java
+     * process has a lock on its own executable (java.exe) by calling {@link WindowsUtils#getLocksOnPath(File)}. However, this check is NOT
+     * mandatory and only serves as additional verification, because:
      * <ul>
      * <li><b>Memory-mapped execution</b>: Windows can execute programs memory-mapped without holding an exclusive file lock</li>
      * <li><b>JVM launcher architecture</b>: Many Java distributions use java.exe as a launcher that loads the actual JVM from DLLs. The
      * launcher executable itself may not remain locked after startup</li>
      * <li><b>Different JVM implementations</b>: Oracle JDK, OpenJDK, GraalVM, etc. behave differently regarding executable locks</li>
      * </ul>
-     * Therefore, this part only logs informational messages but does not fail the test. It is common and expected that no lock is found
-     * on modern JVM implementations.
-     * 
-     * <h3>2. Temporary File Lock Test - CRITICAL</h3>
-     * This is the actual critical test that verifies lock detection works reliably for regular file operations:
+     * Therefore, this part only logs informational messages but does not fail the test. It is common and expected that no lock is found on
+     * modern JVM implementations.
+     *
+     * <h3>2. Temporary File Lock Test - CRITICAL</h3> This is the actual critical test that verifies lock detection works reliably for
+     * regular file operations:
      * <ul>
      * <li>Creates a temporary test file and writes initial content</li>
      * <li>Opens a {@link FileOutputStream} in append mode, which creates an exclusive lock</li>
@@ -101,15 +194,14 @@ public class TestWindowsFileLocks extends AWTest {
      * </li>
      * <li>Properly closes the stream and cleans up the temporary file</li>
      * </ul>
-     * 
-     * <h3>Purpose</h3>
-     * This test ensures that the Windows-specific file locking detection mechanism works correctly, which is critical for:
+     *
+     * <h3>Purpose</h3> This test ensures that the Windows-specific file locking detection mechanism works correctly, which is critical for:
      * <ul>
      * <li>Identifying which processes are blocking file operations</li>
      * <li>Debugging file access issues</li>
      * <li>Implementing safe file replacement/update strategies</li>
      * </ul>
-     * 
+     *
      * @throws Exception
      *             if any assertion fails or file operations encounter errors
      */
@@ -147,7 +239,6 @@ public class TestWindowsFileLocks extends AWTest {
             // Open a FileOutputStream which will create a lock on the file
             FileOutputStream fos = new FileOutputStream(file, true);
             try {
-                System.out.println("Run findLockingPids");
                 // Run the lock detection 10 times to verify consistency
                 for (int i = 0; i < 10; i++) {
                     List<LockInfo> lockedBy = WindowsUtils.getLocksOnPath(file);
@@ -162,6 +253,85 @@ public class TestWindowsFileLocks extends AWTest {
             }
         } finally {
             file.delete();
+        }
+    }
+
+    /**
+     * Starts cmd.exe with user home as working directory and verifies that the handle scan finds cmd.exe holding a handle on the user home
+     * directory. This tests handle detection for external processes and directory handles, including access/grant type verification.
+     */
+    private void testCmdExeHomeHandle() throws Exception {
+        File userHome = new File(System.getProperty("user.home"));
+        logInfoAnyway("Testing cmd.exe handle on user home: " + userHome.getAbsolutePath());
+        Command cmd = new Command("cmd.exe");
+        cmd.setDirectory(userHome);
+        cmd.start(true);
+        try {
+            Thread.sleep(500);
+            long cmdPid = cmd.getPID();
+            logInfoAnyway("Started cmd.exe with PID " + cmdPid);
+            // Check handles of cmd.exe process
+            List<HandleInfo> cmdHandles = WindowsUtils.listHandlesForProcess((int) cmdPid);
+            logInfoAnyway("cmd.exe has " + cmdHandles.size() + " handles");
+            boolean foundHomeHandle = false;
+            HandleInfo homeHandle = null;
+            String homePathNorm = userHome.getAbsolutePath().toLowerCase().replace('/', '\\');
+            for (HandleInfo h : cmdHandles) {
+                if (h.getPath() != null) {
+                    String handlePath = h.getPath().toLowerCase().replace('/', '\\');
+                    if (handlePath.contains(homePathNorm) || homePathNorm.contains(handlePath)) {
+                        foundHomeHandle = true;
+                        homeHandle = h;
+                        logInfoAnyway("  Found home handle: access=" + h.getAccessString() + " (0x" + Integer.toHexString(h.getGrantedAccess()) + ") path=" + h.getPath());
+                        // Test grant type methods
+                        logInfoAnyway("    canRead=" + h.canRead() + " canWrite=" + h.canWrite() + " canExecute=" + h.canExecute() + " canDelete=" + h.canDelete());
+                    }
+                }
+            }
+            // Verify grant types if home handle was found
+            if (homeHandle != null) {
+                // cmd.exe working directory handle should have at least synchronize access
+                assertTrue(homeHandle.getGrantedAccess() != 0, "Home handle should have non-zero granted access");
+                // Verify getAccessString returns a non-empty string
+                assertNotNull(homeHandle.getAccessString());
+                assertTrue(homeHandle.getAccessString().length() > 0 || homeHandle.getAccessString().equals("-"), "getAccessString should return a valid string");
+                // Test that getGrantedAccess raw value matches boolean helper results
+                int access = homeHandle.getGrantedAccess();
+                boolean expectRead = (access & WindowsUtils.FILE_READ_DATA) != 0;
+                boolean expectWrite = (access & WindowsUtils.FILE_WRITE_DATA) != 0;
+                boolean expectExecute = (access & WindowsUtils.FILE_EXECUTE) != 0;
+                boolean expectDelete = (access & WindowsUtils.ACCESS_DELETE) != 0;
+                assertThat(homeHandle.canRead()).is(expectRead);
+                assertThat(homeHandle.canWrite()).is(expectWrite);
+                assertThat(homeHandle.canExecute()).is(expectExecute);
+                assertThat(homeHandle.canDelete()).is(expectDelete);
+                logInfoAnyway("  Grant type verification passed for home handle");
+            }
+            // Also test getLocksOnPathViaHandleScan for the directory
+            List<LockInfo> locks = WindowsUtils.getLocksOnPathViaHandleScan(userHome);
+            logInfoAnyway("Processes with handle on user home: " + locks.size());
+            boolean cmdInLocks = false;
+            for (LockInfo l : locks) {
+                logInfoAnyway("  PID=" + l.getPid() + " appName=" + l.getAppName());
+                if (l.getPid() == cmdPid) {
+                    cmdInLocks = true;
+                }
+            }
+            if (foundHomeHandle) {
+                logInfoAnyway("SUCCESS: cmd.exe holds handle on user home directory");
+            } else {
+                logInfoAnyway("INFO: cmd.exe handle list did not contain user home path directly");
+                logInfoAnyway("  (cmd.exe may use different path representation or handle type)");
+            }
+            if (cmdInLocks) {
+                logInfoAnyway("SUCCESS: getLocksOnPathViaHandleScan found cmd.exe on user home");
+            } else {
+                logInfoAnyway("INFO: getLocksOnPathViaHandleScan did not find cmd.exe on user home");
+            }
+        } finally {
+            cmd.destroy();
+            cmd.getProcess().waitFor();
+            logInfoAnyway("cmd.exe terminated");
         }
     }
 

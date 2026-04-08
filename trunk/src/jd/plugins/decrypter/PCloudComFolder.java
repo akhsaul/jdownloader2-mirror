@@ -46,7 +46,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.PluginForHost;
 import jd.plugins.hoster.PCloudCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50284 $", interfaceVersion = 2, names = {}, urls = {})
 public class PCloudComFolder extends PluginForDecrypt {
     public PCloudComFolder(PluginWrapper wrapper) {
         super(wrapper);

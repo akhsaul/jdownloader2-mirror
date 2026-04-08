@@ -36,7 +36,7 @@ import jd.plugins.PluginForDecrypt;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.formatter.HexFormatter;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "vimeopro.com" }, urls = { "https?://vimeopro.com/[^/]+/[^/]+(/video/\\d+)?" })
+@DecrypterPlugin(revision = "$Revision: 46708 $", interfaceVersion = 3, names = { "vimeopro.com" }, urls = { "https?://vimeopro.com/[^/]+/[^/]+(/video/\\d+)?" })
 public class VimeoProComDecrypter extends PluginForDecrypt {
     public VimeoProComDecrypter(PluginWrapper wrapper) {
         super(wrapper);

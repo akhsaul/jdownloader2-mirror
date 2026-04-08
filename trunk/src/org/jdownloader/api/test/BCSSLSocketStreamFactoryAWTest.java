@@ -44,7 +44,7 @@ import org.appwork.utils.net.httpconnection.NativeHTTPConnectionImpl;
 import org.appwork.utils.net.httpconnection.SSLSocketStreamFactory;
 import org.appwork.utils.net.httpconnection.SSLSocketStreamOptions;
 import org.appwork.utils.net.httpconnection.TrustResult;
-import org.appwork.utils.net.httpconnection.trust.TrustAllProvider;
+import org.appwork.utils.net.httpconnection.trust.AllTrustProvider;
 import org.jdownloader.net.AutoBCSSLSocketStreamFactory;
 import org.jdownloader.net.BCSSLSocketStreamFactory;
 
@@ -80,7 +80,7 @@ public class BCSSLSocketStreamFactoryAWTest extends AWTest {
                 return bcFactory;
             }
         };
-        conn.setTrustProvider(TrustAllProvider.getInstance());
+        conn.setTrustProvider(AllTrustProvider.getInstance());
         conn.setConnectTimeout(10000);
         conn.setReadTimeout(10000);
         conn.connect();
@@ -88,9 +88,9 @@ public class BCSSLSocketStreamFactoryAWTest extends AWTest {
             final TrustResult tr = conn.getTrustResult();
             assertTrue(tr != null, "TrustResult must be set when using BCSSLSocketStreamFactory");
             assertTrue(tr.isTrusted(), "TrustResult must be trusted when using TrustAllProvider and BCSSLSocketStreamFactory");
-            try (InputStream is = conn.getInputStream()) {
-                assertTrue(is != null, "InputStream must be available");
-            }
+            InputStream is = conn.getInputStream();
+            assertTrue(is != null, "InputStream must be available");
+            is.close();
         } finally {
             conn.disconnect();
         }
@@ -118,7 +118,7 @@ public class BCSSLSocketStreamFactoryAWTest extends AWTest {
                 return options;
             }
         };
-        conn.setTrustProvider(TrustAllProvider.getInstance());
+        conn.setTrustProvider(AllTrustProvider.getInstance());
         conn.setConnectTimeout(10000);
         conn.setReadTimeout(10000);
         conn.connect();
@@ -126,9 +126,9 @@ public class BCSSLSocketStreamFactoryAWTest extends AWTest {
             final TrustResult tr = conn.getTrustResult();
             assertTrue(tr != null, "TrustResult must be set when using AutoBCSSLSocketStreamFactory (BC path)");
             assertTrue(tr.isTrusted(), "TrustResult must be trusted when using TrustAllProvider and AutoBC (BC path)");
-            try (InputStream is = conn.getInputStream()) {
-                assertTrue(is != null, "InputStream must be available");
-            }
+            InputStream is = conn.getInputStream();
+            assertTrue(is != null, "InputStream must be available");
+            is.close();
         } finally {
             conn.disconnect();
         }
@@ -144,7 +144,7 @@ public class BCSSLSocketStreamFactoryAWTest extends AWTest {
         try {
             NativeHTTPConnectionImpl.setDefaultSSLSocketStreamFactory(new AutoBCSSLSocketStreamFactory());
             final HTTPConnection conn = new NativeHTTPConnectionImpl(new URL(HTTPS_TEST_URL), null);
-            conn.setTrustProvider(TrustAllProvider.getInstance());
+            conn.setTrustProvider(AllTrustProvider.getInstance());
             conn.setConnectTimeout(10000);
             conn.setReadTimeout(10000);
             conn.connect();
@@ -152,9 +152,9 @@ public class BCSSLSocketStreamFactoryAWTest extends AWTest {
                 final TrustResult tr = conn.getTrustResult();
                 assertTrue(tr != null, "TrustResult must be set when using NativeHTTPConnectionImpl with AutoBCSSLSocketStreamFactory");
                 assertTrue(tr.isTrusted(), "TrustResult must be trusted when using TrustAllProvider");
-                try (InputStream is = conn.getInputStream()) {
-                    assertTrue(is != null, "InputStream must be available");
-                }
+                InputStream is = conn.getInputStream();
+                assertTrue(is != null, "InputStream must be available");
+                is.close();
             } finally {
                 conn.disconnect();
             }

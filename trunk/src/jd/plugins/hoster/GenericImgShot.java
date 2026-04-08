@@ -23,7 +23,7 @@ import org.jdownloader.plugins.components.ImgShotCore;
 import jd.PluginWrapper;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 47046 $", interfaceVersion = 3, names = {}, urls = {})
 public class GenericImgShot extends ImgShotCore {
     public GenericImgShot(final PluginWrapper wrapper) {
         super(wrapper);

@@ -38,7 +38,7 @@ import jd.plugins.components.MultiHosterManagement;
 import org.jdownloader.gui.translate._GUI;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "contasturbo.com" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51606 $", interfaceVersion = 3, names = { "contasturbo.com" }, urls = { "" })
 public class ContasturboCom extends PluginForHost {
     private static MultiHosterManagement mhm = new MultiHosterManagement("contasturbo.com");
 

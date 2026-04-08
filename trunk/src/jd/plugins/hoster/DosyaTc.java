@@ -28,7 +28,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.SiteType.SiteTemplate;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "dosya.tc" }, urls = { "https?://[\\w\\.]*?dosya\\.tc/(?!index).+\\.html" })
+@HostPlugin(revision = "$Revision: 51025 $", interfaceVersion = 2, names = { "dosya.tc" }, urls = { "https?://[\\w\\.]*?dosya\\.tc/(?!index).+\\.html" })
 public class DosyaTc extends PluginForHost {
     public DosyaTc(PluginWrapper wrapper) {
         super(wrapper);

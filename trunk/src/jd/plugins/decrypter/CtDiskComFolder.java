@@ -44,7 +44,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.CtDiskCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51848 $", interfaceVersion = 2, names = {}, urls = {})
 public class CtDiskComFolder extends PluginForDecrypt {
     public static final String   PROPERTY_PARENT_DIR = "parent_dir";
     private static final Pattern PATTERN_FOLDER      = Pattern.compile("/(dir|d)/(\\d+)-(\\d+)(-([a-f0-9]+))?.*", Pattern.CASE_INSENSITIVE);

@@ -26,7 +26,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 43837 $", interfaceVersion = 3, names = {}, urls = {})
 public class Mp4UploadCom extends XFileSharingProBasic {
     public Mp4UploadCom(final PluginWrapper wrapper) {
         super(wrapper);

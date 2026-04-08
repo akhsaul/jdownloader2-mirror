@@ -34,7 +34,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51184 $", interfaceVersion = 3, names = {}, urls = {})
 public class PornlibCom extends PluginForHost {
     public PornlibCom(PluginWrapper wrapper) {
         super(wrapper);

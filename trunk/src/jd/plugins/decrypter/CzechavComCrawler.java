@@ -44,7 +44,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.CzechavCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "czechav.com" }, urls = { "https?://czechav\\.com/members/gallery/([a-z0-9\\-]+)/" })
+@DecrypterPlugin(revision = "$Revision: 49023 $", interfaceVersion = 2, names = { "czechav.com" }, urls = { "https?://czechav\\.com/members/gallery/([a-z0-9\\-]+)/" })
 public class CzechavComCrawler extends PluginForDecrypt {
     public CzechavComCrawler(PluginWrapper wrapper) {
         super(wrapper);

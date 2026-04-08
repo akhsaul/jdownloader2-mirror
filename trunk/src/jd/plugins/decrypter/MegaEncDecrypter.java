@@ -19,7 +19,7 @@ import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "mega.enc" }, urls = { "mega://f?enc\\d*\\?[a-zA-Z0-9-_]+" })
+@DecrypterPlugin(revision = "$Revision: 45974 $", interfaceVersion = 3, names = { "mega.enc" }, urls = { "mega://f?enc\\d*\\?[a-zA-Z0-9-_]+" })
 public class MegaEncDecrypter extends PluginForDecrypt {
     public MegaEncDecrypter(PluginWrapper wrapper) {
         super(wrapper);

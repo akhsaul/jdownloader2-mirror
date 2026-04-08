@@ -30,7 +30,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "filemail.com" }, urls = { "https?://(?:www\\.)?(filemail\\.com/d/[A-Za-z0-9]+|fil\\.email/[A-Za-z0-9]+)" })
+@HostPlugin(revision = "$Revision: 46584 $", interfaceVersion = 3, names = { "filemail.com" }, urls = { "https?://(?:www\\.)?(filemail\\.com/d/[A-Za-z0-9]+|fil\\.email/[A-Za-z0-9]+)" })
 public class FilemailCom extends PluginForHost {
     public FilemailCom(PluginWrapper wrapper) {
         super(wrapper);

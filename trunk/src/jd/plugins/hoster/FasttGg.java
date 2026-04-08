@@ -28,7 +28,7 @@ import jd.plugins.HostPlugin;
 import org.appwork.utils.net.httpconnection.HTTPConnectionUtils.IPVERSION;
 import org.jdownloader.plugins.components.XFileSharingProBasic;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51740 $", interfaceVersion = 3, names = {}, urls = {})
 public class FasttGg extends XFileSharingProBasic {
     public FasttGg(final PluginWrapper wrapper) {
         super(wrapper);

@@ -30,7 +30,7 @@ import jd.utils.JDUtilities;
 public class MetaLink extends PluginsC {
 
     public MetaLink() {
-        super("MetaLink", "file:/.+\\.(metalink|meta4)$", "$Revision$");
+        super("MetaLink", "file:/.+\\.(metalink|meta4)$", "$Revision: 49093 $");
     }
 
     public MetaLink newPluginInstance() {

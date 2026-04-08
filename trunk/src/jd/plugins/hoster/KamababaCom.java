@@ -33,7 +33,7 @@ import jd.plugins.decrypter.KamababaComCrawler;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 47483 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { KamababaComCrawler.class })
 public class KamababaCom extends PluginForHost {
     public KamababaCom(PluginWrapper wrapper) {

@@ -45,7 +45,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.components.MultiHosterManagement;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "opdeb.com" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 50303 $", interfaceVersion = 3, names = { "opdeb.com" }, urls = { "" })
 public class OpdebCom extends PluginForHost {
     private static final String          API_BASE = "https://opdeb.com/apiv1";
     private static MultiHosterManagement mhm      = new MultiHosterManagement("opdeb.com");

@@ -13,28 +13,35 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 package org.jdownloader.extensions.antistandby;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.appwork.utils.logging2.LogSource;
-import org.jdownloader.jna.windows.Kernel32;
 import org.jdownloader.logging.LogController;
 
-public class WindowsAntiStandby extends Thread implements Runnable {
+import com.sun.jna.platform.win32.Kernel32;
+import com.sun.jna.platform.win32.WinBase;
 
-    private final AtomicBoolean        lastEnabledState         = new AtomicBoolean(false);
-    private final AtomicBoolean        lastDisplayRequiredState = new AtomicBoolean(false);
-    private static final int           sleep                    = 5000;
+public class WindowsAntiStandby extends Thread implements Runnable {
+    private static final int           sleep    = 1000;
     private final AntiStandbyExtension jdAntiStandby;
+    private final AtomicInteger        lastFlag = new AtomicInteger(0);
+    private volatile Set<Condition>    conditions;
+
+    public Set<Condition> getConditions() {
+        if (isAlive()) {
+            return conditions;
+        }
+        return null;
+    }
 
     public WindowsAntiStandby(final AntiStandbyExtension jdAntiStandby) {
         super();
         this.jdAntiStandby = jdAntiStandby;
         this.setDaemon(true);
         setName("WindowsAntiStandby");
-
     }
 
     @Override
@@ -49,7 +56,7 @@ public class WindowsAntiStandby extends Thread implements Runnable {
             logger.log(e);
         } finally {
             try {
-                enableAntiStandby(logger, false);
+                enableAntiStandby(logger, null);
             } catch (final Throwable e) {
             } finally {
                 logger.fine("JDAntiStandby: Terminated");
@@ -58,22 +65,19 @@ public class WindowsAntiStandby extends Thread implements Runnable {
         }
     }
 
-    private void enableAntiStandby(final LogSource logger, final boolean enabled) {
-        final boolean displayRequired = jdAntiStandby.getSettings().isDisplayRequired();
-        if (lastEnabledState.compareAndSet(!enabled, enabled) || lastDisplayRequiredState.compareAndSet(!displayRequired, displayRequired)) {
-            if (enabled) {
-                if (displayRequired) {
-                    Kernel32.INSTANCE.SetThreadExecutionState(Kernel32.ES_CONTINUOUS | Kernel32.ES_SYSTEM_REQUIRED | Kernel32.ES_DISPLAY_REQUIRED);
-                    logger.fine("JDAntiStandby: Start and Prevent Screensaver");
-                } else {
-                    Kernel32.INSTANCE.SetThreadExecutionState(Kernel32.ES_CONTINUOUS | Kernel32.ES_SYSTEM_REQUIRED);
-                    logger.fine("JDAntiStandby: Start");
-                }
-            } else {
-                Kernel32.INSTANCE.SetThreadExecutionState(Kernel32.ES_CONTINUOUS);
-                logger.fine("JDAntiStandby: Stop");
+    private void enableAntiStandby(final LogSource logger, final Set<Condition> conditions) {
+        this.conditions = conditions;
+        // https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setthreadexecutionstate
+        int flags = WinBase.ES_CONTINUOUS;
+        if (conditions != null && conditions.size() > 0) {
+            flags = flags | WinBase.ES_SYSTEM_REQUIRED;
+            if (jdAntiStandby.getSettings().isDisplayRequired()) {
+                flags = flags | WinBase.ES_DISPLAY_REQUIRED;
             }
         }
+        Kernel32.INSTANCE.SetThreadExecutionState(flags);
+        if (lastFlag.getAndSet(flags) != flags) {
+            logger.fine("JDAntiStandby: new flags=" + flags);
+        }
     }
-
 }

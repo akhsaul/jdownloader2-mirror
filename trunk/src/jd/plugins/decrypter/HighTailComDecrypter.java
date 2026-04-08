@@ -40,7 +40,7 @@ import org.appwork.storage.TypeRef;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.scripting.JavaScriptEngineFactory;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "hightail.com" }, urls = { "https?://(?:www\\.)?(?:yousendit|hightail)\\.com/download/[A-Za-z0-9\\-_]+|https?://spaces\\.hightail\\.com/(?:space|receive)/[A-Za-z0-9]+" })
+@DecrypterPlugin(revision = "$Revision: 48194 $", interfaceVersion = 3, names = { "hightail.com" }, urls = { "https?://(?:www\\.)?(?:yousendit|hightail)\\.com/download/[A-Za-z0-9\\-_]+|https?://spaces\\.hightail\\.com/(?:space|receive)/[A-Za-z0-9]+" })
 public class HighTailComDecrypter extends PluginForDecrypt {
     @SuppressWarnings("deprecation")
     public HighTailComDecrypter(PluginWrapper wrapper) {

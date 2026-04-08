@@ -36,7 +36,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "n-tv.de" }, urls = { "https?://(?:www\\.)?n\\-tv\\.de/mediathek/(?:videos|sendungen|magazine)/([^/]+/[^/]+)\\.html" })
+@HostPlugin(revision = "$Revision: 51865 $", interfaceVersion = 2, names = { "n-tv.de" }, urls = { "https?://(?:www\\.)?n\\-tv\\.de/mediathek/(?:videos|sendungen|magazine)/([^/]+/[^/]+)\\.html" })
 public class NtvDe extends PluginForHost {
     public NtvDe(PluginWrapper wrapper) {
         super(wrapper);

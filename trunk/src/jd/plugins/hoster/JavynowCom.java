@@ -35,7 +35,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "javynow.com" }, urls = { "https?://(?:www\\.)?javynow\\.com/(video(?:\\.php\\?id=|/)[A-Za-z0-9]+.*|player/\\d+/?)" })
+@HostPlugin(revision = "$Revision: 45841 $", interfaceVersion = 3, names = { "javynow.com" }, urls = { "https?://(?:www\\.)?javynow\\.com/(video(?:\\.php\\?id=|/)[A-Za-z0-9]+.*|player/\\d+/?)" })
 public class JavynowCom extends PluginForHost {
     public JavynowCom(PluginWrapper wrapper) {
         super(wrapper);

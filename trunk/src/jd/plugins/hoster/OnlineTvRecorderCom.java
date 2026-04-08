@@ -45,7 +45,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "onlinetvrecorder.com" }, urls = { "http://(www\\.)?81\\.95\\.11\\.\\d{1,2}/download/\\d+/\\d+/\\d+/[a-f0-9]{32}/de/[^<>\"/]+" })
+@HostPlugin(revision = "$Revision: 51945 $", interfaceVersion = 2, names = { "onlinetvrecorder.com" }, urls = { "http://(www\\.)?81\\.95\\.11\\.\\d{1,2}/download/\\d+/\\d+/\\d+/[a-f0-9]{32}/de/[^<>\"/]+" })
 public class OnlineTvRecorderCom extends PluginForHost {
     public OnlineTvRecorderCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -25,7 +25,7 @@ import jd.PluginWrapper;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49562 $", interfaceVersion = 3, names = {}, urls = {})
 public class EvilangelGenderxfilmsCom extends EvilangelCore {
     public EvilangelGenderxfilmsCom(PluginWrapper wrapper) {
         super(wrapper);

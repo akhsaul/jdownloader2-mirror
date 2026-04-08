@@ -36,7 +36,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51945 $", interfaceVersion = 3, names = {}, urls = {})
 public class UuploadIr extends PluginForHost {
     public UuploadIr(PluginWrapper wrapper) {
         super(wrapper);

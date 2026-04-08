@@ -38,7 +38,7 @@ import jd.plugins.decrypter.FileconvoyComFolder;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.parser.UrlQuery;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { FileconvoyComFolder.class })
 public class FileconvoyCom extends PluginForHost {
     public FileconvoyCom(PluginWrapper wrapper) {

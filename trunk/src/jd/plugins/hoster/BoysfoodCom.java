@@ -34,7 +34,7 @@ import jd.plugins.decrypter.BoysfoodComCrawler;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49243 $", interfaceVersion = 3, names = {}, urls = {})
 public class BoysfoodCom extends PluginForHost {
     public BoysfoodCom(PluginWrapper wrapper) {
         super(wrapper);

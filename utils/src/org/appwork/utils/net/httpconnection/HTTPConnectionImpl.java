@@ -54,7 +54,6 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousCloseException;
 import java.nio.channels.SocketChannel;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -120,7 +119,7 @@ public class HTTPConnectionImpl implements HTTPConnection {
         }
     }
 
-    protected static enum SSL_STATE {
+    public static enum SSL_STATE {
         NA,
         PROXY,
         ENDPOINT
@@ -194,6 +193,7 @@ public class HTTPConnectionImpl implements HTTPConnection {
     protected volatile int                                       readTimeout             = 30000;
     protected volatile int                                       requestedConnectTimeout = 30000;
     protected IPVERSION                                          ipVersion               = null;
+    protected DNSResolver                                        dnsResolver             = null;
 
     public IPVERSION getIPVersion() {
         return ipVersion;
@@ -224,7 +224,6 @@ public class HTTPConnectionImpl implements HTTPConnection {
     private int[]                                allowedResponseCodes = new int[0];
     protected final CopyOnWriteArrayList<String> connectExceptions    = new CopyOnWriteArrayList<String>();
     protected volatile KEEPALIVE                 keepAlive            = KEEPALIVE.DISABLED;
-    protected volatile InetAddress               remoteIPs[]          = null;
     protected TrustProviderInterface             sslTrustProvider     = null;
     protected KeyManager[]                       sslKeyManagers       = null;
     protected TrustResult                        trustResult          = null;
@@ -544,36 +543,54 @@ public class HTTPConnectionImpl implements HTTPConnection {
                     final KeepAliveSocketStream socketStream = socketPoolIterator.next();
                     final Socket socket = socketStream.getSocket();
                     if (socket.isClosed() || socketStream.isTimedOut()) {
+                        socketPoolIterator.remove();
                         try {
                             socket.close();
                         } catch (final Throwable ignore) {
                         }
-                        socketPoolIterator.remove();
                         continue;
-                    } else if (socket.getPort() != port || !socketStream.sameBoundIP(localIP)) {
+                    } else if (socket.getPort() != port) {
+                        // different destination port
                         continue;
-                    } else if (socketStream.isSsl() && ssl && socketStream.sameHost(host)) {
-                        /**
-                         * ssl needs to have same hostname to avoid (SNI)
-                         *
-                         * <p>
-                         * Your browser sent a request that this server could not understand.<br />
-                         * Host name provided via SNI and via HTTP are different
-                         * </p>
-                         */
+                    } else if (!socketStream.sameBoundIP(localIP)) {
+                        // different bound IP
+                        continue;
+                    } else if (socketStream.isSsl() != ssl) {
+                        // different protocol
+                        continue;
+                    }
+                    if (ssl) {
+                        if (!socketStream.sameHost(host)) {
+                            /**
+                             * ssl needs to have same hostname to avoid (SNI)
+                             *
+                             * <p>
+                             * Your browser sent a request that this server could not understand.<br />
+                             * Host name provided via SNI and via HTTP are different
+                             * </p>
+                             */
+                            continue;
+                        } else if (!getTrustProvider().equals(((KeepAliveSSLSocketStream) socketStream).getTrustProvider())) {
+                            // different trust provider
+                            continue;
+                        } else if (!Arrays.equals(getKeyManagers(), ((KeepAliveSSLSocketStream) socketStream).getKeyManager())) {
+                            // different key manager
+                            continue;
+                        }
                         socketPoolIterator.remove();
                         if (checkSocketChannel(socket)) {
                             return socketStream;
                         } else {
                             continue;
                         }
-                    } else if (socketStream.isSsl() == false && ssl == false && (socketStream.sameHost(host) || (dnsLookup && socketStream.sameRemoteIPs(getRemoteIPs(host, true))))) {
-                        // same hostname or same ip
-                        socketPoolIterator.remove();
-                        if (checkSocketChannel(socket)) {
-                            return socketStream;
-                        } else {
-                            continue;
+                    } else {
+                        if ((socketStream.sameHost(host) || (dnsLookup && socketStream.sameRemoteIPs(getRemoteIPs(DNSResolver.REQUESTOR.HOST, getIPVersion(), host, true))))) {
+                            socketPoolIterator.remove();
+                            if (checkSocketChannel(socket)) {
+                                return socketStream;
+                            } else {
+                                continue;
+                            }
                         }
                     }
                 }
@@ -617,7 +634,7 @@ public class HTTPConnectionImpl implements HTTPConnection {
         this.ranges = null;
         this.lastConnection = null;
         this.lastConnectionPort = -1;
-        setTrustResult(null);
+        setTrustResult(null, null);
     }
 
     protected InetAddress getBindInetAddress(InetAddress dest, HTTPProxy proxy) throws IOException {
@@ -817,23 +834,42 @@ public class HTTPConnectionImpl implements HTTPConnection {
         return this.hostName != null;
     }
 
-    protected InetAddress[] resolvHostIP(final String host) throws IOException {
-        return HTTPConnectionUtils.resolvHostIP(host, getIPVersion());
+    @Override
+    public void setDNSResolver(final DNSResolver resolver) {
+        this.dnsResolver = resolver;
     }
 
-    protected InetAddress[] getRemoteIPs(final String hostName, final boolean resolve) throws IOException {
+    @Override
+    public DNSResolver getDNSResolver() {
+        final DNSResolver dnsResolver = this.dnsResolver;
+        if (dnsResolver == null) {
+            return DNSResolver.DEFAULT;
+        }
+        return this.dnsResolver;
+    }
+
+    protected InetAddress[] resolveDomain(DNSResolver.REQUESTOR requestor, IPVERSION ipVersion, final String host) throws IOException {
+        final DNSResolver dnsResolver = getDNSResolver();
+        final InetAddress[] ret = dnsResolver.resolveDomain(requestor, ipVersion, host);
+        if (ret == null || ret.length == 0) {
+            throw new UnknownHostException("DNSResolver returned no address for:" + host);
+        }
+        return ret;
+    }
+
+    @Deprecated
+    protected volatile InetAddress remoteIPs[] = null;
+
+    @Deprecated
+    protected InetAddress[] getRemoteIPs(DNSResolver.REQUESTOR requestor, IPVERSION ipVersion, final String hostName, final boolean resolve) throws IOException {
         if (this.remoteIPs == null && resolve) {
-            this.remoteIPs = this.resolvHostIP(hostName);
+            remoteIPs = resolveDomain(requestor, ipVersion, hostName);
         }
         if (resolve && (remoteIPs == null || remoteIPs.length == 0)) {
             throw new UnknownHostException("Could not resolve(" + getIPVersion() + "):" + hostName);
         } else {
             return remoteIPs;
         }
-    }
-
-    protected void setRemoteIPs(InetAddress[] remoteIPs) {
-        this.remoteIPs = remoteIPs;
     }
 
     protected static HashMap<String, SSLSocketStreamOptions>             SSL_SOCKETSTREAM_OPTIONS          = new HashMap<String, SSLSocketStreamOptions>();
@@ -932,6 +968,12 @@ public class HTTPConnectionImpl implements HTTPConnection {
         this.profiler = profiler;
     }
 
+    protected void connectEndPoint(SocketStreamInterface socket, InetSocketAddress connectedInetSocketAddress, int requestedConnectTimeout) throws IOException {
+        if (socket != null) {
+            socket.getSocket().connect(connectedInetSocketAddress, requestedConnectTimeout);
+        }
+    }
+
     public void connect() throws IOException {
         final HTTPConnectionProfilerInterface profiler = getProfiler();
         if (profiler != null) {
@@ -956,7 +998,7 @@ public class HTTPConnectionImpl implements HTTPConnection {
             if (this.connectionSocket == null) {
                 /* try all different ip's until one is valid and connectable */
                 IOException ee = null;
-                List<InetAddress> remoteIPs = new ArrayList<InetAddress>(Arrays.asList(getRemoteIPs(getHostname(), true)));
+                List<InetAddress> remoteIPs = new ArrayList<InetAddress>(Arrays.asList(getRemoteIPs(DNSResolver.REQUESTOR.HOST, getIPVersion(), getHostname(), true)));
                 while (remoteIPs.size() > 0) {
                     final InetAddress host = remoteIPs.remove(0);
                     this.resetConnection();
@@ -979,7 +1021,7 @@ public class HTTPConnectionImpl implements HTTPConnection {
                             startMS = Time.systemIndependentCurrentJVMTimeMillis();
                             this.connectionSocket = createConnectionSocket(bindInetAddress);
                             /** no workaround for infinite connect timeouts **/
-                            this.connectionSocket.getSocket().connect(connectedInetSocketAddress, requestedConnectTimeout);
+                            connectEndPoint(connectionSocket, connectedInetSocketAddress, requestedConnectTimeout);
                             this.setReadTimeout(getReadTimeout());
                         } else {
                             /**
@@ -991,7 +1033,7 @@ public class HTTPConnectionImpl implements HTTPConnection {
                                 this.connectionSocket = createConnectionSocket(bindInetAddress);
                                 final long beforeConnectMS = Time.systemIndependentCurrentJVMTimeMillis();
                                 try {
-                                    this.connectionSocket.getSocket().connect(connectedInetSocketAddress, remainingConnectTimeout);
+                                    connectEndPoint(connectionSocket, connectedInetSocketAddress, remainingConnectTimeout);
                                     this.setReadTimeout(getReadTimeout());
                                     break;
                                 } catch (final IOException e) {
@@ -1045,8 +1087,8 @@ public class HTTPConnectionImpl implements HTTPConnection {
                                 private final KeyManager[]           keyManager             = HTTPConnectionImpl.this.getKeyManagers();
 
                                 @Override
-                                public void onTrustResult(TrustProviderInterface provider, X509Certificate[] chain, String authType, TrustResult result) {
-                                    HTTPConnectionImpl.this.setTrustResult(result);
+                                public void onTrustResult(TrustProviderInterface provider, String authType, TrustResult result) {
+                                    HTTPConnectionImpl.this.setTrustResult(result, SSL_STATE.ENDPOINT);
                                 }
 
                                 @Override
@@ -1084,7 +1126,7 @@ public class HTTPConnectionImpl implements HTTPConnection {
                             ee = cause;
                         }
                     } catch (IOException e) {
-                        e = mapExceptions(e);
+                        e = mapExceptions(e, SSL_STATE.ENDPOINT);
                         final String retrySSL;
                         try {
                             retrySSL = sslSocketStreamOptions != null ? (sslSocketStreamOptions = sslSocketStreamOptions.clone()).retry(factory, e) : null;
@@ -1137,12 +1179,12 @@ public class HTTPConnectionImpl implements HTTPConnection {
      * @param e
      * @return
      */
-    protected IOException mapExceptions(IOException e) {
+    protected IOException mapExceptions(IOException e, SSL_STATE state) {
         TrustResultProvider trp = Exceptions.getInstanceof(e, TrustResultProvider.class);
         if (trp != null) {
             TrustResult tr = trp.getTrustResult();
             DebugMode.breakIf(getTrustResult() != null && getTrustResult() != tr);
-            setTrustResult(tr);
+            setTrustResult(tr, state);
         }
         RejectedByTrustProviderException rejectedByTrust = Exceptions.getInstanceof(e, RejectedByTrustProviderException.class);
         if (rejectedByTrust != null) {
@@ -1158,8 +1200,10 @@ public class HTTPConnectionImpl implements HTTPConnection {
     /**
      * @param trustResult
      */
-    protected void setTrustResult(TrustResult trustResult) {
-        this.trustResult = trustResult;
+    protected void setTrustResult(TrustResult trustResult, SSL_STATE state) {
+        if (SSL_STATE.ENDPOINT.equals(state) || state == null) {
+            this.trustResult = trustResult;
+        }
     }
 
     protected SSLSocketStreamFactory getSSLSocketStreamFactory(final SSLSocketStreamOptions sslSocketStreamOptions) {
@@ -1286,7 +1330,7 @@ public class HTTPConnectionImpl implements HTTPConnection {
                 this.invalidHttpHeader = this.httpHeader;
                 this.httpHeader = HTTPConnectionImpl.UNKNOWN_HTTP_RESPONSE;
                 // Unknown HTTP Response: 999!
-                this.httpResponseCode = 999;
+                this.httpResponseCode = HTTPConstants.ResponseCode.X_INVALID_HTTP_RESPONSE.getCode();
                 this.httpResponseMessage = HTTPConnectionImpl.UNKNOWN_HTTP_RESPONSE;
                 if (header.limit() > 0) {
                     /*

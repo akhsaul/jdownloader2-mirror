@@ -28,7 +28,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48308 $", interfaceVersion = 2, names = {}, urls = {})
 public class Paste2OrgCrawler extends AbstractPastebinCrawler {
     public Paste2OrgCrawler(PluginWrapper wrapper) {
         super(wrapper);

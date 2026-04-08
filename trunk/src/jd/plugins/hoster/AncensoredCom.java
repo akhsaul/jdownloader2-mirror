@@ -33,7 +33,7 @@ import jd.plugins.components.PluginJSonUtils;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "ancensored.com" }, urls = { "https?://(?:www\\.)?ancensored\\.com/clip/([A-Za-z0-9\\-]+)/([A-Za-z0-9\\-]+)/([a-f0-9]{24})" })
+@HostPlugin(revision = "$Revision: 47474 $", interfaceVersion = 2, names = { "ancensored.com" }, urls = { "https?://(?:www\\.)?ancensored\\.com/clip/([A-Za-z0-9\\-]+)/([A-Za-z0-9\\-]+)/([a-f0-9]{24})" })
 public class AncensoredCom extends PluginForHost {
     public AncensoredCom(PluginWrapper wrapper) {
         super(wrapper);

@@ -14,7 +14,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "javfree.sh" }, urls = { "https?://(?:www\\.)?javfree\\.sh/\\d+/[a-z0-9\\-_]+\\.html" })
+@DecrypterPlugin(revision = "$Revision: 48344 $", interfaceVersion = 2, names = { "javfree.sh" }, urls = { "https?://(?:www\\.)?javfree\\.sh/\\d+/[a-z0-9\\-_]+\\.html" })
 public class JavfreeSh extends PluginForDecrypt {
     public JavfreeSh(PluginWrapper wrapper) {
         super(wrapper);

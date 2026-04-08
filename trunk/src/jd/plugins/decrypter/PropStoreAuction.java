@@ -31,7 +31,7 @@ import jd.plugins.FilePackage;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "propstoreauction.com" }, urls = { "https?://(?:\\w+\\.)?propstoreauction\\.com/(?:lot-details/index/catalog/|(?:view-)?auctions/catalog/id/|search\\?)[\\w/?=&%\\.+]+" })
+@DecrypterPlugin(revision = "$Revision: 47423 $", interfaceVersion = 3, names = { "propstoreauction.com" }, urls = { "https?://(?:\\w+\\.)?propstoreauction\\.com/(?:lot-details/index/catalog/|(?:view-)?auctions/catalog/id/|search\\?)[\\w/?=&%\\.+]+" })
 public class PropStoreAuction extends antiDDoSForDecrypt {
     public PropStoreAuction(PluginWrapper wrapper) {
         super(wrapper);

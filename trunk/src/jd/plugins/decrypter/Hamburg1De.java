@@ -34,7 +34,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "hamburg1.de" }, urls = { "https?://(?:www\\.)?hamburg1\\.de/[^<>\"]+/\\d+/[^<>\"]+\\.html" })
+@DecrypterPlugin(revision = "$Revision: 48101 $", interfaceVersion = 2, names = { "hamburg1.de" }, urls = { "https?://(?:www\\.)?hamburg1\\.de/[^<>\"]+/\\d+/[^<>\"]+\\.html" })
 public class Hamburg1De extends PluginForDecrypt {
     public Hamburg1De(PluginWrapper wrapper) {
         super(wrapper);

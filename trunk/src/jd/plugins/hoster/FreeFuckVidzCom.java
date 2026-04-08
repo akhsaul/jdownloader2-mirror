@@ -31,7 +31,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.Regex;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "freefuckvidz.com" }, urls = { "https?://(?:www\\.)?freefuckvidz\\.com/free\\-porn/(\\d+)" })
+@HostPlugin(revision = "$Revision: 47477 $", interfaceVersion = 3, names = { "freefuckvidz.com" }, urls = { "https?://(?:www\\.)?freefuckvidz\\.com/free\\-porn/(\\d+)" })
 public class FreeFuckVidzCom extends PluginForHost {
     public FreeFuckVidzCom(PluginWrapper wrapper) {
         super(wrapper);

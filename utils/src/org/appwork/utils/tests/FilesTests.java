@@ -4,9 +4,9 @@
  *         "AppWork Utilities" License
  *         The "AppWork Utilities" will be called [The Product] from now on.
  * ====================================================================================================================================================
- *         Copyright (c) 2009-2015, AppWork GmbH <e-mail@appwork.org>
- *         Schwabacher Straße 117
- *         90763 Fürth
+ *         Copyright (c) 2009-2026, AppWork GmbH <e-mail@appwork.org>
+ *         Spalter Strasse 58
+ *         91183 Abenberg
  *         Germany
  * === Preamble ===
  *     This license establishes the terms under which the [The Product] Source Code & Binary files may be used, copied, modified, distributed, and/or redistributed.
@@ -40,9 +40,12 @@ import java.nio.file.Path;
 import org.appwork.testframework.AWTest;
 import org.appwork.testframework.AWTestValidateClassReference;
 import org.appwork.testframework.TestDependency;
+import org.appwork.testframework.JREExecuter;
+import org.appwork.testframework.JREExecuter.JreOptions;
 import org.appwork.utils.Application;
 import org.appwork.utils.ExtIOException;
 import org.appwork.utils.Files17;
+import org.appwork.utils.JVMVersion;
 import org.appwork.utils.JavaVersion;
 import org.appwork.utils.os.CrossSystem;
 import org.appwork.utils.os.WindowsUtils;
@@ -63,9 +66,18 @@ public class FilesTests extends AWTest {
      */
     @Override
     public void runTest() throws Exception {
-        if (!JavaVersion.getVersion().isMinimum(JavaVersion.JVM_1_7)) {
-            return;
+        JavaVersion requiredForJNA = JVMVersion.readClassJVMVersion(com.sun.jna.Native.class.getResource("/com/sun/jna/Native.class"));
+        if (requiredForJNA.isHigherThan(JavaVersion.JVM_1_7)) {
+            JREExecuter.runInJRE(JreOptions.version(requiredForJNA), FilesTests.class, "testFiles17");
+        } else {
+            JREExecuter.runInJRE(JreOptions.version(JavaVersion.JVM_1_7), FilesTests.class, "testFiles17");
         }
+    }
+
+    /**
+     * Runs Files17/NIO tests. Requires Java 1.7+. Invoked in JVM_1_7 via JREExecuter.
+     */
+    public void testFiles17() throws Exception {
         File baseFile = Application.getTempUniqueResource("tests");
         baseFile.getParentFile().mkdirs();
         Path basePath = baseFile.toPath();

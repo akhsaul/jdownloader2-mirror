@@ -26,7 +26,7 @@ import jd.parser.Regex;
 import jd.plugins.CryptedLink;
 import jd.plugins.DecrypterPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 48544 $", interfaceVersion = 3, names = {}, urls = {})
 public class WatchFreeCom extends PornEmbedParser {
     public WatchFreeCom(PluginWrapper wrapper) {
         super(wrapper);

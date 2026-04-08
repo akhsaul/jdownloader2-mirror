@@ -31,7 +31,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.DownloadLink.AvailableStatus;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 50899 $", interfaceVersion = 3, names = {}, urls = {})
 public class AusfileCom extends XFileSharingProBasic {
     public AusfileCom(final PluginWrapper wrapper) {
         super(wrapper);

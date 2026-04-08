@@ -48,7 +48,7 @@ import jd.plugins.hoster.AdultempireCom;
 import jd.plugins.hoster.DirectHTTP;
 import jd.plugins.hoster.GenericM3u8;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51837 $", interfaceVersion = 3, names = {}, urls = {})
 public class AdultempireComCrawler extends PluginForDecrypt {
     public AdultempireComCrawler(PluginWrapper wrapper) {
         super(wrapper);

@@ -45,7 +45,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "filecat.net" }, urls = { "https?://(?:www\\.)?filecat\\.net/f/([A-Za-z0-9_\\-]+)" })
+@HostPlugin(revision = "$Revision: 48882 $", interfaceVersion = 3, names = { "filecat.net" }, urls = { "https?://(?:www\\.)?filecat\\.net/f/([A-Za-z0-9_\\-]+)" })
 public class FilecatNet extends PluginForHost {
     public FilecatNet(PluginWrapper wrapper) {
         super(wrapper);

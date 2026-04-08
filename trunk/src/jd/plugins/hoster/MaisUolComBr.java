@@ -37,7 +37,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 2, names = { "mais.uol.com.br" }, urls = { "https?://((?:www\\.)?mais\\.uol\\.com\\.br/view/(?:[a-z0-9]+/[A-Za-z0-9\\-]+|\\d+)|player\\.mais\\.uol\\.com\\.br/\\?mediaId=\\d+\\&type=video)" })
+@HostPlugin(revision = "$Revision: 51118 $", interfaceVersion = 2, names = { "mais.uol.com.br" }, urls = { "https?://((?:www\\.)?mais\\.uol\\.com\\.br/view/(?:[a-z0-9]+/[A-Za-z0-9\\-]+|\\d+)|player\\.mais\\.uol\\.com\\.br/\\?mediaId=\\d+\\&type=video)" })
 public class MaisUolComBr extends PluginForHost {
     public MaisUolComBr(PluginWrapper wrapper) {
         super(wrapper);

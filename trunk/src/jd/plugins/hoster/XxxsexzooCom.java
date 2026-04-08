@@ -26,7 +26,7 @@ import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 49352 $", interfaceVersion = 3, names = {}, urls = {})
 public class XxxsexzooCom extends KernelVideoSharingComV2 {
     public XxxsexzooCom(final PluginWrapper wrapper) {
         super(wrapper);

@@ -25,7 +25,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "snelnl.com" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51945 $", interfaceVersion = 3, names = { "snelnl.com" }, urls = { "" })
 public class SnelNLUsenet extends UseNet {
     public SnelNLUsenet(PluginWrapper wrapper) {
         super(wrapper);

@@ -50,7 +50,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 import jd.plugins.decrypter.BangComCrawler;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 52462 $", interfaceVersion = 3, names = {}, urls = {})
 public class BangCom extends PluginForHost {
     public BangCom(PluginWrapper wrapper) {
         super(wrapper);
@@ -305,7 +305,7 @@ public class BangCom extends PluginForHost {
                 }
                 loginform.put("_username", Encoding.urlEncode(account.getUser()));
                 loginform.put("_password", Encoding.urlEncode(account.getPass()));
-                final String turnstileSiteKey = br.getRegex("class=\"cf-turnstile[^\"]*\" data-sitekey=\"([^\"]+)\"").getMatch(0);
+                final String turnstileSiteKey = br.getRegex("class=\"cf-turnstile[^\"]*\"[^>]*data-sitekey=\"([^\"]+)\"").getMatch(0);
                 if (turnstileSiteKey != null) {
                     final CaptchaHelperHostPluginCloudflareTurnstile ts = new CaptchaHelperHostPluginCloudflareTurnstile(this, br, turnstileSiteKey);
                     logger.info("Detected captcha method \"CloudflareTurnstileCaptcha\" for this host");
@@ -320,7 +320,7 @@ public class BangCom extends PluginForHost {
                 throw new AccountInvalidException();
             }
             logger.info("Login successful");
-            account.saveCookies(this.br.getCookies(br.getHost()), "");
+            account.saveCookies(br.getCookies(br.getHost()), "");
             /* Login can be successful but age verification may still be required */
             checkForProblemsAfterSuccessfulLogin(br);
         }
@@ -375,17 +375,17 @@ public class BangCom extends PluginForHost {
              */
             account.setType(AccountType.PREMIUM);
             ai.setStatus("Trial account");
-        } else if (!isSubscriptionRunning) {
-            /* Free Accounts got no advantages over using no account at all -> Do not allow the usage of such accounts. */
-            ai.setExpired(true);
-            return ai;
-        } else {
+        } else if (isSubscriptionRunning) {
             // TODO: Find expire-date
             /*
              * 2025-09-02: Expire date is nowhere to be seen on their website so at this moment we can only find out if the user has an
              * active paid subscription and use this as an indicator of his account type.
              */
             account.setType(AccountType.PREMIUM);
+        } else {
+            /* Free Accounts got no advantages over using no account at all -> Do not allow the usage of such accounts. */
+            ai.setExpired(true);
+            return ai;
         }
         return ai;
     }

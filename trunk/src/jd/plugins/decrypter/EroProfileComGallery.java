@@ -36,7 +36,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.EroProfileCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "eroprofile.com" }, urls = { "https?://(www\\.)?eroprofile\\.com/([A-Za-z0-9\\-_]+$|m/(videos|photos)/albums?/[A-Za-z0-9\\-_]+)" })
+@DecrypterPlugin(revision = "$Revision: 49492 $", interfaceVersion = 3, names = { "eroprofile.com" }, urls = { "https?://(www\\.)?eroprofile\\.com/([A-Za-z0-9\\-_]+$|m/(videos|photos)/albums?/[A-Za-z0-9\\-_]+)" })
 public class EroProfileComGallery extends PluginForDecrypt {
     public EroProfileComGallery(PluginWrapper wrapper) {
         super(wrapper);

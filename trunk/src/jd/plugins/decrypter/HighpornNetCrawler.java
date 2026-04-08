@@ -42,7 +42,7 @@ import jd.utils.JDUtilities;
 import org.appwork.utils.StringUtils;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51818 $", interfaceVersion = 3, names = {}, urls = {})
 public class HighpornNetCrawler extends PluginForDecrypt {
     public HighpornNetCrawler(PluginWrapper wrapper) {
         super(wrapper);

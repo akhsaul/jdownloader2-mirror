@@ -4,9 +4,9 @@
  *         "AppWork Utilities" License
  *         The "AppWork Utilities" will be called [The Product] from now on.
  * ====================================================================================================================================================
- *         Copyright (c) 2009-2015, AppWork GmbH <e-mail@appwork.org>
- *         Schwabacher Straße 117
- *         90763 Fürth
+ *         Copyright (c) 2009-2026, AppWork GmbH <e-mail@appwork.org>
+ *         Spalter Strasse 58
+ *         91183 Abenberg
  *         Germany
  * === Preamble ===
  *     This license establishes the terms under which the [The Product] Source Code & Binary files may be used, copied, modified, distributed, and/or redistributed.
@@ -35,15 +35,14 @@ package org.appwork.utils.net.httpconnection;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.net.URL;
 
+import org.appwork.utils.net.httpconnection.DNSResolver.REQUESTOR;
 import org.appwork.utils.net.httpconnection.HTTPConnectionUtils.IPVERSION;
 import org.appwork.utils.net.socketconnection.Socks5SocketConnection;
 import org.appwork.utils.net.socketconnection.SocksSocketConnection.DESTTYPE;
 
 public class Socks5HTTPConnectionImpl extends AbstractSocksHTTPConnection {
-
     public Socks5HTTPConnectionImpl(URL url, HTTPProxy proxy, DESTTYPE destType) {
         super(url, proxy, destType);
     }
@@ -53,29 +52,27 @@ public class Socks5HTTPConnectionImpl extends AbstractSocksHTTPConnection {
     }
 
     @Override
-    protected Socket createRawConnectionSocket(final InetAddress bindInetAddress) throws IOException {
-        final Socks5SocketConnection socket = buildSocksSocketConnection();
-        socket.setSoTimeout(getReadTimeout());
-        return socket;
-    }
-
-    @Override
-    protected SocketStreamInterface connect(SocketStreamInterface socketStream) throws IOException {
-        final Socket socket = socketStream.getSocket();
-        final Socks5SocketConnection socks5Socket = ((Socks5SocketConnection) socket);
-        this.endPointInetSocketAddress = buildConnectEndPointSocketAddress(socks5Socket);
-        socks5Socket.connect(endPointInetSocketAddress, this.getConnectTimeout(), proxyRequest);
-        return socketStream;
-    }
-
-    @Override
     protected IPVERSION getEndPointIPVersion() {
         return IPVERSION.IPV4_IPV6;
     }
 
     @Override
     protected Socks5SocketConnection buildSocksSocketConnection() {
-        final Socks5SocketConnection socket = new Socks5SocketConnection(this.getProxy(), getDestType());
-        return socket;
+        return new Socks5SocketConnection(this.getProxy(), getDestType()) {
+            @Override
+            protected InetAddress[] resolveDomain(REQUESTOR requestor, IPVERSION ipVersion, HTTPProxy proxy) throws IOException {
+                return Socks5HTTPConnectionImpl.this.resolveDomain(requestor, ipVersion, proxy.getHost());
+            }
+
+            @Override
+            public IPVERSION getIPVersion() {
+                return Socks5HTTPConnectionImpl.this.getIPVersion();
+            }
+
+            @Override
+            public DNSResolver getDNSResolver() {
+                return Socks5HTTPConnectionImpl.this.getDNSResolver();
+            }
+        };
     }
 }

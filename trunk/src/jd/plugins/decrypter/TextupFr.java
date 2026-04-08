@@ -27,7 +27,7 @@ import jd.plugins.DecrypterPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51243 $", interfaceVersion = 2, names = {}, urls = {})
 public class TextupFr extends AbstractPastebinCrawler {
     public TextupFr(PluginWrapper wrapper) {
         super(wrapper);

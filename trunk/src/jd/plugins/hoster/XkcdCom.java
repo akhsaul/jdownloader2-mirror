@@ -35,7 +35,7 @@ import jd.plugins.PluginForHost;
  * @author raztoki
  *
  */
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "xkcd.com" }, urls = { "https?://(?:www\\.)?xkcd\\.com/(\\d+)/" })
+@HostPlugin(revision = "$Revision: 47473 $", interfaceVersion = 3, names = { "xkcd.com" }, urls = { "https?://(?:www\\.)?xkcd\\.com/(\\d+)/" })
 public class XkcdCom extends PluginForHost {
     public XkcdCom(PluginWrapper wrapper) {
         super(wrapper);

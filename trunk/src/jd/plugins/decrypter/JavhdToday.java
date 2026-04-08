@@ -35,7 +35,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.components.PluginJSonUtils;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 2, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51272 $", interfaceVersion = 2, names = {}, urls = {})
 public class JavhdToday extends PluginForDecrypt {
     public JavhdToday(PluginWrapper wrapper) {
         super(wrapper);

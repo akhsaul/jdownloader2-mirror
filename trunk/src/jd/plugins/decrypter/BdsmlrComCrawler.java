@@ -49,7 +49,7 @@ import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.BdsmlrCom;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 51913 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { BdsmlrCom.class })
 public class BdsmlrComCrawler extends PluginForDecrypt {
     public BdsmlrComCrawler(PluginWrapper wrapper) {

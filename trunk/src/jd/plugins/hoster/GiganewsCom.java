@@ -21,7 +21,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "giganews.com" }, urls = { "" })
+@HostPlugin(revision = "$Revision: 51944 $", interfaceVersion = 3, names = { "giganews.com" }, urls = { "" })
 public class GiganewsCom extends UseNet {
     public GiganewsCom(PluginWrapper wrapper) {
         super(wrapper);

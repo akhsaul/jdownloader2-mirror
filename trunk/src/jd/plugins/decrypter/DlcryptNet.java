@@ -34,7 +34,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "dlcrypt.net" }, urls = { "https?://(?:www\\.)?dlcrypt\\.net/(gets|views)/([A-Za-z0-9]+)" })
+@DecrypterPlugin(revision = "$Revision: 49475 $", interfaceVersion = 3, names = { "dlcrypt.net" }, urls = { "https?://(?:www\\.)?dlcrypt\\.net/(gets|views)/([A-Za-z0-9]+)" })
 public class DlcryptNet extends PluginForDecrypt {
     public DlcryptNet(PluginWrapper wrapper) {
         super(wrapper);

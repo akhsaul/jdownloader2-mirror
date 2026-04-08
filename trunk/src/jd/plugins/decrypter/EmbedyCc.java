@@ -36,7 +36,7 @@ import jd.plugins.FilePackage;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.DirectHTTP;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "embedy.cc" }, urls = { "https?://(?:www\\.)?embedy\\.cc/movies/([A-Za-z0-9=]+)" })
+@DecrypterPlugin(revision = "$Revision: 48359 $", interfaceVersion = 3, names = { "embedy.cc" }, urls = { "https?://(?:www\\.)?embedy\\.cc/movies/([A-Za-z0-9=]+)" })
 public class EmbedyCc extends PluginForDecrypt {
     public EmbedyCc(PluginWrapper wrapper) {
         super(wrapper);

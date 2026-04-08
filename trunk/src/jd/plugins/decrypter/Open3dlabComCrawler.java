@@ -21,12 +21,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import org.appwork.utils.formatter.SizeFormatter;
 import org.jdownloader.plugins.components.config.Open3dlabComConfig;
 import org.jdownloader.plugins.components.config.Open3dlabComConfig.MirrorFallbackMode;
 import org.jdownloader.plugins.components.config.Open3dlabComConfigSmutbaSe;
-import org.jdownloader.plugins.config.PluginJsonConfig;
 
 import jd.PluginWrapper;
 import jd.controlling.ProgressController;
@@ -46,7 +46,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.Open3dlabCom;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 52608 $", interfaceVersion = 3, names = {}, urls = {})
 @PluginDependencies(dependencies = { Open3dlabCom.class })
 public class Open3dlabComCrawler extends PluginForDecrypt {
     public Open3dlabComCrawler(PluginWrapper wrapper) {
@@ -80,13 +80,13 @@ public class Open3dlabComCrawler extends PluginForDecrypt {
     public static String[] buildAnnotationUrls(final List<String[]> pluginDomains) {
         final List<String> ret = new ArrayList<String>();
         for (final String[] domains : pluginDomains) {
-            ret.add("https?://(?:www\\.)?" + buildHostsPatternPart(domains) + "/(user/\\d+/?|project/[a-f0-9\\-]+/?)");
+            ret.add("https?://(?:www\\.)?" + buildHostsPatternPart(domains) + "/(" + PATTERN_PROJECT.pattern().substring(1) + "|" + PATTERN_PROFILE.pattern().substring(1) + ")");
         }
         return ret.toArray(new String[0]);
     }
 
-    private final String PATTERN_PROJECT = "(?i)https?://[^/]+/project/([a-f0-9\\-]+)/?";
-    private final String PATTERN_PROFILE = "(?i)https?://[^/]+/user/(\\d+)/?";
+    private static final Pattern PATTERN_PROJECT = Pattern.compile("/project/([a-f0-9\\-]+)/?", Pattern.CASE_INSENSITIVE);
+    private static final Pattern PATTERN_PROFILE = Pattern.compile("/user/(\\d+)/?", Pattern.CASE_INSENSITIVE);
 
     public ArrayList<DownloadLink> decryptIt(final CryptedLink param, ProgressController progress) throws Exception {
         final Regex project;
@@ -122,7 +122,7 @@ public class Open3dlabComCrawler extends PluginForDecrypt {
         } else {
             projectID = projectIDFromSourceurl;
         }
-        final String[] dlHTMLs = br.getRegex("<td class=\"text-wrap-word js-edit-input\"(.*?)</div>\\s*</td>\\s*</tr>").getColumn(0);
+        final String[] dlHTMLs = br.getRegex("(<tr>\\s*<td class=\"text-wrap-word js-edit-input\"[^>]*>.*?</tr>\\s*<tr[^>]*>.*?</tr>)").getColumn(0);
         if (dlHTMLs == null || dlHTMLs.length == 0) {
             throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
         }
@@ -135,9 +135,9 @@ public class Open3dlabComCrawler extends PluginForDecrypt {
         }
         final Open3dlabComConfig cfg;
         if (this.getHost().equals("open3dlab.com")) {
-            cfg = PluginJsonConfig.get(Open3dlabComConfig.class);
+            cfg = get(Open3dlabComConfig.class);
         } else {
-            cfg = PluginJsonConfig.get(Open3dlabComConfigSmutbaSe.class);
+            cfg = get(Open3dlabComConfigSmutbaSe.class);
         }
         String[] mirrorPrioList = null;
         String userHosterMirrorListStr = cfg.getMirrorPriorityString();
@@ -148,7 +148,7 @@ public class Open3dlabComCrawler extends PluginForDecrypt {
         final MirrorFallbackMode fallbackMode = cfg.getMirrorFallbackMode();
         for (final String dlHTML : dlHTMLs) {
             /* Find all mirrors */
-            String filename = new Regex(dlHTML, "span class=\"js-edit-input__wrapper\"><strong>([^<]+)</strong>").getMatch(0);
+            String filename = new Regex(dlHTML, "<span class=\"js-edit-input__wrapper\"><strong>\\s*([^<]+)\\s*</strong>").getMatch(0);
             if (filename == null) {
                 filename = new Regex(dlHTML, "(?i)You are about to download \"([^\"]+)").getMatch(0);
             }
@@ -157,7 +157,7 @@ public class Open3dlabComCrawler extends PluginForDecrypt {
             }
             String filesizeStr = new Regex(dlHTML, "<td>(\\d+[^<]+)</td>\\s*</tr>").getMatch(0);
             if (filesizeStr == null) {
-                filesizeStr = new Regex(dlHTML, ">\\s*([0-9\\.]+\\s*(TB|GB|MB|KB))\\s*<").getMatch(0);
+                filesizeStr = new Regex(dlHTML, ">\\s*([0-9\\.]+\\s*(TB|GB|MB|KB))\\s*<?").getMatch(0);
             }
             long filesize = -1;
             if (filesizeStr != null) {
@@ -167,7 +167,7 @@ public class Open3dlabComCrawler extends PluginForDecrypt {
             final String[] urls = HTMLParser.getHttpLinks(dlHTML, br.getURL());
             final HashSet<String> mirrorURLs = new HashSet<String>();
             for (final String url : urls) {
-                if (url.matches("https?://[^/]+" + Open3dlabCom.pattern_supported_links_path_relative)) {
+                if (url.matches("https?://[^/]+" + Open3dlabCom.PATTERN_SUPPORTED_LINKS.pattern())) {
                     mirrorURLs.add(url);
                 }
             }
@@ -175,21 +175,25 @@ public class Open3dlabComCrawler extends PluginForDecrypt {
                 throw new PluginException(LinkStatus.ERROR_PLUGIN_DEFECT);
             }
             final HashMap<String, DownloadLink> mirrorMap = new HashMap<String, DownloadLink>();
+            final ArrayList<DownloadLink> untagged_mirrors = new ArrayList<DownloadLink>();
             for (final String mirrorURL : mirrorURLs) {
-                final DownloadLink dl = this.createDownloadlink(mirrorURL);
+                final DownloadLink mirror = this.createDownloadlink(mirrorURL);
                 if (filename != null) {
-                    dl.setName(filename);
+                    mirror.setName(filename);
                 }
                 if (filesize != -1) {
-                    dl.setDownloadSize(filesize);
+                    mirror.setDownloadSize(filesize);
                 }
                 final String mirrorStr = new Regex(mirrorURL, "/\\d+/([^/]+)/?$").getMatch(0);
                 if (mirrorStr != null) {
-                    mirrorMap.put(mirrorStr, dl);
+                    mirrorMap.put(mirrorStr, mirror);
+                } else {
+                    untagged_mirrors.add(mirror);
                 }
             }
             DownloadLink preferredMirror = null;
             if (mirrorPrioList != null && mirrorPrioList.length > 0) {
+                /* Search user preferred mirror */
                 for (final String mirrorStr : mirrorPrioList) {
                     preferredMirror = mirrorMap.get(mirrorStr);
                     if (preferredMirror != null) {
@@ -202,11 +206,19 @@ public class Open3dlabComCrawler extends PluginForDecrypt {
                 ret.add(preferredMirror);
             } else if (fallbackMode == MirrorFallbackMode.ONE) {
                 logger.info("Failed to find desired mirror: Returning random mirror as fallback");
-                final List<DownloadLink> mirrors = new ArrayList<DownloadLink>(mirrorMap.values());
-                ret.add(mirrors.get(new Random().nextInt(mirrors.size())));
+                if (mirrorMap.size() > 0) {
+                    final List<DownloadLink> mirrors = new ArrayList<DownloadLink>(mirrorMap.values());
+                    ret.add(mirrors.get(new Random().nextInt(mirrors.size())));
+                } else {
+                    ret.add(untagged_mirrors.get(new Random().nextInt(untagged_mirrors.size())));
+                }
             } else {
                 logger.info("Failed to find desired mirror: Returning all mirrors as fallback");
-                ret.addAll(mirrorMap.values());
+                if (mirrorMap.size() > 0) {
+                    ret.addAll(mirrorMap.values());
+                } else {
+                    ret.addAll(untagged_mirrors);
+                }
             }
         }
         final String thumbnailURLRightSide = br.getRegex("\"image\"\\s*:\\s*\"(https?://[^\"]+)\"").getMatch(0);
@@ -262,7 +274,7 @@ public class Open3dlabComCrawler extends PluginForDecrypt {
             final HashSet<String> dupes = new HashSet<String>();
             int numberofNewItems = 0;
             for (final String url : urls) {
-                if (url.matches(PATTERN_PROJECT) && dupes.add(url)) {
+                if (new Regex(url, PATTERN_PROJECT).patternFind() && dupes.add(url)) {
                     numberofNewItems++;
                     final DownloadLink result = this.createDownloadlink(url);
                     result._setFilePackage(fp);

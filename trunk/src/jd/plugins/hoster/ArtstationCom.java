@@ -41,7 +41,7 @@ import org.jdownloader.plugins.components.config.ArtstationComConfig;
 import org.jdownloader.plugins.config.PluginJsonConfig;
 import org.jdownloader.plugins.controller.LazyPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "artstation.com" }, urls = { "https?://[a-z0-9\\-\\.]+\\.artstation\\.com/p/assets/.+" })
+@HostPlugin(revision = "$Revision: 50525 $", interfaceVersion = 3, names = { "artstation.com" }, urls = { "https?://[a-z0-9\\-\\.]+\\.artstation\\.com/p/assets/.+" })
 public class ArtstationCom extends PluginForHost {
     public ArtstationCom(PluginWrapper wrapper) {
         super(wrapper);

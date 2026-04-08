@@ -29,7 +29,7 @@ import jd.plugins.HostPlugin;
 import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51918 $", interfaceVersion = 3, names = {}, urls = {})
 public class ImgbaronCom extends XFileSharingProBasic {
     public ImgbaronCom(final PluginWrapper wrapper) {
         super(wrapper);

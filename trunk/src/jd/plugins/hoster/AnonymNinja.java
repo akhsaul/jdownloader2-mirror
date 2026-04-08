@@ -34,7 +34,7 @@ import jd.plugins.PluginForHost;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.formatter.SizeFormatter;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 47474 $", interfaceVersion = 3, names = {}, urls = {})
 public class AnonymNinja extends PluginForHost {
     public AnonymNinja(PluginWrapper wrapper) {
         super(wrapper);

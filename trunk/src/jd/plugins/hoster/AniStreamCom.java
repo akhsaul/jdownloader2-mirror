@@ -34,7 +34,7 @@ import jd.plugins.Account.AccountType;
 import jd.plugins.DownloadLink;
 import jd.plugins.HostPlugin;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 48904 $", interfaceVersion = 3, names = {}, urls = {})
 public class AniStreamCom extends XFileSharingProBasic {
     public AniStreamCom(final PluginWrapper wrapper) {
         super(wrapper);

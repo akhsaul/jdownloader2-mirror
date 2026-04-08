@@ -27,7 +27,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 47997 $", interfaceVersion = 3, names = {}, urls = {})
 public class IsGd extends PluginForDecrypt {
     public IsGd(PluginWrapper wrapper) {
         super(wrapper);

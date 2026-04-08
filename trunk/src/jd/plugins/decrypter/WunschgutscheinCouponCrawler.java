@@ -35,7 +35,7 @@ import jd.plugins.PluginException;
 import jd.plugins.PluginForDecrypt;
 import jd.plugins.hoster.WunschgutscheinCouponDownload;
 
-@DecrypterPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@DecrypterPlugin(revision = "$Revision: 50867 $", interfaceVersion = 3, names = {}, urls = {})
 public class WunschgutscheinCouponCrawler extends PluginForDecrypt {
     public WunschgutscheinCouponCrawler(PluginWrapper wrapper) {
         super(wrapper);

@@ -29,7 +29,7 @@ import jd.plugins.LinkStatus;
 import jd.plugins.PluginException;
 import jd.plugins.PluginForHost;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = { "cracked.com" }, urls = { "https?://(?:www\\.)?cracked\\.com/video_(\\d+)_[a-z0-9\\-]+\\.html" })
+@HostPlugin(revision = "$Revision: 49989 $", interfaceVersion = 3, names = { "cracked.com" }, urls = { "https?://(?:www\\.)?cracked\\.com/video_(\\d+)_[a-z0-9\\-]+\\.html" })
 public class CrackedCom extends PluginForHost {
     private String dllink = null;
 

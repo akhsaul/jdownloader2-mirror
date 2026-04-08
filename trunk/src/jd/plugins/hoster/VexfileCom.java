@@ -40,7 +40,7 @@ import org.appwork.utils.StringUtils;
 import org.appwork.utils.formatter.SizeFormatter;
 import org.jdownloader.captcha.v2.challenge.cloudflareturnstile.CaptchaHelperHostPluginCloudflareTurnstile;
 
-@HostPlugin(revision = "$Revision$", interfaceVersion = 3, names = {}, urls = {})
+@HostPlugin(revision = "$Revision: 51793 $", interfaceVersion = 3, names = {}, urls = {})
 public class VexfileCom extends PluginForHost {
     public VexfileCom(PluginWrapper wrapper) {
         super(wrapper);
