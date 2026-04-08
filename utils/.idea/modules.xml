@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AppWorkUtils.iml" filepath="$PROJECT_DIR$/AppWorkUtils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../JDBrowser.iml" filepath="$PROJECT_DIR$/../JDBrowser.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../JDownloader.iml" filepath="$PROJECT_DIR$/../JDownloader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../MyJDownloaderClient.iml" filepath="$PROJECT_DIR$/../MyJDownloaderClient.iml" />
+    </modules>
+  </component>
+</project>

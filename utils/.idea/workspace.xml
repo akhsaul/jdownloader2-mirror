@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5954536e-3c36-4613-804f-6a5b5d935c49" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.4" />
+  <component name="ProjectId" id="2PNBdNTkpUXHPcLu2Tp0WpyvpSd" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "D:/Clone_GitHub/JDownloader2/utils"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration" cleanupOnStartRun="true">
+    <configuration>C:\Users\Akhsaul\AppData\Roaming\Subversion</configuration>
+    <supportedVersion>125</supportedVersion>
+  </component>
+  <component name="SvnFileUrlMappingImpl">
+    <option name="myMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\Clone_GitHub\JDownloader2\browser" />
+          <option name="myCopyRoot" value="D:\Clone_GitHub\JDownloader2\browser" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\Clone_GitHub\JDownloader2\MyJDownloaderClient" />
+          <option name="myCopyRoot" value="D:\Clone_GitHub\JDownloader2\MyJDownloaderClient" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\Clone_GitHub\JDownloader2\trunk" />
+          <option name="myCopyRoot" value="D:\Clone_GitHub\JDownloader2\trunk" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\Clone_GitHub\JDownloader2\utils" />
+          <option name="myCopyRoot" value="D:\Clone_GitHub\JDownloader2\utils" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\Clone_GitHub\JDownloader2\utils\.idea" />
+          <option name="myCopyRoot" value="D:\Clone_GitHub\JDownloader2\utils\.idea" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+    <option name="myMoreRealMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\Clone_GitHub\JDownloader2\browser" />
+          <option name="myCopyRoot" value="D:\Clone_GitHub\JDownloader2\browser" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\Clone_GitHub\JDownloader2\MyJDownloaderClient" />
+          <option name="myCopyRoot" value="D:\Clone_GitHub\JDownloader2\MyJDownloaderClient" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\Clone_GitHub\JDownloader2\trunk" />
+          <option name="myCopyRoot" value="D:\Clone_GitHub\JDownloader2\trunk" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\Clone_GitHub\JDownloader2\utils" />
+          <option name="myCopyRoot" value="D:\Clone_GitHub\JDownloader2\utils" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5954536e-3c36-4613-804f-6a5b5d935c49" name="Changes" comment="" />
+      <created>1683287752691</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1683287752691</updated>
+      <workItem from="1683287753611" duration="278000" />
+    </task>
+    <servers />
+  </component>
+</project>
