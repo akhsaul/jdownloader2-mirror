@@ -27,3 +27,7 @@ svn revert -R .
 svn update
 rm -rf .git
 cd ..
+
+echo "delete redundant file to make it lightweight"
+find . -type f -name "*.zip" | xargs rm -f
+find . -type f -name "*.jar" | xargs rm -f

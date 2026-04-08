@@ -2,3 +2,5 @@
 .idea/
 *doc*.zip
 ffmpeg*/
+*.jar
+*.zip
